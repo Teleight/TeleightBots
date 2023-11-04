@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.pagination;
+package org.teleight.teleightbots.api.menu;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

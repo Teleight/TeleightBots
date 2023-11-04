@@ -25,27 +25,27 @@ public record GetUpdates(
         List<String> allowedUpdates
 ) implements ApiMethod<Update[]> {
 
-    public static GetUpdates of() {
+    public static @NotNull GetUpdates of() {
         return new GetUpdates(0, BotSettings.DEFAULT.updatesTimeout(), BotSettings.DEFAULT.updatesTimeout(), null);
     }
 
-    public GetUpdates withOffset(int offset) {
+    public @NotNull GetUpdates withOffset(int offset) {
         return new GetUpdates(offset, limit, timeout, allowedUpdates);
     }
 
-    public GetUpdates withLimit(int limit) {
+    public @NotNull GetUpdates withLimit(int limit) {
         return new GetUpdates(offset, limit, timeout, allowedUpdates);
     }
 
-    public GetUpdates withTimeout(int timeout) {
+    public @NotNull GetUpdates withTimeout(int timeout) {
         return new GetUpdates(offset, limit, timeout, allowedUpdates);
     }
 
-    public GetUpdates withAllowedUpdates(List<String> allowedUpdates) {
+    public @NotNull GetUpdates withAllowedUpdates(List<String> allowedUpdates) {
         return new GetUpdates(offset, limit, timeout, allowedUpdates);
     }
 
-    public static Builder builder() {
+    public static @NotNull Builder builder() {
         return new BuilderImpl();
     }
 
@@ -60,15 +60,15 @@ public record GetUpdates(
     }
 
     public sealed interface Builder permits BuilderImpl {
-        Builder offset(int offset);
+        @NotNull Builder offset(int offset);
 
-        Builder limit(int limit);
+        @NotNull Builder limit(int limit);
 
-        Builder timeout(int timeout);
+        @NotNull Builder timeout(int timeout);
 
-        Builder allowedUpdates(List<String> allowedUpdates);
+        @NotNull Builder allowedUpdates(@Nullable List<String> allowedUpdates);
 
-        GetUpdates build();
+        @NotNull GetUpdates build();
     }
 
     static final class BuilderImpl implements Builder {
@@ -78,31 +78,31 @@ public record GetUpdates(
         private List<String> allowedUpdates;
 
         @Override
-        public Builder offset(int offset) {
+        public @NotNull Builder offset(int offset) {
             this.offset = offset;
             return this;
         }
 
         @Override
-        public Builder limit(int limit) {
+        public @NotNull Builder limit(int limit) {
             this.limit = limit;
             return this;
         }
 
         @Override
-        public Builder timeout(int timeout) {
+        public @NotNull Builder timeout(int timeout) {
             this.timeout = timeout;
             return this;
         }
 
         @Override
-        public Builder allowedUpdates(List<String> allowedUpdates) {
+        public @NotNull Builder allowedUpdates(@Nullable List<String> allowedUpdates) {
             this.allowedUpdates = allowedUpdates;
             return this;
         }
 
         @Override
-        public GetUpdates build() {
+        public @NotNull GetUpdates build() {
             return new GetUpdates(offset, limit, timeout, allowedUpdates);
         }
     }

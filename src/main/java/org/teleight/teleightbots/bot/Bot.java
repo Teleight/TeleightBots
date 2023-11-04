@@ -3,7 +3,7 @@ package org.teleight.teleightbots.bot;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.pagination.*;
+import org.teleight.teleightbots.api.menu.*;
 import org.teleight.teleightbots.bot.trait.TelegramBot;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;

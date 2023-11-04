@@ -2,8 +2,8 @@ package org.teleight.teleightbots.demo;
 
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.SendMessage;
-import org.teleight.teleightbots.api.pagination.Menu;
-import org.teleight.teleightbots.api.pagination.MenuButton;
+import org.teleight.teleightbots.api.menu.Menu;
+import org.teleight.teleightbots.api.menu.MenuButton;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.event.EventListener;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
