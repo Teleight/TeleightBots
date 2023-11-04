@@ -31,7 +31,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.of(60, ChronoUnit.SECONDS))
             .build();
-    private final AtomicBoolean credentialsCorrect = new AtomicBoolean();
     private Thread updateProcessorThread;
     private Bot bot;
     private int lastReceivedUpdate = 0;
@@ -53,10 +52,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
     public void terminate() {
         updateProcessorThread.interrupt();
-    }
-
-    public @NotNull AtomicBoolean getCredentialsCorrect() {
-        return credentialsCorrect;
     }
 
     private void executeGetUpdates() {
@@ -185,9 +180,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         @Override
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
-                if (credentialsCorrect.get()) {
-                    executeGetUpdates();
-                }
+                executeGetUpdates();
             }
         }
     }
