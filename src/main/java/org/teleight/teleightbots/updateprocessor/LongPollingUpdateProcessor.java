@@ -39,7 +39,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     @Override
     public void setBot(@NotNull Bot bot) {
         if (this.bot != null) {
-            throw new IllegalArgumentException("Bot instant was already assigned to this update processor");
+            throw new IllegalArgumentException("Bot instance was already assigned to this update processor");
         }
         this.bot = bot;
     }
