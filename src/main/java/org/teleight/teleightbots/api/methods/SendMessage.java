@@ -40,15 +40,15 @@ public record SendMessage(
     }
 
     public sealed interface Builder permits BuilderImpl {
-        @NotNull Builder chatId(String chatId);
+        @NotNull Builder chatId(@NotNull String chatId);
 
-        @NotNull Builder text(String text);
+        @NotNull Builder text(@NotNull String text);
 
-        @NotNull Builder parseMode(String parseMode);
+        @NotNull Builder parseMode(@Nullable String parseMode);
 
         @NotNull Builder disableNotification(boolean disableNotification);
 
-        @NotNull Builder replyMarkup(ReplyKeyboard replyMarkup);
+        @NotNull Builder replyMarkup(@Nullable ReplyKeyboard replyMarkup);
 
         @NotNull SendMessage build();
     }
@@ -61,19 +61,19 @@ public record SendMessage(
         private ReplyKeyboard replyMarkup;
 
         @Override
-        public @NotNull Builder chatId(String chatId) {
+        public @NotNull Builder chatId(@NotNull String chatId) {
             this.chatId = chatId;
             return this;
         }
 
         @Override
-        public @NotNull Builder text(String text) {
+        public @NotNull Builder text(@NotNull String text) {
             this.text = text;
             return this;
         }
 
         @Override
-        public @NotNull Builder parseMode(String parseMode) {
+        public @NotNull Builder parseMode(@Nullable String parseMode) {
             this.parseMode = parseMode;
             return this;
         }
@@ -85,7 +85,7 @@ public record SendMessage(
         }
 
         @Override
-        public @NotNull Builder replyMarkup(ReplyKeyboard replyMarkup) {
+        public @NotNull Builder replyMarkup(@Nullable ReplyKeyboard replyMarkup) {
             this.replyMarkup = replyMarkup;
             return this;
         }
