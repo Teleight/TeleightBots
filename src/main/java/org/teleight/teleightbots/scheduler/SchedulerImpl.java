@@ -8,23 +8,6 @@ import java.util.concurrent.*;
 
 public class SchedulerImpl implements Scheduler {
 
-    /*
-    private static final ExecutorService EXECUTOR = new ThreadPoolExecutor(10, 200, 60, TimeUnit.SECONDS,
-            new SynchronousQueue<>(), r -> {
-            Thread thread = new Thread(r);
-            thread.setDaemon(true);
-            thread.setName("Task Scheduler - #" + thread.getId());
-            return thread;
-        });
-
-    private static final ScheduledExecutorService SCHEDULED = Executors.newScheduledThreadPool(10, r -> {
-            Thread thread = new Thread(r);
-            thread.setDaemon(true);
-            thread.setName("Task Scheduler Timer - #" + thread.getId());
-            return thread;
-        });
-    */
-
     private static final ExecutorService EXECUTOR = Executors.newVirtualThreadPerTaskExecutor();
     private static final ScheduledExecutorService SCHEDULED = Executors.newScheduledThreadPool(10, Thread.ofVirtual().factory());
 

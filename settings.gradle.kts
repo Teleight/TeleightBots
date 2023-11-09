@@ -1,2 +1,2 @@
-rootProject.name = "Teleight"
+rootProject.name = "TeleightBots"
 include("demo")
