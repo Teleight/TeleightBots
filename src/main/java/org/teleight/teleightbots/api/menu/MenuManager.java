@@ -6,7 +6,7 @@ import org.teleight.teleightbots.event.EventManager;
 
 import java.util.Collection;
 
-public sealed interface PaginationManager permits PaginationManagerImpl {
+public sealed interface MenuManager permits MenuManagerImpl {
 
     @NotNull EventManager getEventNode();
 

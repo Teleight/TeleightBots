@@ -32,7 +32,7 @@ public class Bot implements TelegramBot {
     private final EventManager eventManager = new EventManagerImpl();
 
     //Pagination
-    private final PaginationManager paginationManager = new PaginationManagerImpl();
+    private final MenuManager menuManager = new MenuManagerImpl();
 
     public Bot(String token, String username, UpdateProcessor updateProcessor, BotSettings botSettings) {
         this.token = token;
@@ -72,8 +72,8 @@ public class Bot implements TelegramBot {
     }
 
     @Override
-    public @NotNull PaginationManager getPaginationManager() {
-        return paginationManager;
+    public @NotNull MenuManager getPaginationManager() {
+        return menuManager;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class Bot implements TelegramBot {
         for (final MenuImpl subMenu : menuBuilder.getAllMenus()) {
             subMenu.createKeyboard();
 
-            paginationManager.registerMenu(subMenu);
+            menuManager.registerMenu(subMenu);
         }
 
         return rootMenu;

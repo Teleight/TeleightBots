@@ -19,12 +19,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class PaginationManagerImpl implements PaginationManager {
+public final class MenuManagerImpl implements MenuManager {
 
     private final EventManager eventManager = new EventManagerImpl();
     private final Map<Integer, Menu> menus = new HashMap<>();
 
-    public PaginationManagerImpl() {
+    public MenuManagerImpl() {
         eventManager.addListener(ButtonPressEvent.class, event -> {
             for (final Menu menu : getMenus()) {
                 handleMenu(menu, event);
@@ -34,8 +34,8 @@ public final class PaginationManagerImpl implements PaginationManager {
 
     private void handleMenu(@NotNull Menu menu, @NotNull ButtonPressEvent event) {
         final InlineKeyboardMarkup internalColumns = menu.getKeyboard();
-        for (InlineKeyboardButton[] columns : internalColumns.keyboard()) {
-            for (InlineKeyboardButton buttonInRow : columns) {
+        for (final InlineKeyboardButton[] columns : internalColumns.keyboard()) {
+            for (final InlineKeyboardButton buttonInRow : columns) {
                 handleButton(buttonInRow, event);
             }
         }
@@ -58,6 +58,9 @@ public final class PaginationManagerImpl implements PaginationManager {
             return;
         }
         final String destinationMenuAsString = extractValue(callbackData, MenuButton.MENU_ID_PARAM);
+        if(destinationMenuAsString == null){
+            return;
+        }
 
         int destinationMenuId = -1;
         try {
