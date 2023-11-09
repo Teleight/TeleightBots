@@ -3,12 +3,12 @@ package org.teleight.teleightbots.bot;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.menu.*;
 import org.teleight.teleightbots.bot.trait.TelegramBot;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.bot.MethodSendEvent;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
+import org.teleight.teleightbots.menu.*;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 

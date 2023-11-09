@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.bot.trait;
 
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.menu.Menu;
-import org.teleight.teleightbots.api.menu.MenuManager;
+import org.teleight.teleightbots.menu.Menu;
+import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.scheduler.Scheduler;

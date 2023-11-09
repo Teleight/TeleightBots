@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.menu;
+package org.teleight.teleightbots.menu;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;

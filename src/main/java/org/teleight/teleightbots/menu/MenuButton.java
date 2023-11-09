@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.menu;
+package org.teleight.teleightbots.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
