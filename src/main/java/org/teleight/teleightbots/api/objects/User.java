@@ -5,7 +5,10 @@ import org.teleight.teleightbots.api.ApiResult;
 
 public record User(
         @JsonProperty("id")
-        long id
+        long id,
+
+        @JsonProperty("username")
+        String username
 ) implements ApiResult {
 
 }

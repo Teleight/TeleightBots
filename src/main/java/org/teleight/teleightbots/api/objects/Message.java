@@ -8,6 +8,9 @@ public record Message(
         @JsonProperty("message_id")
         int messageId,
 
+        @JsonProperty("from")
+        User from,
+
         @JsonProperty("chat")
         Chat chat,
 
