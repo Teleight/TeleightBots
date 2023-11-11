@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.api.methods.callback.CallbackQuery;
 import org.teleight.teleightbots.api.methods.inline.EditMessageReplyMarkup;
 import org.teleight.teleightbots.api.methods.inline.EditMessageText;
-import org.teleight.teleightbots.api.objects.Chat;
+import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
