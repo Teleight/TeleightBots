@@ -7,19 +7,19 @@ import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 
 public record ChatMemberUpdated(
-        @JsonProperty("chat")
+        @JsonProperty(value = "chat", required = true)
         Chat chat,
 
-        @JsonProperty("from")
+        @JsonProperty(value = "from", required = true)
         User from,
 
-        @JsonProperty("date")
+        @JsonProperty(value = "date", required = true)
         int date,
 
-        @JsonProperty("old_chat_member")
+        @JsonProperty(value = "old_chat_member", required = true)
         ChatMember oldChatMember,
 
-        @JsonProperty("new_chat_member")
+        @JsonProperty(value = "new_chat_member", required = true)
         ChatMember newChatMember,
 
         @JsonProperty("invite_link")

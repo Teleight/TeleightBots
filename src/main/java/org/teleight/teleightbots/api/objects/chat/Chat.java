@@ -6,10 +6,10 @@ import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.Message;
 
 public record Chat(
-        @JsonProperty("id")
+        @JsonProperty(value = "id", required = true)
         int id,
 
-        @JsonProperty("type")
+        @JsonProperty(value = "type", required = true)
         String type,
 
         @JsonProperty("title")

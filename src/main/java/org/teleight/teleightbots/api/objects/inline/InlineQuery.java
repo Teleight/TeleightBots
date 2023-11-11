@@ -7,16 +7,16 @@ import org.teleight.teleightbots.api.objects.Location;
 import org.teleight.teleightbots.api.objects.User;
 
 public record InlineQuery(
-        @JsonProperty("id")
+        @JsonProperty(value = "id", required = true)
         String id,
 
-        @JsonProperty("from")
+        @JsonProperty(value = "from", required = true)
         User from,
 
-        @JsonProperty("query")
+        @JsonProperty(value = "query", required = true)
         String query,
 
-        @JsonProperty("offset")
+        @JsonProperty(value = "offset", required = true)
         String offset,
 
         @JsonProperty("chat_type")

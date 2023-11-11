@@ -13,10 +13,10 @@ public record ChatJoinRequest(
         User from,
 
         @JsonProperty(value = "user_chat_id", required = true)
-        long userChatId,
+        Long userChatId,
 
         @JsonProperty(value = "date", required = true)
-        int date,
+        Integer date,
 
         @JsonProperty("bio")
         @Nullable

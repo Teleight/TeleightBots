@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record ChatPhoto(
-        @JsonProperty("small_file_id")
+        @JsonProperty(value = "small_file_id", required = true)
         String smallFileId,
 
-        @JsonProperty("small_file_unique_id")
+        @JsonProperty(value = "small_file_unique_id", required = true)
         String smallFileUniqueId,
 
-        @JsonProperty("big_file_id")
+        @JsonProperty(value = "big_file_id", required = true)
         String bigFileId,
 
-        @JsonProperty("big_file_unique_id")
+        @JsonProperty(value = "big_file_unique_id", required = true)
         String bigFileUniqueId
 ) implements ApiResult {
 }

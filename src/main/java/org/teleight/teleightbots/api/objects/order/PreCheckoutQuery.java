@@ -6,19 +6,19 @@ import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.User;
 
 public record PreCheckoutQuery(
-        @JsonProperty("id")
+        @JsonProperty(value = "id", required = true)
         String id,
 
-        @JsonProperty("from")
+        @JsonProperty(value = "from", required = true)
         User from,
 
-        @JsonProperty("currency")
+        @JsonProperty(value = "currency", required = true)
         String currency,
 
-        @JsonProperty("total_amount")
-        int totalAmount,
+        @JsonProperty(value = "total_amount", required = true)
+        Integer totalAmount,
 
-        @JsonProperty("invoice_payload")
+        @JsonProperty(value = "invoice_payload", required = true)
         String invoicePayload,
 
         @JsonProperty("shipping_option_id")

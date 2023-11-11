@@ -5,10 +5,10 @@ import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.Location;
 
 public record ChatLocation(
-        @JsonProperty("location")
+        @JsonProperty(value = "location", required = true)
         Location location,
 
-        @JsonProperty("address")
+        @JsonProperty(value = "address", required = true)
         String address
 ) implements ApiResult {
 }

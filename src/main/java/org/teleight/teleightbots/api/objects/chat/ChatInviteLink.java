@@ -7,20 +7,20 @@ import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.User;
 
 public record ChatInviteLink(
-        @JsonProperty("invite_link")
+        @JsonProperty(value = "invite_link", required = true)
         String inviteLink,
 
-        @JsonProperty("creator")
+        @JsonProperty(value = "creator", required = true)
         User creator,
 
-        @JsonProperty("creates_join_request")
-        boolean createsJoinRequest,
+        @JsonProperty(value = "creates_join_request", required = true)
+        Boolean createsJoinRequest,
 
-        @JsonProperty("is_primary")
-        boolean isPrimary,
+        @JsonProperty(value = "is_primary", required = true)
+        Boolean isPrimary,
 
-        @JsonProperty("is_revoked")
-        boolean isRevoked,
+        @JsonProperty(value = "is_revoked", required = true)
+        Boolean isRevoked,
 
         @JsonProperty("name")
         @Nullable

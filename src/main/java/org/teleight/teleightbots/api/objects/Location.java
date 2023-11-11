@@ -6,10 +6,10 @@ import org.teleight.teleightbots.api.ApiResult;
 
 public record Location(
         @JsonProperty(value = "longitude", required = true)
-        float longitude,
+        Float longitude,
 
         @JsonProperty(value = "latitude", required = true)
-        float latitude,
+        Float latitude,
 
         @JsonProperty("horizontal_accuracy")
         @Nullable

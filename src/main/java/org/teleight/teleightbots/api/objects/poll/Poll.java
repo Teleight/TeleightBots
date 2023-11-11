@@ -6,30 +6,30 @@ import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 
 public record Poll(
-        @JsonProperty("id")
+        @JsonProperty(value = "id", required = true)
         String id,
 
-        @JsonProperty("question")
+        @JsonProperty(value = "question", required = true)
         String question,
 
-        @JsonProperty("options")
+        @JsonProperty(value = "options", required = true)
         PollOption[] options,
 
-        @JsonProperty("total_voter_count")
-        int totalVoterCount,
+        @JsonProperty(value = "total_voter_count", required = true)
+        Integer totalVoterCount,
 
-        @JsonProperty("is_closed")
-        boolean isClosed,
+        @JsonProperty(value = "is_closed", required = true)
+        Boolean isClosed,
 
-        @JsonProperty("is_anonymous")
-        boolean isAnonymous,
+        @JsonProperty(value = "is_anonymous", required = true)
+        Boolean isAnonymous,
 
         // regular or quiz. makes more sense to get an enum here
-        @JsonProperty("type")
+        @JsonProperty(value = "type", required = true)
         String type,
 
-        @JsonProperty("allows_multiple_answers")
-        boolean allowsMultipleAnswers,
+        @JsonProperty(value = "allows_multiple_answers", required = true)
+        Boolean allowsMultipleAnswers,
 
         @JsonProperty("correct_option_id")
         @Nullable

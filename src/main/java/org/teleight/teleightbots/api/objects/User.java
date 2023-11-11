@@ -6,10 +6,10 @@ import org.teleight.teleightbots.api.ApiResult;
 
 public record User(
         @JsonProperty(value = "id", required = true)
-        long id,
+        Long id,
 
         @JsonProperty(value = "is_bot", required = true)
-        boolean isBot,
+        Boolean isBot,
 
         @JsonProperty(value = "first_name", required = true)
         String firstName,

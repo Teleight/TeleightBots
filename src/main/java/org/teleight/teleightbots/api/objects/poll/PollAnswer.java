@@ -19,7 +19,7 @@ public record PollAnswer(
         User user,
 
         @JsonProperty(value = "option_ids", required = true)
-        int[] optionIds
+        Integer[] optionIds
 ) implements ApiResult {
 
 }

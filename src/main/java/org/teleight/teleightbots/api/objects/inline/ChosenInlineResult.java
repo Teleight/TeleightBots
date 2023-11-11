@@ -7,10 +7,10 @@ import org.teleight.teleightbots.api.objects.Location;
 import org.teleight.teleightbots.api.objects.User;
 
 public record ChosenInlineResult(
-        @JsonProperty("result_id")
+        @JsonProperty(value = "result_id", required = true)
         String resultId,
 
-        @JsonProperty("from")
+        @JsonProperty(value = "from", required = true)
         User from,
 
         @JsonProperty("location")
@@ -21,7 +21,7 @@ public record ChosenInlineResult(
         @Nullable
         String inlineMessageId,
 
-        @JsonProperty("query")
+        @JsonProperty(value = "query", required = true)
         String query
 ) implements ApiResult {
 }

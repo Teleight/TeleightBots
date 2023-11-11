@@ -6,10 +6,10 @@ import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
 
 public record Message(
-        @JsonProperty("message_id")
-        int messageId,
+        @JsonProperty(value = "message_id", required = true)
+        Integer messageId,
 
-        @JsonProperty("chat")
+        @JsonProperty(value = "chat", required = true)
         Chat chat,
 
         @JsonProperty("text")

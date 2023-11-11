@@ -6,14 +6,14 @@ import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.User;
 
 public record MessageEntity(
-        @JsonProperty("type")
+        @JsonProperty(value = "type", required = true)
         String type,
 
-        @JsonProperty("offset")
-        int offset,
+        @JsonProperty(value = "offset", required = true)
+        Integer offset,
 
-        @JsonProperty("length")
-        int length,
+        @JsonProperty(value = "length", required = true)
+        Integer length,
 
         @JsonProperty("url")
         @Nullable
