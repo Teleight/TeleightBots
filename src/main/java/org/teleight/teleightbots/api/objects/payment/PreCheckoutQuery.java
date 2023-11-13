@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.objects.order;
+package org.teleight.teleightbots.api.objects.payment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;

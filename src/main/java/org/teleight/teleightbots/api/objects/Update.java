@@ -8,7 +8,7 @@ import org.teleight.teleightbots.api.objects.chat.ChatJoinRequest;
 import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
 import org.teleight.teleightbots.api.objects.inline.ChosenInlineResult;
 import org.teleight.teleightbots.api.objects.inline.InlineQuery;
-import org.teleight.teleightbots.api.objects.order.PreCheckoutQuery;
+import org.teleight.teleightbots.api.objects.payment.PreCheckoutQuery;
 import org.teleight.teleightbots.api.objects.poll.Poll;
 import org.teleight.teleightbots.api.objects.poll.PollAnswer;
 import org.teleight.teleightbots.api.objects.shipping.ShippingQuery;
