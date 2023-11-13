@@ -7,7 +7,7 @@ import org.teleight.teleightbots.api.objects.Message;
 
 public record Chat(
         @JsonProperty(value = "id", required = true)
-        int id,
+        Long id,
 
         @JsonProperty(value = "type", required = true)
         String type,
@@ -114,7 +114,7 @@ public record Chat(
 
         @JsonProperty("linked_chat_id")
         @Nullable
-        Integer linkedChatId,
+        Long linkedChatId,
 
         @JsonProperty("location")
         @Nullable
