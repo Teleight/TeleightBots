@@ -17,7 +17,7 @@ public class MainDemo {
 
         final String botToken = System.getenv("bot.token") != null ? System.getenv("bot.token") : "--INSERT-TOKEN-HERE--";
         final String botUsername = System.getenv("bot.username") != null ? System.getenv("bot.username") : "--INSERT-USERNAME--HERE";
-        final String chatId = System.getenv("bot.default_chatid") != null ? System.getenv("bot.default_chatid") : "--INSERT-YOUR-ID-HERE--";
+        final String chatId = System.getenv("bot.default_chatid") != null ? System.getenv("bot.default_chatid") : "--INSERT-CHATID--HERE";
 
         EventListener<UpdateReceivedEvent> updateEvent = EventListener.builder(UpdateReceivedEvent.class)
                 .handler(event -> System.out.println("UpdateReceivedEvent: " + event.bot().getBotUsername() + " -> " + event))
@@ -64,7 +64,6 @@ public class MainDemo {
                     .chatId(chatId)
                     .replyMarkup(menu.getKeyboard())
                     .build();
-
             bot.execute(sendMessage);
         });
     }
