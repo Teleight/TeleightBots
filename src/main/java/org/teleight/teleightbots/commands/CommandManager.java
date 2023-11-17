@@ -3,6 +3,7 @@ package org.teleight.teleightbots.commands;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.commands.builder.Command;
 
 public interface CommandManager {
 

@@ -1,7 +1,11 @@
-package org.teleight.teleightbots.commands;
+package org.teleight.teleightbots.commands.builder;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.commands.builder.argument.Argument;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Command {
 
@@ -9,6 +13,8 @@ public abstract class Command {
     private final String[] aliases;
 
     private CommandExecutor defaultExecutor;
+
+    private final List<CommandSyntax> syntaxes = new ArrayList<>();
 
     public Command(@NotNull String name) {
         this(name, new String[0]);
@@ -33,6 +39,14 @@ public abstract class Command {
 
     public @Nullable CommandExecutor getDefaultExecutor() {
         return defaultExecutor;
+    }
+
+    public void addSyntax(@NotNull CommandExecutor executor, @NotNull Argument<?>... args) {
+        syntaxes.add(new CommandSyntax(executor, args));
+    }
+
+    public List<CommandSyntax> getSyntaxes() {
+        return syntaxes;
     }
 
 }

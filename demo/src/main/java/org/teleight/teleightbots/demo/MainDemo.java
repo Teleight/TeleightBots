@@ -64,7 +64,7 @@ public class MainDemo {
                     .chatId(chatId)
                     .replyMarkup(menu.getKeyboard())
                     .build();
-            bot.execute(sendMessage);
+            //bot.execute(sendMessage);
         });
     }
 
