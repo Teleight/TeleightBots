@@ -1,5 +1,7 @@
 package org.teleight.teleightbots.api.objects.chat.member;
 
+import org.teleight.teleightbots.api.objects.User;
+
 public sealed interface ChatMember permits
         ChatMemberOwner,
         ChatMemberAdministrator,
@@ -7,4 +9,9 @@ public sealed interface ChatMember permits
         ChatMemberRestricted,
         ChatMemberLeft,
         ChatMemberBanned {
+
+    ChatMemberType type();
+
+    User user();
+
 }

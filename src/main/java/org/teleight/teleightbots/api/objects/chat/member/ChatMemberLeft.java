@@ -11,4 +11,10 @@ public record ChatMemberLeft(
         @JsonProperty("user")
         User user
 ) implements ChatMember, ApiResult {
+
+        @Override
+        public ChatMemberType type() {
+                return ChatMemberType.LEFT;
+        }
+
 }

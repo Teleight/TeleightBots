@@ -71,4 +71,10 @@ public record ChatMemberAdministrator(
         @Nullable
         String customTitle
 ) implements ChatMember, ApiResult {
+
+        @Override
+        public ChatMemberType type() {
+                return ChatMemberType.ADMINISTRATOR;
+        }
+
 }

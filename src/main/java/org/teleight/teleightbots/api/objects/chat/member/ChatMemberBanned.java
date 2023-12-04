@@ -14,4 +14,10 @@ public record ChatMemberBanned(
         @JsonProperty("until_date")
         int untilDate
 ) implements ChatMember, ApiResult {
+
+        @Override
+        public ChatMemberType type() {
+                return ChatMemberType.BANNED;
+        }
+
 }

@@ -19,4 +19,10 @@ public record ChatMemberOwner(
         @Nullable
         String customTitle
 ) implements ChatMember, ApiResult {
+
+        @Override
+        public ChatMemberType type() {
+                return ChatMemberType.OWNER;
+        }
+
 }
