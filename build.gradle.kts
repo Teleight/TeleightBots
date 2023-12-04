@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     //Tests
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testImplementation(platform("org.junit:junit-bom:5.9.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     //Checker
@@ -24,7 +24,7 @@ dependencies {
     implementation("org.checkerframework:checker-qual:3.39.0")
 
     //Json
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0-rc1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
 
     //Annotations
     implementation("org.jetbrains:annotations:24.0.1")

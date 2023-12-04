@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.bot.trait.TelegramBot;
+import org.teleight.teleightbots.commands.CommandManager;
+import org.teleight.teleightbots.commands.CommandManagerImpl;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.bot.MethodSendEvent;
@@ -31,8 +33,11 @@ public class Bot implements TelegramBot {
     //Events
     private final EventManager eventManager = new EventManagerImpl();
 
-    //Pagination
+    //Menus
     private final MenuManager menuManager = new MenuManagerImpl();
+
+    //Commands
+    private final CommandManager commandManager = new CommandManagerImpl(this);
 
     public Bot(String token, String username, UpdateProcessor updateProcessor, BotSettings botSettings) {
         this.token = token;
@@ -89,6 +94,11 @@ public class Bot implements TelegramBot {
         }
 
         return rootMenu;
+    }
+
+    @Override
+    public @NotNull CommandManager getCommandManager() {
+        return commandManager;
     }
 
     @Override

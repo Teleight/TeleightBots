@@ -3,6 +3,7 @@ package org.teleight.teleightbots.demo;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.demo.command.TestCommand;
 import org.teleight.teleightbots.event.EventListener;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.menu.Menu;
@@ -11,21 +12,25 @@ import org.teleight.teleightbots.menu.MenuButton;
 public class MainDemo {
 
     public static void main(String[] args) {
-        TeleightBots teleightBots = TeleightBots.init();
+        final TeleightBots teleightBots = TeleightBots.init();
         teleightBots.start();
 
         final String botToken = System.getenv("bot.token") != null ? System.getenv("bot.token") : "--INSERT-TOKEN-HERE--";
         final String botUsername = System.getenv("bot.username") != null ? System.getenv("bot.username") : "--INSERT-USERNAME--HERE";
         final String chatId = System.getenv("bot.default_chatid") != null ? System.getenv("bot.default_chatid") : "--INSERT-CHATID--HERE";
 
-        EventListener<UpdateReceivedEvent> updateEvent = EventListener.builder(UpdateReceivedEvent.class)
+        final EventListener<UpdateReceivedEvent> updateEvent = EventListener.builder(UpdateReceivedEvent.class)
                 .handler(event -> System.out.println("UpdateReceivedEvent: " + event.bot().getBotUsername() + " -> " + event))
                 .build();
 
         TeleightBots.getBotManager().registerLongPolling(botToken, botUsername, BotSettings.DEFAULT, bot -> {
             System.out.println("Bot registered: " + bot.getBotUsername());
 
+            //Listener
             bot.getEventManager().addListener(updateEvent);
+
+            //Commands
+            bot.getCommandManager().registerCommand(new TestCommand());
 
             Menu menu = bot.createMenu((context, rootMenu) -> {
                 Menu subMenu2 = context.createMenu("subMenu2");
@@ -59,7 +64,7 @@ public class MainDemo {
                     .chatId(chatId)
                     .replyMarkup(menu.getKeyboard())
                     .build();
-            bot.execute(sendMessage);
+            //bot.execute(sendMessage);
         });
     }
 

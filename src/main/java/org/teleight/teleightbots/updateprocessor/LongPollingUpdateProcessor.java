@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.GetUpdates;
+import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
@@ -23,7 +24,6 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LongPollingUpdateProcessor implements UpdateProcessor {
 
@@ -116,6 +116,18 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                         final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update.callbackQuery());
                         buttonPressEvent.completeCallback();
                         bot.getPaginationManager().getEventNode().call(buttonPressEvent);
+                    }
+                    final boolean hasMessage = update.message() != null;
+                    if(hasMessage){
+                        final Message message = update.message();
+                        final String messageText = message.text();
+                        final boolean hasText = messageText != null;
+                        if(hasText) {
+                            final boolean isPossibleCommand = messageText.startsWith("/");
+                            if (isPossibleCommand) {
+                                bot.getCommandManager().execute(message.from(), messageText);
+                            }
+                        }
                     }
                 });
     }

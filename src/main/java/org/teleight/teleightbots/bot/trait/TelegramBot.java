@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.bot.trait;
 
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.menu.Menu;
 import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.bot.BotSettings;
@@ -27,5 +28,7 @@ public interface TelegramBot {
     @NotNull MenuManager getPaginationManager();
 
     @NotNull Menu createMenu(@NotNull Menu.Builder builder);
+
+    @NotNull CommandManager getCommandManager();
 
 }
