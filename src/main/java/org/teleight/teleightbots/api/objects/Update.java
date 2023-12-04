@@ -17,7 +17,7 @@ public record Update(
         @JsonProperty(value = "update_id", required = true)
         int updateId,
 
-        @JsonProperty(value = "message", required = true)
+        @JsonProperty(value = "message")
         Message message,
 
         @JsonProperty("edited_message")

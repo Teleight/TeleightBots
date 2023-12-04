@@ -28,7 +28,7 @@ public record Sticker(
 
         @JsonProperty("thumbnail")
         @Nullable
-        String thumbnail,
+        PhotoSize thumbnail,
 
         @JsonProperty("emoji")
         @Nullable
