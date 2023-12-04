@@ -15,4 +15,6 @@ public interface CommandManager {
 
     void execute(@NotNull User sender, @NotNull String fullText);
 
+    String extractCommand(String text);
+
 }

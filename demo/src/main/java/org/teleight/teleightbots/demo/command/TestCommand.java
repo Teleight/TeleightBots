@@ -9,6 +9,7 @@ public class TestCommand extends Command {
     public TestCommand() {
         super("test", "test1");
 
+
         setDefaultExecutor((sender, context) -> {
             String input = context.getInput();
 

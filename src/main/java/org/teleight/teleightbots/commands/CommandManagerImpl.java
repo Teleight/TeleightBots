@@ -2,8 +2,10 @@ package org.teleight.teleightbots.commands;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.commands.builder.Command;
 import org.teleight.teleightbots.utils.validate.Check;
 
 import java.util.HashMap;
@@ -45,22 +47,18 @@ public class CommandManagerImpl implements CommandManager {
 
     @Override
     public void execute(@NotNull User sender, @NotNull String userInput) {
-        final String commandAsString = parseCommand(userInput);
-        if(commandAsString == null){
-            return;
-        }
-        final Command command = getCommand(commandAsString);
-        if (command == null) {
-            return;
-        }
-        final CommandContext context = new CommandContext(sender, userInput, command);
-        final CommandExecutor defaultExecutor = command.getDefaultExecutor();
-        if (defaultExecutor != null) {
-            defaultExecutor.execute(context);
+        final CommandParser commandParser = CommandParser.parser(this);
+        try {
+            final CommandParser.Result result = commandParser.parse(userInput);
+            final ExecutableCommand executableCommand = result.executable();
+            executableCommand.execute(sender);
+        } catch (Throwable t) {
+            TeleightBots.getExceptionManager().handleException(t);
         }
     }
 
-    private @Nullable String parseCommand(@NotNull String userInput){
+    @Override
+    public @Nullable String extractCommand(@NotNull String userInput) {
         final String[] split = userInput.split(" ");
         if (split.length == 0) {
             return userInput;
@@ -69,10 +67,11 @@ public class CommandManagerImpl implements CommandManager {
         String commandAsString = null;
         if (userInput.startsWith("@") || !firstArgument.contains("@")) {
             commandAsString = firstArgument.substring(1);
-        }else {
-            final String botName = firstArgument.substring(userInput.indexOf("@") + 1);
+        } else {
+            final int index = userInput.indexOf("@");
+            final String botName = firstArgument.substring(index + 1);
             if (botName.equalsIgnoreCase(bot.getBotUsername())) {
-                commandAsString = firstArgument.substring(1, userInput.indexOf("@"));
+                commandAsString = firstArgument.substring(1, index);
             }
         }
         return commandAsString;
