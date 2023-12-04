@@ -3,6 +3,7 @@ package org.teleight.teleightbots.commands.builder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.commands.builder.argument.Argument;
+import org.teleight.teleightbots.commands.builder.condition.CommandCondition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,11 @@ public abstract class Command {
     }
 
     public void addSyntax(@NotNull CommandExecutor executor, @NotNull Argument<?>... args) {
-        syntaxes.add(new CommandSyntax(executor, args));
+        syntaxes.add(new CommandSyntax(null, executor, args));
+    }
+
+    public void addConditionalSyntax(@NotNull CommandCondition condition, @NotNull CommandExecutor executor, @NotNull Argument<?>... args) {
+        syntaxes.add(new CommandSyntax(condition, executor, args));
     }
 
     public List<CommandSyntax> getSyntaxes() {

@@ -2,10 +2,14 @@ package org.teleight.teleightbots.commands;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.api.objects.Message;
+import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.commands.builder.Command;
 import org.teleight.teleightbots.commands.builder.CommandExecutor;
 import org.teleight.teleightbots.commands.builder.CommandSyntax;
 import org.teleight.teleightbots.commands.builder.argument.Argument;
+import org.teleight.teleightbots.commands.builder.condition.CommandCondition;
 import org.teleight.teleightbots.commands.builder.exception.ArgumentSyntaxException;
 import org.teleight.teleightbots.commands.builder.parser.ArgumentReader;
 import org.teleight.teleightbots.commands.builder.parser.CommandContext;
@@ -22,33 +26,43 @@ public final class CommandParserImpl implements CommandParser {
     }
 
     @Override
-    public Result parse(@NotNull String userInput) {
+    public Result parse(Bot bot, @NotNull User sender, @NotNull String userInput, Message message) {
         final String inputArguments = userInput.substring(userInput.indexOf(" ") + 1);
 
         final String commandAsString = commandManager.extractCommand(userInput);
+        if(commandAsString == null){
+            return InvalidCommand.INSTANCE;
+        }
         final Command command = commandManager.getCommand(commandAsString);
 
         if (command == null) {
             return InvalidCommand.INSTANCE;
         }
 
-        final Chain chain = new Chain(command, inputArguments);
+        final Chain chain = new Chain(command, sender, inputArguments, message);
         parseNodes(chain);
 
         final CommandParserImpl.SyntaxResult bestSyntax = findBestSyntax(chain);
         if (bestSyntax != null && bestSyntax.isSuccessful()) {
-            return ValidCommand.executor(userInput, bestSyntax);
+            return ValidCommand.executor(bot, message, userInput, bestSyntax);
         }
 
         if (command.getDefaultExecutor() != null) {
-            return ValidCommand.defaultExecutor(userInput, command.getDefaultExecutor());
+            return ValidCommand.defaultExecutor(bot, message, userInput, command.getDefaultExecutor());
         }
 
         return InvalidCommand.INSTANCE;
     }
 
     private SyntaxResult findBestSyntax(@NotNull Chain chain) {
-        for (SyntaxResult syntaxResult : chain.syntaxesResults) {
+        for (final SyntaxResult syntaxResult : chain.syntaxesResults) {
+            final CommandSyntax syntax = syntaxResult.syntax;
+            final CommandCondition condition = syntax.getCondition();
+
+            final boolean hasCondition = condition != null;
+            if(hasCondition && !condition.canUse(chain.sender, chain.message)){
+                continue;
+            }
             if (syntaxResult.isSuccessful()) {
                 return syntaxResult;
             }
@@ -69,6 +83,12 @@ public final class CommandParserImpl implements CommandParser {
     private SyntaxResult parseSyntax(@NotNull CommandSyntax syntax, @NotNull ArgumentReader argumentReader) {
         final SyntaxResult syntaxResult = new SyntaxResult(syntax);
         final Argument<?>[] syntaxArgs = syntax.getArgs();
+
+        final boolean hasEmptyArguments = syntaxArgs.length == 0;
+        if(hasEmptyArguments){
+            return syntaxResult;
+        }
+
         for (Argument<?> argument : syntaxArgs) {
             if (!argumentReader.hasRemaining()) {
                 syntaxResult.add(new ArgumentResult.IncompatibleType<>(argument.getId()));
@@ -94,12 +114,16 @@ public final class CommandParserImpl implements CommandParser {
 
     private static class Chain {
         private final Command command;
+        private final User sender;
         private final String userInput;
+        private final Message message;
         private final List<SyntaxResult> syntaxesResults = new ArrayList<>();
 
-        private Chain(@NotNull Command command, @NotNull String userInput) {
+        private Chain(@NotNull Command command, @NotNull User sender, @NotNull String userInput, @NotNull Message message) {
             this.command = command;
+            this.sender = sender;
             this.userInput = userInput;
+            this.message = message;
         }
     }
 
@@ -112,6 +136,9 @@ public final class CommandParserImpl implements CommandParser {
         }
 
         public boolean isSuccessful() {
+            if(argumentResults.isEmpty()){
+                return true;
+            }
             for (ArgumentResult<?> argumentResult : argumentResults) {
                 if (!(argumentResult instanceof ArgumentResult.Success)) {
                     return false;
@@ -134,31 +161,39 @@ public final class CommandParserImpl implements CommandParser {
         }
     }
 
-    private record ValidCommand(@NotNull String userInput, @Nullable List<ArgumentResult<?>> argumentResults, @NotNull CommandExecutor executor) implements Result {
+    private record ValidCommand(
+            @NotNull Bot bot,
+            @NotNull Message message,
+            @NotNull String userInput,
+            @Nullable List<ArgumentResult<?>> argumentResults,
+            @NotNull CommandExecutor executor) implements Result {
 
-        public static Result executor(@NotNull String userInput, @NotNull SyntaxResult bestSyntax) {
-            return new ValidCommand(userInput, bestSyntax.argumentResults, bestSyntax.syntax.getExecutor());
+        public static Result executor(@NotNull Bot bot,@NotNull Message message, @NotNull String userInput, @NotNull SyntaxResult bestSyntax) {
+            return new ValidCommand(bot, message, userInput, bestSyntax.argumentResults, bestSyntax.syntax.getExecutor());
         }
 
-        public static Result defaultExecutor(@NotNull String userInput, @NotNull CommandExecutor executor) {
-            return new ValidCommand(userInput, null, executor);
+        public static Result defaultExecutor(@NotNull Bot bot, @NotNull Message message,@NotNull String userInput, @NotNull CommandExecutor executor) {
+            return new ValidCommand(bot, message, userInput, null, executor);
         }
 
         @Override
         public @NotNull ExecutableCommand executable() {
-            return from -> {
-                CommandContext commandContext = new CommandContext(userInput);
+            return new ExecutableCommand() {
+                @Override
+                public void execute(User from) {
+                    CommandContext commandContext = new CommandContext(bot, message, userInput);
 
-                if(argumentResults != null) {
-                    for (ArgumentResult<?> argumentResult : argumentResults) {
-                        if (!(argumentResult instanceof ArgumentResult.Success<?> success)) {
-                            continue;
+                    if (argumentResults != null) {
+                        for (ArgumentResult<?> argumentResult : argumentResults) {
+                            if (!(argumentResult instanceof ArgumentResult.Success<?> success)) {
+                                continue;
+                            }
+                            commandContext.setArgument(success.argumentId(), success);
                         }
-                        commandContext.setArgument(success.argumentId(), success);
                     }
-                }
 
-                executor.execute(from, commandContext);
+                    executor.execute(from, commandContext);
+                }
             };
         }
     }

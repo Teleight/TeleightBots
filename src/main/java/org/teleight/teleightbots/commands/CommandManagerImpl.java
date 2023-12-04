@@ -3,6 +3,7 @@ package org.teleight.teleightbots.commands;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
+import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.commands.builder.Command;
@@ -46,13 +47,14 @@ public class CommandManagerImpl implements CommandManager {
     }
 
     @Override
-    public void execute(@NotNull User sender, @NotNull String userInput) {
+    public void execute(@NotNull User sender, @NotNull String userInput, Message message) {
         final CommandParser commandParser = CommandParser.parser(this);
         try {
-            final CommandParser.Result result = commandParser.parse(userInput);
+            final CommandParser.Result result = commandParser.parse(bot, sender, userInput, message);
             final ExecutableCommand executableCommand = result.executable();
             executableCommand.execute(sender);
         } catch (Throwable t) {
+            t.printStackTrace();
             TeleightBots.getExceptionManager().handleException(t);
         }
     }
