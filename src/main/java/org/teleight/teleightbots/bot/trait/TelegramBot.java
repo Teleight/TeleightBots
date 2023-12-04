@@ -25,9 +25,13 @@ public interface TelegramBot {
 
     @NotNull EventManager getEventManager();
 
-    @NotNull MenuManager getPaginationManager();
+    @NotNull MenuManager getMenuManager();
 
-    @NotNull Menu createMenu(@NotNull Menu.Builder builder);
+    default @NotNull Menu createMenu(@NotNull Menu.Builder builder){
+        return createMenu(null, builder);
+    }
+
+    @NotNull Menu createMenu(String name, @NotNull Menu.Builder builder);
 
     @NotNull CommandManager getCommandManager();
 

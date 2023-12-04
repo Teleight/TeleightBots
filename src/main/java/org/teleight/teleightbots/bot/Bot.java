@@ -77,14 +77,14 @@ public class Bot implements TelegramBot {
     }
 
     @Override
-    public @NotNull MenuManager getPaginationManager() {
+    public @NotNull MenuManager getMenuManager() {
         return menuManager;
     }
 
     @Override
-    public @NotNull Menu createMenu(Menu.@NotNull Builder builder) {
+    public @NotNull Menu createMenu(String name, Menu.@NotNull Builder builder) {
         final MenuBuilder.MenuBuilderImpl menuBuilder = new MenuBuilder.MenuBuilderImpl();
-        final Menu rootMenu = menuBuilder.createMenu("root");
+        final Menu rootMenu = menuBuilder.createMenu(name);
         builder.create(menuBuilder, rootMenu);
 
         for (final MenuImpl subMenu : menuBuilder.getAllMenus()) {
