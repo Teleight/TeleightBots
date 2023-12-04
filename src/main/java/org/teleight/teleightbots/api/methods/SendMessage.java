@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
 import org.teleight.teleightbots.api.objects.keyboard.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
+import org.teleight.teleightbots.api.utils.ParseMode;
 
 public record SendMessage(
         @JsonProperty("chat_id")
@@ -19,7 +20,7 @@ public record SendMessage(
 
         @JsonProperty("parse_mode")
         @Nullable
-        String parseMode,
+        ParseMode parseMode,
 
         @JsonProperty("disable_notification")
         boolean disableNotification,
@@ -44,7 +45,7 @@ public record SendMessage(
 
         @NotNull Builder text(@NotNull String text);
 
-        @NotNull Builder parseMode(@Nullable String parseMode);
+        @NotNull Builder parseMode(@Nullable ParseMode parseMode);
 
         @NotNull Builder disableNotification(boolean disableNotification);
 
@@ -56,7 +57,7 @@ public record SendMessage(
     static final class BuilderImpl implements Builder {
         private String chatId;
         private String text;
-        private String parseMode;
+        private ParseMode parseMode;
         private boolean disableNotification;
         private ReplyKeyboard replyMarkup;
 
@@ -73,7 +74,7 @@ public record SendMessage(
         }
 
         @Override
-        public @NotNull Builder parseMode(@Nullable String parseMode) {
+        public @NotNull Builder parseMode(@Nullable ParseMode parseMode) {
             this.parseMode = parseMode;
             return this;
         }

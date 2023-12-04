@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
+import org.teleight.teleightbots.api.utils.ParseMode;
 import org.teleight.teleightbots.api.objects.keyboard.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 
@@ -17,6 +18,10 @@ public record EditMessageText(
         @NotNull
         String text,
 
+        @JsonProperty("parse_mode")
+        @Nullable
+        ParseMode parseMode,
+
         @JsonProperty("message_id")
         int messageId,
 
@@ -26,7 +31,7 @@ public record EditMessageText(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
 
-    public static Builder builder() {
+    public static @NotNull Builder builder() {
         return new BuilderImpl();
     }
 
@@ -36,50 +41,59 @@ public record EditMessageText(
     }
 
     public sealed interface Builder permits BuilderImpl {
-        Builder chatId(String chatId);
+        @NotNull Builder chatId(String chatId);
 
-        Builder text(String text);
+        @NotNull Builder text(String text);
 
-        Builder messageId(int messageId);
+        @NotNull Builder parseMode(ParseMode parseMode);
 
-        Builder replyMarkup(ReplyKeyboard replyMarkup);
+        @NotNull Builder messageId(int messageId);
 
-        EditMessageText build();
+        @NotNull Builder replyMarkup(ReplyKeyboard replyMarkup);
+
+        @NotNull EditMessageText build();
     }
 
     static final class BuilderImpl implements Builder {
         private String chatId;
         private String text;
+        private ParseMode parseMode;
         private int messageId;
         private ReplyKeyboard replyMarkup;
 
         @Override
-        public Builder chatId(String chatId) {
+        public @NotNull Builder chatId(String chatId) {
             this.chatId = chatId;
             return this;
         }
 
         @Override
-        public Builder text(String text) {
+        public @NotNull Builder text(String text) {
             this.text = text;
             return this;
         }
 
         @Override
-        public Builder messageId(int messageId) {
+        public @NotNull Builder parseMode(ParseMode parseMode) {
+            this.parseMode = parseMode;
+            return this;
+        }
+
+        @Override
+        public @NotNull Builder messageId(int messageId) {
             this.messageId = messageId;
             return this;
         }
 
         @Override
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
+        public @NotNull Builder replyMarkup(ReplyKeyboard replyMarkup) {
             this.replyMarkup = replyMarkup;
             return this;
         }
 
         @Override
-        public EditMessageText build() {
-            return new EditMessageText(chatId, text, messageId, replyMarkup);
+        public @NotNull EditMessageText build() {
+            return new EditMessageText(chatId, text, parseMode, messageId, replyMarkup);
         }
     }
 

@@ -4,10 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
+import org.teleight.teleightbots.api.utils.ParseMode;
+import org.teleight.teleightbots.api.utils.ParseModeDeserializer;
+import org.teleight.teleightbots.api.utils.ParseModeSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.io.IOException;
@@ -16,7 +22,14 @@ import java.io.IOException;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public interface ApiMethod<R> {
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new SimpleModule()
+                    .addSerializer(ParseMode.class, new ParseModeSerializer())
+                    .addDeserializer(ParseMode.class, new ParseModeDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addDeserializer(ChatMember.class, new ChatMemberDeserializer())
+            );
 
     @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
 
