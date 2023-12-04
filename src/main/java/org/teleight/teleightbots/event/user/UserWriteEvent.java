@@ -1,14 +1,23 @@
-package org.teleight.teleightbots.event.bot;
+package org.teleight.teleightbots.event.user;
 
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.Bot;
-import org.teleight.teleightbots.event.trait.Event;
 import org.teleight.teleightbots.event.trait.IngoingEvent;
 
-public record UpdateReceivedEvent(
+public record UserWriteEvent(
         @NotNull Bot bot,
         @NotNull Update update
 ) implements IngoingEvent {
+
+    @Override
+    public @NotNull Update update() {
+        return update;
+    }
+
+    public Message message(){
+        return update.message();
+    }
 
 }
