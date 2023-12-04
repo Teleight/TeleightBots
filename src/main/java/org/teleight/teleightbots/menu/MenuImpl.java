@@ -57,6 +57,7 @@ public class MenuImpl implements Menu {
         return keyboard;
     }
 
+    @ApiStatus.Internal
     public void createKeyboard() {
         final InlineKeyboardButton[][] newColumns = new InlineKeyboardButton[columns.size()][];
         for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++) {
@@ -65,11 +66,16 @@ public class MenuImpl implements Menu {
 
             for (int rowIndex = 0; rowIndex < row.size(); rowIndex++) {
                 final MenuButton oldButton = row.get(rowIndex);
-                newColumns[columnIndex][rowIndex] = new InlineKeyboardButton(oldButton.text(), oldButton.callbackData());
+                newColumns[columnIndex][rowIndex] = new InlineKeyboardButton(oldButton.text(), oldButton.url(), oldButton.callbackData());
             }
         }
 
         keyboard = new InlineKeyboardMarkup(newColumns);
+    }
+
+    @ApiStatus.Internal
+    List<List<MenuButton>> getColumns() {
+        return columns;
     }
 
 }
