@@ -1,9 +1,12 @@
 package org.teleight.teleightbots.api.objects.chat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.Message;
+
+import static org.teleight.teleightbots.api.objects.chat.Chat.Type.*;
 
 public record Chat(
         @JsonProperty(value = "id", required = true)
@@ -120,4 +123,38 @@ public record Chat(
         @Nullable
         ChatLocation location
 ) implements ApiResult {
+
+        @JsonIgnore
+        public boolean isGroup() {
+                return GROUP_CHAT_TYPE.valueField.equals(type);
+        }
+
+        @JsonIgnore
+        public boolean isChannel() {
+                return CHANNEL_CHAT_TYPE.valueField.equals(type);
+        }
+
+        @JsonIgnore
+        public boolean isUser() {
+                return USER_CHAT_TYPE.valueField.equals(type);
+        }
+
+        @JsonIgnore
+        public boolean isSuperGroup() {
+                return SUPERGROUP_CHAT_TYPE.valueField.equals(type);
+        }
+
+        public enum Type {
+                USER_CHAT_TYPE("private"),
+                GROUP_CHAT_TYPE("group"),
+                CHANNEL_CHAT_TYPE("channel"),
+                SUPERGROUP_CHAT_TYPE("supergroup");
+
+                private final String valueField;
+
+                Type(String valueField) {
+                        this.valueField = valueField;
+                }
+        }
+
 }

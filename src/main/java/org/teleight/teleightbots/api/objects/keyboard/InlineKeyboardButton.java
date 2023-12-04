@@ -8,6 +8,9 @@ public record InlineKeyboardButton(
         @JsonProperty("text")
         String text,
 
+        @JsonProperty("url")
+        String url,
+
         @JsonProperty("callback_data")
         String callbackData
 ) implements ApiResult {
@@ -19,6 +22,8 @@ public record InlineKeyboardButton(
     public sealed interface Builder permits BuilderImpl {
         @NotNull Builder text(@NotNull String text);
 
+        @NotNull Builder url(@NotNull String url);
+
         @NotNull Builder callbackData(@NotNull String callbackData);
 
         @NotNull InlineKeyboardButton build();
@@ -26,11 +31,18 @@ public record InlineKeyboardButton(
 
     static final class BuilderImpl implements Builder {
         private String text;
+        private String url;
         private String callbackData;
 
         @Override
         public @NotNull BuilderImpl text(@NotNull String text) {
             this.text = text;
+            return this;
+        }
+
+        @Override
+        public @NotNull Builder url(@NotNull String url) {
+            this.url = url;
             return this;
         }
 
@@ -42,7 +54,7 @@ public record InlineKeyboardButton(
 
         @Override
         public @NotNull InlineKeyboardButton build() {
-            return new InlineKeyboardButton(text, callbackData);
+            return new InlineKeyboardButton(text, url, callbackData);
         }
     }
 
