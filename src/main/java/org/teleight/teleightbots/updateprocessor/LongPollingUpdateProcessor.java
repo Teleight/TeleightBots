@@ -9,10 +9,17 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
+import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberLeft;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.event.bot.BotJoinEvent;
+import org.teleight.teleightbots.event.bot.BotQuitEvent;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
+import org.teleight.teleightbots.event.user.UserWriteEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
@@ -23,11 +30,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class LongPollingUpdateProcessor implements UpdateProcessor {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = ApiMethod.objectMapper;
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.of(60, ChronoUnit.SECONDS))
             .build();
@@ -113,19 +122,59 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 .thenRun(() -> {
                     final boolean hasCallbackQuery = update.callbackQuery() != null;
                     if (hasCallbackQuery) {
-                        final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update.callbackQuery());
+                        final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update);
                         buttonPressEvent.completeCallback();
-                        bot.getPaginationManager().getEventNode().call(buttonPressEvent);
+                        bot.getMenuManager().getEventNode().call(buttonPressEvent);
                     }
                     final boolean hasMessage = update.message() != null;
-                    if(hasMessage){
+                    if (hasMessage) {
                         final Message message = update.message();
+                        final User sender = message.from();
                         final String messageText = message.text();
+
                         final boolean hasText = messageText != null;
-                        if(hasText) {
+                        final boolean hasSender = sender != null;
+                        final boolean hasFormat = message.forwardFrom() == null;
+
+                        if (hasText && hasSender) {
                             final boolean isPossibleCommand = messageText.startsWith("/");
                             if (isPossibleCommand) {
-                                bot.getCommandManager().execute(message.from(), messageText);
+                                bot.getCommandManager().execute(sender, messageText, message);
+                            }
+                        }
+
+
+                        //Write
+                        if (hasText && hasFormat) {
+                            bot.getEventManager().call(new UserWriteEvent(bot, update));
+                        }
+
+
+                        //Bot join
+                        final boolean hasNewChatMembers = message.newChatMembers() != null;
+                        if (hasNewChatMembers) {
+                            boolean isThisBotJoined = Arrays.stream(message.newChatMembers())
+                                    .filter(Objects::nonNull)
+                                    .filter(user -> user.username() != null)
+                                    .anyMatch(user -> user.username().equalsIgnoreCase(bot.getBotUsername()));
+                            Boolean groupChatCreated = message.groupChatCreated();
+                            if (isThisBotJoined || (groupChatCreated != null && groupChatCreated)) {
+                                bot.getEventManager().call(new BotJoinEvent(bot, update));
+                            }
+                        }
+                    }
+
+
+                    //Bot quit
+                    final ChatMemberUpdated myChatMember = update.myChatMember();
+                    final boolean hasMyChatMember = myChatMember != null;
+                    if (hasMyChatMember) {
+                        final ChatMember newChatMember = myChatMember.newChatMember();
+                        final boolean isThisBot = bot.getBotUsername().equals(newChatMember.user().username());
+                        if (isThisBot) {
+                            final boolean isLeft = newChatMember instanceof ChatMemberLeft;
+                            if (isLeft) {
+                                bot.getEventManager().call(new BotQuitEvent(bot, update));
                             }
                         }
                     }
