@@ -39,7 +39,7 @@ public final class CommandParserImpl implements CommandParser {
             return InvalidCommand.INSTANCE;
         }
 
-        final Chain chain = new Chain(command, sender, inputArguments, message);
+        final Chain chain = new Chain(bot, command, sender, inputArguments, message);
         parseNodes(chain);
 
         final CommandParserImpl.SyntaxResult bestSyntax = findBestSyntax(chain);
@@ -60,7 +60,7 @@ public final class CommandParserImpl implements CommandParser {
             final CommandCondition condition = syntax.getCondition();
 
             final boolean hasCondition = condition != null;
-            if(hasCondition && !condition.canUse(chain.sender, chain.message)){
+            if(hasCondition && !condition.canUse(chain.bot, chain.sender, chain.message)){
                 continue;
             }
             if (syntaxResult.isSuccessful()) {
@@ -113,13 +113,15 @@ public final class CommandParserImpl implements CommandParser {
     }
 
     private static class Chain {
+        private final Bot bot;
         private final Command command;
         private final User sender;
         private final String userInput;
         private final Message message;
         private final List<SyntaxResult> syntaxesResults = new ArrayList<>();
 
-        private Chain(@NotNull Command command, @NotNull User sender, @NotNull String userInput, @NotNull Message message) {
+        private Chain(@NotNull Bot bot, @NotNull Command command, @NotNull User sender, @NotNull String userInput, @NotNull Message message) {
+            this.bot = bot;
             this.command = command;
             this.sender = sender;
             this.userInput = userInput;
@@ -188,7 +190,7 @@ public final class CommandParserImpl implements CommandParser {
                             if (!(argumentResult instanceof ArgumentResult.Success<?> success)) {
                                 continue;
                             }
-                            commandContext.setArgument(success.argumentId(), success);
+                            commandContext.setArgument(success.argumentId(), success.value);
                         }
                     }
 
