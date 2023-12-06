@@ -6,11 +6,15 @@ import org.teleight.teleightbots.api.ApiMethodBoolean;
 
 public record DeleteMessage(
         @JsonProperty(value = "chat_id", required = true)
-        String chatID,
+        String chatId,
 
         @JsonProperty(value = "message_id",required = true)
         int messageId
 ) implements ApiMethodBoolean {
+
+    public static @NotNull DeleteMessage of(String chatId, int messageId){
+        return new DeleteMessage(chatId, messageId);
+    }
 
     public static @NotNull Builder builder() {
         return new BuilderImpl();
@@ -43,8 +47,7 @@ public record DeleteMessage(
 
         @Override
         public @NotNull Builder chatId(int chatId) {
-            this.chatId = "" + chatId;
-            return this;
+            return chatId("" + chatId);
         }
 
         @Override
