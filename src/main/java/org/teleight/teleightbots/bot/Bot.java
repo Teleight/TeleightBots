@@ -1,7 +1,6 @@
 package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.bot.trait.TelegramBot;
 import org.teleight.teleightbots.commands.CommandManager;
@@ -120,6 +119,7 @@ public class Bot implements TelegramBot {
         }
     }
 
+    @Override
     public <R> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
         final CompletableFuture<String> responseFuture = updateProcessor.executeMethod(method);
         return responseFuture.thenApplyAsync(responseJson -> {
@@ -127,7 +127,6 @@ public class Bot implements TelegramBot {
             try {
                 result = method.deserializeResponse(responseJson);
             } catch (Exception e) {
-                TeleightBots.getExceptionManager().handleException(e);
                 throw new TelegramRequestException(e);
             }
             eventManager.call(new MethodSendEvent<>(Bot.this, method, result));
