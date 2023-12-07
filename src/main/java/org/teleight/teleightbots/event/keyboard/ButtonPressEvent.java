@@ -12,14 +12,32 @@ import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.trait.IngoingEvent;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public record ButtonPressEvent(
-        @NotNull Bot bot,
-        @NotNull Update update
-) implements IngoingEvent {
+public class ButtonPressEvent implements IngoingEvent {
 
-    public @NotNull CallbackQuery callbackQuery(){
-        return update.callbackQuery();
+    private final Bot bot;
+    private final Update update;
+    private final AtomicBoolean completed;
+
+    public ButtonPressEvent(Bot bot, Update update, AtomicBoolean completed) {
+        this.bot = bot;
+        this.update = update;
+        this.completed = completed;
+    }
+
+    @Override
+    public @NotNull Bot bot() {
+        return bot;
+    }
+
+    @Override
+    public @NotNull Update update() {
+        return update;
+    }
+
+    public @NotNull CallbackQuery callbackQuery() {
+        return update().callbackQuery();
     }
 
     public @NotNull User from() {
@@ -34,12 +52,21 @@ public record ButtonPressEvent(
         return message().chat();
     }
 
-    public @NotNull String chatId(){
+    public @NotNull String chatId() {
         return chat().id().toString();
     }
 
     public @NotNull CompletableFuture<Boolean> completeCallback() {
-        return bot.execute(new AnswerCallbackQuery(callbackQuery().id()));
+        return completeCallback(AnswerCallbackQuery.of(callbackQuery().id()));
+    }
+
+    public @NotNull CompletableFuture<Boolean> completeCallback(String text) {
+        return completeCallback(AnswerCallbackQuery.of(callbackQuery().id()).withText(text));
+    }
+
+    public @NotNull CompletableFuture<Boolean> completeCallback(AnswerCallbackQuery answerCallbackQuery) {
+        completed.set(true);
+        return bot.execute(answerCallbackQuery);
     }
 
 }
