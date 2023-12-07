@@ -79,4 +79,9 @@ public final class BotManagerImpl implements BotManager {
         this.botProvider = botProvider;
     }
 
+    @Override
+    public Bot[] getBots() {
+        return registeredBots;
+    }
+
 }

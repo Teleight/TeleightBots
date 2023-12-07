@@ -17,4 +17,6 @@ public sealed interface BotManager permits BotManagerImpl {
 
     void setBotProvider(@NotNull BotProvider botProvider);
 
+    Bot[] getBots();
+
 }
