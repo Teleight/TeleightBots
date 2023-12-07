@@ -8,7 +8,7 @@ public record BotSettingsImpl(
         int updatesTimeout
 ) implements BotSettings {
 
-    public static BotSettingsImpl create(String endpointUrl, int updatesLimit, int updatesTimeout) {
+    public static @NotNull BotSettings create(String endpointUrl, int updatesLimit, int updatesTimeout) {
         return new BotSettingsImpl(endpointUrl, updatesLimit, updatesTimeout);
     }
 
@@ -33,25 +33,25 @@ public record BotSettingsImpl(
         }
 
         @Override
-        public BotSettingsImpl.Builder endpointUrl(@NotNull String url) {
+        public BotSettings.@NotNull Builder endpointUrl(@NotNull String url) {
             this.endpointUrl = url;
             return this;
         }
 
         @Override
-        public BotSettingsImpl.Builder updatesLimit(int updatesLimit) {
+        public BotSettings.@NotNull Builder updatesLimit(int updatesLimit) {
             this.updatesLimit = updatesLimit;
             return this;
         }
 
         @Override
-        public BotSettingsImpl.Builder updatesTimeout(int updatesTimeout) {
+        public BotSettings.@NotNull Builder updatesTimeout(int updatesTimeout) {
             this.updatesTimeout = updatesTimeout;
             return this;
         }
 
         @Override
-        public BotSettingsImpl build() {
+        public @NotNull BotSettings build() {
             return create(endpointUrl, updatesLimit, updatesTimeout);
         }
     }
