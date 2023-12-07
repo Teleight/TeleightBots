@@ -10,7 +10,7 @@ import java.io.IOException;
 public class ParseModeDeserializer extends StdDeserializer<ParseMode> {
 
     public ParseModeDeserializer() {
-        super(ParseMode.class);
+        super((Class<?>) null);
     }
 
     @Override

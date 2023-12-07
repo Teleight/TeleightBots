@@ -9,7 +9,7 @@ import java.io.IOException;
 public class ParseModeSerializer extends StdSerializer<ParseMode> {
 
     public ParseModeSerializer() {
-        super(ParseMode.class);
+        super((Class<ParseMode>) null);
     }
 
     @Override
