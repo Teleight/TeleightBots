@@ -1,13 +1,11 @@
 package org.teleight.teleightbots.api.methods.inline;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
-import org.teleight.teleightbots.api.utils.ParseMode;
-import org.teleight.teleightbots.api.objects.keyboard.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
+import org.teleight.teleightbots.api.utils.ParseMode;
 
 public record EditMessageText(
         @JsonProperty("chat_id")
@@ -26,7 +24,6 @@ public record EditMessageText(
         int messageId,
 
         @JsonProperty("reply_markup")
-        @JsonDeserialize(using = KeyboardDeserializer.class)
         @Nullable
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {

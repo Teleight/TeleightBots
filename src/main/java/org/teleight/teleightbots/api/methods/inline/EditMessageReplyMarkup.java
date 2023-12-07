@@ -1,11 +1,9 @@
 package org.teleight.teleightbots.api.methods.inline;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
-import org.teleight.teleightbots.api.objects.keyboard.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 
 public record EditMessageReplyMarkup(
@@ -22,7 +20,6 @@ public record EditMessageReplyMarkup(
         String inlineMessageId,
 
         @JsonProperty("reply_markup")
-        @JsonDeserialize(using = KeyboardDeserializer.class)
         @Nullable
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
