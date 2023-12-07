@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 
 public record InlineKeyboardMarkup(
-        @JsonProperty("inline_keyboard")
+        @JsonProperty(value = "inline_keyboard",required = true)
         InlineKeyboardButton[][] keyboard
 ) implements ReplyKeyboard {
 

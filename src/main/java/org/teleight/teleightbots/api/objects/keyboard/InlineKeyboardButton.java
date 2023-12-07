@@ -2,6 +2,7 @@ package org.teleight.teleightbots.api.objects.keyboard;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record InlineKeyboardButton(
@@ -9,9 +10,11 @@ public record InlineKeyboardButton(
         String text,
 
         @JsonProperty("url")
+        @Nullable
         String url,
 
         @JsonProperty("callback_data")
+        @Nullable
         String callbackData
 ) implements ApiResult {
 
@@ -35,7 +38,7 @@ public record InlineKeyboardButton(
         private String callbackData;
 
         @Override
-        public @NotNull BuilderImpl text(@NotNull String text) {
+        public @NotNull Builder text(@NotNull String text) {
             this.text = text;
             return this;
         }
@@ -47,7 +50,7 @@ public record InlineKeyboardButton(
         }
 
         @Override
-        public @NotNull BuilderImpl callbackData(@NotNull String callbackData) {
+        public @NotNull Builder callbackData(@NotNull String callbackData) {
             this.callbackData = callbackData;
             return this;
         }
