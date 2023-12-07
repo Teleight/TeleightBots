@@ -1,11 +1,9 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
-import org.teleight.teleightbots.api.objects.keyboard.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.utils.ParseMode;
 
@@ -22,11 +20,13 @@ public record SendMessage(
         @Nullable
         ParseMode parseMode,
 
+        @JsonProperty("disable_web_page_preview")
+        boolean disableWebPagePreview,
+
         @JsonProperty("disable_notification")
         boolean disableNotification,
 
         @JsonProperty("reply_markup")
-        @JsonDeserialize(using = KeyboardDeserializer.class)
         @Nullable
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
@@ -43,9 +43,15 @@ public record SendMessage(
     public sealed interface Builder permits BuilderImpl {
         @NotNull Builder chatId(@NotNull String chatId);
 
+        default @NotNull Builder chatId(long chatId) {
+            return chatId("" + chatId);
+        }
+
         @NotNull Builder text(@NotNull String text);
 
         @NotNull Builder parseMode(@Nullable ParseMode parseMode);
+
+        @NotNull Builder disableWebPagePreview(boolean disableWebPagePreview);
 
         @NotNull Builder disableNotification(boolean disableNotification);
 
@@ -58,6 +64,7 @@ public record SendMessage(
         private String chatId;
         private String text;
         private ParseMode parseMode;
+        private boolean disableWebPagePreview;
         private boolean disableNotification;
         private ReplyKeyboard replyMarkup;
 
@@ -80,6 +87,12 @@ public record SendMessage(
         }
 
         @Override
+        public @NotNull Builder disableWebPagePreview(boolean disableWebPagePreview) {
+            this.disableWebPagePreview = disableWebPagePreview;
+            return this;
+        }
+
+        @Override
         public @NotNull Builder disableNotification(boolean disableNotification) {
             this.disableNotification = disableNotification;
             return this;
@@ -93,7 +106,7 @@ public record SendMessage(
 
         @Override
         public @NotNull SendMessage build() {
-            return new SendMessage(chatId, text, parseMode, disableNotification, replyMarkup);
+            return new SendMessage(chatId, text, parseMode, disableWebPagePreview, disableNotification, replyMarkup);
         }
     }
 
