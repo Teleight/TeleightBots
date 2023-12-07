@@ -14,4 +14,8 @@ public sealed interface ChatMember permits
 
     User user();
 
+    default boolean isAdmin(){
+        return this instanceof ChatMemberOwner || this instanceof ChatMemberAdministrator;
+    }
+
 }

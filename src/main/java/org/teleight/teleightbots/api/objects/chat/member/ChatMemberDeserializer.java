@@ -16,11 +16,7 @@ public class ChatMemberDeserializer extends StdDeserializer<ChatMember> {
     private final ObjectMapper objectMapper;
 
     public ChatMemberDeserializer() {
-        this(null);
-    }
-
-    private ChatMemberDeserializer(Class<?> vc) {
-        super(vc);
+        super((Class<?>) null);
         objectMapper = new ObjectMapper();
     }
 
