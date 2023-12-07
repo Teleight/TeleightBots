@@ -14,6 +14,7 @@ public abstract class Command {
     private final String[] aliases;
 
     private CommandExecutor defaultExecutor;
+    private CommandCondition condition;
 
     private final List<CommandSyntax> syntaxes = new ArrayList<>();
 
@@ -26,8 +27,20 @@ public abstract class Command {
         this.aliases = aliases;
     }
 
+    public @Nullable CommandExecutor getDefaultExecutor() {
+        return defaultExecutor;
+    }
+
     protected final void setDefaultExecutor(@NotNull CommandExecutor executor) {
         this.defaultExecutor = executor;
+    }
+
+    public @Nullable CommandCondition getCondition() {
+        return condition;
+    }
+
+    protected void setCondition(@Nullable CommandCondition commandCondition) {
+        this.condition = commandCondition;
     }
 
     public @NotNull String getName() {
@@ -36,10 +49,6 @@ public abstract class Command {
 
     public @NotNull String[] getAliases() {
         return aliases;
-    }
-
-    public @Nullable CommandExecutor getDefaultExecutor() {
-        return defaultExecutor;
     }
 
     public void addSyntax(@NotNull CommandExecutor executor, @NotNull Argument<?>... args) {

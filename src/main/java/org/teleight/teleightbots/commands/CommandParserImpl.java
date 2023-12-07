@@ -9,6 +9,7 @@ import org.teleight.teleightbots.commands.builder.Command;
 import org.teleight.teleightbots.commands.builder.CommandExecutor;
 import org.teleight.teleightbots.commands.builder.CommandSyntax;
 import org.teleight.teleightbots.commands.builder.argument.Argument;
+import org.teleight.teleightbots.commands.builder.argument.ArgumentString;
 import org.teleight.teleightbots.commands.builder.condition.CommandCondition;
 import org.teleight.teleightbots.commands.builder.exception.ArgumentSyntaxException;
 import org.teleight.teleightbots.commands.builder.parser.ArgumentReader;
@@ -30,7 +31,7 @@ public final class CommandParserImpl implements CommandParser {
         final String inputArguments = userInput.substring(userInput.indexOf(" ") + 1);
 
         final String commandAsString = commandManager.extractCommand(userInput);
-        if(commandAsString == null){
+        if (commandAsString == null) {
             return InvalidCommand.INSTANCE;
         }
         final Command command = commandManager.getCommand(commandAsString);
@@ -38,6 +39,14 @@ public final class CommandParserImpl implements CommandParser {
         if (command == null) {
             return InvalidCommand.INSTANCE;
         }
+        final CommandCondition defaultCondition = command.getCondition();
+
+        final boolean hasCondition = defaultCondition != null;
+        final boolean canUseThatCommand = !hasCondition || defaultCondition.canUse(bot, sender, message);
+        if (!canUseThatCommand) {
+            return InvalidCommand.INSTANCE;
+        }
+
 
         final Chain chain = new Chain(bot, command, sender, inputArguments, message);
         parseNodes(chain);
@@ -96,7 +105,17 @@ public final class CommandParserImpl implements CommandParser {
             }
 
             try {
-                String input = argumentReader.readWord();
+                String input;
+                if (argument instanceof ArgumentString argumentString) {
+                    boolean canReadRemaining = argumentString.readRemaining();
+                    if (canReadRemaining) {
+                        input = argumentReader.readRemaining();
+                    } else {
+                        input = argumentReader.readWord();
+                    }
+                } else {
+                    input = argumentReader.readWord();
+                }
                 Object result = argument.parse(input);
 
                 syntaxResult.add(new ArgumentResult.Success<>(argument.getId(), result));

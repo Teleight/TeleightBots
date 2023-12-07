@@ -29,6 +29,13 @@ public final class ArgumentReader {
         return read;
     }
 
+    public @NotNull String readRemaining() {
+        final String input = this.input;
+        final String result = input.substring(cursor);
+        this.cursor = input.length();
+        return result;
+    }
+
     public void resetCursor() {
         this.cursor = 0;
     }
