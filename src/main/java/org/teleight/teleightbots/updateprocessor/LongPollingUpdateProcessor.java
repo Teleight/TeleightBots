@@ -1,11 +1,11 @@
 package org.teleight.teleightbots.updateprocessor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
@@ -19,9 +19,11 @@ import org.teleight.teleightbots.event.bot.BotJoinEvent;
 import org.teleight.teleightbots.event.bot.BotQuitEvent;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
+import org.teleight.teleightbots.event.user.UserInlineSentEvent;
 import org.teleight.teleightbots.event.user.UserWriteEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
+import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
 
 import java.io.IOException;
 import java.net.URI;
@@ -33,12 +35,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LongPollingUpdateProcessor implements UpdateProcessor {
 
-    private final ObjectMapper objectMapper = ApiMethod.objectMapper;
     private final HttpClient client = HttpClient.newBuilder()
-            .connectTimeout(Duration.of(60, ChronoUnit.SECONDS))
+            .connectTimeout(Duration.of(10, ChronoUnit.SECONDS))
+            .version(HttpClient.Version.HTTP_2)
             .build();
     private Thread updateProcessorThread;
     private Bot bot;
@@ -71,7 +74,15 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 .withLimit(settings.updatesLimit())
                 .withOffset(lastReceivedUpdate + 1);
 
-        final String responseJson = UNSAFE_executeMethod(getUpdates).join();
+        final String responseJson = UNSAFE_executeMethod(getUpdates)
+                .exceptionally(throwable -> {
+                    return null;
+                })
+                .join();
+        if(responseJson == null){
+            return;
+        }
+
         Update[] updates;
         try {
             updates = getUpdates.deserializeResponse(responseJson);
@@ -102,12 +113,9 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         }
 
         // Process the updates
-        final Update[] finalUpdates = updates;
-        bot.getScheduler().buildTask(() -> {
-            for (final Update update : finalUpdates) {
-                handleNewUpdate(update);
-            }
-        }).schedule();
+        for (final Update update : updates) {
+            handleNewUpdate(update);
+        }
 
         // Update lastReceivedUpdate
         if (updates.length > 0) {
@@ -122,9 +130,14 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 .thenRun(() -> {
                     final boolean hasCallbackQuery = update.callbackQuery() != null;
                     if (hasCallbackQuery) {
-                        final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update);
-                        buttonPressEvent.completeCallback();
-                        bot.getMenuManager().getEventNode().call(buttonPressEvent);
+                        final AtomicBoolean completed = new AtomicBoolean();
+                        final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update, completed);
+                        bot.getMenuManager().getEventNode().call(buttonPressEvent).thenAccept(event -> {
+                            if(completed.get()){
+                                return;
+                            }
+                            event.completeCallback();
+                        });
                     }
                     final boolean hasMessage = update.message() != null;
                     if (hasMessage) {
@@ -178,6 +191,12 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                             }
                         }
                     }
+
+
+                    //Inline
+                    if (update.inlineQuery() != null) {
+                        bot.getEventManager().call(new UserInlineSentEvent(bot, update));
+                    }
                 });
     }
 
@@ -197,19 +216,13 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
         Thread.ofVirtual().name(bot.getBotUsername() + " LongPolling Request Dispatcher").start(() -> {
             try {
-                final HttpRequest.BodyPublisher body;
+                final HttpRequest request;
                 try {
-                    body = createRequestBody(method);
+                    request = createRequest(method, url);
                 } catch (JsonProcessingException e) {
                     requestFuture.completeExceptionally(e);
                     return;
                 }
-
-                final HttpRequest request = HttpRequest.newBuilder(URI.create(url))
-                        .header("Content-Type", "application/json")
-                        .POST(body)
-                        .build();
-
                 final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
                 final int statusCode = response.statusCode();
                 final String responseBody = response.body();
@@ -232,9 +245,24 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     @ApiStatus.Internal
-    private HttpRequest.BodyPublisher createRequestBody(ApiMethod<?> method) throws JsonProcessingException {
-        final String jsonString = objectMapper.writeValueAsString(method);
-        return HttpRequest.BodyPublishers.ofString(jsonString);
+    private HttpRequest createRequest(ApiMethod<?> method, String url) throws JsonProcessingException {
+        final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(URI.create(url));
+        final HttpRequest.BodyPublisher body;
+
+        if (method instanceof MultiPartApiMethod<?> multiPartApiMethod) {
+            final MultiPartBodyPublisher publisher = new MultiPartBodyPublisher();
+            multiPartApiMethod.buildRequest(publisher);
+            body = publisher.build();
+
+            requestBuilder.header("Content-Type", "multipart/form-data; boundary=" + publisher.getBoundary());
+        } else {
+            final String jsonString = ApiMethod.OBJECT_MAPPER.writeValueAsString(method);
+            body = HttpRequest.BodyPublishers.ofString(jsonString);
+
+            requestBuilder.header("Content-Type", "application/json");
+        }
+
+        return requestBuilder.POST(body).build();
     }
 
     private class UpdateProcessorThread implements Runnable {
