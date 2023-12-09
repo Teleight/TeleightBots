@@ -10,22 +10,29 @@ public class TestConversation implements Conversation.Executor {
     @Override
     public void execute(Bot bot, RunningConversation conversation) {
         SendMessage sendMessage = SendMessage.builder()
-                .chatId("89238932489")
-                .text("Inviami un messaggio che dice ciao..")
+                .chatId("339169693")
+                .text("Send me a messages with the text \"hello\"")
                 .build();
         bot.execute(sendMessage);
 
         var message = conversation.waitFor(Message.class);
-        if (message.text().equals("ciao")) {
+        if (message == null) {
+            System.out.println("Message is null");
+            return;
+        }
+        System.out.println("Message: " + message.text());
+
+
+        if (message.text().equals("hello")) {
             SendMessage sendMessage1 = SendMessage.builder()
-                    .chatId("89238932489")
-                    .text("Bravo!")
+                    .chatId("339169693")
+                    .text("Good job!")
                     .build();
             bot.execute(sendMessage1);
         } else {
             SendMessage sendMessage1 = SendMessage.builder()
-                    .chatId("89238932489")
-                    .text("Non hai scritto ciao!")
+                    .chatId("339169693")
+                    .text("You didn't send \"hello\"!")
                     .build();
             bot.execute(sendMessage1);
         }
