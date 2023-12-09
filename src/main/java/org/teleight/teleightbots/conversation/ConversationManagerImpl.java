@@ -44,13 +44,15 @@ public class ConversationManagerImpl implements ConversationManager {
     @Override
     public void joinConversation(long userId, String conversationName) {
         Conversation conversation = conversations.get(conversationName);
-        if (!usersInConversation.containsKey(userId)) {
+        if (usersInConversation.containsKey(userId)) {
             throw new IllegalArgumentException("The user " + userId + " is already in a conversation");
         }
         if (!conversations.containsKey(conversationName)) {
             throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
         }
-        usersInConversation.put(userId, new RunningConversation(userId, conversation));
+        RunningConversation runningConversation = new RunningConversation(bot, userId, (ConversationImpl) conversation);
+        usersInConversation.put(userId, runningConversation);
+        runningConversation.start();
     }
 
     @Override
