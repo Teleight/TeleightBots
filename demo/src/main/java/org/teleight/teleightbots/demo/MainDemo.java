@@ -2,6 +2,7 @@ package org.teleight.teleightbots.demo;
 
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.SendMessage;
+import org.teleight.teleightbots.api.utils.ParseMode;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.demo.command.TestCommand;
 import org.teleight.teleightbots.event.EventListener;
@@ -60,9 +61,10 @@ public class MainDemo {
 
 
             SendMessage sendMessage = SendMessage.builder()
-                    .text("Test message")
+                    .text("<b>Test message</b>")
                     .chatId(chatId)
                     .replyMarkup(menu.getKeyboard())
+                    .parseMode(ParseMode.HTML)
                     .build();
             bot.execute(sendMessage);
         });
