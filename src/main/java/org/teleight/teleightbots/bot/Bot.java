@@ -5,6 +5,8 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.bot.trait.TelegramBot;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.commands.CommandManagerImpl;
+import org.teleight.teleightbots.conversation.ConversationManager;
+import org.teleight.teleightbots.conversation.ConversationManagerImpl;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.bot.MethodSendEvent;
@@ -37,6 +39,9 @@ public class Bot implements TelegramBot {
 
     //Commands
     private final CommandManager commandManager = new CommandManagerImpl(this);
+
+    //Conversations
+    private final ConversationManager conversationManager = new ConversationManagerImpl();
 
     public Bot(String token, String username, UpdateProcessor updateProcessor, BotSettings botSettings) {
         this.token = token;
@@ -98,6 +103,11 @@ public class Bot implements TelegramBot {
     @Override
     public @NotNull CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    @Override
+    public @NotNull ConversationManager getConversationManager() {
+        return conversationManager;
     }
 
     @Override

@@ -67,6 +67,9 @@ public class MainDemo {
                     .parseMode(ParseMode.HTML)
                     .build();
             bot.execute(sendMessage);
+
+            bot.getConversationManager().createConversation("test", new TestConversation());
+
         });
     }
 
