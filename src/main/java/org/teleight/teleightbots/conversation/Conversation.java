@@ -1,16 +1,24 @@
 package org.teleight.teleightbots.conversation;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Range;
 import org.teleight.teleightbots.bot.Bot;
+
+import java.util.concurrent.TimeUnit;
 
 public interface Conversation {
 
+    @NotNull
     String getName();
 
-//    default <T extends ApiResult> T waitFor(@NotNull Class<T> resultType) {
-//        return waitFor(resultType, 0, TimeUnit.MILLISECONDS);
-//    }
-//
-//    <T extends ApiResult> T waitFor(@NotNull Class<T> resultType, long timeout, @NotNull TimeUnit unit);
+    @NotNull
+    Conversation.Executor getExecutor();
+
+    @Range(from = 0, to = 10_000L)
+    int getConversationTimeout();
+
+    @NotNull
+    TimeUnit getConversationTimeoutUnit();
 
     @FunctionalInterface
     interface Executor {
