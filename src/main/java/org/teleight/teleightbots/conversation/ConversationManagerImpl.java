@@ -47,7 +47,7 @@ public class ConversationManagerImpl implements ConversationManager {
         if (usersInConversation.containsKey(userId)) {
             throw new IllegalArgumentException("The user " + userId + " is already in a conversation");
         }
-        if (!conversations.containsKey(conversationName)) {
+        if (conversation == null) {
             throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
         }
         RunningConversation runningConversation = new RunningConversation(bot, userId, (ConversationImpl) conversation);
@@ -57,10 +57,11 @@ public class ConversationManagerImpl implements ConversationManager {
 
     @Override
     public void leaveConversation(long userId, String conversationName) {
-        if (!usersInConversation.containsKey(userId)) {
+        final RunningConversation conversation = usersInConversation.get(userId);
+        if (conversation == null) {
             throw new IllegalArgumentException("The user " + userId + " is not in a conversation");
         }
-        usersInConversation.get(userId).UNSAFE_stopConversation();
+        conversation.UNSAFE_stopConversation();
         usersInConversation.remove(userId);
     }
 
@@ -76,10 +77,11 @@ public class ConversationManagerImpl implements ConversationManager {
 
     @Override
     public @NotNull Conversation getConversation(String conversationName) {
-        if (!conversations.containsKey(conversationName)) {
+        final Conversation conversation = conversations.get(conversationName);
+        if (conversation == null) {
             throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
         }
-        return conversations.get(conversationName);
+        return conversation;
     }
 
     @Override
