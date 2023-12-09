@@ -24,6 +24,8 @@ public interface ConversationManager {
 
     void leaveConversation(long userId, String conversationName);
 
+    boolean isUserInConversation(long userId, String conversationName);
+
     @NotNull
     @Unmodifiable
     Collection<Conversation> getConversations();

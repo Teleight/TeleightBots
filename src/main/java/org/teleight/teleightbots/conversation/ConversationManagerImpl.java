@@ -64,6 +64,11 @@ public class ConversationManagerImpl implements ConversationManager {
     }
 
     @Override
+    public boolean isUserInConversation(long userId, String conversationName) {
+        return usersInConversation.containsKey(userId);
+    }
+
+    @Override
     public @NotNull @Unmodifiable Collection<Conversation> getConversations() {
         return conversations.values();
     }
