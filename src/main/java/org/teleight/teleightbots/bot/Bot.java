@@ -41,7 +41,7 @@ public class Bot implements TelegramBot {
     private final CommandManager commandManager = new CommandManagerImpl(this);
 
     //Conversations
-    private final ConversationManager conversationManager = new ConversationManagerImpl();
+    private final ConversationManager conversationManager = new ConversationManagerImpl(this);
 
     public Bot(String token, String username, UpdateProcessor updateProcessor, BotSettings botSettings) {
         this.token = token;
