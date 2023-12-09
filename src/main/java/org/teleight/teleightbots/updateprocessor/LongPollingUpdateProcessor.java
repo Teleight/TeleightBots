@@ -10,14 +10,17 @@ import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMemberLeft;
+import org.teleight.teleightbots.api.objects.chat.member.*;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
-import org.teleight.teleightbots.event.bot.BotJoinEvent;
-import org.teleight.teleightbots.event.bot.BotQuitEvent;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
+import org.teleight.teleightbots.event.bot.channel.BotJoinChannelEvent;
+import org.teleight.teleightbots.event.bot.channel.BotQuitChannelEvent;
+import org.teleight.teleightbots.event.bot.channel.ChannelSendMessageEvent;
+import org.teleight.teleightbots.event.bot.group.BotJoinGroupEvent;
+import org.teleight.teleightbots.event.bot.group.BotQuitGroupEvent;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
 import org.teleight.teleightbots.event.user.UserInlineSentEvent;
 import org.teleight.teleightbots.event.user.UserWriteEvent;
@@ -114,7 +117,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
         // Process the updates
         for (final Update update : updates) {
-            handleNewUpdate(update);
+            handleNewUpdate(update, responseJson);
         }
 
         // Update lastReceivedUpdate
@@ -124,9 +127,9 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     @ApiStatus.Internal
-    private void handleNewUpdate(@NotNull Update update) {
+    private void handleNewUpdate(@NotNull Update update, String responseJson) {
         bot.getEventManager()
-                .call(new UpdateReceivedEvent(bot, update))
+                .call(new UpdateReceivedEvent(bot, update, responseJson))
                 .thenRun(() -> {
                     final boolean hasCallbackQuery = update.callbackQuery() != null;
                     if (hasCallbackQuery) {
@@ -172,22 +175,40 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                                     .anyMatch(user -> user.username().equalsIgnoreCase(bot.getBotUsername()));
                             Boolean groupChatCreated = message.groupChatCreated();
                             if (isThisBotJoined || (groupChatCreated != null && groupChatCreated)) {
-                                bot.getEventManager().call(new BotJoinEvent(bot, update));
+                                bot.getEventManager().call(new BotJoinGroupEvent(bot, update));
                             }
                         }
                     }
 
 
-                    //Bot quit
+
                     final ChatMemberUpdated myChatMember = update.myChatMember();
                     final boolean hasMyChatMember = myChatMember != null;
                     if (hasMyChatMember) {
                         final ChatMember newChatMember = myChatMember.newChatMember();
                         final boolean isThisBot = bot.getBotUsername().equals(newChatMember.user().username());
                         if (isThisBot) {
-                            final boolean isLeft = newChatMember instanceof ChatMemberLeft;
+                            final boolean isJoined = newChatMember instanceof ChatMemberAdministrator || newChatMember instanceof ChatMemberMember;
+                            final boolean isLeft = newChatMember instanceof ChatMemberLeft || newChatMember instanceof ChatMemberRestricted;
+
+                            final Chat chat = myChatMember.chat();
+                            final boolean isChannel = chat.isChannel();
+
+
+                            if (isJoined) {
+                                if (isChannel) {
+                                    bot.getEventManager().call(new BotJoinChannelEvent(bot, update));
+                                } else {
+                                    bot.getEventManager().call(new BotJoinGroupEvent(bot, update));
+                                }
+                            }
+
                             if (isLeft) {
-                                bot.getEventManager().call(new BotQuitEvent(bot, update));
+                                if (isChannel) {
+                                    bot.getEventManager().call(new BotQuitChannelEvent(bot, update));
+                                } else {
+                                    bot.getEventManager().call(new BotQuitGroupEvent(bot, update));
+                                }
                             }
                         }
                     }
@@ -196,6 +217,17 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                     //Inline
                     if (update.inlineQuery() != null) {
                         bot.getEventManager().call(new UserInlineSentEvent(bot, update));
+                    }
+
+
+                    final Message channelPost = update.channelPost();
+                    final boolean hasChannelPost = channelPost != null;
+                    if(hasChannelPost){
+                        final Chat chat = channelPost.chat();
+                        final boolean isChannel = chat.isChannel();
+                        if(isChannel) {
+                            bot.getEventManager().call(new ChannelSendMessageEvent(bot, update, chat));
+                        }
                     }
                 });
     }
