@@ -2,6 +2,7 @@ package org.teleight.teleightbots.conversation;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
+import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
 
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,6 @@ public interface Conversation {
 
     @FunctionalInterface
     interface Executor {
-        void execute(Bot bot, RunningConversation conversation);
+        void execute(Bot bot, Chat chat, RunningConversation conversation);
     }
 }

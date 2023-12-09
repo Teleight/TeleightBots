@@ -2,15 +2,16 @@ package org.teleight.teleightbots.demo;
 
 import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.api.objects.Message;
+import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.conversation.Conversation;
 import org.teleight.teleightbots.conversation.RunningConversation;
 
 public class TestConversation implements Conversation.Executor {
     @Override
-    public void execute(Bot bot, RunningConversation conversation) {
+    public void execute(Bot bot, Chat chat, RunningConversation conversation) {
         SendMessage sendMessage = SendMessage.builder()
-                .chatId("339169693")
+                .chatId(chat.id())
                 .text("Send me a messages with the text \"hello\"")
                 .build();
         bot.execute(sendMessage);
@@ -25,13 +26,13 @@ public class TestConversation implements Conversation.Executor {
 
         if (message.text().equals("hello")) {
             SendMessage sendMessage1 = SendMessage.builder()
-                    .chatId("339169693")
+                    .chatId(chat.id())
                     .text("Good job!")
                     .build();
             bot.execute(sendMessage1);
         } else {
             SendMessage sendMessage1 = SendMessage.builder()
-                    .chatId("339169693")
+                    .chatId(chat.id())
                     .text("You didn't send \"hello\"!")
                     .build();
             bot.execute(sendMessage1);

@@ -11,11 +11,12 @@ public class Test2Command extends Command {
 
             System.out.println("test2 command executed: from: " + sender.username() + ", input: " + input);
 
-            if (context.bot().getConversationManager().isUserInConversation(sender.id(), "test")) {
+            if (context.bot().getConversationManager().isUserInConversation(sender, "test")) {
                 System.out.println("User is already in conversation");
                 return;
             }
-            context.bot().getConversationManager().joinConversation(sender.id(), "test");
+
+            context.bot().getConversationManager().joinConversation(sender, context.message().chat(), "test");
         });
     }
 }

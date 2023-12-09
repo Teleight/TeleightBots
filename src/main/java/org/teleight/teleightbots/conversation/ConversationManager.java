@@ -2,6 +2,8 @@ package org.teleight.teleightbots.conversation;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
+import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.api.objects.chat.Chat;
 
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
@@ -20,11 +22,11 @@ public interface ConversationManager {
 
     void removeConversation(String conversationName);
 
-    void joinConversation(long userId, String conversationName);
+    void joinConversation(User user, Chat chat, String conversationName);
 
-    void leaveConversation(long userId, String conversationName);
+    void leaveConversation(User user, String conversationName);
 
-    boolean isUserInConversation(long userId, String conversationName);
+    boolean isUserInConversation(User user, String conversationName);
 
     @NotNull
     @Unmodifiable

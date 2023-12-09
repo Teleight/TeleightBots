@@ -2,6 +2,8 @@ package org.teleight.teleightbots.conversation;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
+import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
 
 import java.util.Collection;
@@ -42,32 +44,32 @@ public class ConversationManagerImpl implements ConversationManager {
     }
 
     @Override
-    public void joinConversation(long userId, String conversationName) {
+    public void joinConversation(User user, Chat chat, String conversationName) {
         Conversation conversation = conversations.get(conversationName);
-        if (usersInConversation.containsKey(userId)) {
-            throw new IllegalArgumentException("The user " + userId + " is already in a conversation");
+        if (usersInConversation.containsKey(user.id())) {
+            throw new IllegalArgumentException("The user " + user.id() + " is already in a conversation");
         }
         if (conversation == null) {
             throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
         }
-        RunningConversation runningConversation = new RunningConversation(bot, userId, (ConversationImpl) conversation);
-        usersInConversation.put(userId, runningConversation);
+        RunningConversation runningConversation = new RunningConversation(bot, user, chat, (ConversationImpl) conversation);
+        usersInConversation.put(user.id(), runningConversation);
         runningConversation.start();
     }
 
     @Override
-    public void leaveConversation(long userId, String conversationName) {
-        final RunningConversation conversation = usersInConversation.get(userId);
+    public void leaveConversation(User user, String conversationName) {
+        final RunningConversation conversation = usersInConversation.get(user.id());
         if (conversation == null) {
-            throw new IllegalArgumentException("The user " + userId + " is not in a conversation");
+            throw new IllegalArgumentException("The user " + user.id() + " is not in a conversation");
         }
         conversation.UNSAFE_stopConversation();
-        usersInConversation.remove(userId);
+        usersInConversation.remove(user.id());
     }
 
     @Override
-    public boolean isUserInConversation(long userId, String conversationName) {
-        return usersInConversation.containsKey(userId);
+    public boolean isUserInConversation(User user, String conversationName) {
+        return usersInConversation.containsKey(user.id());
     }
 
     @Override

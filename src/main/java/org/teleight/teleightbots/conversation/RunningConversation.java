@@ -4,6 +4,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
@@ -25,7 +27,8 @@ public class RunningConversation extends Thread {
     private final EventManager eventManager = new EventManagerImpl();
 
     private final Bot bot;
-    private final long userId;
+    private final User user;
+    private final Chat chat;
     private final ConversationImpl conversation;
 
     private Object result;
@@ -47,9 +50,10 @@ public class RunningConversation extends Thread {
 
     private final Task timeoutTask;
 
-    public RunningConversation(Bot bot, long userId, ConversationImpl conversation) {
+    public RunningConversation(Bot bot, User user, Chat chat, ConversationImpl conversation) {
         this.bot = bot;
-        this.userId = userId;
+        this.user = user;
+        this.chat = chat;
         this.conversation = conversation;
 
         eventManager.addListener(UpdateReceivedEvent.class, event -> {
@@ -72,7 +76,7 @@ public class RunningConversation extends Thread {
                     lastUpdateMillis + conversationTimeoutMillis < currentMillis
             ) {
                 // The conversation has timed out, leave the conversation
-                bot.getConversationManager().leaveConversation(userId, conversation.getName());
+                bot.getConversationManager().leaveConversation(user, conversation.getName());
             }
         }).repeat(10, TimeUnit.MILLISECONDS).schedule();
     }
@@ -80,12 +84,11 @@ public class RunningConversation extends Thread {
     @Override
     public void run() {
         running.set(true);
-
         // Start the conversation
-        conversation.getExecutor().execute(bot, this);
+        conversation.getExecutor().execute(bot, chat, this);
         // All work is done, leave the conversation
         if (running.get()) {
-            bot.getConversationManager().leaveConversation(userId, conversation.getName());
+            bot.getConversationManager().leaveConversation(user, conversation.getName());
         }
     }
 
