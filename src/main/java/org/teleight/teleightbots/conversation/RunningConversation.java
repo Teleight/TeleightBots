@@ -56,6 +56,8 @@ public class RunningConversation extends Thread {
         this.chat = chat;
         this.conversation = conversation;
 
+        setName("Conversation-" + conversation.getName() + "-" + user.id());
+
         eventManager.addListener(UpdateReceivedEvent.class, event -> {
             synchronized (lock) {
                 if (!acknowledgeFirstEvent.get()) {
