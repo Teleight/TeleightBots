@@ -15,7 +15,7 @@ public interface ConversationManager {
 
     @NotNull Conversation createConversation(String conversationName,
                                              Conversation.Executor executor,
-                                             long conversationTimeout,
+                                             int conversationTimeout,
                                              TimeUnit conversationTimeoutUnit);
 
     void removeConversation(String conversationName);

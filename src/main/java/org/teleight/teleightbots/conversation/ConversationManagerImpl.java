@@ -23,7 +23,7 @@ public class ConversationManagerImpl implements ConversationManager {
     @Override
     public @NotNull Conversation createConversation(String conversationName,
                                                     Conversation.Executor executor,
-                                                    long conversationTimeout,
+                                                    int conversationTimeout,
                                                     TimeUnit conversationTimeoutUnit) {
         if (conversations.containsKey(conversationName)) {
             throw new IllegalArgumentException("The conversation " + conversationName + " has already been registered");
