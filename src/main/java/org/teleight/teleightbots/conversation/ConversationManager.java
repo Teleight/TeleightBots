@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public interface ConversationManager {
@@ -25,8 +24,15 @@ public interface ConversationManager {
 
     void leaveConversation(long userId, String conversationName);
 
-    @NotNull @Unmodifiable Collection<Conversation> getConversations();
+    @NotNull
+    @Unmodifiable
+    Collection<Conversation> getConversations();
 
-    @NotNull Conversation getConversation(String conversationName);
+    @NotNull
+    Conversation getConversation(String conversationName);
+
+    @NotNull
+    @Unmodifiable
+    Collection<RunningConversation> getRunningConversations();
 
 }

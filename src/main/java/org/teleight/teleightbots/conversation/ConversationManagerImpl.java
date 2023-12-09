@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.conversation;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
+import org.teleight.teleightbots.bot.Bot;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,6 +13,12 @@ public class ConversationManagerImpl implements ConversationManager {
 
     private final Map<String, Conversation> conversations = new HashMap<>();
     private final Map<Long, RunningConversation> usersInConversation = new HashMap<>();
+
+    private final Bot bot;
+
+    public ConversationManagerImpl(Bot bot) {
+        this.bot = bot;
+    }
 
     @Override
     public @NotNull Conversation createConversation(String conversationName,
@@ -66,6 +72,11 @@ public class ConversationManagerImpl implements ConversationManager {
             throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
         }
         return conversations.get(conversationName);
+    }
+
+    @Override
+    public @NotNull @Unmodifiable Collection<RunningConversation> getRunningConversations() {
+        return usersInConversation.values();
     }
 
 }
