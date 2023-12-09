@@ -7,12 +7,15 @@ import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
+import org.teleight.teleightbots.scheduler.Scheduler;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
 public class RunningConversation extends Thread {
+
+    private static final Scheduler SCHEDULER = Scheduler.newScheduler();
 
     // We need to synchronize on this object to wait for the next message
     private final Object lock = new Object();
@@ -51,14 +54,8 @@ public class RunningConversation extends Thread {
                 lock.notify();
             }
         });
-    }
 
-    @Override
-    public void run() {
-        // Start the conversation
-        conversation.getExecutor().execute(bot, this);
-
-        while (!Thread.interrupted()) {
+        SCHEDULER.buildTask(() -> {
             // Check if the conversation has timed out after the last message
             long currentMillis = System.currentTimeMillis();
             long conversationTimeoutMillis = conversation.getConversationTimeoutUnit().toMillis(conversation.getConversationTimeout());
@@ -66,18 +63,14 @@ public class RunningConversation extends Thread {
                     && currentMillis - resultMillis > conversationTimeoutMillis) {
                 // The conversation has timed out, leave the conversation
                 bot.getConversationManager().leaveConversation(userId, conversation.getName());
-                return;
             }
+        }).repeat(10, TimeUnit.MILLISECONDS).schedule();
+    }
 
-            // Better if we sleep for a bit
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                return;
-            }
-        }
-
+    @Override
+    public void run() {
+        // Start the conversation
+        conversation.getExecutor().execute(bot, this);
         // All work is done, leave the conversation
         bot.getConversationManager().leaveConversation(userId, conversation.getName());
     }
