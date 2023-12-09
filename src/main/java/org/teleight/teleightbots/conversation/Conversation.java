@@ -23,6 +23,6 @@ public interface Conversation {
 
     @FunctionalInterface
     interface Executor {
-        void execute(Bot bot, Chat chat, RunningConversation conversation);
+        void execute(@NotNull Bot bot, @NotNull Chat chat, @NotNull RunningConversation conversation);
     }
 }

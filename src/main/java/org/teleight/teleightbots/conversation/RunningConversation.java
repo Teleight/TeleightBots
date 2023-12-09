@@ -29,7 +29,7 @@ public class RunningConversation extends Thread {
     private final Bot bot;
     private final User user;
     private final Chat chat;
-    private final ConversationImpl conversation;
+    private final Conversation conversation;
 
     private Object result;
     private long lastUpdateMillis = System.currentTimeMillis();
@@ -48,9 +48,15 @@ public class RunningConversation extends Thread {
      */
     private final AtomicBoolean running = new AtomicBoolean(false);
 
+    /**
+     * We need to keep a reference to the timeout task, so we can cancel it when the conversation
+     */
     private final Task timeoutTask;
 
-    public RunningConversation(Bot bot, User user, Chat chat, ConversationImpl conversation) {
+    public RunningConversation(@NotNull Bot bot,
+                               @NotNull User user,
+                               @NotNull Chat chat,
+                               @NotNull Conversation conversation) {
         this.bot = bot;
         this.user = user;
         this.chat = chat;
@@ -115,7 +121,7 @@ public class RunningConversation extends Thread {
     }
 
     @ApiStatus.Internal
-    public void UNSAFE_stopConversation() {
+    void UNSAFE_stopConversation() {
         running.set(false);
         timeoutTask.cancel();
         interrupt();

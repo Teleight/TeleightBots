@@ -10,30 +10,31 @@ import java.util.concurrent.TimeUnit;
 
 public interface ConversationManager {
 
-    default Conversation createConversation(String conversationName,
-                                            Conversation.Executor executor) {
+    @NotNull
+    default Conversation createConversation(@NotNull String conversationName,
+                                            @NotNull Conversation.Executor executor) {
         return createConversation(conversationName, executor, 0, TimeUnit.MILLISECONDS);
     }
 
-    @NotNull Conversation createConversation(String conversationName,
-                                             Conversation.Executor executor,
+    @NotNull Conversation createConversation(@NotNull String conversationName,
+                                             @NotNull Conversation.Executor executor,
                                              int conversationTimeout,
-                                             TimeUnit conversationTimeoutUnit);
+                                             @NotNull TimeUnit conversationTimeoutUnit);
 
-    void removeConversation(String conversationName);
+    void removeConversation(@NotNull String conversationName);
 
-    void joinConversation(User user, Chat chat, String conversationName);
+    void joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName);
 
-    void leaveConversation(User user, String conversationName);
+    void leaveConversation(@NotNull User user, @NotNull String conversationName);
 
-    boolean isUserInConversation(User user, String conversationName);
+    boolean isUserInConversation(@NotNull User user, @NotNull String conversationName);
 
     @NotNull
     @Unmodifiable
     Collection<Conversation> getConversations();
 
     @NotNull
-    Conversation getConversation(String conversationName);
+    Conversation getConversation(@NotNull String conversationName);
 
     @NotNull
     @Unmodifiable
