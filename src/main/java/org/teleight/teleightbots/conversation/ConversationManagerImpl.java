@@ -60,6 +60,7 @@ public class ConversationManagerImpl implements ConversationManager {
         if (!usersInConversation.containsKey(userId)) {
             throw new IllegalArgumentException("The user " + userId + " is not in a conversation");
         }
+        usersInConversation.get(userId).UNSAFE_stopConversation();
         usersInConversation.remove(userId);
     }
 
