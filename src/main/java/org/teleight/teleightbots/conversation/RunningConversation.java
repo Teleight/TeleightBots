@@ -110,14 +110,20 @@ public class RunningConversation extends Thread {
         lastResultType = resultType;
         synchronized (lock) {
             try {
-                lock.wait();
+                long timeoutMillis = unit.toMillis(timeout);
+                lock.wait(timeoutMillis);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
+        if (result == null) {
+            return null;
+        }
         // TODO: Find a more robust way to do this
         // I mean, this is pretty bad
-        return ((T) result);
+        var resultClass = (T) result;
+        this.result = null;
+        return resultClass;
     }
 
     @ApiStatus.Internal
