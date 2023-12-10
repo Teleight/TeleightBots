@@ -30,6 +30,7 @@ public class RunningConversation extends Thread {
     private final User user;
     private final Chat chat;
     private final Conversation conversation;
+    private final long conversationTimeoutMillis;
 
     private Object result;
     private long lastUpdateMillis = System.currentTimeMillis();
@@ -61,6 +62,7 @@ public class RunningConversation extends Thread {
         this.user = user;
         this.chat = chat;
         this.conversation = conversation;
+        this.conversationTimeoutMillis = conversation.getConversationTimeoutUnit().toMillis(conversation.getConversationTimeout());
 
         setName("Conversation-" + conversation.getName() + "-" + user.id());
 
@@ -79,7 +81,6 @@ public class RunningConversation extends Thread {
         timeoutTask = SCHEDULER.buildTask(() -> {
             // Check if the conversation has timed out after the last message
             long currentMillis = System.currentTimeMillis();
-            long conversationTimeoutMillis = conversation.getConversationTimeoutUnit().toMillis(conversation.getConversationTimeout());
             if (conversation.getConversationTimeout() > 0 &&
                     lastUpdateMillis + conversationTimeoutMillis < currentMillis
             ) {
