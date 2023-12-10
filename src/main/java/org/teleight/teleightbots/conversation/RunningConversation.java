@@ -122,10 +122,21 @@ public class RunningConversation extends Thread {
         if (result == null) {
             return null;
         }
+
+        // Check if the result is of the correct type
+        // We do not want to return a result that is not of the correct type.
+        // It technically should never happen, but better be safe than sorry.
+        if (!resultType.isAssignableFrom(result.getClass())) {
+            throw new IllegalStateException(STR."The result type \{result.getClass()} is not assignable from \{resultType}");
+        }
+
         // TODO: Find a more robust way to do this
         // I mean, this is pretty bad
         var resultClass = (T) result;
+
+        // Reset the result to null. This is done so that the next waitFor call will not return the same result
         this.result = null;
+
         return resultClass;
     }
 
