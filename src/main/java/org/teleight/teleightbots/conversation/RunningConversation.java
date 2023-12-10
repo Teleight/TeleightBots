@@ -16,6 +16,8 @@ import org.teleight.teleightbots.scheduler.Task;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static java.lang.StringTemplate.STR;
+
 @ApiStatus.Internal
 public class RunningConversation extends Thread {
 
@@ -64,7 +66,7 @@ public class RunningConversation extends Thread {
         this.conversation = conversation;
         this.conversationTimeoutMillis = conversation.getConversationTimeoutUnit().toMillis(conversation.getConversationTimeout());
 
-        setName("Conversation-" + conversation.getName() + "-" + user.id());
+        setName(STR."Conversation-\{conversation.getName()}-\{user.id()}");
 
         eventManager.addListener(UpdateReceivedEvent.class, event -> {
             synchronized (lock) {
