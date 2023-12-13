@@ -12,11 +12,11 @@ public record UserInlineSentEvent(
         @NotNull Update update
 ) implements Event {
 
-    public User getUser() {
+    public User user() {
         return update().inlineQuery().from();
     }
 
-    public InlineQuery getInlineQuery() {
+    public InlineQuery inlineQuery() {
         return update().inlineQuery();
     }
 
