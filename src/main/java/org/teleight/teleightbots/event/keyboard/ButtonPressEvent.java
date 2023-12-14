@@ -9,18 +9,18 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
-import org.teleight.teleightbots.event.trait.IngoingEvent;
+import org.teleight.teleightbots.event.trait.Event;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ButtonPressEvent implements IngoingEvent {
+public class ButtonPressEvent implements Event {
 
     private final Bot bot;
     private final Update update;
     private final AtomicBoolean completed;
 
-    public ButtonPressEvent(Bot bot, Update update, AtomicBoolean completed) {
+    public ButtonPressEvent(@NotNull Bot bot, @NotNull Update update, @NotNull AtomicBoolean completed) {
         this.bot = bot;
         this.update = update;
         this.completed = completed;
@@ -31,13 +31,8 @@ public class ButtonPressEvent implements IngoingEvent {
         return bot;
     }
 
-    @Override
-    public @NotNull Update update() {
-        return update;
-    }
-
     public @NotNull CallbackQuery callbackQuery() {
-        return update().callbackQuery();
+        return update.callbackQuery();
     }
 
     public @NotNull User from() {

@@ -136,7 +136,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                         final AtomicBoolean completed = new AtomicBoolean();
                         final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update, completed);
                         bot.getMenuManager().getEventNode().call(buttonPressEvent).thenAccept(event -> {
-                            if(completed.get()){
+                            if (completed.get()) {
                                 return;
                             }
                             event.completeCallback();
@@ -181,7 +181,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                     }
 
 
-
                     final ChatMemberUpdated myChatMember = update.myChatMember();
                     final boolean hasMyChatMember = myChatMember != null;
                     if (hasMyChatMember) {
@@ -222,10 +221,10 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
                     final Message channelPost = update.channelPost();
                     final boolean hasChannelPost = channelPost != null;
-                    if(hasChannelPost){
+                    if (hasChannelPost) {
                         final Chat chat = channelPost.chat();
                         final boolean isChannel = chat.isChannel();
-                        if(isChannel) {
+                        if (isChannel) {
                             bot.getEventManager().call(new ChannelSendMessageEvent(bot, update, chat));
                         }
                     }
