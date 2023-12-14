@@ -3,6 +3,7 @@ package org.teleight.teleightbots.extensions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.extensions.annotation.ExtensionInfoFile;
@@ -13,7 +14,10 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -23,7 +27,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final File extensionFolder = new File("extensions");
 
-    private final List<Extension> loadedExtensions = new ArrayList<>();
+    private final Set<Extension> loadedExtensions = new HashSet<>();
 
     public ExtensionManagerImpl(Bot bot) {
         this.bot = bot;
@@ -61,6 +65,12 @@ public class ExtensionManagerImpl implements ExtensionManager {
             }
         }
     }
+
+    @Override
+    public @NotNull @Unmodifiable Set<Extension> getLoadedExtensions() {
+        return Collections.unmodifiableSet(loadedExtensions);
+    }
+
 
     private @NotNull LoadResult loadExtension(@NotNull DiscoveredExtension discoveredExtension) {
         final String extensionName = discoveredExtension.name();
