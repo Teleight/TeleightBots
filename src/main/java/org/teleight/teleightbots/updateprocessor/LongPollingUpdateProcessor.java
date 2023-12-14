@@ -65,7 +65,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         updateProcessorThread.start();
     }
 
-    public void terminate() {
+    public void shutdown() {
         updateProcessorThread.interrupt();
     }
 
