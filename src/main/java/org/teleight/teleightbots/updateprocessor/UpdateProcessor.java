@@ -10,7 +10,7 @@ public interface UpdateProcessor {
 
     void start();
 
-    void terminate();
+    void shutdown();
 
     @NotNull CompletableFuture<String> executeMethod(@NotNull ApiMethod<?> method);
 

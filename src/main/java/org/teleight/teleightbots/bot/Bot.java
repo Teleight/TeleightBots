@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.bot.trait.TelegramBot;
 import org.teleight.teleightbots.commands.CommandManager;
@@ -11,6 +12,8 @@ import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.bot.MethodSendEvent;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
+import org.teleight.teleightbots.extensions.ExtensionManager;
+import org.teleight.teleightbots.extensions.ExtensionManagerImpl;
 import org.teleight.teleightbots.menu.*;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
@@ -42,6 +45,9 @@ public class Bot implements TelegramBot {
 
     //Conversations
     private final ConversationManager conversationManager = new ConversationManagerImpl(this);
+
+    //Extensions
+    private final ExtensionManager extensionManager = new ExtensionManagerImpl(this);
 
     public Bot(String token, String username, UpdateProcessor updateProcessor, BotSettings botSettings) {
         this.token = token;
@@ -111,21 +117,33 @@ public class Bot implements TelegramBot {
     }
 
     @Override
+    public @NotNull ExtensionManager getExtensionManager() {
+        return extensionManager;
+    }
+
+    @Override
     public void connect() {
+        extensionManager.start();
         updateProcessor.start();
     }
 
     public void close() {
-        try {
-            scheduler.close();
+        try{
+            extensionManager.shutdown();
         } catch (Exception e) {
-            e.printStackTrace();
+            TeleightBots.getExceptionManager().handleException(e);
         }
 
         try {
-            updateProcessor.terminate();
+            scheduler.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            TeleightBots.getExceptionManager().handleException(e);
+        }
+
+        try {
+            updateProcessor.shutdown();
+        } catch (Exception e) {
+            TeleightBots.getExceptionManager().handleException(e);
         }
     }
 
