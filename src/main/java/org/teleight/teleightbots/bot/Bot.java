@@ -107,6 +107,11 @@ public class Bot implements TelegramBot {
     }
 
     @Override
+    public @NotNull ExtensionManager getExtensionManager() {
+        return extensionManager;
+    }
+
+    @Override
     public void connect() {
         extensionManager.start();
         updateProcessor.start();
