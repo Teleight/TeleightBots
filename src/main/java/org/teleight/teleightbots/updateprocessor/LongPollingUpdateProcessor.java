@@ -130,7 +130,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     private void handleNewUpdate(@NotNull Update update, String responseJson) {
         bot.getEventManager()
                 .call(new UpdateReceivedEvent(bot, update, responseJson))
-                .thenRun(() -> {
+                .thenAccept(updateReceivedEvent -> {
                     final boolean hasCallbackQuery = update.callbackQuery() != null;
                     if (hasCallbackQuery) {
                         final AtomicBoolean completed = new AtomicBoolean();
@@ -228,6 +228,11 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                             bot.getEventManager().call(new ChannelSendMessageEvent(bot, update, chat));
                         }
                     }
+
+                    //Conversation
+                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
+                        runningConversation.getEventManager().call(updateReceivedEvent);
+                    });
                 });
     }
 
