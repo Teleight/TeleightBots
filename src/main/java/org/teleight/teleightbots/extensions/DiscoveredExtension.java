@@ -12,31 +12,27 @@ public final class DiscoveredExtension {
     private final ExtensionInfoFile extensionInfo;
     final List<URL> files = new ArrayList<>();
 
-    private DiscoveredExtension(ExtensionInfoFile extensionInfo) {
+    private DiscoveredExtension(@NotNull ExtensionInfoFile extensionInfo) {
         this.extensionInfo = extensionInfo;
     }
 
-    public static DiscoveredExtension of(ExtensionInfoFile extensionInfo) {
+    public @NotNull static DiscoveredExtension of(@NotNull ExtensionInfoFile extensionInfo) {
         return new DiscoveredExtension(extensionInfo);
     }
 
-    @NotNull
-    public String name() {
+    public @NotNull String name() {
         return extensionInfo.name();
     }
 
-    @NotNull
-    public String mainClass() {
+    public @NotNull String mainClass() {
         return extensionInfo.mainClass();
     }
 
-    @NotNull
-    public String version() {
+    public @NotNull String version() {
         return extensionInfo.version();
     }
 
-    @NotNull
-    public String parentBot() {
+    public @NotNull String parentBot() {
         return extensionInfo.parentBot();
     }
 

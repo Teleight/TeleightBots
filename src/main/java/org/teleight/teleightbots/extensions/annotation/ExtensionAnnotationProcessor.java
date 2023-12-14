@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.extensions.annotation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.extensions.ExtensionManager;
 
 import javax.annotation.processing.*;
@@ -43,7 +44,7 @@ public class ExtensionAnnotationProcessor extends AbstractProcessor {
                     new ObjectMapper().writeValue(writer, description);
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                TeleightBots.getExceptionManager().handleException(e);
             }
         }
         return false;

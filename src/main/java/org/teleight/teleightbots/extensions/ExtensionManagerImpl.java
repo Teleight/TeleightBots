@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.extensions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.extensions.annotation.ExtensionInfoFile;
@@ -13,9 +13,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -37,7 +35,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
             extensionFolder.mkdirs();
         }
 
-        final List<DiscoveredExtension> extensions = discoverExtensions();
+        final Set<DiscoveredExtension> extensions = discoverExtensions();
         for (DiscoveredExtension discoveredExtension : extensions) {
             final LoadResult loadExtension = loadExtension(discoveredExtension);
             if(loadExtension instanceof LoadResult.Success success) {
@@ -64,8 +62,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
         }
     }
 
-    @NotNull
-    private LoadResult loadExtension(@NotNull DiscoveredExtension discoveredExtension) {
+    private @NotNull LoadResult loadExtension(@NotNull DiscoveredExtension discoveredExtension) {
         final String extensionName = discoveredExtension.name();
         final String mainClass = discoveredExtension.mainClass();
         final String version = discoveredExtension.version();
@@ -116,8 +113,8 @@ public class ExtensionManagerImpl implements ExtensionManager {
         return new LoadResult.Success(extension);
     }
 
-    private List<DiscoveredExtension> discoverExtensions() {
-        final List<DiscoveredExtension> extensions = new LinkedList<>();
+    private @NotNull Set<DiscoveredExtension> discoverExtensions() {
+        final Set<DiscoveredExtension> extensions = new LinkedHashSet<>();
         final File[] fileList = extensionFolder.listFiles();
         if (fileList == null) {
             return extensions;
@@ -140,8 +137,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
     }
 
 
-    @Nullable
-    private DiscoveredExtension discoverFromJar(@NotNull File file) {
+    private @Nullable DiscoveredExtension discoverFromJar(@NotNull File file) {
         try (ZipFile zip = new ZipFile(file)) {
             final ZipEntry entry = zip.getEntry(ExtensionManager.EXTENSION_FILE);
             if (entry == null) {
@@ -162,9 +158,9 @@ public class ExtensionManagerImpl implements ExtensionManager {
 
 
     private sealed interface LoadResult {
-        record Success(Extension extension) implements LoadResult {}
+        record Success(@NotNull Extension extension) implements LoadResult {}
 
-        record InvalidBotLoader(String errorMessage) implements LoadResult {}
+        record InvalidBotLoader(@NotNull String errorMessage) implements LoadResult {}
     }
 
 }
