@@ -1,11 +1,12 @@
 package org.teleight.teleightbots.demo;
 
 import org.teleight.teleightbots.api.methods.SendMessage;
-import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.conversation.Conversation;
 import org.teleight.teleightbots.conversation.RunningConversation;
+
+import java.util.concurrent.TimeUnit;
 
 public class TestConversation implements Conversation.Executor {
     @Override
@@ -16,11 +17,16 @@ public class TestConversation implements Conversation.Executor {
                 .build();
         bot.execute(sendMessage);
 
-        var message = conversation.waitFor(Message.class);
-        if (message == null) {
-            System.out.println("Message is null");
+        var update = conversation.waitForUpdate(2, TimeUnit.SECONDS);
+        if (update == null) {
+            SendMessage sendMessage1 = SendMessage.builder()
+                    .chatId(chat.id())
+                    .text("you didnt send the message in time..")
+                    .build();
+            bot.execute(sendMessage1);
             return;
         }
+        var message = update.message();
         System.out.println("Message: " + message.text());
 
 

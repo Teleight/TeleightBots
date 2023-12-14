@@ -3,7 +3,7 @@ package org.teleight.teleightbots.conversation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
@@ -32,9 +32,8 @@ public class RunningConversation extends Thread {
     private final Conversation conversation;
     private final long conversationTimeoutMillis;
 
-    private Object result;
+    private Update result;
     private long lastUpdateMillis = System.currentTimeMillis();
-    private Class<? extends ApiResult> lastResultType;
 
     /**
      * This is used to acknowledge the first event received by the bot, which is the event that
@@ -72,7 +71,7 @@ public class RunningConversation extends Thread {
                     acknowledgeFirstEvent.set(true);
                     return;
                 }
-                result = event.update().message();
+                result = event.update();
                 lastUpdateMillis = System.currentTimeMillis();
                 lock.notify();
             }
@@ -102,13 +101,12 @@ public class RunningConversation extends Thread {
     }
 
     @Nullable
-    public <T extends ApiResult> T waitFor(@NotNull Class<T> resultType) {
-        return waitFor(resultType, 0, TimeUnit.MILLISECONDS);
+    public Update waitForUpdate() {
+        return waitForUpdate(0, TimeUnit.MILLISECONDS);
     }
 
     @Nullable
-    public <T extends ApiResult> T waitFor(@NotNull Class<T> resultType, long timeout, @NotNull TimeUnit unit) {
-        lastResultType = resultType;
+    public Update waitForUpdate(long timeout, @NotNull TimeUnit unit) {
         synchronized (lock) {
             try {
                 long timeoutMillis = unit.toMillis(timeout);
@@ -121,21 +119,13 @@ public class RunningConversation extends Thread {
             return null;
         }
 
-        // Check if the result is of the correct type
-        // We do not want to return a result that is not of the correct type.
-        // It technically should never happen, but better be safe than sorry.
-        if (!resultType.isAssignableFrom(result.getClass())) {
-            throw new IllegalStateException(STR."The result type \{result.getClass()} is not assignable from \{resultType}");
-        }
-
-        // TODO: Find a more robust way to do this
-        // I mean, this is pretty bad
-        var resultClass = (T) result;
+        // Found the result, save it to a temporary variable, so we can reset the result to null
+        var tmpResult = result;
 
         // Reset the result to null. This is done so that the next waitFor call will not return the same result
         this.result = null;
 
-        return resultClass;
+        return tmpResult;
     }
 
     @ApiStatus.Internal
