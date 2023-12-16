@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.api.objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
@@ -303,5 +304,30 @@ public record Message(
         @Nullable
         InlineKeyboardMarkup replyMarkup
 ) implements ApiResult {
+
+        @JsonIgnore
+        public Long getChatId() {
+                return chat.id();
+        }
+
+        @JsonIgnore
+        public boolean isGroup() {
+                return chat.isGroup();
+        }
+
+        @JsonIgnore
+        public boolean isChannel() {
+                return chat.isChannel();
+        }
+
+        @JsonIgnore
+        public boolean isUser() {
+                return chat.isUser();
+        }
+
+        @JsonIgnore
+        public boolean isSuperGroup() {
+                return chat.isSuperGroup();
+        }
 
 }
