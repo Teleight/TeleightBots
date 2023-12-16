@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.GetChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
+import org.teleight.teleightbots.conversation.ConversationManager;
+import org.teleight.teleightbots.menu.Menu;
+import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.event.EventManager;
@@ -49,5 +52,7 @@ public interface TelegramBot {
         final GetChatMember chatMember = GetChatMember.builder().chatId(chatId).userId(userId).build();
         return execute(chatMember);
     }
+
+    @NotNull ConversationManager getConversationManager();
 
 }
