@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.MultiPartApiMethod;
+import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
@@ -50,6 +51,8 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     private Bot bot;
     private int lastReceivedUpdate = 0;
 
+    private final Object AUTH_LOCK = new Object();
+
     @Override
     public void setBot(@NotNull Bot bot) {
         if (this.bot != null) {
@@ -60,11 +63,28 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
     @Override
     public void start() {
-        updateProcessorThread = new Thread(new UpdateProcessorThread());
+        bot.execute(new GetMe())
+                .thenAcceptAsync(user -> {
+                    synchronized (AUTH_LOCK) {
+                        System.out.println("Bot authenticated: " + user.username());
+                        AUTH_LOCK.notifyAll();
+                    }
+                })
+                .exceptionally(throwable -> {
+                    synchronized (AUTH_LOCK) {
+                        shutdown();
+                        AUTH_LOCK.notifyAll();
+                        System.out.println("Failed to authenticate bot: " + throwable.getMessage());
+                    }
+                    return null;
+                });
+
+        updateProcessorThread = new UpdateProcessorThread();
         updateProcessorThread.setName(bot.getBotUsername() + " Update Processor");
         updateProcessorThread.start();
     }
 
+    @Override
     public void shutdown() {
         updateProcessorThread.interrupt();
     }
@@ -301,9 +321,18 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         return requestBuilder.POST(body).build();
     }
 
-    private class UpdateProcessorThread implements Runnable {
+
+    private class UpdateProcessorThread extends Thread {
         @Override
         public void run() {
+            synchronized (AUTH_LOCK) {
+                try {
+                    AUTH_LOCK.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             while (!Thread.currentThread().isInterrupted()) {
                 executeGetUpdates();
             }
