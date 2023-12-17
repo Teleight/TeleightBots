@@ -5,7 +5,7 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.trait.GroupBotEvent;
 
-public record BotQuitGroupEvent(
+public record BotLeftGroupEvent(
         @NotNull Bot bot,
         @NotNull Update update
 ) implements GroupBotEvent {
