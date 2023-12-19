@@ -1,14 +1,13 @@
 package org.teleight.teleightbots.bot.trait;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.GetChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
-import org.teleight.teleightbots.conversation.ConversationManager;
-import org.teleight.teleightbots.menu.Menu;
-import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
+import org.teleight.teleightbots.conversation.ConversationManager;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.extensions.ExtensionManager;
 import org.teleight.teleightbots.menu.Menu;
@@ -40,7 +39,7 @@ public interface TelegramBot {
         return createMenu(null, builder);
     }
 
-    @NotNull Menu createMenu(String name, @NotNull Menu.Builder builder);
+    @NotNull Menu createMenu(@Nullable String name, @NotNull Menu.Builder builder);
 
     @NotNull CommandManager getCommandManager();
 

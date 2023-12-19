@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.menu;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Collections;
@@ -10,13 +11,13 @@ import java.util.List;
 @FunctionalInterface
 public interface MenuBuilder {
 
-    @NotNull Menu createMenu(@NotNull String name);
+    @NotNull Menu createMenu(@Nullable String name);
 
     class MenuBuilderImpl implements MenuBuilder {
         private final List<MenuImpl> allMenus = new LinkedList<>();
 
         @Override
-        public @NotNull Menu createMenu(@NotNull String name) {
+        public @NotNull Menu createMenu(@Nullable String name) {
             MenuImpl menuImpl = new MenuImpl(name);
             allMenus.add(menuImpl);
             return menuImpl;

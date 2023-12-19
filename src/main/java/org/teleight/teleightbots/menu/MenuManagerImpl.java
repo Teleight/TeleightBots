@@ -111,7 +111,7 @@ public final class MenuManagerImpl implements MenuManager {
     @Override
     public @Nullable Menu getMenu(String name) {
         for (Menu value : menus.values()) {
-            if(value.getMenuName().equalsIgnoreCase(name)){
+            if(name.equals(value.getMenuName())){
                 return value;
             }
         }

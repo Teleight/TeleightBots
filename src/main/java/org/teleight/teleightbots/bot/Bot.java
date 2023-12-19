@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.bot.trait.TelegramBot;
@@ -92,7 +93,7 @@ public class Bot implements TelegramBot {
     }
 
     @Override
-    public @NotNull Menu createMenu(String name, Menu.@NotNull Builder builder) {
+    public @NotNull Menu createMenu(@Nullable String name, Menu.@NotNull Builder builder) {
         final MenuBuilder.MenuBuilderImpl menuBuilder = new MenuBuilder.MenuBuilderImpl();
         final Menu rootMenu = menuBuilder.createMenu(name);
         builder.create(menuBuilder, rootMenu);

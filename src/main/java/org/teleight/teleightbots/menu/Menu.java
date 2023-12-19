@@ -10,7 +10,7 @@ public interface Menu {
 
     int getMenuId();
 
-    @NotNull String getMenuName();
+    @Nullable String getMenuName();
 
     @Nullable String getText();
 

@@ -2,6 +2,7 @@ package org.teleight.teleightbots.menu;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
 
@@ -21,7 +22,7 @@ public class MenuImpl implements Menu {
     private String text;
     private InlineKeyboardMarkup keyboard;
 
-    public MenuImpl(@NotNull String menuName) {
+    public MenuImpl(@Nullable String menuName) {
         this.menuName = menuName;
     }
 
@@ -43,7 +44,7 @@ public class MenuImpl implements Menu {
     }
 
     @Override
-    public @NotNull String getMenuName() {
+    public @Nullable String getMenuName() {
         return menuName;
     }
 
