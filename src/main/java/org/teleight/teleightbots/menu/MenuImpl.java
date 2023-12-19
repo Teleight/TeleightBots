@@ -48,8 +48,9 @@ public class MenuImpl implements Menu {
     }
 
     @Override
-    public void setText(@NotNull String text) {
+    public @NotNull Menu setText(@NotNull String text) {
         this.text = text;
+        return this;
     }
 
     @Override

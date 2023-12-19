@@ -12,7 +12,7 @@ public interface Menu {
 
     @Nullable String getText();
 
-    void setText(@NotNull String text);
+    @NotNull Menu setText(@NotNull String text);
 
     @NotNull Menu addRow(@NotNull MenuButton... buttons);
 
