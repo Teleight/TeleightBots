@@ -25,7 +25,7 @@ public record GetChatMember(
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "GetChatMember";
+        return "getChatMember";
     }
 
     public sealed interface Builder permits BuilderImpl {
