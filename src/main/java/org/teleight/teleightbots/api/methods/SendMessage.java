@@ -4,15 +4,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
+import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.utils.ParseMode;
 
 public record SendMessage(
-        @JsonProperty("chat_id")
+        @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
 
-        @JsonProperty("text")
+        @JsonProperty("message_thread_id")
+        @Nullable
+        Integer messageThreadId,
+
+        @JsonProperty(value = "text", required = true)
         @NotNull
         String text,
 
@@ -20,11 +25,25 @@ public record SendMessage(
         @Nullable
         ParseMode parseMode,
 
+        @JsonProperty("entities")
+        @Nullable
+        MessageEntity[] entities,
+
         @JsonProperty("disable_web_page_preview")
-        boolean disableWebPagePreview,
+        Boolean disableWebPagePreview,
 
         @JsonProperty("disable_notification")
-        boolean disableNotification,
+        Boolean disableNotification,
+
+        @JsonProperty("protect_content")
+        Boolean protectContent,
+
+        @JsonProperty("reply_to_message_id")
+        @Nullable
+        Integer replyToMessageId,
+
+        @JsonProperty(value = "allow_sending_without_reply")
+        Boolean allowSendingWithoutReply,
 
         @JsonProperty("reply_markup")
         @Nullable
@@ -47,13 +66,23 @@ public record SendMessage(
             return chatId("" + chatId);
         }
 
+        @NotNull Builder messageThreadId(@Nullable Integer messageThreadId);
+
         @NotNull Builder text(@NotNull String text);
 
         @NotNull Builder parseMode(@Nullable ParseMode parseMode);
 
-        @NotNull Builder disableWebPagePreview(boolean disableWebPagePreview);
+        @NotNull Builder entities(@Nullable MessageEntity[] entities);
 
-        @NotNull Builder disableNotification(boolean disableNotification);
+        @NotNull Builder disableWebPagePreview(Boolean disableWebPagePreview);
+
+        @NotNull Builder disableNotification(Boolean disableNotification);
+
+        @NotNull Builder protectContent(Boolean protectContent);
+
+        @NotNull Builder replyToMessageId(@Nullable Integer replyToMessageId);
+
+        @NotNull Builder allowSendingWithoutReply(Boolean allowSendingWithoutReply);
 
         @NotNull Builder replyMarkup(@Nullable ReplyKeyboard replyMarkup);
 
@@ -62,15 +91,26 @@ public record SendMessage(
 
     static final class BuilderImpl implements Builder {
         private String chatId;
+        private Integer messageThreadId;
         private String text;
         private ParseMode parseMode;
+        private MessageEntity[] entities;
         private boolean disableWebPagePreview;
         private boolean disableNotification;
+        private boolean protectContent;
+        private Integer replyToMessageId;
+        private boolean allowSendingWithoutReply;
         private ReplyKeyboard replyMarkup;
 
         @Override
         public @NotNull Builder chatId(@NotNull String chatId) {
             this.chatId = chatId;
+            return this;
+        }
+
+        @Override
+        public @NotNull Builder messageThreadId(@Nullable Integer messageThreadId) {
+            this.messageThreadId = messageThreadId;
             return this;
         }
 
@@ -87,14 +127,26 @@ public record SendMessage(
         }
 
         @Override
-        public @NotNull Builder disableWebPagePreview(boolean disableWebPagePreview) {
+        public @NotNull Builder entities(@Nullable MessageEntity[] entities) {
+            this.entities = entities;
+            return this;
+        }
+
+        @Override
+        public @NotNull Builder disableWebPagePreview(Boolean disableWebPagePreview) {
             this.disableWebPagePreview = disableWebPagePreview;
             return this;
         }
 
         @Override
-        public @NotNull Builder disableNotification(boolean disableNotification) {
+        public @NotNull Builder disableNotification(Boolean disableNotification) {
             this.disableNotification = disableNotification;
+            return this;
+        }
+
+        @Override
+        public @NotNull Builder protectContent(Boolean protectContent) {
+            this.protectContent = protectContent;
             return this;
         }
 
@@ -105,8 +157,32 @@ public record SendMessage(
         }
 
         @Override
+        public @NotNull Builder replyToMessageId(@Nullable Integer replyToMessageId) {
+            this.replyToMessageId = replyToMessageId;
+            return this;
+        }
+
+        @Override
+        public @NotNull Builder allowSendingWithoutReply(Boolean allowSendingWithoutReply) {
+            this.allowSendingWithoutReply = allowSendingWithoutReply;
+            return this;
+        }
+
+        @Override
         public @NotNull SendMessage build() {
-            return new SendMessage(chatId, text, parseMode, disableWebPagePreview, disableNotification, replyMarkup);
+            return new SendMessage(
+                    chatId,
+                    messageThreadId,
+                    text,
+                    parseMode,
+                    entities,
+                    disableWebPagePreview,
+                    disableNotification,
+                    protectContent,
+                    replyToMessageId,
+                    allowSendingWithoutReply,
+                    replyMarkup
+            );
         }
     }
 
