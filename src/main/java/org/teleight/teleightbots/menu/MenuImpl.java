@@ -27,7 +27,12 @@ public class MenuImpl implements Menu {
 
     @Override
     public @NotNull Menu addRow(@NotNull MenuButton... buttons) {
-        final List<MenuButton> column = new LinkedList<>(List.of(buttons));
+        return addRow(List.of(buttons));
+    }
+
+    @Override
+    public @NotNull Menu addRow(@NotNull List<MenuButton> buttons) {
+        final List<MenuButton> column = new LinkedList<>(buttons);
         columns.add(column);
         return this;
     }

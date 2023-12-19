@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
 
+import java.util.List;
+
 public interface Menu {
 
     int getMenuId();
@@ -15,6 +17,8 @@ public interface Menu {
     @NotNull Menu setText(@NotNull String text);
 
     @NotNull Menu addRow(@NotNull MenuButton... buttons);
+
+    @NotNull Menu addRow(@NotNull List<MenuButton> buttons);
 
     @NotNull InlineKeyboardMarkup getKeyboard();
 
