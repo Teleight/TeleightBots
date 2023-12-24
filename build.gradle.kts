@@ -23,6 +23,10 @@ dependencies {
     implementation("org.checkerframework:checker:3.39.0")
     implementation("org.checkerframework:checker-qual:3.39.0")
 
+    //Lombok
+    implementation("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+
     //Json
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
 
