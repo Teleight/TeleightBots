@@ -28,6 +28,11 @@ public record InlineQueryResultPhoto(
                 return new BuilderImpl();
         }
 
+        @Override
+        public String type() {
+                return "photo";
+        }
+
         public sealed interface Builder permits BuilderImpl {
                 @NotNull Builder id(@NotNull String id);
 
