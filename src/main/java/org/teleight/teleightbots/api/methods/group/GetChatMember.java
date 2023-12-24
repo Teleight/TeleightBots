@@ -29,14 +29,6 @@ public record GetChatMember(
         return "getChatMember";
     }
 
-    public sealed interface Builder permits BuilderImpl {
-        @NotNull Builder chatId(@NotNull String chatId);
-
-        @NotNull Builder userId(long userId);
-
-        @NotNull GetChatMember build();
-    }
-
     public static class GetChatMemberBuilder {
         @Tolerate
         public GetChatMemberBuilder chatId(@NotNull Long chatId) {
