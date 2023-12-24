@@ -1,22 +1,23 @@
-package org.teleight.teleightbots.api.methods;
+package org.teleight.teleightbots.api.methods.group;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
+@Builder
 public record GetChatMember(
-        @JsonProperty(value = "chat_id",required = true)
+        @JsonProperty(value = "chat_id", required = true)
+        @NotNull
         String chatId,
 
         @JsonProperty(value = "user_id", required = true)
-        long userId
+        @NotNull
+        Long userId
 ) implements ApiMethod<ChatMember> {
-
-    public static @NotNull Builder builder() {
-        return new BuilderImpl();
-    }
 
     @Override
     public @NotNull ChatMember deserializeResponse(@NotNull String answer) throws TelegramRequestException {
@@ -36,25 +37,11 @@ public record GetChatMember(
         @NotNull GetChatMember build();
     }
 
-    static final class BuilderImpl implements Builder {
-        private String chatId;
-        private long userId;
-
-        @Override
-        public @NotNull Builder chatId(@NotNull String chatId) {
-            this.chatId = chatId;
+    public static class GetChatMemberBuilder {
+        @Tolerate
+        public GetChatMemberBuilder chatId(@NotNull Long chatId) {
+            this.chatId = chatId.toString();
             return this;
-        }
-
-        @Override
-        public @NotNull Builder userId(long userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        @Override
-        public @NotNull GetChatMember build() {
-            return new GetChatMember(chatId, userId);
         }
     }
 
