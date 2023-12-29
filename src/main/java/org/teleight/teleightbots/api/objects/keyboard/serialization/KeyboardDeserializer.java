@@ -1,10 +1,11 @@
-package org.teleight.teleightbots.api.objects.keyboard;
+package org.teleight.teleightbots.api.objects.keyboard.serialization;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import org.teleight.teleightbots.api.objects.keyboard.*;
 
 import java.io.IOException;
 
@@ -24,12 +25,20 @@ public class KeyboardDeserializer extends StdDeserializer<ReplyKeyboard> {
     @Override
     public ReplyKeyboard deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         final JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-
+        Class<? extends ReplyKeyboard> wrapperClass = null;
         if (node.has("inline_keyboard")) {
-            return objectMapper.readValue(node.toString(), InlineKeyboardMarkup.class);
+            wrapperClass = InlineKeyboardMarkup.class;
         }
-
-        return null;
+        if (node.has("keyboard")) {
+            wrapperClass = ReplyKeyboardMarkup.class;
+        }
+        if(node.has("remove_keyboard")){
+            wrapperClass = ReplyKeyboardRemove.class;
+        }
+        if (node.has("force_reply")) {
+            wrapperClass = ForceReplyKeyboard.class;
+        }
+        return objectMapper.readValue(node.toString(), wrapperClass);
     }
 
 }

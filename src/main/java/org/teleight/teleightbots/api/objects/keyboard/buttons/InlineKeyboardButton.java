@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.objects.keyboard;
+package org.teleight.teleightbots.api.objects.keyboard.buttons;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
