@@ -6,6 +6,7 @@ import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
+import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.utils.ParseMode;
@@ -44,13 +45,9 @@ public record SendMessage(
         @Nullable
         Boolean protectContent,
 
-        @JsonProperty(value = "reply_to_message_id")
+        @JsonProperty(value = "reply_parameters")
         @Nullable
-        Integer replyToMessageId,
-
-        @JsonProperty(value = "allow_sending_without_reply")
-        @Nullable
-        Boolean allowSendingWithoutReply,
+        ReplyParameters replyParameters,
 
         @JsonProperty(value = "reply_markup")
         @Nullable
