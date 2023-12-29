@@ -8,6 +8,7 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetFile(
         @JsonProperty(value = "file_id", required = true)
+        @NotNull
         String fileId
 ) implements ApiMethod<File> {
 

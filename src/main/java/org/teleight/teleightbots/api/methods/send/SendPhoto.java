@@ -4,17 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Builder;
 import lombok.experimental.Tolerate;
-import org.checkerframework.common.aliasing.qual.Unique;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
-import org.teleight.teleightbots.api.objects.InputFile;
-import org.teleight.teleightbots.api.objects.Message;
+import org.teleight.teleightbots.api.objects.input.InputFile;
 import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.utils.ParseMode;
-import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
 
 @Builder
