@@ -2,6 +2,7 @@ package org.teleight.teleightbots.api.objects.keyboard;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.api.objects.keyboard.buttons.InlineKeyboardButton;
 
 public record InlineKeyboardMarkup(
         @JsonProperty(value = "inline_keyboard",required = true)
