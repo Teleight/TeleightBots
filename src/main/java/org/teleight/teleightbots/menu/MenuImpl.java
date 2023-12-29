@@ -3,7 +3,7 @@ package org.teleight.teleightbots.menu;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardButton;
+import org.teleight.teleightbots.api.objects.keyboard.buttons.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
 
 import java.util.LinkedList;

@@ -13,7 +13,7 @@ import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResultDeserializer;
-import org.teleight.teleightbots.api.objects.keyboard.KeyboardDeserializer;
+import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.utils.ParseMode;
 import org.teleight.teleightbots.api.utils.ParseModeDeserializer;
