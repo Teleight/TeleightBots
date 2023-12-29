@@ -7,6 +7,7 @@ import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
+import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.api.objects.input.InputFile;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
@@ -45,13 +46,9 @@ public record SendVideoNote(
         @Nullable
         Boolean protectContent,
 
-        @JsonProperty(value = "reply_to_message_id")
+        @JsonProperty(value = "reply_parameters")
         @Nullable
-        Integer replyToMessageId,
-
-        @JsonProperty(value = "allow_sending_without_reply")
-        @Nullable
-        Boolean allowSendingWithoutReply,
+        ReplyParameters replyParameters,
 
         @JsonProperty(value = "reply_markup")
         @Nullable
@@ -84,11 +81,8 @@ public record SendVideoNote(
         if (protectContent != null) {
             bodyCreator.addPart("protect_content", protectContent.toString());
         }
-        if (replyToMessageId != null) {
-            bodyCreator.addPart("reply_to_message_id", replyToMessageId.toString());
-        }
-        if (allowSendingWithoutReply != null) {
-            bodyCreator.addPart("allow_sending_without_reply", allowSendingWithoutReply.toString());
+        if (replyParameters != null) {
+            bodyCreator.addPart("reply_parameters", OBJECT_MAPPER.writeValueAsString(replyParameters));
         }
         if (replyMarkup != null) {
             bodyCreator.addPart("reply_markup", OBJECT_MAPPER.writeValueAsString(replyMarkup));
