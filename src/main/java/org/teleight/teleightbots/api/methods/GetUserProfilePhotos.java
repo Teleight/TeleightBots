@@ -12,7 +12,7 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 public record GetUserProfilePhotos(
         @JsonProperty(value = "user_id", required = true)
         @NotNull
-        Integer userId,
+        Long userId,
 
         @JsonProperty(value = "offset")
         @Nullable
