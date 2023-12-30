@@ -1,6 +1,6 @@
 package org.teleight.teleightbots.demo;
 
-import org.teleight.teleightbots.api.methods.SendMessage;
+import org.teleight.teleightbots.api.methods.send.SendMessage;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.conversation.Conversation;

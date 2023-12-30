@@ -3,7 +3,7 @@ package org.teleight.teleightbots.bot.trait;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.methods.GetChatMember;
+import org.teleight.teleightbots.api.methods.group.GetChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;

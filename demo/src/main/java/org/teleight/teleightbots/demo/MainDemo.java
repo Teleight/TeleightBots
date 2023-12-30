@@ -1,7 +1,7 @@
 package org.teleight.teleightbots.demo;
 
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.api.methods.SendMessage;
+import org.teleight.teleightbots.api.methods.send.SendMessage;
 import org.teleight.teleightbots.api.utils.ParseMode;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.demo.command.Test2Command;

@@ -1,73 +1,55 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
 
+@Builder
 public record ForwardMessage(
         @JsonProperty(value = "chat_id", required = true)
+        @NotNull
         String chatId,
 
+        @JsonProperty("message_thread_id")
+        @Nullable
+        Integer messageThreadId,
+
         @JsonProperty(value = "from_chat_id", required = true)
+        @NotNull
         String fromChatId,
 
-        @JsonProperty(value = "message_id", required = true)
-        long messageId
-) implements ApiMethodMessage {
+        @JsonProperty(value = "disable_notification")
+        @Nullable
+        Boolean disableNotification,
 
-    public static @NotNull Builder builder() {
-        return new BuilderImpl();
-    }
+        @JsonProperty(value = "protect_content")
+        @Nullable
+        Boolean protectContent,
+
+        @JsonProperty(value = "message_id", required = true)
+        @NotNull
+        Integer messageId
+) implements ApiMethodMessage {
 
     @Override
     public @NotNull String getEndpointURL() {
         return "forwardMessage";
     }
 
-    public sealed interface Builder permits BuilderImpl {
-        @NotNull Builder chatId(@NotNull String chatId);
-
-        default @NotNull Builder chatId(long chatId){
-            return chatId("" + chatId);
-        }
-
-        @NotNull Builder fromChatId(@NotNull String fromChatId);
-
-        default @NotNull Builder fromChatId(long fromChatId){
-            return fromChatId("" + fromChatId);
-        }
-
-        @NotNull Builder messageId(long messageId);
-
-        @NotNull ForwardMessage build();
-    }
-
-    static final class BuilderImpl implements Builder {
-        private String chatId;
-        private String fromChatId;
-        private long messageId;
-
-        @Override
-        public @NotNull Builder chatId(@NotNull String chatId) {
-            this.chatId = chatId;
+    public static class ForwardMessageBuilder {
+        @Tolerate
+        public ForwardMessageBuilder chatId(@NotNull Long chatId) {
+            this.chatId = chatId.toString();
             return this;
         }
 
-        @Override
-        public @NotNull Builder fromChatId(@NotNull String fromChatId) {
-            this.fromChatId = fromChatId;
+        @Tolerate
+        public ForwardMessageBuilder fromChatId(@NotNull Long chatId) {
+            this.fromChatId = chatId.toString();
             return this;
-        }
-
-        @Override
-        public @NotNull Builder messageId(long messageId) {
-            this.messageId = messageId;
-            return this;
-        }
-
-        @Override
-        public @NotNull ForwardMessage build() {
-            return new ForwardMessage(chatId, fromChatId, messageId);
         }
     }
 

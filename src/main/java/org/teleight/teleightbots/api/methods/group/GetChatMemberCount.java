@@ -5,28 +5,29 @@ import lombok.Builder;
 import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.objects.chat.Chat;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 @Builder
-public record GetChat(
+public record GetChatMemberCount(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId
-) implements ApiMethod<Chat> {
+) implements ApiMethod<Integer> {
+
     @Override
-    public @NotNull Chat deserializeResponse(@NotNull String answer) throws TelegramRequestException {
-        return deserializeResponse(answer, Chat.class);
+    public @NotNull Integer deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, Integer.class);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "getChat";
+        return "getChatMemberCount";
     }
 
-    public static class GetChatBuilder {
+    public static class GetChatMemberCountBuilder {
         @Tolerate
-        public GetChatBuilder chatId(@NotNull Long chatId) {
+        public GetChatMemberCountBuilder chatId(@NotNull Long chatId) {
             this.chatId = chatId.toString();
             return this;
         }
