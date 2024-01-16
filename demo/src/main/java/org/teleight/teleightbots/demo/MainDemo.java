@@ -4,14 +4,13 @@ import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.api.utils.ParseMode;
 import org.teleight.teleightbots.bot.BotSettings;
-import org.teleight.teleightbots.demo.command.Test2Command;
 import org.teleight.teleightbots.demo.command.TestCommand;
+import org.teleight.teleightbots.demo.command.TestConversationCommand;
+import org.teleight.teleightbots.demo.conversations.TestConversation;
 import org.teleight.teleightbots.event.EventListener;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.menu.Menu;
 import org.teleight.teleightbots.menu.MenuButton;
-
-import java.util.concurrent.TimeUnit;
 
 public class MainDemo {
 
@@ -71,9 +70,8 @@ public class MainDemo {
                     .build();
             bot.execute(sendMessage);
 
-            bot.getConversationManager().createConversation("test", new TestConversation(), 10, TimeUnit.SECONDS);
-            bot.getCommandManager().registerCommand(new Test2Command());
-
+            bot.getConversationManager().registerConversation(new TestConversation());
+            bot.getCommandManager().registerCommand(new TestConversationCommand());
         });
     }
 
