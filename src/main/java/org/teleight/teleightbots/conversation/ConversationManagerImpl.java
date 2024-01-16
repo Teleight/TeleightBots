@@ -7,9 +7,9 @@ import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class ConversationManagerImpl implements ConversationManager {
 
@@ -18,21 +18,16 @@ public class ConversationManagerImpl implements ConversationManager {
 
     private final Bot bot;
 
-    public ConversationManagerImpl(Bot bot) {
+    public ConversationManagerImpl(@NotNull Bot bot) {
         this.bot = bot;
     }
 
     @Override
-    public @NotNull Conversation createConversation(@NotNull String conversationName,
-                                                    Conversation.@NotNull Executor executor,
-                                                    int conversationTimeout,
-                                                    @NotNull TimeUnit conversationTimeoutUnit) {
-        if (conversations.containsKey(conversationName)) {
-            throw new IllegalArgumentException("The conversation " + conversationName + " has already been registered");
+    public synchronized void registerConversation(@NotNull Conversation conversation) {
+        if (conversations.containsKey(conversation.name())) {
+            throw new IllegalArgumentException("The conversation " + conversation.name() + " has already been registered");
         }
-        final Conversation conversation = new ConversationImpl(conversationName, executor, conversationTimeout, conversationTimeoutUnit);
-        conversations.put(conversationName, conversation);
-        return conversation;
+        conversations.put(conversation.name(), conversation);
     }
 
     @Override
@@ -45,14 +40,14 @@ public class ConversationManagerImpl implements ConversationManager {
 
     @Override
     public void joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName) {
-        Conversation conversation = conversations.get(conversationName);
+        var conversation = conversations.get(conversationName);
         if (usersInConversation.containsKey(user.id())) {
             throw new IllegalArgumentException("The user " + user.id() + " is already in a conversation");
         }
         if (conversation == null) {
             throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
         }
-        RunningConversation runningConversation = new RunningConversation(bot, user, chat, conversation);
+        var runningConversation = new RunningConversation(bot, user, chat, conversation);
         usersInConversation.put(user.id(), runningConversation);
         runningConversation.start();
     }
@@ -73,17 +68,13 @@ public class ConversationManagerImpl implements ConversationManager {
     }
 
     @Override
-    public @NotNull @Unmodifiable Collection<Conversation> getConversations() {
-        return conversations.values();
+    public @Unmodifiable @NotNull Collection<Conversation> getConversations() {
+        return Collections.unmodifiableCollection(conversations.values());
     }
 
     @Override
     public @NotNull Conversation getConversation(@NotNull String conversationName) {
-        final Conversation conversation = conversations.get(conversationName);
-        if (conversation == null) {
-            throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
-        }
-        return conversation;
+        return conversations.get(conversationName);
     }
 
     @Override
