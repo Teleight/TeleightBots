@@ -162,6 +162,14 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                             event.completeCallback();
                         });
                     }
+
+
+                    //Conversation
+                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
+                        runningConversation.getEventManager().call(updateReceivedEvent);
+                    });
+
+
                     final boolean hasMessage = update.message() != null;
                     if (hasMessage) {
                         final Message message = update.message();
@@ -248,11 +256,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                             bot.getEventManager().call(new ChannelSendMessageEvent(bot, update, chat));
                         }
                     }
-
-                    //Conversation
-                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
-                        runningConversation.getEventManager().call(updateReceivedEvent);
-                    });
                 });
     }
 

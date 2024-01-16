@@ -35,13 +35,6 @@ public class RunningConversation extends Thread {
     private Update result;
     private long lastUpdateMillis = System.currentTimeMillis();
 
-    /**
-     * This is used to acknowledge the first event received by the bot, which is the event that
-     * triggered the bot to join the conversation.
-     * <p>
-     * This is used to prevent the bot from immediately responding to the first event.
-     */
-    private final AtomicBoolean acknowledgeFirstEvent = new AtomicBoolean(false);
 
     /**
      * This is used to stop the conversation when the conversation has timed out.
@@ -67,10 +60,6 @@ public class RunningConversation extends Thread {
 
         eventManager.addListener(UpdateReceivedEvent.class, event -> {
             synchronized (lock) {
-                if (!acknowledgeFirstEvent.get()) {
-                    acknowledgeFirstEvent.set(true);
-                    return;
-                }
                 result = event.update();
                 lastUpdateMillis = System.currentTimeMillis();
                 lock.notify();
