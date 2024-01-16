@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @ApiStatus.Internal
-public class RunningConversation extends Thread {
+public final class RunningConversation extends Thread {
 
     private static final Scheduler SCHEDULER = Scheduler.newScheduler();
 
@@ -30,11 +30,9 @@ public class RunningConversation extends Thread {
     private final User user;
     private final Chat chat;
     private final Conversation conversation;
-    private final long conversationTimeoutMillis;
 
     private Update result;
     private long lastUpdateMillis = System.currentTimeMillis();
-
 
     /**
      * This is used to stop the conversation when the conversation has timed out.
@@ -54,9 +52,8 @@ public class RunningConversation extends Thread {
         this.user = user;
         this.chat = chat;
         this.conversation = conversation;
-        this.conversationTimeoutMillis = conversation.getConversationTimeoutUnit().toMillis(conversation.getConversationTimeout());
 
-        setName(String.format("Conversation-%s-%s", conversation.getName(), user.id()));
+        setName(String.format("Conversation-%s-%s", conversation.name(), user.id()));
 
         eventManager.addListener(UpdateReceivedEvent.class, event -> {
             synchronized (lock) {
@@ -66,14 +63,16 @@ public class RunningConversation extends Thread {
             }
         });
 
+        final var conversationTimeoutMillis = conversation.conversationTimeoutUnit().toMillis(conversation.conversationTimeout());
+
         timeoutTask = SCHEDULER.buildTask(() -> {
             // Check if the conversation has timed out after the last message
-            long currentMillis = System.currentTimeMillis();
-            if (conversation.getConversationTimeout() > 0 &&
-                    lastUpdateMillis + conversationTimeoutMillis < currentMillis
-            ) {
+            final long currentMillis = System.currentTimeMillis();
+            final boolean isTimeoutEnabled = conversation.conversationTimeout() > 0;
+            final boolean hasTimedOut = lastUpdateMillis + conversationTimeoutMillis < currentMillis;
+            if (isTimeoutEnabled && hasTimedOut) {
                 // The conversation has timed out, leave the conversation
-                bot.getConversationManager().leaveConversation(user, conversation.getName());
+                bot.getConversationManager().leaveConversation(user, conversation.name());
             }
         }).repeat(10, TimeUnit.MILLISECONDS).schedule();
     }
@@ -81,24 +80,24 @@ public class RunningConversation extends Thread {
     @Override
     public void run() {
         running.set(true);
+
         // Start the conversation
-        conversation.getExecutor().execute(bot, chat, this);
+        conversation.execute(new ConversationContext(bot, chat, this));
+
         // All work is done, leave the conversation
         if (running.get()) {
-            bot.getConversationManager().leaveConversation(user, conversation.getName());
+            bot.getConversationManager().leaveConversation(user, conversation.name());
         }
     }
 
-    @Nullable
-    public Update waitForUpdate() {
+    public @Nullable Update waitForUpdate() {
         return waitForUpdate(0, TimeUnit.MILLISECONDS);
     }
 
-    @Nullable
-    public Update waitForUpdate(long timeout, @NotNull TimeUnit unit) {
+    public @Nullable Update waitForUpdate(long timeout, @NotNull TimeUnit timeUnit) {
         synchronized (lock) {
             try {
-                long timeoutMillis = unit.toMillis(timeout);
+                long timeoutMillis = timeUnit.toMillis(timeout);
                 lock.wait(timeoutMillis);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -127,4 +126,5 @@ public class RunningConversation extends Thread {
     public EventManager getEventManager() {
         return eventManager;
     }
+
 }
