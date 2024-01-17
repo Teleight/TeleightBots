@@ -1,25 +1,16 @@
 package org.teleight.teleightbots.conversation;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 
 import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
 public interface ConversationManager {
 
-    @NotNull
-    default Conversation createConversation(@NotNull String conversationName,
-                                            @NotNull Conversation.Executor executor) {
-        return createConversation(conversationName, executor, 0, TimeUnit.MILLISECONDS);
-    }
-
-    @NotNull Conversation createConversation(@NotNull String conversationName,
-                                             @NotNull Conversation.Executor executor,
-                                             int conversationTimeout,
-                                             @NotNull TimeUnit conversationTimeoutUnit);
+    void registerConversation(@NotNull Conversation conversation);
 
     void removeConversation(@NotNull String conversationName);
 
@@ -29,15 +20,10 @@ public interface ConversationManager {
 
     boolean isUserInConversation(@NotNull User user, @NotNull String conversationName);
 
-    @NotNull
-    @Unmodifiable
-    Collection<Conversation> getConversations();
+    @Unmodifiable @NotNull Collection<Conversation> getConversations();
 
-    @NotNull
-    Conversation getConversation(@NotNull String conversationName);
+    @Nullable Conversation getConversation(@NotNull String conversationName);
 
-    @NotNull
-    @Unmodifiable
-    Collection<RunningConversation> getRunningConversations();
+    @NotNull @Unmodifiable Collection<RunningConversation> getRunningConversations();
 
 }
