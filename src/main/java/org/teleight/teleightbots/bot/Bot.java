@@ -50,7 +50,10 @@ public class Bot implements TelegramBot {
     //Extensions
     private final ExtensionManager extensionManager = new ExtensionManagerImpl(this);
 
-    public Bot(String token, String username, UpdateProcessor updateProcessor, BotSettings botSettings) {
+
+    private final boolean shouldPrintExceptions = Boolean.parseBoolean(System.getenv("teleightbots.printexceptions"));
+
+    public Bot(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @NotNull BotSettings botSettings) {
         this.token = token;
         this.username = username;
         this.botSettings = botSettings;
@@ -156,6 +159,9 @@ public class Bot implements TelegramBot {
             try {
                 result = method.deserializeResponse(responseJson);
             } catch (Exception e) {
+                if (shouldPrintExceptions) {
+                    e.printStackTrace();
+                }
                 throw new TelegramRequestException(e);
             }
             eventManager.call(new MethodSendEvent<>(Bot.this, method, result));
