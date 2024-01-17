@@ -63,12 +63,13 @@ public final class RunningConversation extends Thread {
             }
         });
 
-        final var conversationTimeoutMillis = conversation.conversationTimeoutUnit().toMillis(conversation.conversationTimeout());
+        final var conversationTimeout = conversation.conversationTimeout();
+        final var conversationTimeoutMillis = conversationTimeout.timeUnit().toMillis(conversationTimeout.timeout());
 
         timeoutTask = SCHEDULER.buildTask(() -> {
             // Check if the conversation has timed out after the last message
             final long currentMillis = System.currentTimeMillis();
-            final boolean isTimeoutEnabled = conversation.conversationTimeout() > 0;
+            final boolean isTimeoutEnabled = conversationTimeoutMillis > 0;
             final boolean hasTimedOut = lastUpdateMillis + conversationTimeoutMillis < currentMillis;
             if (isTimeoutEnabled && hasTimedOut) {
                 // The conversation has timed out, leave the conversation

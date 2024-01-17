@@ -1,10 +1,10 @@
 package org.teleight.teleightbots.demo.conversations;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Range;
 import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.conversation.Conversation;
 import org.teleight.teleightbots.conversation.ConversationContext;
+import org.teleight.teleightbots.conversation.ConversationTimeout;
 
 import java.util.concurrent.TimeUnit;
 
@@ -63,13 +63,8 @@ public class TestConversation implements Conversation {
     }
 
     @Override
-    public @Range(from = 0, to = 10_000L) int conversationTimeout() {
-        return 10;
-    }
-
-    @Override
-    public @NotNull TimeUnit conversationTimeoutUnit() {
-        return TimeUnit.SECONDS;
+    public @NotNull ConversationTimeout conversationTimeout() {
+        return new ConversationTimeout(10, TimeUnit.SECONDS);
     }
 
 }
