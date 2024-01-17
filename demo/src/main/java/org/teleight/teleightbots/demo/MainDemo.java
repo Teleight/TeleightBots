@@ -73,7 +73,6 @@ public class MainDemo {
 
             bot.getConversationManager().createConversation("test", new TestConversation(), 10, TimeUnit.SECONDS);
             bot.getCommandManager().registerCommand(new Test2Command());
-
         });
     }
 
