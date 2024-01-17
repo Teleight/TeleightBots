@@ -306,8 +306,8 @@ public record Message(
 ) implements ApiResult {
 
         @JsonIgnore
-        public Long chatId() {
-                return chat.id();
+        public String chatId() {
+                return "" + chat.id();
         }
 
         @JsonIgnore

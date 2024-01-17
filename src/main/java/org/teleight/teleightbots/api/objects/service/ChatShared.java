@@ -8,6 +8,6 @@ public record ChatShared(
         Integer requestId,
 
         @JsonProperty(value = "chat_id", required = true)
-        Long chatId
+        String chatId
 ) implements ApiResult {
 }
