@@ -73,7 +73,7 @@ public class MenuImpl implements Menu {
 
             for (int rowIndex = 0; rowIndex < row.size(); rowIndex++) {
                 final MenuButton oldButton = row.get(rowIndex);
-                newColumns[columnIndex][rowIndex] = new InlineKeyboardButton(oldButton.text(), oldButton.url(), oldButton.callbackData());
+                newColumns[columnIndex][rowIndex] = new InlineKeyboardButton(oldButton.text(), oldButton.url(), oldButton.callbackData(), null);
             }
         }
 

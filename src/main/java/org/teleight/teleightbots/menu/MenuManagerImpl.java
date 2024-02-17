@@ -14,15 +14,17 @@ import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class MenuManagerImpl implements MenuManager {
 
     private final EventManager eventManager = new EventManagerImpl();
-    private final Map<Integer, Menu> menus = new HashMap<>();
+    private final Map<Integer, Menu> menus = new ConcurrentHashMap<>();
 
     public MenuManagerImpl() {
         eventManager.addListener(ButtonPressEvent.class, event -> {
-            for (final Menu menu : getMenus()) {
+            final Collection<Menu> menus = getMenus();
+            for (final Menu menu : menus) {
                 handleMenu((MenuImpl) menu, event);
             }
         });
@@ -32,12 +34,12 @@ public final class MenuManagerImpl implements MenuManager {
         final List<List<MenuButton>> internalColumns = menu.getColumns();
         for (final List<MenuButton> columns : internalColumns) {
             for (final MenuButton buttonInRow : columns) {
-                handleButton(menu, buttonInRow, event);
+                handleButton(buttonInRow, event);
             }
         }
     }
 
-    private void handleButton(@NotNull Menu menu, @NotNull MenuButton rowButton, @NotNull ButtonPressEvent event) {
+    private void handleButton(@NotNull MenuButton rowButton, @NotNull ButtonPressEvent event) {
         final CallbackQuery callbackQuery = event.callbackQuery();
         final Message message = callbackQuery.message();
         final Chat chat = message.chat();
