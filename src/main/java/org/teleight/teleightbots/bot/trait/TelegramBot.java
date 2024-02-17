@@ -10,6 +10,7 @@ import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.conversation.ConversationManager;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.extensions.ExtensionManager;
+import org.teleight.teleightbots.files.FileDownloader;
 import org.teleight.teleightbots.menu.Menu;
 import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.scheduler.Scheduler;
@@ -44,6 +45,8 @@ public interface TelegramBot {
     @NotNull CommandManager getCommandManager();
 
     @NotNull ExtensionManager getExtensionManager();
+
+    @NotNull FileDownloader getFileDownloader();
 
     <R> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method);
 

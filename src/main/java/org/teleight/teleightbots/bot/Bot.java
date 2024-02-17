@@ -15,6 +15,8 @@ import org.teleight.teleightbots.event.bot.MethodSendEvent;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.extensions.ExtensionManager;
 import org.teleight.teleightbots.extensions.ExtensionManagerImpl;
+import org.teleight.teleightbots.files.FileDownloader;
+import org.teleight.teleightbots.files.FileDownloaderImpl;
 import org.teleight.teleightbots.menu.*;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
@@ -49,6 +51,9 @@ public class Bot implements TelegramBot {
 
     //Extensions
     private final ExtensionManager extensionManager = new ExtensionManagerImpl(this);
+
+    //FileDownloader
+    private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
 
 
     private final boolean shouldPrintExceptions = Boolean.parseBoolean(System.getenv("teleightbots.printexceptions"));
@@ -126,13 +131,18 @@ public class Bot implements TelegramBot {
     }
 
     @Override
+    public @NotNull FileDownloader getFileDownloader() {
+        return fileDownloader;
+    }
+
+    @Override
     public void connect() {
         extensionManager.start();
         updateProcessor.start();
     }
 
     public void close() {
-        try{
+        try {
             extensionManager.shutdown();
         } catch (Exception e) {
             TeleightBots.getExceptionManager().handleException(e);
@@ -146,6 +156,12 @@ public class Bot implements TelegramBot {
 
         try {
             updateProcessor.shutdown();
+        } catch (Exception e) {
+            TeleightBots.getExceptionManager().handleException(e);
+        }
+
+        try {
+            fileDownloader.shutdown();
         } catch (Exception e) {
             TeleightBots.getExceptionManager().handleException(e);
         }
