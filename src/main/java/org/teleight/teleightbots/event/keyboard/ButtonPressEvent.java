@@ -12,24 +12,11 @@ import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.trait.Event;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ButtonPressEvent implements Event {
-
-    private final Bot bot;
-    private final Update update;
-    private final AtomicBoolean completed;
-
-    public ButtonPressEvent(@NotNull Bot bot, @NotNull Update update, @NotNull AtomicBoolean completed) {
-        this.bot = bot;
-        this.update = update;
-        this.completed = completed;
-    }
-
-    @Override
-    public @NotNull Bot bot() {
-        return bot;
-    }
+public record ButtonPressEvent(
+        @NotNull Bot bot,
+        @NotNull Update update
+) implements Event {
 
     public @NotNull CallbackQuery callbackQuery() {
         return update.callbackQuery();
@@ -60,7 +47,6 @@ public class ButtonPressEvent implements Event {
     }
 
     public @NotNull CompletableFuture<Boolean> completeCallback(AnswerCallbackQuery answerCallbackQuery) {
-        completed.set(true);
         return bot.execute(answerCallbackQuery);
     }
 

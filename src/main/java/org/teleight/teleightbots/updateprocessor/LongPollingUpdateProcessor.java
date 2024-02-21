@@ -39,7 +39,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LongPollingUpdateProcessor implements UpdateProcessor {
 
@@ -153,21 +152,13 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 .thenAccept(updateReceivedEvent -> {
                     final boolean hasCallbackQuery = update.callbackQuery() != null;
                     if (hasCallbackQuery) {
-                        final AtomicBoolean completed = new AtomicBoolean();
-                        final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update, completed);
-                        bot.getMenuManager().getEventNode().call(buttonPressEvent).thenAccept(event -> {
-                            if (completed.get()) {
-                                return;
-                            }
-                            event.completeCallback();
-                        });
+                        final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update);
+                        bot.getMenuManager().getEventNode().call(buttonPressEvent);
                     }
 
 
                     //Conversation
-                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
-                        runningConversation.getEventManager().call(updateReceivedEvent);
-                    });
+                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> runningConversation.getEventManager().call(updateReceivedEvent));
 
 
                     final boolean hasMessage = update.message() != null;
