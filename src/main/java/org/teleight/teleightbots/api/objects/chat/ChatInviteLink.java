@@ -6,6 +6,8 @@ import org.jetbrains.annotations.Range;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.User;
 
+import java.util.Date;
+
 public record ChatInviteLink(
         @JsonProperty(value = "invite_link", required = true)
         String inviteLink,
@@ -28,7 +30,7 @@ public record ChatInviteLink(
 
         @JsonProperty("expire_date")
         @Nullable
-        Integer expireDate,
+        Date expireDate,
 
         @JsonProperty("member_limit")
         @Range(from = 1, to = 99999)

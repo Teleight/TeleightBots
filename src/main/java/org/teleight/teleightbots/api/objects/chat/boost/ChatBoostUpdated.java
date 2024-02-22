@@ -1,17 +1,17 @@
-package org.teleight.teleightbots.api.objects;
+package org.teleight.teleightbots.api.objects.chat.boost;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 
-public record Story(
+public record ChatBoostUpdated(
         @JsonProperty(value = "chat", required = true)
         @NotNull
         Chat chat,
 
-        @JsonProperty(value = "id", required = true)
+        @JsonProperty(value = "boost", required = true)
         @NotNull
-        Integer id
+        ChatBoost boost
 ) implements ApiResult {
 }

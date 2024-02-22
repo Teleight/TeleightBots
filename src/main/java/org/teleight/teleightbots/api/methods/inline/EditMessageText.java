@@ -1,96 +1,61 @@
 package org.teleight.teleightbots.api.methods.inline;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
+import org.teleight.teleightbots.api.objects.LinkPreviewOptions;
+import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.utils.ParseMode;
 
+@Builder
 public record EditMessageText(
-        @JsonProperty("chat_id")
+        @JsonProperty(value = "chat_id")
         @Nullable
         String chatId,
 
-        @JsonProperty("text")
+        @JsonProperty(value = "message_id")
+        @Nullable
+        Integer messageId,
+
+        @JsonProperty(value = "inline_message_id")
+        @Nullable
+        String inlineMessageId,
+
+        @JsonProperty(value = "text", required = true)
         @NotNull
         String text,
 
-        @JsonProperty("parse_mode")
+        @JsonProperty(value = "parse_mode")
         @Nullable
         ParseMode parseMode,
 
-        @JsonProperty("message_id")
-        int messageId,
+        @JsonProperty(value = "entities")
+        @Nullable
+        MessageEntity[] entities,
 
-        @JsonProperty("reply_markup")
+        @JsonProperty(value = "link_preview_options")
+        @Nullable
+        LinkPreviewOptions linkPreviewOptions,
+
+        @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
-
-    public static @NotNull Builder builder() {
-        return new BuilderImpl();
-    }
 
     @Override
     public @NotNull String getEndpointURL() {
         return "editMessageText";
     }
 
-    public sealed interface Builder permits BuilderImpl {
-        @NotNull Builder chatId(String chatId);
-
-        @NotNull Builder text(String text);
-
-        @NotNull Builder parseMode(ParseMode parseMode);
-
-        @NotNull Builder messageId(int messageId);
-
-        @NotNull Builder replyMarkup(ReplyKeyboard replyMarkup);
-
-        @NotNull EditMessageText build();
-    }
-
-    static final class BuilderImpl implements Builder {
-        private String chatId;
-        private String text;
-        private ParseMode parseMode;
-        private int messageId;
-        private ReplyKeyboard replyMarkup;
-
-        @Override
-        public @NotNull Builder chatId(String chatId) {
-            this.chatId = chatId;
+    public static class EditMessageTextBuilder {
+        @Tolerate
+        public EditMessageText.EditMessageTextBuilder chatId(@NotNull Long chatId) {
+            this.chatId = chatId.toString();
             return this;
-        }
-
-        @Override
-        public @NotNull Builder text(String text) {
-            this.text = text;
-            return this;
-        }
-
-        @Override
-        public @NotNull Builder parseMode(ParseMode parseMode) {
-            this.parseMode = parseMode;
-            return this;
-        }
-
-        @Override
-        public @NotNull Builder messageId(int messageId) {
-            this.messageId = messageId;
-            return this;
-        }
-
-        @Override
-        public @NotNull Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        @Override
-        public @NotNull EditMessageText build() {
-            return new EditMessageText(chatId, text, parseMode, messageId, replyMarkup);
         }
     }
 

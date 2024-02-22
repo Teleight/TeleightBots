@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.Message;
+import org.teleight.teleightbots.api.objects.reaction.ReactionType;
+
+import java.util.Date;
 
 import static org.teleight.teleightbots.api.objects.chat.Chat.Type.*;
 
@@ -43,13 +46,33 @@ public record Chat(
         @Nullable
         String[] activeUsernames,
 
+        @JsonProperty("available_reactions")
+        @Nullable
+        ReactionType[] availableReactions,
+
+        @JsonProperty("accent_color_id")
+        @Nullable
+        Integer accentColorId,
+
+        @JsonProperty("background_custom_emoji_id")
+        @Nullable
+        String backgroundCustomEmojiId,
+
+        @JsonProperty("profile_accent_color_id")
+        @Nullable
+        Integer profileAccentColorId,
+
+        @JsonProperty("profile_background_custom_emoji_id")
+        @Nullable
+        String profileBackgroundCustomEmojiId,
+
         @JsonProperty("emoji_status_custom_emoji_id")
         @Nullable
         String emojiStatusCustomEmojiId,
 
         @JsonProperty("emoji_status_expiration_date")
         @Nullable
-        Integer emojiStatusExpirationDate,
+        Date emojiStatusExpirationDate,
 
         @JsonProperty("bio")
         @Nullable
@@ -91,6 +114,10 @@ public record Chat(
         @Nullable
         Integer slowModeDelay,
 
+        @JsonProperty("unrestrict_boost_count")
+        @Nullable
+        Integer unrestrictBoostCount,
+
         @JsonProperty("message_auto_delete_time")
         @Nullable
         Integer messageAutoDeleteTime,
@@ -107,6 +134,10 @@ public record Chat(
         @Nullable
         Boolean hasProtectedContent,
 
+        @JsonProperty("has_visible_history")
+        @Nullable
+        Boolean hasVisibleHistory,
+
         @JsonProperty("sticker_set_name")
         @Nullable
         String stickerSetName,
@@ -114,6 +145,10 @@ public record Chat(
         @JsonProperty("can_set_sticker_set")
         @Nullable
         Boolean canSetStickerSet,
+
+        @JsonProperty("custom_emoji_sticker_set_name")
+        @Nullable
+        String customEmojiStickerSetName,
 
         @JsonProperty("linked_chat_id")
         @Nullable

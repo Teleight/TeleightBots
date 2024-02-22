@@ -2,12 +2,19 @@ package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.chat.Chat;
+import org.teleight.teleightbots.api.objects.chat.boost.ChatBoostAdded;
 import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 import org.teleight.teleightbots.api.objects.forum.*;
+import org.teleight.teleightbots.api.objects.giveaway.Giveaway;
+import org.teleight.teleightbots.api.objects.giveaway.GiveawayCompleted;
+import org.teleight.teleightbots.api.objects.giveaway.GiveawayCreated;
+import org.teleight.teleightbots.api.objects.giveaway.GiveawayWinners;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
+import org.teleight.teleightbots.api.objects.origin.MessageOrigin;
 import org.teleight.teleightbots.api.objects.passport.PassportData;
 import org.teleight.teleightbots.api.objects.payment.Invoice;
 import org.teleight.teleightbots.api.objects.payment.SuccessfulPayment;
@@ -18,8 +25,11 @@ import org.teleight.teleightbots.api.objects.video.VideoChatParticipantsInvited;
 import org.teleight.teleightbots.api.objects.video.VideoChatScheduled;
 import org.teleight.teleightbots.api.objects.video.VideoChatStarted;
 
+import java.util.Date;
+
 public record Message(
         @JsonProperty(value = "message_id", required = true)
+        @NotNull
         Integer messageId,
 
         @JsonProperty("message_thread_id")
@@ -34,35 +44,21 @@ public record Message(
         @Nullable
         Chat senderChat,
 
+        @JsonProperty("sender_boost_count")
+        @Nullable
+        Integer senderBoostCount,
+
         @JsonProperty(value = "date", required = true)
-        Integer date,
+        @NotNull
+        Date date,
 
         @JsonProperty(value = "chat", required = true)
+        @NotNull
         Chat chat,
 
-        @JsonProperty("forward_from")
+        @JsonProperty("forward_origin")
         @Nullable
-        User forwardFrom,
-
-        @JsonProperty("forward_from_chat")
-        @Nullable
-        Chat forwardFromChat,
-
-        @JsonProperty("forward_from_message_id")
-        @Nullable
-        Integer forwardFromMessageId,
-
-        @JsonProperty("forward_signature")
-        @Nullable
-        String forwardSignature,
-
-        @JsonProperty("forward_sender_name")
-        @Nullable
-        String forwardSenderName,
-
-        @JsonProperty("forward_date")
-        @Nullable
-        Integer forwardDate,
+        MessageOrigin forwardOrigin,
 
         @JsonProperty("is_topic_message")
         @Nullable
@@ -76,13 +72,25 @@ public record Message(
         @Nullable
         Message replyToMessage,
 
+        @JsonProperty("external_reply")
+        @Nullable
+        ExternalReplyInfo externalReply,
+
+        @JsonProperty("quote")
+        @Nullable
+        TextQuote quote,
+
+        @JsonProperty("reply_to_story")
+        @Nullable
+        Story replyToStory,
+
         @JsonProperty("via_bot")
         @Nullable
         User viaBot,
 
         @JsonProperty("edit_date")
         @Nullable
-        Integer editDate,
+        Date editDate,
 
         @JsonProperty("has_protected_content")
         @Nullable
@@ -103,6 +111,10 @@ public record Message(
         @JsonProperty("entities")
         @Nullable
         MessageEntity[] entities,
+
+        @JsonProperty("link_preview_options")
+        @Nullable
+        LinkPreviewOptions linkPreviewOptions,
 
         @JsonProperty("animation")
         @Nullable
@@ -222,7 +234,7 @@ public record Message(
 
         @JsonProperty("pinned_message")
         @Nullable
-        Message pinnedMessage,
+        MaybeInaccessibleMessage pinnedMessage,
 
         @JsonProperty("invoice")
         @Nullable
@@ -232,9 +244,9 @@ public record Message(
         @Nullable
         SuccessfulPayment successfulPayment,
 
-        @JsonProperty("user_shared")
+        @JsonProperty("users_shared")
         @Nullable
-        UserShared userShared,
+        UsersShared userShared,
 
         @JsonProperty("chat_shared")
         @Nullable
@@ -255,6 +267,10 @@ public record Message(
         @JsonProperty("proximity_alert_triggered")
         @Nullable
         ProximityAlertTriggered proximityAlertTriggered,
+
+        @JsonProperty("boost_added")
+        @Nullable
+        ChatBoostAdded boostAdded,
 
         @JsonProperty("forum_topic_created")
         @Nullable
@@ -280,6 +296,22 @@ public record Message(
         @Nullable
         GeneralForumTopicUnhidden generalForumTopicUnhidden,
 
+        @JsonProperty("giveaway_created")
+        @Nullable
+        GiveawayCreated giveawayCreated,
+
+        @JsonProperty("giveaway")
+        @Nullable
+        Giveaway giveaway,
+
+        @JsonProperty("giveaway_winners")
+        @Nullable
+        GiveawayWinners giveawayWinners,
+
+        @JsonProperty("giveaway_completed")
+        @Nullable
+        GiveawayCompleted giveawayCompleted,
+
         @JsonProperty("video_chat_scheduled")
         @Nullable
         VideoChatScheduled videoChatScheduled,
@@ -303,31 +335,31 @@ public record Message(
         @JsonProperty("reply_markup")
         @Nullable
         InlineKeyboardMarkup replyMarkup
-) implements ApiResult {
+) implements MaybeInaccessibleMessage, ApiResult {
 
-        @JsonIgnore
-        public String chatId() {
-                return "" + chat.id();
-        }
+    @JsonIgnore
+    public String chatId() {
+        return "" + chat.id();
+    }
 
-        @JsonIgnore
-        public boolean isGroup() {
-                return chat.isGroup();
-        }
+    @JsonIgnore
+    public boolean isGroup() {
+        return chat.isGroup();
+    }
 
-        @JsonIgnore
-        public boolean isChannel() {
-                return chat.isChannel();
-        }
+    @JsonIgnore
+    public boolean isChannel() {
+        return chat.isChannel();
+    }
 
-        @JsonIgnore
-        public boolean isUser() {
-                return chat.isUser();
-        }
+    @JsonIgnore
+    public boolean isUser() {
+        return chat.isUser();
+    }
 
-        @JsonIgnore
-        public boolean isSuperGroup() {
-                return chat.isSuperGroup();
-        }
+    @JsonIgnore
+    public boolean isSuperGroup() {
+        return chat.isSuperGroup();
+    }
 
 }

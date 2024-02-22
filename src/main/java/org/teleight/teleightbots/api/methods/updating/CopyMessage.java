@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.methods.send;
+package org.teleight.teleightbots.api.methods.updating;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -6,37 +6,39 @@ import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
-import org.teleight.teleightbots.api.objects.LinkPreviewOptions;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
-import org.teleight.teleightbots.api.utils.ParseMode;
 
 @Builder
-public record SendMessage(
+public record CopyMessage(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
 
         @JsonProperty(value = "message_thread_id")
-        @Nullable
+        @NotNull
         Integer messageThreadId,
 
-        @JsonProperty(value = "text", required = true)
+        @JsonProperty(value = "from_chat_id", required = true)
         @NotNull
-        String text,
+        String fromChatId,
+
+        @JsonProperty(value = "message_id", required = true)
+        @NotNull
+        Long messageId,
+
+        @JsonProperty(value = "caption")
+        @Nullable
+        String caption,
 
         @JsonProperty(value = "parse_mode")
         @Nullable
-        ParseMode parseMode,
+        String parseMode,
 
-        @JsonProperty(value = "entities")
+        @JsonProperty(value = "caption_entities")
         @Nullable
-        MessageEntity[] entities,
-
-        @JsonProperty(value = "link_preview_options")
-        @Nullable
-        LinkPreviewOptions linkPreviewOptions,
+        MessageEntity[] captionEntities,
 
         @JsonProperty(value = "disable_notification")
         @Nullable
@@ -57,15 +59,20 @@ public record SendMessage(
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "sendMessage";
+        return "copyMessage";
     }
 
-    public static class SendMessageBuilder {
+    public static class CopyMessageBuilder {
         @Tolerate
-        public SendMessageBuilder chatId(@NotNull Long chatId) {
+        public CopyMessageBuilder chatId(@NotNull Long chatId) {
             this.chatId = chatId.toString();
             return this;
         }
-    }
 
+        @Tolerate
+        public CopyMessageBuilder fromChatId(@NotNull Long chatId) {
+            this.fromChatId = chatId.toString();
+            return this;
+        }
+    }
 }

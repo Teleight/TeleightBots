@@ -6,11 +6,15 @@ import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.methods.callback.CallbackQuery;
 import org.teleight.teleightbots.api.objects.chat.ChatJoinRequest;
 import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
+import org.teleight.teleightbots.api.objects.chat.boost.ChatBoostRemoved;
+import org.teleight.teleightbots.api.objects.chat.boost.ChatBoostUpdated;
 import org.teleight.teleightbots.api.objects.inline.ChosenInlineResult;
 import org.teleight.teleightbots.api.objects.inline.InlineQuery;
 import org.teleight.teleightbots.api.objects.payment.PreCheckoutQuery;
 import org.teleight.teleightbots.api.objects.poll.Poll;
 import org.teleight.teleightbots.api.objects.poll.PollAnswer;
+import org.teleight.teleightbots.api.objects.reaction.MessageReactionCountUpdated;
+import org.teleight.teleightbots.api.objects.reaction.MessageReactionUpdated;
 import org.teleight.teleightbots.api.objects.shipping.ShippingQuery;
 
 public record Update(
@@ -18,6 +22,7 @@ public record Update(
         int updateId,
 
         @JsonProperty(value = "message")
+        @Nullable
         Message message,
 
         @JsonProperty("edited_message")
@@ -31,6 +36,14 @@ public record Update(
         @JsonProperty("edited_channel_post")
         @Nullable
         Message editedChannelPost,
+
+        @JsonProperty("message_reaction")
+        @Nullable
+        MessageReactionUpdated messageReaction,
+
+        @JsonProperty("message_reaction_count")
+        @Nullable
+        MessageReactionCountUpdated messageReactionCount,
 
         @JsonProperty("inline_query")
         @Nullable
@@ -70,7 +83,15 @@ public record Update(
 
         @JsonProperty("chat_join_request")
         @Nullable
-        ChatJoinRequest chatJoinRequest
+        ChatJoinRequest chatJoinRequest,
+
+        @JsonProperty("chat_boost")
+        @Nullable
+        ChatBoostUpdated chatBoost,
+
+        @JsonProperty("removed_chat_boost")
+        @Nullable
+        ChatBoostRemoved removedChatBoost
 ) implements ApiResult {
 
 }

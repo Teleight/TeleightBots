@@ -19,6 +19,8 @@ import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDese
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.utils.ColorDeserializer;
 import org.teleight.teleightbots.api.utils.ColorSerializer;
+import org.teleight.teleightbots.api.utils.DateDeserializer;
+import org.teleight.teleightbots.api.utils.DateSerializer;
 import org.teleight.teleightbots.api.utils.ParseMode;
 import org.teleight.teleightbots.api.utils.ParseModeDeserializer;
 import org.teleight.teleightbots.api.utils.ParseModeSerializer;
@@ -26,6 +28,7 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -42,6 +45,10 @@ public interface ApiMethod<R> {
             .registerModule(new SimpleModule()
                     .addSerializer(Color.class, new ColorSerializer())
                     .addDeserializer(Color.class, new ColorDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addSerializer(Date.class, new DateSerializer())
+                    .addDeserializer(Date.class, new DateDeserializer())
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(ChatMember.class, new ChatMemberDeserializer())

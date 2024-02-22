@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.methods.updating;
+package org.teleight.teleightbots.api.methods.updating.batch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -7,24 +7,24 @@ import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
 @Builder
-public record DeleteMessage(
+public record BatchDeleteMessages(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
 
-        @JsonProperty(value = "message_id", required = true)
+        @JsonProperty(value = "message_ids", required = true)
         @NotNull
-        Integer messageId
+        Integer[] messageId
 ) implements ApiMethodBoolean {
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "deleteMessage";
+        return "deleteMessages";
     }
 
-    public static class DeleteMessageBuilder {
+    public static class BatchDeleteMessagesBuilder {
         @Tolerate
-        public DeleteMessageBuilder chatId(@NotNull Long chatId) {
+        public BatchDeleteMessagesBuilder chatId(@NotNull Long chatId) {
             this.chatId = chatId.toString();
             return this;
         }

@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.methods;
+package org.teleight.teleightbots.api.methods.updating.batch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 
 @Builder
-public record CopyMessage(
+public record BatchCopyMessages(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
@@ -24,21 +24,9 @@ public record CopyMessage(
         @NotNull
         String fromChatId,
 
-        @JsonProperty(value = "message_id", required = true)
+        @JsonProperty(value = "message_ids", required = true)
         @NotNull
-        Long messageId,
-
-        @JsonProperty(value = "caption")
-        @Nullable
-        String caption,
-
-        @JsonProperty(value = "parse_mode")
-        @Nullable
-        String parseMode,
-
-        @JsonProperty(value = "caption_entities")
-        @Nullable
-        MessageEntity[] captionEntities,
+        Long[] messageId,
 
         @JsonProperty(value = "disable_notification")
         @Nullable
@@ -48,30 +36,26 @@ public record CopyMessage(
         @Nullable
         Boolean protectContent,
 
-        @JsonProperty(value = "reply_parameters")
+        @JsonProperty(value = "remove_caption")
         @Nullable
-        ReplyParameters replyParameters,
-
-        @JsonProperty(value = "reply_markup")
-        @Nullable
-        ReplyKeyboard replyMarkup
+        Boolean removeCaption
 ) implements ApiMethodMessage {
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "copyMessage";
+        return "copyMessages";
     }
 
-    public static class CopyMessageBuilder {
+    public static class BatchCopyMessagesBuilder {
         @Tolerate
-        public CopyMessageBuilder chatId(@NotNull Long chatId) {
+        public BatchCopyMessagesBuilder chatId(@NotNull Long chatId) {
             this.chatId = chatId.toString();
             return this;
         }
 
         @Tolerate
-        public CopyMessageBuilder fromChatId(@NotNull Long chatId) {
-            this.fromChatId = chatId.toString();
+        public BatchCopyMessagesBuilder fromChatId(@NotNull Long fromChatId) {
+            this.fromChatId = fromChatId.toString();
             return this;
         }
     }
