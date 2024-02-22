@@ -1,7 +1,7 @@
 package org.teleight.teleightbots.demo.conversations;
 
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.methods.SendMessage;
+import org.teleight.teleightbots.api.methods.send.SendMessage;
 import org.teleight.teleightbots.conversation.Conversation;
 import org.teleight.teleightbots.conversation.ConversationContext;
 import org.teleight.teleightbots.conversation.ConversationTimeout;
