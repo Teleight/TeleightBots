@@ -1,10 +1,12 @@
 package org.teleight.teleightbots.api.objects.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.User;
 
+@Builder
 public record MessageEntity(
         @JsonProperty(value = "type", required = true)
         String type,

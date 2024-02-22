@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 
+import java.util.Date;
+
 public record Poll(
         @JsonProperty(value = "id", required = true)
         String id,
@@ -49,7 +51,7 @@ public record Poll(
 
         @JsonProperty("close_date")
         @Nullable
-        Integer closeDate
+        Date closeDate
 ) implements ApiResult {
 
 }

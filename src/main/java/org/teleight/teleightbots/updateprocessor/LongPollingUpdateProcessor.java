@@ -169,7 +169,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
                         final boolean hasText = messageText != null;
                         final boolean hasSender = sender != null;
-                        final boolean hasFormat = message.forwardFrom() == null;
+                        final boolean hasFormat = message.forwardOrigin() == null;
 
                         if (hasText && hasSender) {
                             final boolean isPossibleCommand = messageText.startsWith("/");

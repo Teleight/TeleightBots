@@ -5,6 +5,8 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.User;
 
+import java.util.Date;
+
 public record ChatJoinRequest(
         @JsonProperty(value = "chat", required = true)
         Chat chat,
@@ -16,7 +18,7 @@ public record ChatJoinRequest(
         Long userChatId,
 
         @JsonProperty(value = "date", required = true)
-        Integer date,
+        Date date,
 
         @JsonProperty("bio")
         @Nullable

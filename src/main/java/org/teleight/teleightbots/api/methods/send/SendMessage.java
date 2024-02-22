@@ -6,6 +6,7 @@ import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
+import org.teleight.teleightbots.api.objects.LinkPreviewOptions;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
@@ -33,9 +34,9 @@ public record SendMessage(
         @Nullable
         MessageEntity[] entities,
 
-        @JsonProperty(value = "disable_web_page_preview")
+        @JsonProperty(value = "link_preview_options")
         @Nullable
-        Boolean disableWebPagePreview,
+        LinkPreviewOptions linkPreviewOptions,
 
         @JsonProperty(value = "disable_notification")
         @Nullable
