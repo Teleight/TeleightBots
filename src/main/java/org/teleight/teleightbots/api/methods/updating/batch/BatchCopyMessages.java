@@ -43,7 +43,7 @@ public record BatchCopyMessages(
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "copyMessage";
+        return "copyMessages";
     }
 
     public static class BatchCopyMessagesBuilder {
