@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.api.methods;
+package org.teleight.teleightbots.api.methods.updating;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
