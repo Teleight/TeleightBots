@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.ArrayType;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.api.methods.group.admin.forum.EditForumTopic;
 import org.teleight.teleightbots.api.objects.ApiResponse;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
@@ -15,11 +17,14 @@ import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResultDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
+import org.teleight.teleightbots.api.utils.ColorDeserializer;
+import org.teleight.teleightbots.api.utils.ColorSerializer;
 import org.teleight.teleightbots.api.utils.ParseMode;
 import org.teleight.teleightbots.api.utils.ParseModeDeserializer;
 import org.teleight.teleightbots.api.utils.ParseModeSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
+import java.awt.*;
 import java.io.IOException;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,6 +38,10 @@ public interface ApiMethod<R> {
             .registerModule(new SimpleModule()
                     .addSerializer(ParseMode.class, new ParseModeSerializer())
                     .addDeserializer(ParseMode.class, new ParseModeDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addSerializer(Color.class, new ColorSerializer())
+                    .addDeserializer(Color.class, new ColorDeserializer())
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(ChatMember.class, new ChatMemberDeserializer())
