@@ -94,7 +94,11 @@ public record SendPhoto(
             bodyCreator.addPart("protect_content", protectContent.toString());
         }
         if (replyParameters != null) {
-            bodyCreator.addPart("reply_parameters", OBJECT_MAPPER.writeValueAsString(replyParameters));
+            try {
+                bodyCreator.addPart("reply_parameters", OBJECT_MAPPER.writeValueAsString(replyParameters));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
         if (replyMarkup != null) {
             try {

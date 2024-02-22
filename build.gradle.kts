@@ -24,7 +24,7 @@ dependencies {
     implementation("org.checkerframework:checker-qual:3.39.0")
 
     //Lombok
-    implementation("org.projectlombok:lombok:1.18.30")
+    compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
 
     //Json
@@ -66,6 +66,7 @@ publishing {
 }
 
 tasks.withType<ShadowJar> {
+
     archiveClassifier.set("")
     archiveVersion.set("")
 
