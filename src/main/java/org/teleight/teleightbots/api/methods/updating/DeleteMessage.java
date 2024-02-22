@@ -1,64 +1,32 @@
 package org.teleight.teleightbots.api.methods.updating;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.experimental.Tolerate;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder
 public record DeleteMessage(
         @JsonProperty(value = "chat_id", required = true)
+        @NotNull
         String chatId,
 
-        @JsonProperty(value = "message_id",required = true)
-        int messageId
+        @JsonProperty(value = "message_id", required = true)
+        @NotNull
+        Integer messageId
 ) implements ApiMethodBoolean {
-
-    public static @NotNull DeleteMessage of(String chatId, int messageId){
-        return new DeleteMessage(chatId, messageId);
-    }
-
-    public static @NotNull Builder builder() {
-        return new BuilderImpl();
-    }
 
     @Override
     public @NotNull String getEndpointURL() {
         return "deleteMessage";
     }
 
-    public sealed interface Builder permits BuilderImpl {
-        @NotNull Builder chatId(String chatId);
-
-        @NotNull Builder chatId(int chatId);
-
-        @NotNull Builder messageId(int messageId);
-
-        @NotNull DeleteMessage build();
-    }
-
-    static final class BuilderImpl implements Builder {
-        private String chatId;
-        private int messageId;
-
-        @Override
-        public @NotNull Builder chatId(String chatId) {
-            this.chatId = chatId;
+    public static class DeleteMessageBuilder {
+        @Tolerate
+        public DeleteMessageBuilder chatId(@NotNull Long chatId) {
+            this.chatId = chatId.toString();
             return this;
-        }
-
-        @Override
-        public @NotNull Builder chatId(int chatId) {
-            return chatId("" + chatId);
-        }
-
-        @Override
-        public @NotNull Builder messageId(int messageId) {
-            this.messageId = messageId;
-            return this;
-        }
-
-        @Override
-        public @NotNull DeleteMessage build() {
-            return new DeleteMessage(chatId, messageId);
         }
     }
 
