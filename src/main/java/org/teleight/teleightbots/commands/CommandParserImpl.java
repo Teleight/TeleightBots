@@ -199,22 +199,19 @@ public final class CommandParserImpl implements CommandParser {
 
         @Override
         public @NotNull ExecutableCommand executable() {
-            return new ExecutableCommand() {
-                @Override
-                public void execute(User from) {
-                    CommandContext commandContext = new CommandContext(bot, message, userInput);
+            return from -> {
+                CommandContext commandContext = new CommandContext(bot, message, userInput);
 
-                    if (argumentResults != null) {
-                        for (ArgumentResult<?> argumentResult : argumentResults) {
-                            if (!(argumentResult instanceof ArgumentResult.Success<?> success)) {
-                                continue;
-                            }
-                            commandContext.setArgument(success.argumentId(), success.value);
+                if (argumentResults != null) {
+                    for (ArgumentResult<?> argumentResult : argumentResults) {
+                        if (!(argumentResult instanceof ArgumentResult.Success<?> success)) {
+                            continue;
                         }
+                        commandContext.setArgument(success.argumentId(), success.value);
                     }
-
-                    executor.execute(from, commandContext);
                 }
+
+                executor.execute(from, commandContext);
             };
         }
     }
