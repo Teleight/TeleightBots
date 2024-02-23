@@ -6,6 +6,9 @@ import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
+/**
+ * A functional interface that provides a Bot instance with a given token, username, UpdateProcessor, and BotSettings.
+ */
 @FunctionalInterface
 public interface BotProvider {
 

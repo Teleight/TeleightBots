@@ -17,11 +17,15 @@ public interface Conversation {
     void execute(@NotNull ConversationContext context);
 
     /**
+     * Returns the name of the Conversation.
+     *
      * @return The name of the Conversation.
      */
     @NotNull String name();
 
     /**
+     * Returns the timeout of the Conversation.
+     *
      * @return The timeout of the Conversation.
      */
     @NotNull ConversationTimeout conversationTimeout();

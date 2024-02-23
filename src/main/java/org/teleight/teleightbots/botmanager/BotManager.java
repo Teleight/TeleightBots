@@ -56,6 +56,8 @@ public sealed interface BotManager permits BotManagerImpl {
     void registerLongPolling(@NotNull String token, @NotNull String username, @Nullable BotSettings botSettings);
 
     /**
+     * Returns the bot provider
+     *
      * @return The BotProvider associated with the BotManager.
      */
     BotProvider getBotProvider();
@@ -67,6 +69,8 @@ public sealed interface BotManager permits BotManagerImpl {
     void setBotProvider(@NotNull BotProvider botProvider);
 
     /**
+     * Returns an array of all the bots managed by the BotManager.
+     *
      * @return An array of all the bots managed by the BotManager.
      */
     Bot[] getBots();

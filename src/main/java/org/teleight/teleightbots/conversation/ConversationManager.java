@@ -51,6 +51,8 @@ public interface ConversationManager {
     boolean isUserInConversation(@NotNull User user, @NotNull String conversationName);
 
     /**
+     * Returns a collection of all Conversations.
+     *
      * @return A collection of all Conversations.
      */
     @Unmodifiable @NotNull Collection<Conversation> getConversations();
@@ -63,6 +65,8 @@ public interface ConversationManager {
     @Nullable Conversation getConversation(@NotNull String conversationName);
 
     /**
+     * Returns a collection of all running Conversations.
+     *
      * @return A collection of all running Conversations.
      */
     @NotNull @Unmodifiable Collection<RunningConversation> getRunningConversations();
