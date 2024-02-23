@@ -7,8 +7,15 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * This is a sealed interface for an EventListener. It is permitted to be implemented by EventListenerImpl.
- * It is parameterized with a type T that extends Event.
+ * Represents an event listener.
+ * <p>
+ * This interface provides methods to handle events of a specific type.
+ * <br>
+ * This interface is by default implemented by the {@link EventListenerImpl} class.
+ * </p>
+ *
+ * @param <T> The type of event that this EventListener is for.
+ * @see EventListenerImpl
  */
 public sealed interface EventListener<T extends Event> permits EventListenerImpl {
 

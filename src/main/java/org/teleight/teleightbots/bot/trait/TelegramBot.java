@@ -28,7 +28,6 @@ import java.util.concurrent.CompletableFuture;
  * It also provides methods to send requests to the Telegram Bot API.
  * <br>
  * This interface is by default implemented by the {@link org.teleight.teleightbots.bot.Bot} class.
- * </br>
  * </p>
  *
  * @see org.teleight.teleightbots.bot.Bot

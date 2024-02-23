@@ -10,7 +10,6 @@ import java.io.Closeable;
  * This interface provides methods to schedule tasks to be executed at a later time.
  * <br>
  * This interface is by default implemented by the {@link SchedulerImpl} class.
- * </br>
  * </p>
  *
  * @see SchedulerImpl
