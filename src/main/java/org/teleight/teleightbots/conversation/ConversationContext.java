@@ -24,12 +24,6 @@ public final class ConversationContext {
     // The running conversation associated with this ConversationContext
     private final RunningConversation runningConversation;
 
-    /**
-     * This is the constructor for a ConversationContext.
-     * @param bot The bot associated with this ConversationContext.
-     * @param chat The chat associated with this ConversationContext.
-     * @param runningConversation The running conversation associated with this ConversationContext.
-     */
     public ConversationContext(@NotNull Bot bot, @NotNull Chat chat, RunningConversation runningConversation) {
         this.bot = bot;
         this.chat = chat;
@@ -37,7 +31,6 @@ public final class ConversationContext {
     }
 
     /**
-     * This method returns the bot associated with this ConversationContext.
      * @return The bot associated with this ConversationContext.
      */
     public Bot bot() {
@@ -45,7 +38,6 @@ public final class ConversationContext {
     }
 
     /**
-     * This method returns the chat associated with this ConversationContext.
      * @return The chat associated with this ConversationContext.
      */
     public Chat chat() {
@@ -53,7 +45,7 @@ public final class ConversationContext {
     }
 
     /**
-     * This method waits for an update with no timeout.
+     * Waits for an update with no timeout.
      * @return The update, or null if no update is received.
      */
     public @Nullable Update waitForUpdate() {
@@ -61,7 +53,7 @@ public final class ConversationContext {
     }
 
     /**
-     * This method waits for an update with a specified timeout.
+     * Waits for an update with a specified timeout.
      * @param timeout The timeout in the specified time unit.
      * @param unit The time unit of the timeout.
      * @return The update, or null if no update is received within the timeout.
@@ -71,7 +63,7 @@ public final class ConversationContext {
     }
 
     /**
-     * This method executes an API method.
+     * Executes an API method. Calls the bot's execute method with the specified API method.
      * @param method The API method to execute.
      * @param <R> The type of the result of the API method.
      * @return A CompletableFuture of the result of the API method.

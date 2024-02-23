@@ -19,7 +19,6 @@ public sealed interface BotManager permits BotManagerImpl {
     /**
      * Registers a new bot with the given token and username.
      * <p>
-     * This method registers a new bot with the given token and username.
      * The bot will be initialized with the default settings
      * </p>
      *
@@ -34,7 +33,6 @@ public sealed interface BotManager permits BotManagerImpl {
     /**
      * Registers a new bot with the given token and username.
      * <p>
-     * This method registers a new bot with the given token and username.
      * The bot will be initialized with custom settings provided by the given {@link BotSettings} object.
      * </p>
      *
@@ -48,7 +46,6 @@ public sealed interface BotManager permits BotManagerImpl {
     /**
      * Registers a new bot with the given token and username.
      * <p>
-     * This method registers a new bot with the given token and username.
      * The bot will be initialized with custom settings provided by the given {@link BotSettings} object.
      * </p>
      *
@@ -59,21 +56,20 @@ public sealed interface BotManager permits BotManagerImpl {
     void registerLongPolling(@NotNull String token, @NotNull String username, @Nullable BotSettings botSettings);
 
     /**
-     * Returns the bot provider.
-     * @return the bot provider
+     * @return The BotProvider associated with the BotManager.
      */
     BotProvider getBotProvider();
 
     /**
-     * Sets the bot provider.
-     * @param botProvider the bot provider
+     * Sets the BotProvider for the BotManager.
+     * @param botProvider The BotProvider instance to set.
      */
     void setBotProvider(@NotNull BotProvider botProvider);
 
     /**
-     * Returns the currently registered bots.
-     * @return the currently registered bots
+     * @return An array of all the bots managed by the BotManager.
      */
     Bot[] getBots();
+
 
 }

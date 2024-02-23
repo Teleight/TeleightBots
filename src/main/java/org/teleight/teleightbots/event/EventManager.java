@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public interface EventManager {
 
     /**
-     * This method adds an EventListener to the EventManager.
+     * Adds an EventListener to the EventManager.
      *
      * @param listener The EventListener to be added.
      * @param <T>      The type of event that the EventListener is for.
@@ -21,7 +21,7 @@ public interface EventManager {
     <T extends Event> @NotNull EventManager addListener(@NotNull EventListener<T> listener);
 
     /**
-     * This method adds an EventListener to the EventManager using a Consumer.
+     * Adds an EventListener to the EventManager using a Consumer.
      *
      * @param eventType The type of event that the EventListener is for.
      * @param listener  The Consumer to be used as an EventListener.
@@ -31,7 +31,7 @@ public interface EventManager {
     <E extends Event> @NotNull EventManager addListener(@NotNull Class<E> eventType, @NotNull Consumer<E> listener);
 
     /**
-     * This method calls an event and returns a CompletableFuture of the event.
+     * Calls an event and returns a CompletableFuture of the event.
      *
      * @param event The event to be called.
      * @param <T>   The type of event to be called.

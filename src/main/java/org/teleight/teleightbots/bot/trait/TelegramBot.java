@@ -112,7 +112,6 @@ public interface TelegramBot {
     /**
      * Creates a new menu with the given name and builder.
      * <p>
-     * This method creates a new menu with the given name and builder.
      * The builder is used to create the menu items and sub-menus of the menu.
      * </p>
      *
@@ -126,7 +125,6 @@ public interface TelegramBot {
     /**
      * Creates a new menu with the given name and builder.
      * <p>
-     * This method creates a new menu with the given name and builder.
      * The builder is used to create the menu items and sub-menus of the menu.
      * </p>
      *
@@ -178,10 +176,6 @@ public interface TelegramBot {
 
     /**
      * Sends a request to the Telegram Bot API using the given method.
-     * <p>
-     * This method sends a request to the Telegram Bot API using the given method.
-     * The method is used to create the request and the response type is used to specify the expected response type.
-     * </p>
      *
      * @param method the method used to create the request
      * @param <R>    the type of the expected response

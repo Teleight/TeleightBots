@@ -34,14 +34,14 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
     }
 
     /**
-     * This method returns the type of event that this EventListener is for.
+     * Returns the type of event that this EventListener is for.
      *
      * @return The Class of the event type.
      */
     @NotNull Class<T> eventType();
 
     /**
-     * This method runs the event.
+     * Runs the event.
      *
      * @param event The event to run.
      * @return The result of running the event.
@@ -58,13 +58,9 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
         EXCEPTION
     }
 
-    /**
-     * This is a sealed interface for a Builder that builds EventListeners. It is permitted to be implemented by EventListenerImpl.BuilderImpl.
-     * It is parameterized with a type T that extends Event.
-     */
     sealed interface Builder<T extends Event> permits EventListenerImpl.BuilderImpl {
         /**
-         * This method sets a filter for the Builder.
+         * Sets a filter for the Builder.
          *
          * @param filter The Predicate to use as a filter.
          * @return The Builder instance.
@@ -72,7 +68,7 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
         @NotNull Builder<T> filter(@NotNull Predicate<T> filter);
 
         /**
-         * This method sets whether the Builder should ignore cancelled events.
+         * Sets whether the Builder should ignore cancelled events.
          *
          * @param ignoreCancelled Whether to ignore cancelled events.
          * @return The Builder instance.
@@ -80,7 +76,7 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
         @NotNull Builder<T> ignoreCancelled(boolean ignoreCancelled);
 
         /**
-         * This method sets the handler for the Builder.
+         * Sets the handler for the Builder.
          *
          * @param handler The Consumer to use as a handler.
          * @return The Builder instance.
@@ -88,7 +84,7 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
         @NotNull Builder<T> handler(@NotNull Consumer<T> handler);
 
         /**
-         * This method sets the expiry count for the Builder.
+         * Sets the expiry count for the Builder.
          *
          * @param expireCount The number of times an event can expire before it is no longer handled.
          * @return The Builder instance.
@@ -96,7 +92,7 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
         @NotNull Builder<T> expireCount(int expireCount);
 
         /**
-         * This method builds an EventListener.
+         * Builds the EventListener.
          *
          * @return A new EventListener instance.
          */

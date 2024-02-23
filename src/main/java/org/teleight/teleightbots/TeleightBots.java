@@ -45,18 +45,24 @@ public final class TeleightBots {
     }
 
     /**
-     * Returns the scheduler used by the TeleightBots API.
+     * Returns the Scheduler associated with the TeleightBots process.
+     * <p>
+     * The Scheduler is responsible for scheduling tasks to be executed at a later time or at regular intervals.
+     * </p>
      *
-     * @return the scheduler
+     * @return The Scheduler associated with the TeleightBots process.
      */
     public static @NotNull Scheduler getScheduler() {
         return teleightBotsProcess.scheduler();
     }
 
     /**
-     * Returns the bot manager used by the TeleightBots API.
+     * Returns the BotManager associated with the TeleightBots process.
+     * <p>
+     * The BotManager is responsible for managing bots, including registering new bots and getting existing bots.
+     * </p>
      *
-     * @return the bot manager
+     * @return The BotManager associated with the TeleightBots process.
      */
     public static @NotNull BotManager getBotManager() {
         return teleightBotsProcess.botManager();

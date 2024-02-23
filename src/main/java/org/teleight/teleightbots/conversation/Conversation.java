@@ -10,22 +10,18 @@ import org.jetbrains.annotations.NotNull;
 public interface Conversation {
 
     /**
-     * This method executes a Conversation with a given context.
+     * Executes a Conversation with a given context.
      *
      * @param context The context in which the Conversation is executed.
      */
     void execute(@NotNull ConversationContext context);
 
     /**
-     * This method returns the name of the Conversation.
-     *
      * @return The name of the Conversation.
      */
     @NotNull String name();
 
     /**
-     * This method returns the timeout of the Conversation.
-     *
      * @return The timeout of the Conversation.
      */
     @NotNull ConversationTimeout conversationTimeout();
