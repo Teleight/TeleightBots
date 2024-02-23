@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Class representing an argument reader.
- * <p>
- * This class is used to read arguments from a string input.
  */
 public final class ArgumentReader {
 
