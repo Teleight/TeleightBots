@@ -23,7 +23,7 @@ import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
 import java.util.concurrent.CompletableFuture;
 
-public class Bot implements TelegramBot {
+public final class Bot implements TelegramBot {
 
     private final String token;
     private final String username;

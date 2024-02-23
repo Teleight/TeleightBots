@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.ArrayType;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.methods.group.admin.forum.EditForumTopic;
@@ -30,10 +29,18 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.Date;
 
+/**
+ * Base interface for all Telegram Bot API methods.
+ *
+ * @param <R> type of the result of the method
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public interface ApiMethod<R> {
 
+    /**
+     * The object mapper used to serialize and deserialize objects to and from JSON.
+     */
     ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .registerModule(new SimpleModule()
                     .addDeserializer(ReplyKeyboard.class, new KeyboardDeserializer())
@@ -54,22 +61,63 @@ public interface ApiMethod<R> {
                     .addDeserializer(ChatMember.class, new ChatMemberDeserializer())
             )
             .registerModule(new SimpleModule()
-                    .addDeserializer(InlineQueryResult.class,new InlineQueryResultDeserializer()));
+                    .addDeserializer(InlineQueryResult.class, new InlineQueryResultDeserializer()));
 
+    /**
+     * Deserializes the response from the Telegram Bot API.
+     *
+     * @param answer the response from the Telegram Bot API
+     * @return the deserialized response
+     * @throws TelegramRequestException if an error occurs while deserializing the response
+     */
     @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
 
+    /**
+     * Returns the endpoint URL for the Telegram Bot API method.
+     *
+     * @return the endpoint URL
+     */
     @NotNull String getEndpointURL();
 
+    /**
+     * Deserializes the response from the Telegram Bot API into a specific class.
+     *
+     * @param answer      the response from the Telegram Bot API
+     * @param returnClass the class to deserialize the response into
+     * @return the deserialized response
+     * @throws TelegramRequestException if an error occurs while deserializing the response
+     */
     default @NotNull R deserializeResponse(@NotNull String answer, @NotNull Class<R> returnClass) throws TelegramRequestException {
         final JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(returnClass);
         return UNSAFE_deserializeResponse(answer, type);
     }
 
+    /**
+     * Deserializes the response from the Telegram Bot API into an array of a specific class.
+     *
+     * @param answer      the response from the Telegram Bot API
+     * @param returnClass the class to deserialize the response into
+     * @param <K>         the class to deserialize the response into
+     * @return the deserialized response
+     * @throws TelegramRequestException if an error occurs while deserializing the response
+     */
     default <K> @NotNull R deserializeResponseArray(@NotNull String answer, @NotNull Class<K> returnClass) throws TelegramRequestException {
         final ArrayType collectionType = OBJECT_MAPPER.getTypeFactory().constructArrayType(returnClass);
         return UNSAFE_deserializeResponse(answer, collectionType);
     }
 
+    /**
+     * Deserializes the response from the Telegram Bot API into a specific JavaType.
+     * <p>
+     * This method is marked as internal and should not be used directly.
+     * Use {@link #deserializeResponse(String, Class)} or {@link #deserializeResponseArray(String, Class)} instead.
+     * </p>
+     *
+     * @param answer the response from the Telegram Bot API
+     * @param type   the JavaType to deserialize the response into
+     * @return the deserialized response
+     * @throws TelegramRequestException if an error occurs while deserializing the response
+     */
     @ApiStatus.Internal
     private @NotNull R UNSAFE_deserializeResponse(@NotNull String answer, @NotNull JavaType type) throws TelegramRequestException {
         try {

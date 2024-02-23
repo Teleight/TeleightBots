@@ -28,12 +28,12 @@ public final class BotManagerImpl implements BotManager {
     }
 
     @Override
-    public void registerLongPolling(@NotNull String token, @NotNull String username, @Nullable BotSettings botSettings, @Nullable Consumer<Bot> completeCallback) {
+    public void registerLongPolling(@NotNull String token, @NotNull String username, @Nullable BotSettings botSettings, @Nullable Consumer<TelegramBot> completeCallback) {
         registerBot(LongPollingBot.class, token, username, botSettings, completeCallback);
     }
 
     private <T extends TelegramBot> void registerBot(@NotNull Class<T> botType, @NotNull String token, @NotNull String username,
-                                                     @Nullable BotSettings botSettings, @Nullable Consumer<Bot> completeCallback) {
+                                                     @Nullable BotSettings botSettings, @Nullable Consumer<TelegramBot> completeCallback) {
         if (botType == WebHookBot.class) {
             throw new IllegalArgumentException("WebHook bots are currently not supported");
         }

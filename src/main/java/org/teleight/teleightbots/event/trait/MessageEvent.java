@@ -15,7 +15,7 @@ public interface MessageEvent extends Event {
     default @NotNull CompletableFuture<Message> reply(String text) {
         final Update update = update();
         final Message message = update.message();
-        if (message == null || message.chat() == null) {
+        if (message == null) {
             return CompletableFuture.completedFuture(null);
         }
         return bot().execute(SendMessage.builder()
