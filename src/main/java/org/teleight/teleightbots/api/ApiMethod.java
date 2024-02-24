@@ -6,24 +6,18 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.ArrayType;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.methods.group.admin.forum.EditForumTopic;
 import org.teleight.teleightbots.api.objects.ApiResponse;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResultDeserializer;
-import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
-import org.teleight.teleightbots.api.utils.ColorDeserializer;
-import org.teleight.teleightbots.api.utils.ColorSerializer;
-import org.teleight.teleightbots.api.utils.DateDeserializer;
-import org.teleight.teleightbots.api.utils.DateSerializer;
-import org.teleight.teleightbots.api.utils.ParseMode;
-import org.teleight.teleightbots.api.utils.ParseModeDeserializer;
-import org.teleight.teleightbots.api.utils.ParseModeSerializer;
+import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDeserializer;
+import org.teleight.teleightbots.api.objects.origin.MessageOrigin;
+import org.teleight.teleightbots.api.objects.origin.serialization.MessageOriginDeserializer;
+import org.teleight.teleightbots.api.utils.*;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.awt.*;
@@ -54,7 +48,11 @@ public interface ApiMethod<R> {
                     .addDeserializer(ChatMember.class, new ChatMemberDeserializer())
             )
             .registerModule(new SimpleModule()
-                    .addDeserializer(InlineQueryResult.class,new InlineQueryResultDeserializer()));
+                    .addDeserializer(InlineQueryResult.class,new InlineQueryResultDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addDeserializer(MessageOrigin.class, new MessageOriginDeserializer())
+            );
 
     @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
 

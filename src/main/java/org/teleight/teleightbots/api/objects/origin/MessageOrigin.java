@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.objects.origin;
 
-public sealed interface MessageOrigin permits
+import org.teleight.teleightbots.api.ApiResult;
+
+public sealed interface MessageOrigin extends ApiResult permits
         MessageOriginChannel,
         MessageOriginChat,
         MessageOriginHiddenUser,
