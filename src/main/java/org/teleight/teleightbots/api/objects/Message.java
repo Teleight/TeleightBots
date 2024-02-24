@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.chat.boost.ChatBoostAdded;
 import org.teleight.teleightbots.api.objects.entities.MessageEntity;
@@ -335,7 +334,7 @@ public record Message(
         @JsonProperty("reply_markup")
         @Nullable
         InlineKeyboardMarkup replyMarkup
-) implements MaybeInaccessibleMessage, ApiResult {
+) implements MaybeInaccessibleMessage {
 
     @JsonIgnore
     public String chatId() {
