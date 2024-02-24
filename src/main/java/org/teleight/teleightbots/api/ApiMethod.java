@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
+import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
@@ -17,6 +18,7 @@ import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.origin.MessageOrigin;
 import org.teleight.teleightbots.api.objects.origin.serialization.MessageOriginDeserializer;
+import org.teleight.teleightbots.api.objects.serialization.MaybeInaccessibleMessageDeserializer;
 import org.teleight.teleightbots.api.utils.*;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
@@ -52,6 +54,9 @@ public interface ApiMethod<R> {
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(MessageOrigin.class, new MessageOriginDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
             );
 
     @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;

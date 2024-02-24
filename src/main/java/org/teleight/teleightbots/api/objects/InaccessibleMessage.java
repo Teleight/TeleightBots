@@ -2,7 +2,6 @@ package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 
 public record InaccessibleMessage(
@@ -17,5 +16,5 @@ public record InaccessibleMessage(
         @JsonProperty(value = "date", required = true, defaultValue = "0")
         @NotNull
         Integer date
-) implements MaybeInaccessibleMessage, ApiResult {
+) implements MaybeInaccessibleMessage {
 }
