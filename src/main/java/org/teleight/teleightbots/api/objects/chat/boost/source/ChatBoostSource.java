@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.objects.chat.boost.source;
 
-public sealed interface ChatBoostSource permits
+import org.teleight.teleightbots.api.ApiResult;
+
+public sealed interface ChatBoostSource extends ApiResult permits
         ChatBoostSourceGiftCode,
         ChatBoostSourceGiveaway,
         ChatBoostSourcePremium {

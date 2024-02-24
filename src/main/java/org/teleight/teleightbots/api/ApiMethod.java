@@ -10,6 +10,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
+import org.teleight.teleightbots.api.objects.chat.boost.source.ChatBoostSource;
+import org.teleight.teleightbots.api.objects.chat.boost.source.serialization.ChatBoostSourceDeserializer;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
@@ -57,6 +59,9 @@ public interface ApiMethod<R> {
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addDeserializer(ChatBoostSource.class, new ChatBoostSourceDeserializer())
             );
 
     @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;

@@ -2,7 +2,6 @@ package org.teleight.teleightbots.api.objects.chat.boost.source;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.User;
 
 public record ChatBoostSourcePremium(
@@ -13,5 +12,5 @@ public record ChatBoostSourcePremium(
         @JsonProperty(value = "user", required = true)
         @NotNull
         User user
-) implements ChatBoostSource, ApiResult {
+) implements ChatBoostSource {
 }
