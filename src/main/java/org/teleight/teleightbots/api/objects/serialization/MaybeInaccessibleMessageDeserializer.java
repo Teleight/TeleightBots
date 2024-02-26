@@ -3,8 +3,8 @@ package org.teleight.teleightbots.api.objects.serialization;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.InaccessibleMessage;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.Message;
@@ -13,15 +13,12 @@ import java.io.IOException;
 
 public class MaybeInaccessibleMessageDeserializer extends StdDeserializer<MaybeInaccessibleMessage> {
 
-    private final ObjectMapper objectMapper;
-
     public MaybeInaccessibleMessageDeserializer() {
         this(null);
     }
 
     private MaybeInaccessibleMessageDeserializer(Class<?> vc) {
         super(vc);
-        objectMapper = new ObjectMapper();
     }
 
     @Override
@@ -37,7 +34,7 @@ public class MaybeInaccessibleMessageDeserializer extends StdDeserializer<MaybeI
         } else {
             wrapperClass = Message.class;
         }
-        return objectMapper.readValue(node.toString(), wrapperClass);
+        return ApiMethod.OBJECT_MAPPER.readValue(node.toString(), wrapperClass);
     }
 
 }

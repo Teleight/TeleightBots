@@ -3,15 +3,13 @@ package org.teleight.teleightbots.api.objects.origin.serialization;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.origin.*;
 
 import java.io.IOException;
 
 public class MessageOriginDeserializer extends StdDeserializer<MessageOrigin> {
-
-    private final ObjectMapper objectMapper;
 
     public MessageOriginDeserializer() {
         this(null);
@@ -19,7 +17,6 @@ public class MessageOriginDeserializer extends StdDeserializer<MessageOrigin> {
 
     private MessageOriginDeserializer(Class<?> vc) {
         super(vc);
-        objectMapper = new ObjectMapper();
     }
 
     @Override
@@ -45,7 +42,7 @@ public class MessageOriginDeserializer extends StdDeserializer<MessageOrigin> {
         if (wrapperClass == null) {
             return null;
         }
-        return objectMapper.readValue(node.toString(), wrapperClass);
+        return ApiMethod.OBJECT_MAPPER.readValue(node.toString(), wrapperClass);
     }
 
 }
