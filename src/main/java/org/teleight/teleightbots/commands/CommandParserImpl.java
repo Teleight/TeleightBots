@@ -32,7 +32,9 @@ public final class CommandParserImpl implements CommandParser {
         if (commandAsString == null) {
             return InvalidCommand.INSTANCE;
         }
-        final String inputArguments = userInput.substring(userInput.indexOf(" ") + 1).replace("/" + commandAsString, "");
+        final String inputArguments = userInput.substring(userInput.indexOf(" ") + 1)
+                .replace("/" + commandAsString, "")
+                .replace("@" + bot.getBotUsername(), "");
         final Command command = commandManager.getCommand(commandAsString);
 
         if (command == null) {
