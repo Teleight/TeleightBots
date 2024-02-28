@@ -28,12 +28,11 @@ public final class CommandParserImpl implements CommandParser {
 
     @Override
     public Result parse(Bot bot, @NotNull User sender, @NotNull String userInput, Message message) {
-        final String inputArguments = userInput.substring(userInput.indexOf(" ") + 1);
-
         final String commandAsString = commandManager.extractCommand(userInput);
         if (commandAsString == null) {
             return InvalidCommand.INSTANCE;
         }
+        final String inputArguments = userInput.substring(userInput.indexOf(" ") + 1).replace("/" + commandAsString, "");
         final Command command = commandManager.getCommand(commandAsString);
 
         if (command == null) {
