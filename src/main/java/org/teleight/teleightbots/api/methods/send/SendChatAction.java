@@ -9,6 +9,10 @@ import org.teleight.teleightbots.api.ApiMethodBoolean;
 
 @Builder
 public record SendChatAction(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,

@@ -16,6 +16,10 @@ import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
 
 @Builder
 public record SendAnimation(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
@@ -71,6 +75,7 @@ public record SendAnimation(
         @JsonProperty(value = "reply_parameters")
         @Nullable
         ReplyParameters replyParameters,
+
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
@@ -83,6 +88,9 @@ public record SendAnimation(
 
     @Override
     public void buildRequest(MultiPartBodyPublisher bodyCreator) throws JsonProcessingException {
+        if (businessConnectionId != null) {
+            bodyCreator.addPart("business_connection_id", businessConnectionId);
+        }
         bodyCreator.addPart("animation", animation.file(), animation.fileName());
         bodyCreator.addPart("chat_id", chatId);
         if (messageThreadId != null) {

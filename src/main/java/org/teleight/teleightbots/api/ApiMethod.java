@@ -16,6 +16,7 @@ import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
 import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResultDeserializer;
+import org.teleight.teleightbots.api.objects.input.InputSticker;
 import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDeserializer;
 import org.teleight.teleightbots.api.objects.origin.MessageOrigin;
@@ -55,6 +56,10 @@ public interface ApiMethod<R> {
             .registerModule(new SimpleModule()
                     .addSerializer(Date.class, new DateSerializer())
                     .addDeserializer(Date.class, new DateDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addSerializer(InputSticker.Format.class, new InputStickerFormatSerializer())
+                    .addDeserializer(InputSticker.Format.class, new InputStickerFormatDeserializer())
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(ChatMember.class, new ChatMemberDeserializer())

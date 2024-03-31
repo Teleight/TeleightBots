@@ -16,6 +16,10 @@ import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
 
 @Builder
 public record SendVoice(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
@@ -67,6 +71,9 @@ public record SendVoice(
 
     @Override
     public void buildRequest(MultiPartBodyPublisher bodyCreator) throws JsonProcessingException {
+        if (businessConnectionId != null) {
+            bodyCreator.addPart("business_connection_id", businessConnectionId);
+        }
         bodyCreator.addPart("voice", voice.file(), voice.fileName());
         bodyCreator.addPart("chat_id", chatId);
         if (messageThreadId != null) {

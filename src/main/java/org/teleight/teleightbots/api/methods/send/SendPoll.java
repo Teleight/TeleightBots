@@ -15,6 +15,10 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 @Builder
 public record SendPoll(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,

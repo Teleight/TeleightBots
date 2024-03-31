@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.methods.callback.CallbackQuery;
+import org.teleight.teleightbots.api.objects.business.BusinessConnection;
+import org.teleight.teleightbots.api.objects.business.BusinessMessagesDeleted;
 import org.teleight.teleightbots.api.objects.chat.ChatJoinRequest;
 import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
 import org.teleight.teleightbots.api.objects.chat.boost.ChatBoostRemoved;
@@ -36,6 +38,22 @@ public record Update(
         @JsonProperty("edited_channel_post")
         @Nullable
         Message editedChannelPost,
+
+        @JsonProperty("business_connection")
+        @Nullable
+        BusinessConnection businessConnection,
+
+        @JsonProperty("business_message")
+        @Nullable
+        Message businessMessage,
+
+        @JsonProperty("edited_business_message")
+        @Nullable
+        Message editedBusinessMessage,
+
+        @JsonProperty("deleted_business_messages")
+        @Nullable
+        BusinessMessagesDeleted deletedBusinessMessages,
 
         @JsonProperty("message_reaction")
         @Nullable
