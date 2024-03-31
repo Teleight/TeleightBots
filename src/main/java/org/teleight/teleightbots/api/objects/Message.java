@@ -47,9 +47,17 @@ public record Message(
         @Nullable
         Integer senderBoostCount,
 
+        @JsonProperty("sender_business_bot")
+        @Nullable
+        User senderBusinessBot,
+
         @JsonProperty(value = "date", required = true)
         @NotNull
         Date date,
+
+        @JsonProperty("business_connection_id")
+        @Nullable
+        String businessConnectionId,
 
         @JsonProperty(value = "chat", required = true)
         @NotNull
@@ -94,6 +102,10 @@ public record Message(
         @JsonProperty("has_protected_content")
         @Nullable
         Boolean hasProtectedContent,
+
+        @JsonProperty("is_from_offline")
+        @Nullable
+        Boolean isFromOffline,
 
         @JsonProperty("media_group_id")
         @Nullable

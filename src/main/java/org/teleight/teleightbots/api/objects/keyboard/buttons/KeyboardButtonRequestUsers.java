@@ -18,6 +18,18 @@ public record KeyboardButtonRequestUsers(
 
         @JsonProperty(value = "max_quantity")
         @Nullable
-        Integer maxQuantity
+        Integer maxQuantity,
+
+        @JsonProperty(value = "request_name")
+        @Nullable
+        Boolean requestName,
+
+        @JsonProperty(value = "request_username")
+        @Nullable
+        Boolean requestUsername,
+
+        @JsonProperty(value = "request_photo")
+        @Nullable
+        Boolean requestPhoto
 ) implements ApiResult {
 }

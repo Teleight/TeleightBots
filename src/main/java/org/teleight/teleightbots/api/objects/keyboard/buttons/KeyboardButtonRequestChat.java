@@ -34,6 +34,18 @@ public record KeyboardButtonRequestChat(
 
         @JsonProperty(value = "bot_is_member")
         @Nullable
-        Boolean botIsMember
+        Boolean botIsMember,
+
+        @JsonProperty(value = "request_title")
+        @Nullable
+        Boolean requestTitle,
+
+        @JsonProperty(value = "request_username")
+        @Nullable
+        Boolean requestUsername,
+
+        @JsonProperty(value = "request_photo")
+        @Nullable
+        Boolean requestPhoto
 ) implements ApiResult {
 }

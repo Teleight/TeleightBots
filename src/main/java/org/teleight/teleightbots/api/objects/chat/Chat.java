@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.objects.Message;
+import org.teleight.teleightbots.api.objects.business.BusinessLocation;
+import org.teleight.teleightbots.api.objects.business.BusinessOpeningHours;
 import org.teleight.teleightbots.api.objects.reaction.ReactionType;
+import org.teleight.teleightbots.api.objects.Birthdate;
 
 import java.util.Date;
 
@@ -45,6 +48,26 @@ public record Chat(
         @JsonProperty("active_usernames")
         @Nullable
         String[] activeUsernames,
+
+        @JsonProperty("birthdate")
+        @Nullable
+        Birthdate birthdate,
+
+        @JsonProperty("business_intro")
+        @Nullable
+        String businessIntro,
+
+        @JsonProperty("business_location")
+        @Nullable
+        BusinessLocation businessLocation,
+
+        @JsonProperty("business_opening_hours")
+        @Nullable
+        BusinessOpeningHours businessOpeningHours,
+
+        @JsonProperty("personal_chat")
+        @Nullable
+        Chat personalChat,
 
         @JsonProperty("available_reactions")
         @Nullable

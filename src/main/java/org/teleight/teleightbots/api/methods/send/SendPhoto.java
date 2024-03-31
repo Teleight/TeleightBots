@@ -16,6 +16,10 @@ import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
 
 @Builder
 public record SendPhoto(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
@@ -68,6 +72,9 @@ public record SendPhoto(
 
     @Override
     public void buildRequest(MultiPartBodyPublisher bodyCreator) {
+        if (businessConnectionId != null) {
+            bodyCreator.addPart("business_connection_id", businessConnectionId);
+        }
         bodyCreator.addPart("photo", photo.file(), photo.fileName());
         bodyCreator.addPart("chat_id", chatId);
 

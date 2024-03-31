@@ -14,6 +14,10 @@ import org.teleight.teleightbots.api.utils.ParseMode;
 
 @Builder
 public record SendMessage(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,

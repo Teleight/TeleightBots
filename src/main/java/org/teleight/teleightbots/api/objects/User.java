@@ -44,7 +44,11 @@ public record User(
 
         @JsonProperty("supports_inline_queries")
         @Nullable
-        Boolean supportsInlineQueries
+        Boolean supportsInlineQueries,
+
+        @JsonProperty("can_connect_to_business")
+        @Nullable
+        Boolean canConnectToBusiness
 ) implements ApiResult {
 
 }
