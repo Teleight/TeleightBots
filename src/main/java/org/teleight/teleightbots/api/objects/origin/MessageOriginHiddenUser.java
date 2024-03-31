@@ -2,7 +2,6 @@ package org.teleight.teleightbots.api.objects.origin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.ApiResult;
 
 import java.util.Date;
 
@@ -18,5 +17,5 @@ public record MessageOriginHiddenUser(
         @JsonProperty(value = "sender_user_name", required = true)
         @NotNull
         String senderUserName
-) implements MessageOrigin, ApiResult {
+) implements MessageOrigin {
 }

@@ -28,6 +28,7 @@ import org.teleight.teleightbots.event.user.UserMessageReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
+import org.teleight.teleightbots.utils.PropertyUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -39,18 +40,22 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 public class LongPollingUpdateProcessor implements UpdateProcessor {
 
+    private final Object AUTH_LOCK = new Object();
+
     private final HttpClient client = HttpClient.newBuilder()
-            .connectTimeout(Duration.of(10, ChronoUnit.SECONDS))
+            .connectTimeout(Duration.of(75, ChronoUnit.SECONDS))
             .version(HttpClient.Version.HTTP_2)
             .build();
     private Thread updateProcessorThread;
     private Bot bot;
     private int lastReceivedUpdate = 0;
 
-    private final Object AUTH_LOCK = new Object();
+    private final int timeoutInMilliseconds = PropertyUtils.getInteger("teleightbots.updates.timeout", 5000);
 
     @Override
     public void setBot(@NotNull Bot bot) {
@@ -88,7 +93,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         updateProcessorThread.interrupt();
     }
 
-    private void executeGetUpdates() {
+    private void executeGetUpdates() throws ExecutionException, InterruptedException, TimeoutException {
         final BotSettings settings = bot.getBotSettings();
 
         final GetUpdates getUpdates = GetUpdates.of()
@@ -98,6 +103,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
         final String responseJson = UNSAFE_executeMethod(getUpdates)
                 .exceptionally(throwable -> {
+                    TeleightBots.getExceptionManager().handleException(throwable);
                     return null;
                 })
                 .join();
@@ -296,7 +302,8 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
     @ApiStatus.Internal
     private HttpRequest createRequest(ApiMethod<?> method, String url) throws JsonProcessingException {
-        final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(URI.create(url));
+        final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(URI.create(url))
+                .timeout(Duration.of(75,ChronoUnit.SECONDS));
         final HttpRequest.BodyPublisher body;
 
         if (method instanceof MultiPartApiMethod<?> multiPartApiMethod) {
@@ -328,7 +335,11 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
             }
 
             while (!Thread.currentThread().isInterrupted()) {
-                executeGetUpdates();
+                try {
+                    executeGetUpdates();
+                } catch (ExecutionException | InterruptedException | TimeoutException e) {
+                    TeleightBots.getExceptionManager().handleException(e);
+                }
             }
         }
     }

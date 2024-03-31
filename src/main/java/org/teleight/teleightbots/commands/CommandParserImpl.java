@@ -28,12 +28,13 @@ public final class CommandParserImpl implements CommandParser {
 
     @Override
     public Result parse(Bot bot, @NotNull User sender, @NotNull String userInput, Message message) {
-        final String inputArguments = userInput.substring(userInput.indexOf(" ") + 1);
-
         final String commandAsString = commandManager.extractCommand(userInput);
         if (commandAsString == null) {
             return InvalidCommand.INSTANCE;
         }
+        final String inputArguments = userInput.substring(userInput.indexOf(" ") + 1)
+                .replace("/" + commandAsString, "")
+                .replace("@" + bot.getBotUsername(), "");
         final Command command = commandManager.getCommand(commandAsString);
 
         if (command == null) {
@@ -199,22 +200,19 @@ public final class CommandParserImpl implements CommandParser {
 
         @Override
         public @NotNull ExecutableCommand executable() {
-            return new ExecutableCommand() {
-                @Override
-                public void execute(User from) {
-                    CommandContext commandContext = new CommandContext(bot, message, userInput);
+            return from -> {
+                CommandContext commandContext = new CommandContext(bot, message, userInput);
 
-                    if (argumentResults != null) {
-                        for (ArgumentResult<?> argumentResult : argumentResults) {
-                            if (!(argumentResult instanceof ArgumentResult.Success<?> success)) {
-                                continue;
-                            }
-                            commandContext.setArgument(success.argumentId(), success.value);
+                if (argumentResults != null) {
+                    for (ArgumentResult<?> argumentResult : argumentResults) {
+                        if (!(argumentResult instanceof ArgumentResult.Success<?> success)) {
+                            continue;
                         }
+                        commandContext.setArgument(success.argumentId(), success.value);
                     }
-
-                    executor.execute(from, commandContext);
                 }
+
+                executor.execute(from, commandContext);
             };
         }
     }

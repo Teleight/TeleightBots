@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
-public sealed interface MaybeInaccessibleMessage permits
+import org.teleight.teleightbots.api.ApiResult;
+
+public sealed interface MaybeInaccessibleMessage extends ApiResult permits
         Message,
         InaccessibleMessage {
 }

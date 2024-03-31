@@ -2,7 +2,7 @@ package org.teleight.teleightbots.api.objects.origin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.ApiResult;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 
 import java.util.Date;
@@ -25,7 +25,7 @@ public record MessageOriginChannel(
         Integer messageId,
 
         @JsonProperty(value = "author_signature")
-        @NotNull
+        @Nullable
         String senderSignature
-) implements MessageOrigin, ApiResult {
+) implements MessageOrigin {
 }
