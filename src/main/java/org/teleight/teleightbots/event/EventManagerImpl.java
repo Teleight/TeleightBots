@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.event;
 
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.trait.Event;
 import org.teleight.teleightbots.utils.ArrayUtils;
 
@@ -11,7 +12,10 @@ public class EventManagerImpl implements EventManager {
 
     private EventListener<Event>[] registeredEvents = new EventListener[0];
 
-    public EventManagerImpl() {
+    private final Bot bot;
+
+    public EventManagerImpl(Bot bot) {
+        this.bot = bot;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class EventManagerImpl implements EventManager {
                     continue;
                 }
 
-                final EventListener.Result result = eventListener.run(event);
+                final EventListener.Result result = eventListener.run(bot, event);
                 if (result == EventListener.Result.EXPIRED) {
                     eventMapHasChanged = true;
                     registeredEvents[i] = null;

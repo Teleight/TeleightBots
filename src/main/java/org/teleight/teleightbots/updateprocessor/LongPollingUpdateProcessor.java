@@ -70,15 +70,15 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         bot.execute(new GetMe())
                 .thenAcceptAsync(user -> {
                     synchronized (AUTH_LOCK) {
-                        System.out.println("Bot authenticated: " + user.username());
+                        bot.getLogger().info("Bot authenticated with token");
                         AUTH_LOCK.notifyAll();
                     }
                 })
                 .exceptionally(throwable -> {
                     synchronized (AUTH_LOCK) {
+                        bot.getLogger().error("Failed to authenticate with token", throwable);
                         shutdown();
                         AUTH_LOCK.notifyAll();
-                        System.out.println("Failed to authenticate bot: " + throwable.getMessage());
                     }
                     return null;
                 });
@@ -103,7 +103,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
         final String responseJson = UNSAFE_executeMethod(getUpdates)
                 .exceptionally(throwable -> {
-                    TeleightBots.getExceptionManager().handleException(throwable);
+                    TeleightBots.getExceptionManager().handleException(bot, throwable);
                     return null;
                 })
                 .join();
@@ -115,7 +115,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         try {
             updates = getUpdates.deserializeResponse(responseJson);
         } catch (TelegramRequestException e) {
-            TeleightBots.getExceptionManager().handleException(e);
+            TeleightBots.getExceptionManager().handleException(bot, e);
             return;
         }
 
@@ -164,7 +164,9 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
 
                     //Conversation
-                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> runningConversation.getEventManager().call(updateReceivedEvent));
+                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
+                        bot.getEventManager().call(updateReceivedEvent);
+                    });
 
 
                     final boolean hasMessage = update.message() != null;
@@ -338,7 +340,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 try {
                     executeGetUpdates();
                 } catch (ExecutionException | InterruptedException | TimeoutException e) {
-                    TeleightBots.getExceptionManager().handleException(e);
+                    TeleightBots.getExceptionManager().handleException(bot, e);
                 }
             }
         }

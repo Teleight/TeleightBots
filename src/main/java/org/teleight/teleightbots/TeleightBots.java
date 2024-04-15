@@ -1,15 +1,18 @@
 package org.teleight.teleightbots;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.botmanager.BotManager;
 import org.teleight.teleightbots.exception.ExceptionManager;
-import org.teleight.teleightbots.scheduler.Scheduler;
 
 public final class TeleightBots {
 
     @ApiStatus.Internal
     private static TeleightBotsProcess teleightBotsProcess;
+
+    private static final Logger logger = LogManager.getLogger(TeleightBots.class);
 
     /**
      * Initializes the TeleightBots API.
@@ -52,9 +55,9 @@ public final class TeleightBots {
      *
      * @return The Scheduler associated with the TeleightBots process.
      */
-    public static @NotNull Scheduler getScheduler() {
+    /*public static @NotNull Scheduler getGlobalScheduler() {
         return teleightBotsProcess.scheduler();
-    }
+    }*/
 
     /**
      * Returns the BotManager associated with the TeleightBots process.
@@ -79,6 +82,21 @@ public final class TeleightBots {
      */
     public static @NotNull ExceptionManager getExceptionManager() {
         return teleightBotsProcess.exceptionManager();
+    }
+
+    /**
+     * Returns the global logger used by the library
+     * @return the logger
+     */
+    public static @NotNull Logger getGlobalLogger() {
+        return logger;
+    }
+
+    /**
+     * Enable debug log4j logging
+     */
+    public static void enableDebugMode() {
+        System.setProperty("LOG_LEVEL", "DEBUG");
     }
 
     /**

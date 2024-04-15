@@ -44,7 +44,7 @@ public class ExtensionAnnotationProcessor extends AbstractProcessor {
                     new ObjectMapper().writeValue(writer, description);
                 }
             } catch (IOException e) {
-                TeleightBots.getExceptionManager().handleException(e);
+                TeleightBots.getGlobalLogger().error(e);
             }
         }
         return false;

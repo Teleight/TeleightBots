@@ -2,6 +2,7 @@ package org.teleight.teleightbots.event;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
+import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.trait.CancellableEvent;
 import org.teleight.teleightbots.event.trait.Event;
 
@@ -33,7 +34,7 @@ public non-sealed class EventListenerImpl<T extends Event> implements EventListe
     }
 
     @Override
-    public @NotNull Result run(@NotNull T event) {
+    public @NotNull Result run(@NotNull Bot bot, @NotNull T event) {
         if (ignoreCancelled && event instanceof CancellableEvent && ((CancellableEvent) event).isCancelled()) {
             return Result.CANCELLED;
         }
@@ -48,7 +49,7 @@ public non-sealed class EventListenerImpl<T extends Event> implements EventListe
             try {
                 handler.accept(event);
             } catch (Exception e) {
-                TeleightBots.getExceptionManager().handleException(e);
+                TeleightBots.getExceptionManager().handleException(bot, e);
                 return Result.EXCEPTION;
             }
         }

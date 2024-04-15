@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.scheduler;
 
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.bot.Bot;
 
 import java.io.Closeable;
 
@@ -20,8 +21,8 @@ public interface Scheduler extends Closeable {
      * Creates a new scheduler.
      * @return a new scheduler
      */
-    static @NotNull Scheduler newScheduler() {
-        return new SchedulerImpl();
+    static @NotNull Scheduler newScheduler(Bot bot) {
+        return new SchedulerImpl(bot);
     }
 
     /**

@@ -30,7 +30,7 @@ public class FileDownloaderImpl implements FileDownloader {
 
     @Override
     public void shutdown() {
-        System.out.println("Shutting down FileDownloader");
+        bot.getLogger().info("Shutting down file downloader");
         client.close();
     }
 

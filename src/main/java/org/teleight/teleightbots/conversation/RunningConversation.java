@@ -7,10 +7,7 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
-import org.teleight.teleightbots.event.EventManager;
-import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
-import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.scheduler.Task;
 
 import java.util.concurrent.TimeUnit;
@@ -19,12 +16,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @ApiStatus.Internal
 public final class RunningConversation extends Thread {
 
-    private static final Scheduler SCHEDULER = Scheduler.newScheduler();
-
     // We need to synchronize on this object to wait for the next message
     private final Object lock = new Object();
-
-    private final EventManager eventManager = new EventManagerImpl();
 
     private final Bot bot;
     private final User user;
@@ -55,7 +48,7 @@ public final class RunningConversation extends Thread {
 
         setName(String.format("Conversation-%s-%s", conversation.name(), user.id()));
 
-        eventManager.addListener(UpdateReceivedEvent.class, event -> {
+        bot.getEventManager().addListener(UpdateReceivedEvent.class, event -> {
             synchronized (lock) {
                 result = event.update();
                 lastUpdateMillis = System.currentTimeMillis();
@@ -66,7 +59,7 @@ public final class RunningConversation extends Thread {
         final var conversationTimeout = conversation.conversationTimeout();
         final var conversationTimeoutMillis = conversationTimeout.timeUnit().toMillis(conversationTimeout.timeout());
 
-        timeoutTask = SCHEDULER.buildTask(() -> {
+        timeoutTask = bot.getScheduler().buildTask(() -> {
             // Check if the conversation has timed out after the last message
             final long currentMillis = System.currentTimeMillis();
             final boolean isTimeoutEnabled = conversationTimeoutMillis > 0;
@@ -122,10 +115,6 @@ public final class RunningConversation extends Thread {
         running.set(false);
         timeoutTask.cancel();
         interrupt();
-    }
-
-    public EventManager getEventManager() {
-        return eventManager;
     }
 
 }

@@ -49,7 +49,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
 
                     loadedExtensions.add(extension);
                 }catch (Exception e){
-                    TeleightBots.getExceptionManager().handleException(e);
+                    TeleightBots.getExceptionManager().handleException(bot, e);
                 }
             }
         }
@@ -61,7 +61,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
             try{
                 extension.shutdown();
             } catch (Exception e) {
-                TeleightBots.getExceptionManager().handleException(e);
+                TeleightBots.getExceptionManager().handleException(bot, e);
             }
         }
     }
@@ -91,7 +91,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
         try {
             jarClass = Class.forName(mainClass, true, extensionClassLoader);
         } catch (ClassNotFoundException e) {
-            TeleightBots.getExceptionManager().handleException(e);
+            TeleightBots.getExceptionManager().handleException(bot, e);
             return new LoadResult.InvalidBotLoader("Failed to find main class for extension " + extensionName + ". " + e.getMessage());
         }
 
@@ -99,7 +99,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
         try {
             extensionClass = jarClass.asSubclass(Extension.class);
         } catch (ClassCastException e) {
-            TeleightBots.getExceptionManager().handleException(e);
+            TeleightBots.getExceptionManager().handleException(bot, e);
             return new LoadResult.InvalidBotLoader("Failed to cast extension " + extensionName + " to Extension class. " + e.getMessage());
         }
 
@@ -108,7 +108,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
             constructor = extensionClass.getDeclaredConstructor(Bot.class);
             constructor.setAccessible(true);
         } catch (NoSuchMethodException e) {
-            TeleightBots.getExceptionManager().handleException(e);
+            TeleightBots.getExceptionManager().handleException(bot, e);
             return new LoadResult.InvalidBotLoader("Failed to find constructor for extension " + extensionName + ". " + e.getMessage());
         }
 
@@ -116,7 +116,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
         try {
             extension = constructor.newInstance(bot);
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-            TeleightBots.getExceptionManager().handleException(e);
+            TeleightBots.getExceptionManager().handleException(bot, e);
             return new LoadResult.InvalidBotLoader("Failed to instantiate extension " + extensionName + ". " + e.getMessage());
         }
 
@@ -161,7 +161,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
                 return extension;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            TeleightBots.getExceptionManager().handleException(bot, e);
             return null;
         }
     }

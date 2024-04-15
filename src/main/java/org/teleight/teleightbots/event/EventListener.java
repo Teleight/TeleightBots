@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.event;
 
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.trait.Event;
 
 import java.util.function.Consumer;
@@ -53,7 +54,7 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
      * @param event The event to run.
      * @return The result of running the event.
      */
-    @NotNull Result run(@NotNull T event);
+    @NotNull Result run(@NotNull Bot bot, @NotNull T event);
 
     /**
      * This is an enumeration of possible results of running an event.

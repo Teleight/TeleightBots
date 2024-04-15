@@ -9,6 +9,7 @@ import org.teleight.teleightbots.api.methods.inline.EditMessageText;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
+import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
@@ -18,10 +19,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class MenuManagerImpl implements MenuManager {
 
-    private final EventManager eventManager = new EventManagerImpl();
+    private final EventManager eventManager;
     private final Map<Integer, Menu> menus = new ConcurrentHashMap<>();
 
-    public MenuManagerImpl() {
+    public MenuManagerImpl(Bot bot) {
+        this.eventManager = new EventManagerImpl(bot);
+
         eventManager.addListener(ButtonPressEvent.class, event -> {
             final Collection<Menu> menus = getMenus();
             for (final Menu menu : menus) {

@@ -56,15 +56,16 @@ public final class BotManagerImpl implements BotManager {
             try {
                 completeCallback.accept(bot);
             } catch (Throwable t) {
-                TeleightBots.getExceptionManager().handleException(t);
+                TeleightBots.getExceptionManager().handleException(bot, t);
             }
         }
     }
 
     public void close() {
-        System.out.println("Closing BotManager");
+        TeleightBots.getGlobalLogger().info("Shutting down bot manager");
 
         for (final Bot registeredBot : registeredBots) {
+            TeleightBots.getGlobalLogger().debug("Shutting down bot " + registeredBot.getBotUsername());
             registeredBot.close();
         }
     }
