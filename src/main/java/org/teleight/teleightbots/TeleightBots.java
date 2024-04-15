@@ -6,6 +6,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.botmanager.BotManager;
 import org.teleight.teleightbots.exception.ExceptionManager;
+import org.teleight.teleightbots.scheduler.Scheduler;
 
 public final class TeleightBots {
 
@@ -57,6 +58,18 @@ public final class TeleightBots {
      */
     public static @NotNull BotManager getBotManager() {
         return teleightBotsProcess.botManager();
+    }
+
+    /**
+     * Returns the Scheduler associated with the TeleightBots process.
+     * <p>
+     * The Scheduler is responsible for scheduling tasks to be executed at a later time or at regular intervals.
+     * </p>
+     *
+     * @return The Scheduler associated with the TeleightBots process.
+     */
+    public static @NotNull Scheduler getScheduler() {
+        return teleightBotsProcess.scheduler();
     }
 
     /**
