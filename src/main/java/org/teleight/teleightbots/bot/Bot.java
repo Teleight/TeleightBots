@@ -146,6 +146,11 @@ public final class Bot implements TelegramBot {
     }
 
     @Override
+    public @NotNull EventManager createNewEventNode() {
+        return new EventManagerImpl(this);
+    }
+
+    @Override
     public void connect() {
         extensionManager.start();
         updateProcessor.start();

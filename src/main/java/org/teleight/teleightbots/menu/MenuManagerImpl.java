@@ -11,7 +11,6 @@ import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.EventManager;
-import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
 
 import java.util.*;
@@ -19,11 +18,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class MenuManagerImpl implements MenuManager {
 
+    private final Bot bot;
     private final EventManager eventManager;
     private final Map<Integer, Menu> menus = new ConcurrentHashMap<>();
 
     public MenuManagerImpl(Bot bot) {
-        this.eventManager = new EventManagerImpl(bot);
+        this.bot = bot;
+        this.eventManager = bot.createNewEventNode();
 
         eventManager.addListener(ButtonPressEvent.class, event -> {
             final Collection<Menu> menus = getMenus();
@@ -45,10 +46,22 @@ public final class MenuManagerImpl implements MenuManager {
     private void handleButton(@NotNull MenuButton rowButton, @NotNull ButtonPressEvent event) {
         final CallbackQuery callbackQuery = event.callbackQuery();
         final Message message = callbackQuery.message();
+
+        if (message == null) {
+            bot.getLogger().warn("Tried to handle button {} but no message was found", rowButton.callbackData());
+            return;
+        }
+
         final Chat chat = message.chat();
         final String chatId = "" + chat.id();
         final String callbackData = callbackQuery.data();
         final String inlineMessageId = callbackQuery.inlineMessageId();
+
+        if (inlineMessageId == null) {
+            bot.getLogger().warn("Tried to handle button {} but no inline message id was found", rowButton.callbackData());
+            return;
+        }
+
         final int messageId = message.messageId();
 
         if(callbackData == null){
@@ -66,7 +79,6 @@ public final class MenuManagerImpl implements MenuManager {
             rowButton.callback().accept(event, event.callbackQuery().from());
             return;
         }
-
 
         if(hasDestinationMenu) {
             final Menu destinationMenu = rowButton.destinationMenu();
@@ -91,7 +103,6 @@ public final class MenuManagerImpl implements MenuManager {
                         .build();
                 event.execute(editMessageReplyMarkup);
             }
-            return;
         }
     }
 

@@ -45,8 +45,10 @@ public class ExtensionManagerImpl implements ExtensionManager {
             if(loadExtension instanceof LoadResult.Success success) {
                 try {
                     final Extension extension = success.extension();
-                    extension.start();
 
+                    bot.getLogger().info("Loading extension {}", extension.getName());
+
+                    extension.start();
                     loadedExtensions.add(extension);
                 }catch (Exception e){
                     TeleightBots.getExceptionManager().handleException(bot, e);
@@ -142,6 +144,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
                 continue;
             }
             extensions.add(extension);
+            bot.getLogger().info("Found new extension {} ({}) v{}", extension.name(), extension.version(), extension.mainClass());
         }
         return extensions;
     }

@@ -94,6 +94,8 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     private void executeGetUpdates() throws ExecutionException, InterruptedException, TimeoutException {
+        bot.getLogger().debug("Executing GetUpdates");
+
         final BotSettings settings = bot.getBotSettings();
 
         final GetUpdates getUpdates = GetUpdates.of()
@@ -132,6 +134,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 newSize++;
             }
         }
+        bot.getLogger().debug("Marked updates for removal, to {}", newSize);
 
         // Compact the array
         if (newSize < updates.length) {
@@ -219,7 +222,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
                             final Chat chat = myChatMember.chat();
                             final boolean isChannel = chat.isChannel();
-
 
                             if (isJoined) {
                                 if (isChannel) {
