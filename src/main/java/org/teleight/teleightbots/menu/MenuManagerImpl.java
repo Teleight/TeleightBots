@@ -3,6 +3,7 @@ package org.teleight.teleightbots.menu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
+import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.callback.CallbackQuery;
 import org.teleight.teleightbots.api.methods.inline.EditMessageReplyMarkup;
 import org.teleight.teleightbots.api.methods.inline.EditMessageText;
@@ -13,7 +14,10 @@ import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class MenuManagerImpl implements MenuManager {
@@ -48,7 +52,7 @@ public final class MenuManagerImpl implements MenuManager {
         final Message message = callbackQuery.message();
 
         if (message == null) {
-            bot.getLogger().warn("Tried to handle button {} but no message was found", rowButton.callbackData());
+            TeleightBots.getLogger().warn("Tried to handle button {} but no message was found", rowButton.callbackData());
             return;
         }
 
@@ -58,7 +62,7 @@ public final class MenuManagerImpl implements MenuManager {
         final String inlineMessageId = callbackQuery.inlineMessageId();
 
         if (inlineMessageId == null) {
-            bot.getLogger().warn("Tried to handle button {} but no inline message id was found", rowButton.callbackData());
+            TeleightBots.getLogger().warn("Tried to handle button {} but no inline message id was found", rowButton.callbackData());
             return;
         }
 

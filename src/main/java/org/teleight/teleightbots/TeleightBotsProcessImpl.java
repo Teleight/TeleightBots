@@ -17,13 +17,13 @@ final class TeleightBotsProcessImpl implements TeleightBotsProcess {
 
     @Override
     public void start() {
-        TeleightBots.getGlobalLogger().info("Starting bot process");
+        TeleightBots.getLogger().info("Starting bot process");
         Runtime.getRuntime().addShutdownHook(new Thread(this::close));
     }
 
     @Override
     public void close() {
-        TeleightBots.getGlobalLogger().info("Shutting down bot process");
+        TeleightBots.getLogger().info("Shutting down bot process");
         botManagerImpl.close();
     }
 

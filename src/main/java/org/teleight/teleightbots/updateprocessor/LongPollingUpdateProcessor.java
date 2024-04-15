@@ -13,7 +13,11 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
-import org.teleight.teleightbots.api.objects.chat.member.*;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberAdministrator;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberLeft;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberMember;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberRestricted;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
@@ -70,14 +74,14 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         bot.execute(new GetMe())
                 .thenAcceptAsync(user -> {
                     synchronized (AUTH_LOCK) {
-                        bot.getLogger().info("Bot authenticated with token");
+                        TeleightBots.getLogger().info("Bot {} authenticated with token", bot.getBotUsername());
                         AUTH_LOCK.notifyAll();
                     }
                 })
                 .exceptionally(throwable -> {
                     synchronized (AUTH_LOCK) {
-                        bot.getLogger().error("Failed to authenticate with token", throwable);
-                        shutdown();
+                        TeleightBots.getLogger().error("Failed to authenticate bot {} with token", bot.getBotUsername(), throwable);
+                        close();
                         AUTH_LOCK.notifyAll();
                     }
                     return null;
@@ -89,13 +93,11 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     @Override
-    public void shutdown() {
+    public void close() {
         updateProcessorThread.interrupt();
     }
 
     private void executeGetUpdates() throws ExecutionException, InterruptedException, TimeoutException {
-        bot.getLogger().debug("Executing GetUpdates");
-
         final BotSettings settings = bot.getBotSettings();
 
         final GetUpdates getUpdates = GetUpdates.of()
@@ -105,7 +107,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
         final String responseJson = UNSAFE_executeMethod(getUpdates)
                 .exceptionally(throwable -> {
-                    TeleightBots.getExceptionManager().handleException(bot, throwable);
+                    TeleightBots.getExceptionManager().handleException(throwable);
                     return null;
                 })
                 .join();
@@ -117,7 +119,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         try {
             updates = getUpdates.deserializeResponse(responseJson);
         } catch (TelegramRequestException e) {
-            TeleightBots.getExceptionManager().handleException(bot, e);
+            TeleightBots.getExceptionManager().handleException(e);
             return;
         }
 
@@ -134,7 +136,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 newSize++;
             }
         }
-        bot.getLogger().debug("Marked updates for removal, to {}", newSize);
+        TeleightBots.getLogger().debug("Marked updates for removal, to {}", newSize);
 
         // Compact the array
         if (newSize < updates.length) {
@@ -340,9 +342,10 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
             while (!Thread.currentThread().isInterrupted()) {
                 try {
+                    TeleightBots.getLogger().debug("Executing getUpdates for bot {}", bot.getBotUsername());
                     executeGetUpdates();
                 } catch (ExecutionException | InterruptedException | TimeoutException e) {
-                    TeleightBots.getExceptionManager().handleException(bot, e);
+                    TeleightBots.getExceptionManager().handleException(e);
                 }
             }
         }

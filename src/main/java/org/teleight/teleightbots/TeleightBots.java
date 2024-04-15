@@ -48,18 +48,6 @@ public final class TeleightBots {
     }
 
     /**
-     * Returns the Scheduler associated with the TeleightBots process.
-     * <p>
-     * The Scheduler is responsible for scheduling tasks to be executed at a later time or at regular intervals.
-     * </p>
-     *
-     * @return The Scheduler associated with the TeleightBots process.
-     */
-    /*public static @NotNull Scheduler getGlobalScheduler() {
-        return teleightBotsProcess.scheduler();
-    }*/
-
-    /**
      * Returns the BotManager associated with the TeleightBots process.
      * <p>
      * The BotManager is responsible for managing bots, including registering new bots and getting existing bots.
@@ -88,15 +76,8 @@ public final class TeleightBots {
      * Returns the global logger used by the library
      * @return the logger
      */
-    public static @NotNull Logger getGlobalLogger() {
+    public static @NotNull Logger getLogger() {
         return logger;
-    }
-
-    /**
-     * Enable debug log4j logging
-     */
-    public static void enableDebugMode() {
-        System.setProperty("LOG_LEVEL", "DEBUG");
     }
 
     /**

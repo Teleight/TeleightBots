@@ -48,13 +48,15 @@ public class CommandManagerImpl implements CommandManager {
 
     @Override
     public void execute(@NotNull User sender, @NotNull String userInput, Message message) {
+        TeleightBots.getLogger().debug("Executing command {} from user {}", userInput, sender.id());
+
         final CommandParser commandParser = CommandParser.parser(this);
         try {
             final CommandParser.Result result = commandParser.parse(bot, sender, userInput, message);
             final ExecutableCommand executableCommand = result.executable();
             executableCommand.execute(sender);
         } catch (Throwable t) {
-            TeleightBots.getExceptionManager().handleException(bot, t);
+            TeleightBots.getExceptionManager().handleException(t);
         }
     }
 

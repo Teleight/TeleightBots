@@ -2,14 +2,14 @@ package org.teleight.teleightbots.files;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.File;
-import org.teleight.teleightbots.ShutdownableModule;
 
+import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
 
 /**
  * Interface for a File Downloader that provides methods for downloading files from a given path or a Telegram File object.
  */
-public interface FileDownloader extends ShutdownableModule {
+public interface FileDownloader extends Closeable {
 
     /**
      * Downloads a file from a given file path.

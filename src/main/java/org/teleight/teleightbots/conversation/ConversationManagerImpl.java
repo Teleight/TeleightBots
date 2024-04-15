@@ -79,7 +79,7 @@ public class ConversationManagerImpl implements ConversationManager {
 
     @Override
     public @NotNull @Unmodifiable Collection<RunningConversation> getRunningConversations() {
-        return usersInConversation.values();
+        return Collections.unmodifiableCollection(usersInConversation.values());
     }
 
 }

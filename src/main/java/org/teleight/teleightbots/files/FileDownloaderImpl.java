@@ -2,6 +2,7 @@ package org.teleight.teleightbots.files;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.objects.File;
 import org.teleight.teleightbots.bot.Bot;
 
@@ -29,8 +30,8 @@ public class FileDownloaderImpl implements FileDownloader {
     }
 
     @Override
-    public void shutdown() {
-        bot.getLogger().info("Shutting down file downloader");
+    public void close() {
+        TeleightBots.getLogger().info("Shutting down file downloader");
         client.close();
     }
 

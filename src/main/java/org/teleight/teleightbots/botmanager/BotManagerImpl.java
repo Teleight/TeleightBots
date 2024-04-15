@@ -46,6 +46,11 @@ public final class BotManagerImpl implements BotManager {
         if (botType == LongPollingBot.class) {
             updateProcessor = new LongPollingUpdateProcessor();
         }
+
+        if (updateProcessor == null) {
+            throw new IllegalArgumentException("Could not find update processor");
+        }
+
         final Bot bot = botProvider.provide(token, username, updateProcessor, botSettings);
         updateProcessor.setBot(bot);
         bot.connect();
@@ -56,16 +61,16 @@ public final class BotManagerImpl implements BotManager {
             try {
                 completeCallback.accept(bot);
             } catch (Throwable t) {
-                TeleightBots.getExceptionManager().handleException(bot, t);
+                TeleightBots.getExceptionManager().handleException(t);
             }
         }
     }
 
     public void close() {
-        TeleightBots.getGlobalLogger().info("Shutting down bot manager");
+        TeleightBots.getLogger().info("Shutting down bot manager");
 
         for (final Bot registeredBot : registeredBots) {
-            TeleightBots.getGlobalLogger().debug("Shutting down bot " + registeredBot.getBotUsername());
+            TeleightBots.getLogger().debug("Shutting down bot " + registeredBot.getBotUsername());
             registeredBot.close();
         }
     }

@@ -2,8 +2,8 @@ package org.teleight.teleightbots.extensions;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
-import org.teleight.teleightbots.ShutdownableModule;
 
+import java.io.Closeable;
 import java.util.Set;
 
 /**
@@ -11,7 +11,7 @@ import java.util.Set;
  *
  * @see ExtensionManagerImpl for the default implementation.
  */
-public interface ExtensionManager extends ShutdownableModule {
+public interface ExtensionManager extends Closeable {
 
     // The name of the extension blueprint file.
     String EXTENSION_FILE = "teleight-extension.json";

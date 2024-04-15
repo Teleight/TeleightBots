@@ -1,7 +1,5 @@
 package org.teleight.teleightbots.bot;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
@@ -19,7 +17,11 @@ import org.teleight.teleightbots.extensions.ExtensionManager;
 import org.teleight.teleightbots.extensions.ExtensionManagerImpl;
 import org.teleight.teleightbots.files.FileDownloader;
 import org.teleight.teleightbots.files.FileDownloaderImpl;
-import org.teleight.teleightbots.menu.*;
+import org.teleight.teleightbots.menu.Menu;
+import org.teleight.teleightbots.menu.MenuBuilder;
+import org.teleight.teleightbots.menu.MenuImpl;
+import org.teleight.teleightbots.menu.MenuManager;
+import org.teleight.teleightbots.menu.MenuManagerImpl;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
@@ -37,10 +39,10 @@ public final class Bot implements TelegramBot {
     private final UpdateProcessor updateProcessor;
 
     //Scheduler
-    private final Scheduler scheduler = Scheduler.newScheduler(this);
+    private final Scheduler scheduler = Scheduler.newScheduler();
 
     //Events
-    private final EventManager eventManager = new EventManagerImpl(this);
+    private final EventManager eventManager = new EventManagerImpl();
 
     //Menus
     private final MenuManager menuManager = new MenuManagerImpl(this);
@@ -57,9 +59,6 @@ public final class Bot implements TelegramBot {
     //FileDownloader
     private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
 
-    //Logger
-    private final Logger logger;
-
     private final boolean shouldPrintExceptions = Boolean.parseBoolean(System.getenv("teleightbots.printexceptions"));
 
     public Bot(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @NotNull BotSettings botSettings) {
@@ -67,8 +66,6 @@ public final class Bot implements TelegramBot {
         this.username = username;
         this.botSettings = botSettings;
         this.updateProcessor = updateProcessor;
-
-        this.logger = LogManager.getLogger("[Bot] " + username);
     }
 
     @Override
@@ -141,13 +138,9 @@ public final class Bot implements TelegramBot {
         return fileDownloader;
     }
 
-    public Logger getLogger() {
-        return logger;
-    }
-
     @Override
     public @NotNull EventManager createNewEventNode() {
-        return new EventManagerImpl(this);
+        return new EventManagerImpl();
     }
 
     @Override
@@ -158,12 +151,12 @@ public final class Bot implements TelegramBot {
 
     public void close() {
         try {
-            extensionManager.shutdown();
+            extensionManager.close();
             scheduler.close();
-            updateProcessor.shutdown();
-            fileDownloader.shutdown();
+            updateProcessor.close();
+            fileDownloader.close();
         } catch (Exception e) {
-            TeleightBots.getExceptionManager().handleException(this, e);
+            TeleightBots.getExceptionManager().handleException(e);
         }
     }
 
@@ -176,7 +169,7 @@ public final class Bot implements TelegramBot {
                 result = method.deserializeResponse(responseJson);
             } catch (Exception e) {
                 if (shouldPrintExceptions) {
-                    TeleightBots.getExceptionManager().handleException(this, e);
+                    TeleightBots.getExceptionManager().handleException(e);
                 }
                 throw new TelegramRequestException(e);
             }

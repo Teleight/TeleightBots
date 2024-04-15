@@ -48,7 +48,7 @@ public final class RunningConversation extends Thread {
 
         setName(String.format("Conversation-%s-%s", conversation.name(), user.id()));
 
-        bot.getEventManager().addListener(UpdateReceivedEvent.class, event -> {
+        bot.createNewEventNode().addListener(UpdateReceivedEvent.class, event -> {
             synchronized (lock) {
                 result = event.update();
                 lastUpdateMillis = System.currentTimeMillis();

@@ -4,13 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.bot.Bot;
 
+import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
 
-public interface UpdateProcessor {
+public interface UpdateProcessor extends Closeable {
 
     void start();
-
-    void shutdown();
 
     @NotNull CompletableFuture<String> executeMethod(@NotNull ApiMethod<?> method);
 
