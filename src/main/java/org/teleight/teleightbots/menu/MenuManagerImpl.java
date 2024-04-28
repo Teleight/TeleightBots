@@ -62,8 +62,7 @@ public final class MenuManagerImpl implements MenuManager {
         final String inlineMessageId = callbackQuery.inlineMessageId();
 
         if (inlineMessageId == null) {
-            TeleightBots.getLogger().warn("Tried to handle button {} but no inline message id was found", rowButton.callbackData());
-            return;
+            TeleightBots.getLogger().debug("Handling button {} with no inline message id", rowButton.callbackData());
         }
 
         final int messageId = message.messageId();
