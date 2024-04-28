@@ -10,8 +10,7 @@ public class ExceptionManager {
     public void handleException(Throwable e) {
         if (e instanceof OutOfMemoryError) {
             // OOM should be handled manually
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
+            TeleightBots.getLogger().fatal("Out of memory while handling exception", e);
             TeleightBots.stopCleanly();
             return;
         }
