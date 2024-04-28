@@ -7,7 +7,6 @@ import org.teleight.teleightbots.api.methods.chat.GetChatMember;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
-import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.conversation.ConversationManager;
@@ -172,6 +171,12 @@ public interface TelegramBot {
      * @return the bot's conversation manager
      */
     @NotNull ConversationManager getConversationManager();
+
+    /**
+     * Returns a new event node
+     * @return the newly created event node
+     */
+    @NotNull EventManager createNewEventNode();
 
     /**
      * Sends a request to the Telegram Bot API using the given method.

@@ -45,23 +45,14 @@ public class ExtensionManagerImpl implements ExtensionManager {
             if(loadExtension instanceof LoadResult.Success success) {
                 try {
                     final Extension extension = success.extension();
-                    extension.start();
 
+                    TeleightBots.getLogger().info("Loading extension {}", extension.getName());
+
+                    extension.start();
                     loadedExtensions.add(extension);
                 }catch (Exception e){
                     TeleightBots.getExceptionManager().handleException(e);
                 }
-            }
-        }
-    }
-
-    @Override
-    public void shutdown() {
-        for (Extension extension : loadedExtensions) {
-            try{
-                extension.shutdown();
-            } catch (Exception e) {
-                TeleightBots.getExceptionManager().handleException(e);
             }
         }
     }
@@ -142,6 +133,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
                 continue;
             }
             extensions.add(extension);
+            TeleightBots.getLogger().info("Found new extension {} ({}) v{}", extension.name(), extension.version(), extension.mainClass());
         }
         return extensions;
     }
@@ -161,8 +153,19 @@ public class ExtensionManagerImpl implements ExtensionManager {
                 return extension;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            TeleightBots.getExceptionManager().handleException(e);
             return null;
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        for (Extension extension : loadedExtensions) {
+            try{
+                extension.shutdown();
+            } catch (Exception e) {
+                TeleightBots.getExceptionManager().handleException(e);
+            }
         }
     }
 

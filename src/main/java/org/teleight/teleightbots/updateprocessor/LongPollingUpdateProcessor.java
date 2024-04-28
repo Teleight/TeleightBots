@@ -13,7 +13,11 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
-import org.teleight.teleightbots.api.objects.chat.member.*;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberAdministrator;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberLeft;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberMember;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberRestricted;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
@@ -70,15 +74,15 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         bot.execute(new GetMe())
                 .thenAcceptAsync(user -> {
                     synchronized (AUTH_LOCK) {
-                        System.out.println("Bot authenticated: " + user.username());
+                        TeleightBots.getLogger().info("Bot {} authenticated with token", bot.getBotUsername());
                         AUTH_LOCK.notifyAll();
                     }
                 })
                 .exceptionally(throwable -> {
                     synchronized (AUTH_LOCK) {
-                        shutdown();
+                        TeleightBots.getLogger().error("Failed to authenticate bot {} with token", bot.getBotUsername(), throwable);
+                        close();
                         AUTH_LOCK.notifyAll();
-                        System.out.println("Failed to authenticate bot: " + throwable.getMessage());
                     }
                     return null;
                 });
@@ -89,7 +93,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     @Override
-    public void shutdown() {
+    public void close() {
         updateProcessorThread.interrupt();
     }
 
@@ -132,6 +136,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 newSize++;
             }
         }
+        TeleightBots.getLogger().debug("Marked updates for removal, to {}", newSize);
 
         // Compact the array
         if (newSize < updates.length) {
@@ -164,7 +169,9 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
 
                     //Conversation
-                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> runningConversation.getEventManager().call(updateReceivedEvent));
+                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
+                        bot.getEventManager().call(updateReceivedEvent);
+                    });
 
 
                     final boolean hasMessage = update.message() != null;
@@ -217,7 +224,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
                             final Chat chat = myChatMember.chat();
                             final boolean isChannel = chat.isChannel();
-
 
                             if (isJoined) {
                                 if (isChannel) {
@@ -336,6 +342,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
             while (!Thread.currentThread().isInterrupted()) {
                 try {
+                    TeleightBots.getLogger().debug("Executing getUpdates for bot {}", bot.getBotUsername());
                     executeGetUpdates();
                 } catch (ExecutionException | InterruptedException | TimeoutException e) {
                     TeleightBots.getExceptionManager().handleException(e);

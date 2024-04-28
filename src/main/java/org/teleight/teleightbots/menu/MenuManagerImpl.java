@@ -3,25 +3,33 @@ package org.teleight.teleightbots.menu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
+import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.callback.CallbackQuery;
 import org.teleight.teleightbots.api.methods.inline.EditMessageReplyMarkup;
 import org.teleight.teleightbots.api.methods.inline.EditMessageText;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
+import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.EventManager;
-import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class MenuManagerImpl implements MenuManager {
 
-    private final EventManager eventManager = new EventManagerImpl();
+    private final Bot bot;
+    private final EventManager eventManager;
     private final Map<Integer, Menu> menus = new ConcurrentHashMap<>();
 
-    public MenuManagerImpl() {
+    public MenuManagerImpl(Bot bot) {
+        this.bot = bot;
+        this.eventManager = bot.createNewEventNode();
+
         eventManager.addListener(ButtonPressEvent.class, event -> {
             final Collection<Menu> menus = getMenus();
             for (final Menu menu : menus) {
@@ -42,10 +50,21 @@ public final class MenuManagerImpl implements MenuManager {
     private void handleButton(@NotNull MenuButton rowButton, @NotNull ButtonPressEvent event) {
         final CallbackQuery callbackQuery = event.callbackQuery();
         final Message message = callbackQuery.message();
+
+        if (message == null) {
+            TeleightBots.getLogger().warn("Tried to handle button {} but no message was found", rowButton.callbackData());
+            return;
+        }
+
         final Chat chat = message.chat();
         final String chatId = "" + chat.id();
         final String callbackData = callbackQuery.data();
         final String inlineMessageId = callbackQuery.inlineMessageId();
+
+        if (inlineMessageId == null) {
+            TeleightBots.getLogger().debug("Handling button {} with no inline message id", rowButton.callbackData());
+        }
+
         final int messageId = message.messageId();
 
         if(callbackData == null){
@@ -63,7 +82,6 @@ public final class MenuManagerImpl implements MenuManager {
             rowButton.callback().accept(event, event.callbackQuery().from());
             return;
         }
-
 
         if(hasDestinationMenu) {
             final Menu destinationMenu = rowButton.destinationMenu();
@@ -88,7 +106,6 @@ public final class MenuManagerImpl implements MenuManager {
                         .build();
                 event.execute(editMessageReplyMarkup);
             }
-            return;
         }
     }
 

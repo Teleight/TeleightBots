@@ -11,9 +11,6 @@ public class EventManagerImpl implements EventManager {
 
     private EventListener<Event>[] registeredEvents = new EventListener[0];
 
-    public EventManagerImpl() {
-    }
-
     @Override
     public <T extends Event> @NotNull EventManager addListener(@NotNull EventListener<T> listener) {
         this.registeredEvents = (EventListener<Event>[]) ArrayUtils.add(registeredEvents, listener);

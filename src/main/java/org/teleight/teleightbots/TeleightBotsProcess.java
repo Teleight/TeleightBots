@@ -11,7 +11,8 @@ public sealed interface TeleightBotsProcess permits TeleightBotsProcessImpl {
 
     void close();
 
-    @NotNull Scheduler scheduler();
+    @NotNull
+    Scheduler scheduler();
 
     @NotNull BotManager botManager();
 

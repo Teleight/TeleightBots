@@ -21,6 +21,6 @@ public interface BotProvider {
      * @param botSettings     The BotSettings of the Bot to provide. This can be null.
      * @return The provided Bot.
      */
-    Bot provide(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @Nullable BotSettings botSettings);
+    @NotNull Bot provide(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @Nullable BotSettings botSettings);
 
 }

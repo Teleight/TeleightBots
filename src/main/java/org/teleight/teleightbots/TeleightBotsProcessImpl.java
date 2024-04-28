@@ -7,12 +7,10 @@ import org.teleight.teleightbots.exception.ExceptionManager;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.scheduler.SchedulerImpl;
 
-import java.io.IOException;
-
 final class TeleightBotsProcessImpl implements TeleightBotsProcess {
 
-    private final SchedulerImpl schedulerImpl;
     private final BotManagerImpl botManagerImpl;
+    private final Scheduler schedulerImpl;
     private final ExceptionManager exceptionManager;
 
     public TeleightBotsProcessImpl() {
@@ -23,22 +21,14 @@ final class TeleightBotsProcessImpl implements TeleightBotsProcess {
 
     @Override
     public void start() {
-        System.out.println("Started Teleight");
-
+        TeleightBots.getLogger().info("Starting bot process");
         Runtime.getRuntime().addShutdownHook(new Thread(this::close));
     }
 
     @Override
     public void close() {
-        System.out.println("Shutting down Teleight");
-
+        TeleightBots.getLogger().info("Shutting down bot process");
         botManagerImpl.close();
-
-        try {
-            schedulerImpl.close();
-        } catch (IOException e) {
-            TeleightBots.getExceptionManager().handleException(e);
-        }
     }
 
     @Override
