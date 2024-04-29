@@ -30,12 +30,13 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 public class LongPollingUpdateProcessor implements UpdateProcessor {
 
-    private final Object AUTH_LOCK = new Object();
+    private final CountDownLatch processorLatch = new CountDownLatch(1);
 
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.of(75, ChronoUnit.SECONDS))
@@ -57,17 +58,13 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     public void start() {
         bot.execute(new GetMe())
                 .thenAcceptAsync(user -> {
-                    synchronized (AUTH_LOCK) {
-                        System.out.println("Bot authenticated: " + user.username());
-                        AUTH_LOCK.notifyAll();
-                    }
+                    System.out.println("Bot authenticated: " + user.username());
+                    processorLatch.countDown();
                 })
                 .exceptionally(throwable -> {
-                    synchronized (AUTH_LOCK) {
-                        close();
-                        AUTH_LOCK.notifyAll();
-                        System.out.println("Failed to authenticate bot: " + throwable.getMessage());
-                    }
+                    System.out.println("Failed to authenticate bot: " + throwable.getMessage());
+                    close();
+                    processorLatch.countDown();
                     return null;
                 });
 
@@ -234,14 +231,11 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     private class UpdateProcessorThread extends Thread {
         @Override
         public void run() {
-            synchronized (AUTH_LOCK) {
-                try {
-                    AUTH_LOCK.wait();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                processorLatch.await();
+            } catch (InterruptedException e) {
+                TeleightBots.getExceptionManager().handleException(e);
             }
-
             while (!Thread.currentThread().isInterrupted()) {
                 try {
                     executeGetUpdates();
