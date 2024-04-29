@@ -13,7 +13,11 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
-import org.teleight.teleightbots.api.objects.chat.member.*;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberAdministrator;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberLeft;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberMember;
+import org.teleight.teleightbots.api.objects.chat.member.ChatMemberRestricted;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
@@ -28,7 +32,6 @@ import org.teleight.teleightbots.event.user.UserMessageReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
-import org.teleight.teleightbots.utils.PropertyUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -54,8 +57,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     private Thread updateProcessorThread;
     private Bot bot;
     private int lastReceivedUpdate = 0;
-
-    private final int timeoutInMilliseconds = PropertyUtils.getInteger("teleightbots.updates.timeout", 5000);
 
     @Override
     public void setBot(@NotNull Bot bot) {
