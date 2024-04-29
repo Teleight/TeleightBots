@@ -8,29 +8,18 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
-import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.api.objects.chat.Chat;
-import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMemberAdministrator;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMemberLeft;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMemberMember;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMemberRestricted;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
-import org.teleight.teleightbots.event.bot.channel.BotJoinChannelEvent;
-import org.teleight.teleightbots.event.bot.channel.BotQuitChannelEvent;
-import org.teleight.teleightbots.event.bot.channel.ChannelSendMessageEvent;
-import org.teleight.teleightbots.event.bot.group.BotJoinedGroupEvent;
-import org.teleight.teleightbots.event.bot.group.BotLeftGroupEvent;
-import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
-import org.teleight.teleightbots.event.user.UserInlineQueryReceivedEvent;
-import org.teleight.teleightbots.event.user.UserMessageReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
+import org.teleight.teleightbots.updateprocessor.events.CallbackQueryEventProcessor;
+import org.teleight.teleightbots.updateprocessor.events.ChannelPostEventProcessor;
+import org.teleight.teleightbots.updateprocessor.events.EventProcessor;
+import org.teleight.teleightbots.updateprocessor.events.InlineQueryEventProcessor;
+import org.teleight.teleightbots.updateprocessor.events.MessageEventProcessor;
+import org.teleight.teleightbots.updateprocessor.events.MyChatMemberEventProcessor;
 import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
 
 import java.io.IOException;
@@ -40,8 +29,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -152,107 +139,28 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         }
     }
 
+    private final EventProcessor[] processorEvents = new EventProcessor[] {
+            new CallbackQueryEventProcessor(),
+            new ChannelPostEventProcessor(),
+            new InlineQueryEventProcessor(),
+            new MessageEventProcessor(),
+            new MyChatMemberEventProcessor()
+    };
+
     @ApiStatus.Internal
     private void handleNewUpdate(@NotNull Update update, String responseJson) {
         bot.getEventManager()
                 .call(new UpdateReceivedEvent(bot, update, responseJson))
                 .thenAccept(updateReceivedEvent -> {
-                    final boolean hasCallbackQuery = update.callbackQuery() != null;
-                    if (hasCallbackQuery) {
-                        final ButtonPressEvent buttonPressEvent = new ButtonPressEvent(bot, update);
-                        bot.getMenuManager().getEventNode().call(buttonPressEvent);
-                    }
+                    // Handle conversation before everything else
+                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
+                        runningConversation.getEventManager().call(updateReceivedEvent);
+                    });
 
-
-                    //Conversation
-                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> runningConversation.getEventManager().call(updateReceivedEvent));
-
-
-                    final boolean hasMessage = update.message() != null;
-                    if (hasMessage) {
-                        final Message message = update.message();
-                        final User sender = message.from();
-                        final String messageText = message.text();
-
-                        final boolean hasText = messageText != null;
-                        final boolean hasSender = sender != null;
-                        final boolean hasFormat = message.forwardOrigin() == null;
-
-                        if (hasText && hasSender) {
-                            final boolean isPossibleCommand = messageText.startsWith("/");
-                            if (isPossibleCommand) {
-                                bot.getCommandManager().execute(sender, messageText, message);
-                            }
-                        }
-
-
-                        //Write
-                        if (hasText && hasFormat) {
-                            bot.getEventManager().call(new UserMessageReceivedEvent(bot, update));
-                        }
-
-
-                        //Bot join
-                        final boolean hasNewChatMembers = message.newChatMembers() != null;
-                        if (hasNewChatMembers) {
-                            boolean isThisBotJoined = Arrays.stream(message.newChatMembers())
-                                    .filter(Objects::nonNull)
-                                    .filter(user -> user.username() != null)
-                                    .anyMatch(user -> user.username().equalsIgnoreCase(bot.getBotUsername()));
-                            Boolean groupChatCreated = message.groupChatCreated();
-                            if (isThisBotJoined || (groupChatCreated != null && groupChatCreated)) {
-                                bot.getEventManager().call(new BotJoinedGroupEvent(bot, update));
-                            }
-                        }
-                    }
-
-
-                    final ChatMemberUpdated myChatMember = update.myChatMember();
-                    final boolean hasMyChatMember = myChatMember != null;
-                    if (hasMyChatMember) {
-                        final ChatMember newChatMember = myChatMember.newChatMember();
-                        final boolean isThisBot = bot.getBotUsername().equals(newChatMember.user().username());
-                        if (isThisBot) {
-                            final boolean isJoined = newChatMember instanceof ChatMemberAdministrator || newChatMember instanceof ChatMemberMember;
-                            final boolean isLeft = newChatMember instanceof ChatMemberLeft || newChatMember instanceof ChatMemberRestricted;
-
-                            final Chat chat = myChatMember.chat();
-                            final boolean isChannel = chat.isChannel();
-
-
-                            if (isJoined) {
-                                if (isChannel) {
-                                    bot.getEventManager().call(new BotJoinChannelEvent(bot, update));
-                                } else {
-                                    bot.getEventManager().call(new BotJoinedGroupEvent(bot, update));
-                                }
-                            }
-
-                            if (isLeft) {
-                                if (isChannel) {
-                                    bot.getEventManager().call(new BotQuitChannelEvent(bot, update));
-                                } else {
-                                    bot.getEventManager().call(new BotLeftGroupEvent(bot, update));
-                                }
-                            }
-                        }
-                    }
-
-
-                    //Inline
-                    if (update.inlineQuery() != null) {
-                        bot.getEventManager().call(new UserInlineQueryReceivedEvent(bot, update));
-                    }
-
-
-                    final Message channelPost = update.channelPost();
-                    final boolean hasChannelPost = channelPost != null;
-                    if (hasChannelPost) {
-                        final Chat chat = channelPost.chat();
-                        final boolean isChannel = chat.isChannel();
-                        if (isChannel) {
-                            bot.getEventManager().call(new ChannelSendMessageEvent(bot, update, chat));
-                        }
+                    // Now handle everything else
+                    final Update receivedUpdate = updateReceivedEvent.update();
+                    for (EventProcessor processorEvent : processorEvents) {
+                        processorEvent.processUpdate(bot, receivedUpdate);
                     }
                 });
     }
