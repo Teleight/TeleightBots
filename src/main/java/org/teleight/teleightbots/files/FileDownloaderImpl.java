@@ -29,12 +29,6 @@ public class FileDownloaderImpl implements FileDownloader {
     }
 
     @Override
-    public void shutdown() {
-        System.out.println("Shutting down FileDownloader");
-        client.close();
-    }
-
-    @Override
     public final @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull String filePath) throws DownloadFileException {
         final String tempFileName = Long.toString(System.currentTimeMillis());
         final java.io.File tempFile = createTempFile(tempFileName);
@@ -100,4 +94,9 @@ public class FileDownloaderImpl implements FileDownloader {
         return String.format("https://api.telegram.org/file/bot%s/%s", bot.getBotToken(), filePath);
     }
 
+    @Override
+    public void close() throws IOException {
+        System.out.println("Shutting down FileDownloader");
+        client.close();
+    }
 }

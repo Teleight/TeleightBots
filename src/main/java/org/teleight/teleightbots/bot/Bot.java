@@ -143,25 +143,10 @@ public final class Bot implements TelegramBot {
 
     public void close() {
         try {
-            extensionManager.shutdown();
-        } catch (Exception e) {
-            TeleightBots.getExceptionManager().handleException(e);
-        }
-
-        try {
+            extensionManager.close();
             scheduler.close();
-        } catch (Exception e) {
-            TeleightBots.getExceptionManager().handleException(e);
-        }
-
-        try {
-            updateProcessor.shutdown();
-        } catch (Exception e) {
-            TeleightBots.getExceptionManager().handleException(e);
-        }
-
-        try {
-            fileDownloader.shutdown();
+            updateProcessor.close();
+            fileDownloader.close();
         } catch (Exception e) {
             TeleightBots.getExceptionManager().handleException(e);
         }

@@ -56,17 +56,6 @@ public class ExtensionManagerImpl implements ExtensionManager {
     }
 
     @Override
-    public void shutdown() {
-        for (Extension extension : loadedExtensions) {
-            try{
-                extension.shutdown();
-            } catch (Exception e) {
-                TeleightBots.getExceptionManager().handleException(e);
-            }
-        }
-    }
-
-    @Override
     public @NotNull @Unmodifiable Set<Extension> getLoadedExtensions() {
         return Collections.unmodifiableSet(loadedExtensions);
     }
@@ -163,6 +152,17 @@ public class ExtensionManagerImpl implements ExtensionManager {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public void close() throws IOException {
+        for (Extension extension : loadedExtensions) {
+            try{
+                extension.shutdown();
+            } catch (Exception e) {
+                TeleightBots.getExceptionManager().handleException(e);
+            }
         }
     }
 

@@ -76,7 +76,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 })
                 .exceptionally(throwable -> {
                     synchronized (AUTH_LOCK) {
-                        shutdown();
+                        close();
                         AUTH_LOCK.notifyAll();
                         System.out.println("Failed to authenticate bot: " + throwable.getMessage());
                     }
@@ -89,7 +89,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     @Override
-    public void shutdown() {
+    public void close() {
         updateProcessorThread.interrupt();
     }
 
@@ -321,7 +321,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
         return requestBuilder.POST(body).build();
     }
-
 
     private class UpdateProcessorThread extends Thread {
         @Override
