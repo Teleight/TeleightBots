@@ -46,6 +46,9 @@ public final class BotManagerImpl implements BotManager {
         if (botType == LongPollingBot.class) {
             updateProcessor = new LongPollingUpdateProcessor();
         }
+        if (updateProcessor == null) {
+            throw new IllegalArgumentException("Long polling update processor cannot be null");
+        }
         final Bot bot = botProvider.provide(token, username, updateProcessor, botSettings);
         updateProcessor.setBot(bot);
         bot.connect();
