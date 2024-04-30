@@ -108,6 +108,10 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
             return;
         }
 
+        handleUpdates(updates, responseJson);
+    }
+
+    private void handleUpdates(@NotNull Update[] updates, @NotNull String responseJson) {
         // Mark updates for removal
         int newSize = 0;
         for (int i = 0; i < updates.length; i++) {
