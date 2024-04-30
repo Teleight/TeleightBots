@@ -11,10 +11,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConversationManagerImpl implements ConversationManager {
+public final class ConversationManagerImpl implements ConversationManager {
 
     private final Map<String, Conversation> conversations = new HashMap<>();
-    private final Map<Long, RunningConversation> usersInConversation = new HashMap<>();
+    private final Map<Long, ConversationContext> usersInConversation = new HashMap<>();
 
     private final Bot bot;
 
@@ -40,26 +40,26 @@ public class ConversationManagerImpl implements ConversationManager {
 
     @Override
     public void joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName) {
-        var conversation = conversations.get(conversationName);
-        if (usersInConversation.containsKey(user.id())) {
-            throw new IllegalArgumentException("The user " + user.id() + " is already in a conversation");
+        final long userId = user.id();
+        final Conversation conversation = conversations.get(conversationName);
+        if (usersInConversation.containsKey(userId)) {
+            throw new IllegalArgumentException("The user " + userId + " is already in a conversation");
         }
         if (conversation == null) {
             throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
         }
-        var runningConversation = new RunningConversation(bot, user, chat, conversation);
-        usersInConversation.put(user.id(), runningConversation);
-        runningConversation.start();
+        usersInConversation.put(userId, new ConversationContext(bot, chat, user, conversation));
     }
 
     @Override
     public void leaveConversation(@NotNull User user, @NotNull String conversationName) {
-        final RunningConversation conversation = usersInConversation.get(user.id());
+        final long userId = user.id();
+        final ConversationContext conversation = usersInConversation.get(userId);
         if (conversation == null) {
-            throw new IllegalArgumentException("The user " + user.id() + " is not in a conversation");
+            throw new IllegalArgumentException("The user " + userId + " is not in a conversation");
         }
-        conversation.UNSAFE_stopConversation();
-        usersInConversation.remove(user.id());
+        conversation.runningConversation().interrupt();
+        usersInConversation.remove(userId);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ConversationManagerImpl implements ConversationManager {
     }
 
     @Override
-    public @NotNull @Unmodifiable Collection<RunningConversation> getRunningConversations() {
+    public @NotNull @Unmodifiable Collection<ConversationContext> getRunningConversations() {
         return usersInConversation.values();
     }
 
