@@ -64,7 +64,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 .exceptionally(throwable -> {
                     System.out.println("Failed to authenticate bot: " + throwable.getMessage());
                     close();
-                    processorLatch.countDown();
                     return null;
                 });
 
@@ -238,7 +237,8 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
             try {
                 processorLatch.await();
             } catch (InterruptedException e) {
-                TeleightBots.getExceptionManager().handleException(e);
+                Thread.currentThread().interrupt();
+                return;
             }
             while (!Thread.currentThread().isInterrupted()) {
                 try {
