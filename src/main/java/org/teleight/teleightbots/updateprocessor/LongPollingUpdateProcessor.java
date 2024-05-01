@@ -154,7 +154,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 .thenAccept(updateReceivedEvent -> {
                     // Handle conversation before everything else
                     bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
-                        runningConversation.getEventManager().call(updateReceivedEvent);
+                        bot.getEventManager().call(updateReceivedEvent);
                     });
 
                     // Now handle everything else

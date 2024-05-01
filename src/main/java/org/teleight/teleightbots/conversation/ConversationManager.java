@@ -13,7 +13,7 @@ import java.util.Collection;
  * This is an interface for a ConversationManager. It provides methods to manage conversations.
  * @see Bot#getConversationManager()
  */
-public interface ConversationManager {
+public sealed interface ConversationManager permits ConversationManagerImpl {
 
     /**
      * Registers a new Conversation.
@@ -55,7 +55,7 @@ public interface ConversationManager {
      *
      * @return A collection of all Conversations.
      */
-    @Unmodifiable @NotNull Collection<Conversation> getConversations();
+    @NotNull @Unmodifiable Collection<Conversation> getConversations();
 
     /**
      * Returns a Conversation by its name.
@@ -69,6 +69,6 @@ public interface ConversationManager {
      *
      * @return A collection of all running Conversations.
      */
-    @NotNull @Unmodifiable Collection<RunningConversation> getRunningConversations();
+    @NotNull @Unmodifiable Collection<ConversationContext> getRunningConversations();
 
 }
