@@ -83,14 +83,22 @@ public interface ApiMethod<R extends Serializable> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
-    @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
+    default @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, new TypeReference<R>() {});
+    }
 
     /**
-     * Returns the endpoint URL for the Telegram Bot API method.
+     * Deserializes the response from the Telegram Bot API into a specific type reference.
      *
-     * @return the endpoint URL
+     * @param answer        the response from the Telegram Bot API
+     * @param typeReference the type reference to deserialize the response into
+     * @return the deserialized response
+     * @throws TelegramRequestException if an error occurs while deserializing the response
      */
-    @NotNull String getEndpointURL();
+    default @NotNull R deserializeResponse(@NotNull String answer, @NotNull TypeReference<R> typeReference) throws TelegramRequestException {
+        final JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(typeReference.getType());
+        return UNSAFE_deserializeResponse(answer, type);
+    }
 
     /**
      * Deserializes the response from the Telegram Bot API into a specific class.
