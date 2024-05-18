@@ -3,11 +3,10 @@ package org.teleight.teleightbots.bot.trait;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.methods.chat.GetChatMember;
+import org.teleight.teleightbots.api.methods.GetChatMember;
+import org.teleight.teleightbots.api.objects.Chat;
+import org.teleight.teleightbots.api.objects.ChatMember;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.api.objects.chat.Chat;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
-import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.conversation.ConversationManager;
@@ -224,7 +223,7 @@ public interface TelegramBot {
      * @return a future representing the result of the request
      */
     default @NotNull CompletableFuture<ChatMember> getUser(@NotNull String chatId, long userId) {
-        final GetChatMember chatMember = GetChatMember.builder().chatId(chatId).userId(userId).build();
+        final GetChatMember chatMember = GetChatMember.of(chatId, userId).build();
         return execute(chatMember);
     }
 

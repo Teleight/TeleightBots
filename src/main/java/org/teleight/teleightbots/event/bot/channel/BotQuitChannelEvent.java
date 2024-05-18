@@ -2,7 +2,7 @@ package org.teleight.teleightbots.event.bot.channel;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.api.objects.chat.Chat;
+import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.trait.Event;
 

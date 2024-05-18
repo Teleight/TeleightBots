@@ -85,9 +85,10 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         final BotSettings settings = bot.getBotSettings();
 
         final GetUpdates getUpdates = GetUpdates.of()
-                .withTimeout(settings.updatesTimeout())
-                .withLimit(settings.updatesLimit())
-                .withOffset(lastReceivedUpdate + 1);
+                .timeout(settings.updatesTimeout())
+                .limit(settings.updatesLimit())
+                .offset(lastReceivedUpdate + 1)
+                .build();
 
         final String responseJson = UNSAFE_executeMethod(getUpdates)
                 .exceptionally(throwable -> {

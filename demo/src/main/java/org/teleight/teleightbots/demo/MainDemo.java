@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.demo;
 
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.api.methods.send.SendMessage;
-import org.teleight.teleightbots.api.utils.ParseMode;
+import org.teleight.teleightbots.api.methods.SendMessage;
+import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.demo.command.TestCommand;
 import org.teleight.teleightbots.demo.command.TestConversationCommand;
@@ -61,10 +61,7 @@ public class MainDemo {
                 subMenu3.addRow(button3_1);
             });
 
-
-            SendMessage sendMessage = SendMessage.builder()
-                    .text("<b>Test message</b>")
-                    .chatId(chatId)
+            SendMessage sendMessage = SendMessage.of(chatId,"<b>Test message</b>" )
                     .replyMarkup(menu.getKeyboard())
                     .parseMode(ParseMode.HTML)
                     .build();

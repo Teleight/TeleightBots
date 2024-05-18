@@ -1,7 +1,7 @@
 package org.teleight.teleightbots.event.trait;
 
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.methods.send.SendMessage;
+import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.api.objects.Update;
@@ -18,10 +18,8 @@ public interface MessageEvent extends Event {
         if (message == null) {
             return CompletableFuture.completedFuture(null);
         }
-        return bot().execute(SendMessage.builder()
-                .text(text)
-                .replyParameters(ReplyParameters.builder().messageId(message.messageId()).build())
-                .chatId(message.chat().id())
+        return bot().execute(SendMessage.of(message.chat().id(), text)
+                .replyParameters(ReplyParameters.of(message.messageId()).build())
                 .build()
         );
     }

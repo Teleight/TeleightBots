@@ -4,25 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.objects.chat.Chat;
-import org.teleight.teleightbots.api.objects.chat.boost.ChatBoostAdded;
-import org.teleight.teleightbots.api.objects.entities.MessageEntity;
-import org.teleight.teleightbots.api.objects.forum.*;
-import org.teleight.teleightbots.api.objects.giveaway.Giveaway;
-import org.teleight.teleightbots.api.objects.giveaway.GiveawayCompleted;
-import org.teleight.teleightbots.api.objects.giveaway.GiveawayCreated;
-import org.teleight.teleightbots.api.objects.giveaway.GiveawayWinners;
-import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
-import org.teleight.teleightbots.api.objects.origin.MessageOrigin;
-import org.teleight.teleightbots.api.objects.passport.PassportData;
-import org.teleight.teleightbots.api.objects.payment.Invoice;
-import org.teleight.teleightbots.api.objects.payment.SuccessfulPayment;
-import org.teleight.teleightbots.api.objects.poll.Poll;
-import org.teleight.teleightbots.api.objects.service.*;
-import org.teleight.teleightbots.api.objects.video.VideoChatEnded;
-import org.teleight.teleightbots.api.objects.video.VideoChatParticipantsInvited;
-import org.teleight.teleightbots.api.objects.video.VideoChatScheduled;
-import org.teleight.teleightbots.api.objects.video.VideoChatStarted;
 
 import java.util.Date;
 
@@ -32,8 +13,7 @@ public record Message(
         Integer messageId,
 
         @JsonProperty("message_thread_id")
-        @Nullable
-        Integer messageThreadId,
+        int messageThreadId,
 
         @JsonProperty("from")
         @Nullable
@@ -350,7 +330,7 @@ public record Message(
 
     @JsonIgnore
     public String chatId() {
-        return "" + chat.id();
+        return chat.id();
     }
 
     @JsonIgnore

@@ -3,21 +3,6 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.methods.callback.CallbackQuery;
-import org.teleight.teleightbots.api.objects.business.BusinessConnection;
-import org.teleight.teleightbots.api.objects.business.BusinessMessagesDeleted;
-import org.teleight.teleightbots.api.objects.chat.ChatJoinRequest;
-import org.teleight.teleightbots.api.objects.chat.ChatMemberUpdated;
-import org.teleight.teleightbots.api.objects.chat.boost.ChatBoostRemoved;
-import org.teleight.teleightbots.api.objects.chat.boost.ChatBoostUpdated;
-import org.teleight.teleightbots.api.objects.inline.ChosenInlineResult;
-import org.teleight.teleightbots.api.objects.inline.InlineQuery;
-import org.teleight.teleightbots.api.objects.payment.PreCheckoutQuery;
-import org.teleight.teleightbots.api.objects.poll.Poll;
-import org.teleight.teleightbots.api.objects.poll.PollAnswer;
-import org.teleight.teleightbots.api.objects.reaction.MessageReactionCountUpdated;
-import org.teleight.teleightbots.api.objects.reaction.MessageReactionUpdated;
-import org.teleight.teleightbots.api.objects.shipping.ShippingQuery;
 
 public record Update(
         @JsonProperty(value = "update_id", required = true)

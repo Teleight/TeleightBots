@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.File;
-import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetFile(
         @JsonProperty(value = "file_id", required = true)
@@ -12,13 +11,8 @@ public record GetFile(
         String fileId
 ) implements ApiMethod<File> {
 
-    public static @NotNull GetFile of(@NotNull String fileId) {
+    public static @NotNull GetFile of(String fileId) {
         return new GetFile(fileId);
-    }
-
-    @Override
-    public @NotNull File deserializeResponse(@NotNull String answer) throws TelegramRequestException {
-        return deserializeResponse(answer, File.class);
     }
 
     @Override

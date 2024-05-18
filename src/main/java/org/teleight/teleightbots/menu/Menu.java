@@ -2,7 +2,7 @@ package org.teleight.teleightbots.menu;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
+import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 
 import java.util.List;
 

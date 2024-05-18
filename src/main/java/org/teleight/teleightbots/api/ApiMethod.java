@@ -2,6 +2,7 @@ package org.teleight.teleightbots.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -9,24 +10,37 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
+import org.teleight.teleightbots.api.objects.ChatAction;
+import org.teleight.teleightbots.api.objects.ChatBoostSource;
+import org.teleight.teleightbots.api.objects.ChatMember;
+import org.teleight.teleightbots.api.objects.Dice;
+import org.teleight.teleightbots.api.objects.InlineQueryResult;
+import org.teleight.teleightbots.api.objects.InputSticker;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
-import org.teleight.teleightbots.api.objects.chat.boost.source.ChatBoostSource;
-import org.teleight.teleightbots.api.objects.chat.boost.source.serialization.ChatBoostSourceDeserializer;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
-import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
-import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResultDeserializer;
-import org.teleight.teleightbots.api.objects.input.InputSticker;
-import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
-import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDeserializer;
-import org.teleight.teleightbots.api.objects.origin.MessageOrigin;
-import org.teleight.teleightbots.api.objects.origin.serialization.MessageOriginDeserializer;
-import org.teleight.teleightbots.api.objects.serialization.MaybeInaccessibleMessageDeserializer;
-import org.teleight.teleightbots.api.utils.*;
+import org.teleight.teleightbots.api.objects.MessageOrigin;
+import org.teleight.teleightbots.api.objects.ParseMode;
+import org.teleight.teleightbots.api.objects.ReplyKeyboard;
+import org.teleight.teleightbots.api.serialization.deserializers.ChatActionDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.ChatBoostSourceDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.ChatMemberDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.DateDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.DiceEmojiDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.InlineQueryResultDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.InputStickerFormatDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.MessageOriginDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.ParseModeDeserializer;
+import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.InputStickerFormatSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.ParseModeSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -74,7 +88,21 @@ public interface ApiMethod<R extends Serializable> {
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
             )
             .registerModule(new SimpleModule()
-                    .addDeserializer(ChatBoostSource.class, new ChatBoostSourceDeserializer()));
+                    .addDeserializer(ChatAction.class, new ChatActionDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addDeserializer(Dice.DiceEmoji.class, new DiceEmojiDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addDeserializer(ChatBoostSource.class, new ChatBoostSourceDeserializer())
+            );
+
+    /**
+     * Returns the endpoint URL for the Telegram Bot API method.
+     *
+     * @return the endpoint URL
+     */
+    @NotNull String getEndpointURL();
 
     /**
      * Deserializes the response from the Telegram Bot API.

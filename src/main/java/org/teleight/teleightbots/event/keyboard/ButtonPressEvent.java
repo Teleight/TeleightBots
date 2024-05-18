@@ -2,12 +2,12 @@ package org.teleight.teleightbots.event.keyboard;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.methods.callback.CallbackQuery;
-import org.teleight.teleightbots.api.methods.inline.AnswerCallbackQuery;
+import org.teleight.teleightbots.api.methods.AnswerCallbackQuery;
+import org.teleight.teleightbots.api.objects.CallbackQuery;
+import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.api.objects.chat.Chat;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.event.trait.Event;
 
@@ -38,16 +38,14 @@ public record ButtonPressEvent(
         return chat().id().toString();
     }
 
-    public @NotNull CompletableFuture<Boolean> completeCallback() {
-        return completeCallback(AnswerCallbackQuery.of(callbackQuery().id()));
+    public @NotNull CompletableFuture<Boolean> answer() {
+        if (update.callbackQuery() == null) return CompletableFuture.completedFuture(false);
+        return bot.execute(AnswerCallbackQuery.of(update.callbackQuery().id()).build());
     }
 
-    public @NotNull CompletableFuture<Boolean> completeCallback(String text) {
-        return completeCallback(AnswerCallbackQuery.of(callbackQuery().id()).withText(text));
-    }
-
-    public @NotNull CompletableFuture<Boolean> completeCallback(AnswerCallbackQuery answerCallbackQuery) {
-        return bot.execute(answerCallbackQuery);
+    public @NotNull CompletableFuture<Boolean> answer(String text) {
+        if (update.callbackQuery() == null) return CompletableFuture.completedFuture(false);
+        return bot.execute(AnswerCallbackQuery.of(update.callbackQuery().id()).text(text).build());
     }
 
 }

@@ -1,7 +1,9 @@
 package org.teleight.teleightbots.event.trait;
 
+import org.teleight.teleightbots.api.objects.Chat;
+import org.teleight.teleightbots.api.objects.ChatMemberUpdated;
+import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.api.objects.chat.Chat;
 
 /**
  * Interface for a group bot event.

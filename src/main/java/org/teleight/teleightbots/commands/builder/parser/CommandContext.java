@@ -6,6 +6,7 @@ import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.commands.builder.argument.Argument;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -28,6 +29,7 @@ public class CommandContext {
         return input;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T getArgument(Argument<T> argument) {
         return (T) arguments.get(argument.getId());
     }
