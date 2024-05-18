@@ -18,7 +18,7 @@ public class MenuImpl implements Menu {
     private final String menuName;
 
     //Keyboard
-    private final List<List<MenuButton>> columns = new LinkedList<>();
+    private final List<List<InlineKeyboardButton>> columns = new LinkedList<>();
     private String text;
     private InlineKeyboardMarkup keyboard;
 
@@ -27,13 +27,13 @@ public class MenuImpl implements Menu {
     }
 
     @Override
-    public @NotNull Menu addRow(@NotNull MenuButton... buttons) {
+    public @NotNull Menu addRow(@NotNull InlineKeyboardButton... buttons) {
         return addRow(List.of(buttons));
     }
 
     @Override
-    public @NotNull Menu addRow(@NotNull List<MenuButton> buttons) {
-        final List<MenuButton> column = new LinkedList<>(buttons);
+    public @NotNull Menu addRow(@NotNull List<InlineKeyboardButton> buttons) {
+        final List<InlineKeyboardButton> column = new LinkedList<>(buttons);
         columns.add(column);
         return this;
     }
@@ -68,12 +68,21 @@ public class MenuImpl implements Menu {
     public void createKeyboard() {
         final InlineKeyboardButton[][] newColumns = new InlineKeyboardButton[columns.size()][];
         for (int columnIndex = 0; columnIndex < columns.size(); columnIndex++) {
-            final List<MenuButton> row = columns.get(columnIndex);
+            final List<InlineKeyboardButton> row = columns.get(columnIndex);
             newColumns[columnIndex] = new InlineKeyboardButton[row.size()];
 
             for (int rowIndex = 0; rowIndex < row.size(); rowIndex++) {
-                final MenuButton oldButton = row.get(rowIndex);
-                newColumns[columnIndex][rowIndex] = new InlineKeyboardButton(oldButton.text(), oldButton.url(), oldButton.callbackData(), null);
+                final InlineKeyboardButton oldButton = row.get(rowIndex);
+
+                if (oldButton.url() == null || oldButton.callbackData() == null) {
+                    throw new IllegalStateException("Button " + oldButton + " has no callback data or url");
+                }
+
+                final InlineKeyboardButton newButton = InlineKeyboardButton.ofBuilder(oldButton.text())
+                        .url(oldButton.url())
+                        .callbackData(oldButton.callbackData())
+                        .build();
+                newColumns[columnIndex][rowIndex] = newButton;
             }
         }
 
@@ -81,7 +90,7 @@ public class MenuImpl implements Menu {
     }
 
     @ApiStatus.Internal
-    List<List<MenuButton>> getColumns() {
+    List<List<InlineKeyboardButton>> getColumns() {
         return columns;
     }
 

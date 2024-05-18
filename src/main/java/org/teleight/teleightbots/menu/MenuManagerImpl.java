@@ -7,6 +7,7 @@ import org.teleight.teleightbots.api.methods.EditMessageReplyMarkup;
 import org.teleight.teleightbots.api.methods.EditMessageText;
 import org.teleight.teleightbots.api.objects.CallbackQuery;
 import org.teleight.teleightbots.api.objects.Chat;
+import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.event.EventManager;
@@ -34,15 +35,15 @@ public final class MenuManagerImpl implements MenuManager {
     }
 
     private void handleMenu(@NotNull MenuImpl menu, @NotNull ButtonPressEvent event) {
-        final List<List<MenuButton>> internalColumns = menu.getColumns();
-        for (final List<MenuButton> columns : internalColumns) {
-            for (final MenuButton buttonInRow : columns) {
+        final List<List<InlineKeyboardButton>> internalColumns = menu.getColumns();
+        for (final List<InlineKeyboardButton> columns : internalColumns) {
+            for (final InlineKeyboardButton buttonInRow : columns) {
                 handleButton(buttonInRow, event);
             }
         }
     }
 
-    private void handleButton(@NotNull MenuButton rowButton, @NotNull ButtonPressEvent event) {
+    private void handleButton(@NotNull InlineKeyboardButton rowButton, @NotNull ButtonPressEvent event) {
         final CallbackQuery callbackQuery = event.callbackQuery();
         final Message message = callbackQuery.message();
         final Chat chat = message.chat();
