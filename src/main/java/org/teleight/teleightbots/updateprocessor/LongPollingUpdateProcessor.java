@@ -8,6 +8,7 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
+import org.teleight.teleightbots.api.objects.InputFile;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
@@ -29,10 +30,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+
+import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
 public class LongPollingUpdateProcessor implements UpdateProcessor {
 
@@ -217,12 +221,24 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
         if (method instanceof MultiPartApiMethod<?> multiPartApiMethod) {
             final MultiPartBodyPublisher publisher = new MultiPartBodyPublisher();
-            multiPartApiMethod.buildRequest(publisher);
+            for (Map.Entry<String, Object> stringObjectEntry : multiPartApiMethod.getParameters().entrySet()) {
+                final String key = stringObjectEntry.getKey();
+                final Object value = stringObjectEntry.getValue();
+                publisher.addPart(key, value instanceof String ? (String) value : OBJECT_MAPPER.writeValueAsString(value));
+            }
+            for (Map.Entry<String, InputFile> stringObjectEntry : multiPartApiMethod.getInputFiles().entrySet()) {
+                final String key = stringObjectEntry.getKey();
+                final InputFile value = stringObjectEntry.getValue();
+                if (value.telegramFileId() != null) {
+                    publisher.addPart(key, value.telegramFileId());
+                } else {
+                    publisher.addPart(key, value.file(), value.fileName());
+                }
+            }
             body = publisher.build();
-
             requestBuilder.header("Content-Type", "multipart/form-data; boundary=" + publisher.getBoundary());
         } else {
-            final String jsonString = ApiMethod.OBJECT_MAPPER.writeValueAsString(method);
+            final String jsonString = OBJECT_MAPPER.writeValueAsString(method);
             body = HttpRequest.BodyPublishers.ofString(jsonString);
 
             requestBuilder.header("Content-Type", "application/json");
