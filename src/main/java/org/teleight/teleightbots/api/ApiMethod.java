@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
+import org.teleight.teleightbots.api.objects.BotCommandScope;
 import org.teleight.teleightbots.api.objects.ChatAction;
 import org.teleight.teleightbots.api.objects.ChatBoostSource;
 import org.teleight.teleightbots.api.objects.ChatMember;
@@ -20,6 +21,7 @@ import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.MessageOrigin;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
+import org.teleight.teleightbots.api.serialization.deserializers.BotCommandScopeDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.ChatActionDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.ChatBoostSourceDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.ChatMemberDeserializer;
@@ -88,6 +90,9 @@ public interface ApiMethod<R extends Serializable> {
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addDeserializer(BotCommandScope.class, new BotCommandScopeDeserializer())
             )
             .registerModule(new SimpleModule()
                     .addSerializer(ChatAction.class, new ChatActionSerializer())
