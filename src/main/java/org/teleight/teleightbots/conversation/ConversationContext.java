@@ -33,7 +33,7 @@ public class ConversationContext {
 
     // The running conversation thread associated with this ConversationContext
     @ApiStatus.Internal
-    private final RunningConversation runningConversation = new RunningConversation();
+    private final ConversationLifecycle conversationLifecycle = new ConversationLifecycle();
 
     // Queue to store updates received during the conversation
     private final BlockingQueue<Update> updateQueue = new LinkedBlockingQueue<>();
@@ -60,8 +60,8 @@ public class ConversationContext {
         bot.getEventManager().addListener(UpdateReceivedEvent.class, event -> updateQueue.add(event.update()));
 
         // Schedule the conversation to run asynchronously
-        runningConversation.setName(String.format("Conversation-%s-%s", conversation.name(), user.id()));
-        bot.getScheduler().buildTask(runningConversation).schedule();
+        conversationLifecycle.setName(String.format("Conversation-%s-%s", conversation.name(), user.id()));
+        bot.getScheduler().buildTask(conversationLifecycle).schedule();
     }
 
     /**
@@ -90,8 +90,8 @@ public class ConversationContext {
      * @return The running conversation thread associated with this ConversationContext.
      */
     @ApiStatus.Internal
-    protected RunningConversation runningConversation() {
-        return runningConversation;
+    protected ConversationLifecycle runningConversation() {
+        return conversationLifecycle;
     }
 
     /**
@@ -127,7 +127,7 @@ public class ConversationContext {
      * This class is internal and SHOULD NOT be accessed elsewhere.
      */
     @ApiStatus.Internal
-    protected class RunningConversation extends Thread {
+    protected class ConversationLifecycle extends Thread {
         @Override
         public void run() {
             // Start the conversation
