@@ -44,7 +44,7 @@ public class CommandContext {
         return bot;
     }
 
-    public <R> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
+    public <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
         return bot.execute(method);
     }
 

@@ -21,6 +21,7 @@ import org.teleight.teleightbots.menu.*;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
+import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 
 public final class Bot implements TelegramBot {
@@ -153,7 +154,7 @@ public final class Bot implements TelegramBot {
     }
 
     @Override
-    public <R> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
+    public <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
         final CompletableFuture<String> responseFuture = updateProcessor.executeMethod(method);
         return responseFuture.thenApplyAsync(responseJson -> {
             final R result;

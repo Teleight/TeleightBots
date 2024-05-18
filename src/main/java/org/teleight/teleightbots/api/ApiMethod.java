@@ -32,11 +32,11 @@ import java.util.Date;
 /**
  * Base interface for all Telegram Bot API methods.
  *
- * @param <R> type of the result of the method
+ * @param <R> result type of the method
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public interface ApiMethod<R> {
+public interface ApiMethod<R extends Serializable> {
 
     /**
      * The object mapper used to serialize and deserialize objects to and from JSON.
@@ -114,9 +114,23 @@ public interface ApiMethod<R> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
-    default <K> @NotNull R deserializeResponseArray(@NotNull String answer, @NotNull Class<K> returnClass) throws TelegramRequestException {
+    default <K extends Serializable> @NotNull R deserializeResponseArray(@NotNull String answer, @NotNull Class<K> returnClass) throws TelegramRequestException {
         final ArrayType collectionType = OBJECT_MAPPER.getTypeFactory().constructArrayType(returnClass);
         return UNSAFE_deserializeResponse(answer, collectionType);
+    }
+
+    /**
+     * Deserializes the response from the Telegram Bot API into a specific serializable class
+     *
+     * @param answer      the response from the Telegram Bot API
+     * @param returnClass the class to deserialize the response into
+     * @param <K>         the class to deserialize the response into
+     * @return the deserialized response
+     * @throws TelegramRequestException if an error occurs while deserializing the response
+     */
+    default <K extends Serializable> R deserializeResponseSerializable(String answer, Class<K> returnClass) throws TelegramRequestException {
+        JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(returnClass);
+        return UNSAFE_deserializeResponse(answer, type);
     }
 
     /**
