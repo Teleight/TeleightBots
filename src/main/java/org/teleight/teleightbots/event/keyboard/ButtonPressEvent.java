@@ -40,12 +40,12 @@ public record ButtonPressEvent(
 
     public @NotNull CompletableFuture<Boolean> answer() {
         if (update.callbackQuery() == null) return CompletableFuture.completedFuture(false);
-        return bot.execute(AnswerCallbackQuery.of(update.callbackQuery().id()).build());
+        return bot.execute(AnswerCallbackQuery.ofBuilder(update.callbackQuery().id()).build());
     }
 
     public @NotNull CompletableFuture<Boolean> answer(String text) {
         if (update.callbackQuery() == null) return CompletableFuture.completedFuture(false);
-        return bot.execute(AnswerCallbackQuery.of(update.callbackQuery().id()).text(text).build());
+        return bot.execute(AnswerCallbackQuery.ofBuilder(update.callbackQuery().id()).text(text).build());
     }
 
 }

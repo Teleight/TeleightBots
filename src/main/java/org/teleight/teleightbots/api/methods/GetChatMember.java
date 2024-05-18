@@ -14,7 +14,7 @@ public record GetChatMember(
         long userId
 ) implements ApiMethod<ChatMember> {
 
-    public static Builder of(String chatId, long userId) {
+    public static Builder ofBuilder(String chatId, long userId) {
         return new GetChatMember.Builder(chatId, userId);
     }
 

@@ -13,7 +13,7 @@ public record UnpinChatMessage(
         int messageId
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId) {
+    public static Builder ofBuilder(String chatId) {
         return new Builder(chatId);
     }
 

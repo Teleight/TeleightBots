@@ -26,7 +26,7 @@ public record BatchForwardMessages(
         long[] messageIds
 ) implements ApiMethodMessage {
 
-    public static Builder of(String chatId, String fromChatId, long[] messageIds) {
+    public static Builder ofBuilder(String chatId, String fromChatId, long[] messageIds) {
         return new BatchForwardMessages.Builder(chatId, fromChatId, messageIds);
     }
 

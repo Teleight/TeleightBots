@@ -18,7 +18,7 @@ public record AnswerCallbackQuery(
         boolean showAlert
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String callbackQueryId) {
+    public static Builder ofBuilder(String callbackQueryId) {
         return new AnswerCallbackQuery.Builder(callbackQueryId);
     }
 

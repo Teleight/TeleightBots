@@ -21,7 +21,7 @@ public record AnswerInlineQuery(
         boolean isPersonal
 ) implements ApiMethodBoolean {
 
-    public static AnswerInlineQuery.Builder of(String inlineQueryId) {
+    public static AnswerInlineQuery.Builder ofBuilder(String inlineQueryId) {
         return new AnswerInlineQuery.Builder(inlineQueryId);
     }
 

@@ -25,7 +25,7 @@ public record GetUpdates(
         List<String> allowedUpdates
 ) implements ApiMethod<Update[]> {
 
-    public static @NotNull Builder of() {
+    public static @NotNull Builder ofBuilder() {
         return new Builder();
     }
 

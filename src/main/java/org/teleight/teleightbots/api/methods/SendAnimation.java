@@ -72,7 +72,7 @@ public record SendAnimation(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder of(String chatId, InputFile animation) {
+    public static Builder ofBuilder(String chatId, InputFile animation) {
         return new SendAnimation.Builder(chatId, animation);
     }
 

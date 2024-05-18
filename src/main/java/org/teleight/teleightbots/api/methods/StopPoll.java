@@ -20,7 +20,7 @@ public record StopPoll(
         InlineKeyboardMarkup replyMarkup
 ) implements ApiMethod<Poll> {
 
-    public static Builder of(@NotNull String chatId, int messageId) {
+    public static Builder ofBuilder(@NotNull String chatId, int messageId) {
         return new StopPoll.Builder(chatId, messageId);
     }
 

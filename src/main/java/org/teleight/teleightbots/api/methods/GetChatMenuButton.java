@@ -10,7 +10,7 @@ public record GetChatMenuButton(
         String chatId
 ) implements ApiMethod<MenuButton> {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new GetChatMenuButton.Builder();
     }
 

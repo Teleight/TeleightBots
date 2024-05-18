@@ -27,54 +27,37 @@ public record MenuButton(
         BiConsumer<ButtonPressEvent, User> callback
 ) implements ApiResult {
 
-    public static @NotNull Builder builder() {
-        return new BuilderImpl();
+    public static @NotNull Builder ofBuilder() {
+        return new MenuButton.Builder();
     }
 
-    public interface Builder {
-        @NotNull Builder text(@NotNull String text);
-
-        @NotNull Builder url(@NotNull String url);
-
-        @NotNull Builder destinationMenu(@NotNull Menu destinationMenu);
-
-        @NotNull Builder callback(@NotNull BiConsumer<ButtonPressEvent, User> callback);
-
-        @NotNull MenuButton build();
-    }
-
-    static final class BuilderImpl implements Builder {
+    public static final class Builder {
         private String text;
         private String url;
         private final String callbackData = UUID.randomUUID().toString();
         private Menu destinationMenu;
-        private BiConsumer<ButtonPressEvent,User> callback;
+        private BiConsumer<ButtonPressEvent, User> callback;
 
-        @Override
         public @NotNull Builder text(@NotNull String text) {
             this.text = text;
             return this;
         }
 
-        @Override
         public @NotNull Builder url(@NotNull String url) {
             this.url = url;
             return this;
         }
 
-        @Override
         public @NotNull Builder destinationMenu(@NotNull Menu destinationMenu) {
             this.destinationMenu = destinationMenu;
             return this;
         }
 
-        @Override
-        public @NotNull Builder callback(@NotNull BiConsumer<ButtonPressEvent,User> callback) {
+        public @NotNull Builder callback(@NotNull BiConsumer<ButtonPressEvent, User> callback) {
             this.callback = callback;
             return this;
         }
 
-        @Override
         public @NotNull MenuButton build() {
             return new MenuButton(text, url, callbackData, destinationMenu, callback);
         }

@@ -10,7 +10,7 @@ public record ExportChatInviteLink(
         String chatId
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chat) {
+    public static Builder ofBuilder(String chat) {
         return new ExportChatInviteLink.Builder(chat);
     }
 

@@ -16,7 +16,7 @@ public record UnbanChatMember(
         boolean onlyIfBanned
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, long userId) {
+    public static Builder ofBuilder(String chatId, long userId) {
         return new UnbanChatMember.Builder(chatId, userId);
     }
 

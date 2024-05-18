@@ -23,7 +23,7 @@ public record InlineQueryResultPhoto(
         ParseMode parseMode
 ) implements InlineQueryResult {
 
-    public static @NotNull Builder of(String id, String photoUrl, String thumbnailUrl) {
+    public static @NotNull Builder ofBuilder(String id, String photoUrl, String thumbnailUrl) {
         return new InlineQueryResultPhoto.Builder(id, photoUrl, thumbnailUrl);
     }
 

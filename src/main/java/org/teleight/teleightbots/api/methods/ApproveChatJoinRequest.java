@@ -13,7 +13,7 @@ public record ApproveChatJoinRequest(
         long userId
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, long userId) {
+    public static Builder ofBuilder(String chatId, long userId) {
         return new ApproveChatJoinRequest.Builder(chatId, userId);
     }
 

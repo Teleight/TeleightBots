@@ -20,7 +20,7 @@ public record EditForumTopic(
         String iconCustomEmojiId
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, int messageThreadId) {
+    public static Builder ofBuilder(String chatId, int messageThreadId) {
         return new Builder(chatId, messageThreadId);
     }
 

@@ -56,7 +56,7 @@ public interface BotSettings {
      * @param endPointUrl the endpoint URL
      * @return the builder
      */
-    static @NotNull Builder builder(@NotNull String endPointUrl) {
+    static @NotNull Builder ofBuilder(@NotNull String endPointUrl) {
         return new BotSettingsImpl.Builder(endPointUrl);
     }
 
@@ -91,7 +91,8 @@ public interface BotSettings {
          * @param url the endpoint URL
          * @return this builder
          */
-        @NotNull Builder endpointUrl(@NotNull String url);
+        @NotNull
+        Builder endpointUrl(@NotNull String url);
 
         /**
          * Sets the update limit.
@@ -99,7 +100,8 @@ public interface BotSettings {
          * @param limit the update limit
          * @return this builder
          */
-        @NotNull Builder updatesLimit(int limit);
+        @NotNull
+        Builder updatesLimit(int limit);
 
         /**
          * Sets the update timeout.
@@ -107,14 +109,16 @@ public interface BotSettings {
          * @param timeout the update timeout
          * @return this builder
          */
-        @NotNull Builder updatesTimeout(int timeout);
+        @NotNull
+        Builder updatesTimeout(int timeout);
 
         /**
          * Builds the bot settings.
          *
          * @return the built bot settings
          */
-        @NotNull BotSettings build();
+        @NotNull
+        BotSettings build();
     }
 
 }

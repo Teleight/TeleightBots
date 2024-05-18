@@ -16,7 +16,7 @@ public record SetMyDefaultAdministratorRights(
         Boolean forChannels
 ) implements ApiMethod<Boolean> {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new SetMyDefaultAdministratorRights.Builder();
     }
 

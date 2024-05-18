@@ -16,7 +16,7 @@ public record GetUserProfilePhotos(
         int limit
 ) implements ApiMethod<UserProfilePhotos> {
 
-    public static Builder of(long userId) {
+    public static Builder ofBuilder(long userId) {
         return new GetUserProfilePhotos.Builder(userId);
     }
 

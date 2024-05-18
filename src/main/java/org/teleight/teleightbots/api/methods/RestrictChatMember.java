@@ -24,7 +24,7 @@ public record RestrictChatMember(
         int untilDate
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, long userId, ChatPermissions chatPermissions) {
+    public static Builder ofBuilder(String chatId, long userId, ChatPermissions chatPermissions) {
         return new Builder(chatId, userId, chatPermissions);
     }
 

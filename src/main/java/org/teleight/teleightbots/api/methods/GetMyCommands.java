@@ -18,7 +18,7 @@ public record GetMyCommands(
         String languageCode
 ) implements ApiMethod<BotCommand[]> {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new GetMyCommands.Builder();
     }
 

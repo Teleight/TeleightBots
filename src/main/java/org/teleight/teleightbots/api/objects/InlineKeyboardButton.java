@@ -21,53 +21,36 @@ public record InlineKeyboardButton(
         WebAppInfo webApp
 ) implements ApiResult {
 
-    public static @NotNull Builder builder() {
-        return new BuilderImpl();
+    public static @NotNull Builder ofBuilder() {
+        return new InlineKeyboardButton.Builder();
     }
 
-    public sealed interface Builder permits BuilderImpl {
-        @NotNull Builder text(@NotNull String text);
-
-        @NotNull Builder url(@NotNull String url);
-
-        @NotNull Builder callbackData(@NotNull String callbackData);
-
-        @NotNull Builder webApp(@NotNull WebAppInfo webApp);
-
-        @NotNull InlineKeyboardButton build();
-    }
-
-    static final class BuilderImpl implements Builder {
+    public static final class Builder {
         private String text;
         private String url;
         private String callbackData;
         private WebAppInfo webApp;
 
-        @Override
         public @NotNull Builder text(@NotNull String text) {
             this.text = text;
             return this;
         }
 
-        @Override
         public @NotNull Builder url(@NotNull String url) {
             this.url = url;
             return this;
         }
 
-        @Override
         public @NotNull Builder callbackData(@NotNull String callbackData) {
             this.callbackData = callbackData;
             return this;
         }
 
-        @Override
         public @NotNull Builder webApp(@NotNull WebAppInfo webApp) {
             this.webApp = webApp;
             return this;
         }
 
-        @Override
         public @NotNull InlineKeyboardButton build() {
             return new InlineKeyboardButton(text, url, callbackData, webApp);
         }

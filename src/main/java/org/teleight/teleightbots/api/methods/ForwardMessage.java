@@ -26,7 +26,7 @@ public record ForwardMessage(
         int messageId
 ) implements ApiMethodMessage {
 
-    public static Builder of(String chatId, String fromChatId, int messageId) {
+    public static Builder ofBuilder(String chatId, String fromChatId, int messageId) {
         return new ForwardMessage.Builder(chatId, fromChatId, messageId);
     }
 

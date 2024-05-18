@@ -65,7 +65,7 @@ public record SendVenue(
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Venue> {
 
-    public static Builder of(String chatId, float latitude, float longitude, String title, String address) {
+    public static Builder ofBuilder(String chatId, float latitude, float longitude, String title, String address) {
         return new SendVenue.Builder(chatId, latitude, longitude, title, address);
     }
 

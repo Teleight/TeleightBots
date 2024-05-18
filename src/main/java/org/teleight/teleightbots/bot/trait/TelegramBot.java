@@ -223,7 +223,7 @@ public interface TelegramBot {
      * @return a future representing the result of the request
      */
     default @NotNull CompletableFuture<ChatMember> getUser(@NotNull String chatId, long userId) {
-        final GetChatMember chatMember = GetChatMember.of(chatId, userId).build();
+        final GetChatMember chatMember = GetChatMember.ofBuilder(chatId, userId).build();
         return execute(chatMember);
     }
 

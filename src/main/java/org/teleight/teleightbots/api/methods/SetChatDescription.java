@@ -14,7 +14,7 @@ public record SetChatDescription(
         String description
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, String description) {
+    public static Builder ofBuilder(String chatId, String description) {
         return new SetChatDescription.Builder(chatId, description);
     }
 

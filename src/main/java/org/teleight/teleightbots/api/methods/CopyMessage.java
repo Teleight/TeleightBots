@@ -51,7 +51,7 @@ public record CopyMessage(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
 
-    public static Builder of(String chatId, String fromChatId, long messageId) {
+    public static Builder ofBuilder(String chatId, String fromChatId, long messageId) {
         return new CopyMessage.Builder(chatId, fromChatId, messageId);
     }
 

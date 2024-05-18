@@ -25,7 +25,7 @@ public record CallbackQuery(
         String data
 ) implements ApiResult {
 
-    public static @NotNull Builder of(String id, User from) {
+    public static @NotNull Builder ofBuilder(String id, User from) {
         return new CallbackQuery.Builder(id, from);
     }
 

@@ -28,7 +28,7 @@ public record EditMessageMedia(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
 
-    public static Builder of(InputMedia media) {
+    public static Builder ofBuilder(InputMedia media) {
         return new EditMessageMedia.Builder(media);
     }
 

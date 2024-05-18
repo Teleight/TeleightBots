@@ -31,7 +31,7 @@ public record ReplyParameters(
         int quotePosition
 ) implements ApiResult {
 
-    public static Builder of(int messageId) {
+    public static Builder ofBuilder(int messageId) {
         return new ReplyParameters.Builder(messageId);
     }
 

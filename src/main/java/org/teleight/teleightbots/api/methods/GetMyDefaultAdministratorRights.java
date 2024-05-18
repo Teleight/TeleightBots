@@ -12,7 +12,7 @@ public record GetMyDefaultAdministratorRights(
         Boolean forChannels
 ) implements ApiMethod<ChatAdministratorRights> {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new GetMyDefaultAdministratorRights.Builder();
     }
 

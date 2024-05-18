@@ -14,7 +14,7 @@ public record EditGeneralForumTopic(
         String name
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, String name) {
+    public static Builder ofBuilder(String chatId, String name) {
         return new EditGeneralForumTopic.Builder(chatId, name);
     }
 

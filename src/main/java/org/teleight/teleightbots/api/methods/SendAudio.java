@@ -71,7 +71,7 @@ public record SendAudio(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder of(String chatId, InputFile audio) {
+    public static Builder ofBuilder(String chatId, InputFile audio) {
         return new SendAudio.Builder(chatId, audio);
     }
 

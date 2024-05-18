@@ -27,7 +27,7 @@ public record StopMessageLiveLocation(
         InlineKeyboardMarkup replyMarkup
 ) implements ApiMethodSerializable {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new StopMessageLiveLocation.Builder();
     }
 

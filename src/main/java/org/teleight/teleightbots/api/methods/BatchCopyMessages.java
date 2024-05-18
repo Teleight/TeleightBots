@@ -29,7 +29,7 @@ public record BatchCopyMessages(
         boolean removeCaption
 ) implements ApiMethodMessage {
 
-    public static Builder of(String chatId, String fromChatId, long[] messageIds) {
+    public static Builder ofBuilder(String chatId, String fromChatId, long[] messageIds) {
         return new BatchCopyMessages.Builder(chatId, fromChatId, messageIds);
     }
 

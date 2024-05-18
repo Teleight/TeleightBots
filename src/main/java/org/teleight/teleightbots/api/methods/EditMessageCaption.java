@@ -41,7 +41,7 @@ public record EditMessageCaption(
         InlineKeyboardMarkup replyMarkup
 ) implements ApiMethodSerializable {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new EditMessageCaption.Builder();
     }
 

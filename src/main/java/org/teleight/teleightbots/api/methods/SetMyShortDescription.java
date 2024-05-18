@@ -15,7 +15,7 @@ public record SetMyShortDescription(
         String languageCode
 ) implements ApiMethod<Boolean> {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new SetMyShortDescription.Builder();
     }
 

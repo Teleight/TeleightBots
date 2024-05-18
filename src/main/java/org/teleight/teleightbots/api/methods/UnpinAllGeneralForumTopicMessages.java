@@ -10,7 +10,7 @@ public record UnpinAllGeneralForumTopicMessages(
         String chatId
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId) {
+    public static Builder ofBuilder(String chatId) {
         return new UnpinAllGeneralForumTopicMessages.Builder(chatId);
     }
 

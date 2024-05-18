@@ -75,7 +75,7 @@ public record SendVideo(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder builder(String chatId, InputFile video) {
+    public static Builder ofBuilder(String chatId, InputFile video) {
         return new SendVideo.Builder(chatId, video);
     }
 

@@ -52,7 +52,7 @@ public record SendVideoNote(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder builder(String chatId, InputFile videoNote) {
+    public static Builder ofBuilder(String chatId, InputFile videoNote) {
         return new SendVideoNote.Builder(chatId, videoNote);
     }
 

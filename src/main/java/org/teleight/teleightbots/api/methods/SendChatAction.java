@@ -23,7 +23,7 @@ public record SendChatAction(
         ChatAction action
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, ChatAction action) {
+    public static Builder ofBuilder(String chatId, ChatAction action) {
         return new SendChatAction.Builder(chatId, action);
     }
 

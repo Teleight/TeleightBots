@@ -17,7 +17,7 @@ public record SetChatAdministratorCustomTitle(
         String customTitle
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, long userId, String customTitle) {
+    public static Builder ofBuilder(String chatId, long userId, String customTitle) {
         return new SetChatAdministratorCustomTitle.Builder(chatId, userId, customTitle);
     }
 

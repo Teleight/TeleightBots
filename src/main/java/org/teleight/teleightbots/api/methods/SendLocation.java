@@ -53,7 +53,7 @@ public record SendLocation(
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Location> {
 
-    public static Builder of(String chatId, float latitude, float longitude) {
+    public static Builder ofBuilder(String chatId, float latitude, float longitude) {
         return new SendLocation.Builder(chatId, latitude, longitude);
     }
 

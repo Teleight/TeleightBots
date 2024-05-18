@@ -14,7 +14,7 @@ public record GetUserChatBoosts(
         long userId
 ) implements ApiMethod<UserChatBoosts> {
 
-    public static Builder of(String chatId, long userId) {
+    public static Builder ofBuilder(String chatId, long userId) {
         return new GetUserChatBoosts.Builder(chatId, userId);
     }
 

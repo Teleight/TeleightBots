@@ -19,7 +19,7 @@ public class TestConversation implements Conversation {
         final String chatId = String.valueOf(chat.id());
 
         // Let's start the conversation by sending a message to the user
-        SendMessage startMessage = SendMessage.of(chatId, "Send me a messages with the text \"hello\"").build();
+        SendMessage startMessage = SendMessage.ofBuilder(chatId, "Send me a messages with the text \"hello\"").build();
         context.bot().execute(startMessage);
 
         // Now, let's wait for an update. We give the user 10 seconds to reply.
@@ -28,7 +28,7 @@ public class TestConversation implements Conversation {
 
         if (update == null) {
             // And this is the case, so let's leave the conversation and send an error message to the user
-            SendMessage resultToUser = SendMessage.of(chatId, "you didnt send the message in time..").build();
+            SendMessage resultToUser = SendMessage.ofBuilder(chatId, "you didnt send the message in time..").build();
             context.bot().execute(resultToUser);
             return;
         }
@@ -39,7 +39,7 @@ public class TestConversation implements Conversation {
         if (message == null) {
             // The message is null, and it's not what we want
             // This happens when the bot receives an update which does not contain a message.
-            SendMessage resultToUser = SendMessage.of(chatId, "You didnt send a message..").build();
+            SendMessage resultToUser = SendMessage.ofBuilder(chatId, "You didnt send a message..").build();
             context.bot().execute(resultToUser);
             return;
         }
@@ -49,10 +49,10 @@ public class TestConversation implements Conversation {
 
         // Now, check if the text equals hello or not and act appropriately
         if (message.text() == null || !message.text().equals("hello")) {
-            SendMessage resultToUser = SendMessage.of(chatId, "You didn't send \"hello\"!").build();
+            SendMessage resultToUser = SendMessage.ofBuilder(chatId, "You didn't send \"hello\"!").build();
             context.bot().execute(resultToUser);
         } else {
-            SendMessage resultToUser = SendMessage.of(chatId, "Good job!").build();
+            SendMessage resultToUser = SendMessage.ofBuilder(chatId, "Good job!").build();
             context.bot().execute(resultToUser);
         }
     }

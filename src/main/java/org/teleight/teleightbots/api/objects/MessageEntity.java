@@ -32,7 +32,7 @@ public record MessageEntity(
         String customEmojiId
 ) implements ApiResult {
 
-    public static @NotNull Builder of(String type, int offset, int length) {
+    public static @NotNull Builder ofBuilder(String type, int offset, int length) {
         return new MessageEntity.Builder(type, offset, length);
     }
 

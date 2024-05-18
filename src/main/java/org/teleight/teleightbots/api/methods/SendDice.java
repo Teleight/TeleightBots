@@ -39,7 +39,7 @@ public record SendDice(
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Dice> {
 
-    public static Builder of(String chatId) {
+    public static Builder ofBuilder(String chatId) {
         return new SendDice.Builder(chatId);
     }
 

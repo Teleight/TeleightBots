@@ -13,7 +13,7 @@ public record BatchDeleteMessages(
         long[] messageIds
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, long[] messageIds) {
+    public static Builder ofBuilder(String chatId, long[] messageIds) {
         return new BatchDeleteMessages.Builder(chatId, messageIds);
     }
 

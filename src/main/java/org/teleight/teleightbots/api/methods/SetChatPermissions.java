@@ -18,7 +18,7 @@ public record SetChatPermissions(
         boolean useIndependentChatPermissions
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, ChatPermissions senderChatId) {
+    public static Builder ofBuilder(String chatId, ChatPermissions senderChatId) {
         return new Builder(chatId, senderChatId);
     }
 

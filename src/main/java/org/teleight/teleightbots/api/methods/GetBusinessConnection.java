@@ -11,7 +11,7 @@ public record GetBusinessConnection(
         String businessConnectionId
 ) implements ApiMethod<BusinessConnection> {
 
-    public static Builder of(String businessConnectionId) {
+    public static Builder ofBuilder(String businessConnectionId) {
         return new GetBusinessConnection.Builder(businessConnectionId);
     }
 

@@ -53,7 +53,7 @@ public record SendMessage(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
 
-    public static Builder of(String chatId, String text) {
+    public static Builder ofBuilder(String chatId, String text) {
         return new Builder(chatId, text);
     }
 

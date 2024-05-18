@@ -13,7 +13,7 @@ public record UnbanChatSenderChat(
         long senderChatId
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, long senderChatId) {
+    public static Builder ofBuilder(String chatId, long senderChatId) {
         return new UnbanChatSenderChat.Builder(chatId, senderChatId);
     }
 

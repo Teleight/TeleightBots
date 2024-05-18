@@ -12,7 +12,7 @@ public record GetMyDescription(
         String languageCode
 ) implements ApiMethod<BotDescription> {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new GetMyDescription.Builder();
     }
 

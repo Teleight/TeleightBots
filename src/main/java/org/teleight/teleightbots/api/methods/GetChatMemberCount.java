@@ -10,7 +10,7 @@ public record GetChatMemberCount(
         String chatId
 ) implements ApiMethod<Integer> {
 
-    public static Builder of(String chatId) {
+    public static Builder ofBuilder(String chatId) {
         return new GetChatMemberCount.Builder(chatId);
     }
 

@@ -25,7 +25,7 @@ public record CreateForumTopic(
         String iconCustomEmojiId
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, String name) {
+    public static Builder ofBuilder(String chatId, String name) {
         return new CreateForumTopic.Builder(chatId, name);
     }
 

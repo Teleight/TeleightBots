@@ -16,7 +16,7 @@ public record PinChatMessage(
         boolean disableNotification
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, int messageId) {
+    public static Builder ofBuilder(String chatId, int messageId) {
         return new PinChatMessage.Builder(chatId, messageId);
     }
 

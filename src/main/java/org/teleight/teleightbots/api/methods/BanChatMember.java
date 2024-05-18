@@ -19,7 +19,7 @@ public record BanChatMember(
         boolean revokeMessages
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, long userId) {
+    public static Builder ofBuilder(String chatId, long userId) {
         return new BanChatMember.Builder(chatId, userId);
     }
 

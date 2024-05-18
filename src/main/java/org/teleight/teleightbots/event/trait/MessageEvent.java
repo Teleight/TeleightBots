@@ -18,8 +18,8 @@ public interface MessageEvent extends Event {
         if (message == null) {
             return CompletableFuture.completedFuture(null);
         }
-        return bot().execute(SendMessage.of(message.chat().id(), text)
-                .replyParameters(ReplyParameters.of(message.messageId()).build())
+        return bot().execute(SendMessage.ofBuilder(message.chat().id(), text)
+                .replyParameters(ReplyParameters.ofBuilder(message.messageId()).build())
                 .build()
         );
     }

@@ -58,7 +58,7 @@ public record PromoteChatMember(
         boolean canManageTopics
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, long userId) {
+    public static Builder ofBuilder(String chatId, long userId) {
         return new PromoteChatMember.Builder(chatId, userId);
     }
 

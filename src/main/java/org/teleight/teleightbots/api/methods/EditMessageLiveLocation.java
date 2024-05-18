@@ -45,7 +45,7 @@ public record EditMessageLiveLocation(
         InlineKeyboardMarkup replyMarkup
 ) implements ApiMethodSerializable {
 
-    public static Builder of(float latitude, float longitude) {
+    public static Builder ofBuilder(float latitude, float longitude) {
         return new EditMessageLiveLocation.Builder(latitude, longitude);
     }
 

@@ -46,7 +46,7 @@ public record EditMessageText(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodSerializable {
 
-    public static Builder of(String text) {
+    public static Builder ofBuilder(String text) {
         return new EditMessageText.Builder(text);
     }
 

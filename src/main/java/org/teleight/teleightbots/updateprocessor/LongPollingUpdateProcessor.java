@@ -84,7 +84,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     private void executeGetUpdates() throws ExecutionException, InterruptedException, TimeoutException {
         final BotSettings settings = bot.getBotSettings();
 
-        final GetUpdates getUpdates = GetUpdates.of()
+        final GetUpdates getUpdates = GetUpdates.ofBuilder()
                 .timeout(settings.updatesTimeout())
                 .limit(settings.updatesLimit())
                 .offset(lastReceivedUpdate + 1)

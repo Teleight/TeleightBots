@@ -27,7 +27,7 @@ public record EditMessageReplyMarkup(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodSerializable {
 
-    public static @NotNull Builder of() {
+    public static @NotNull Builder ofBuilder() {
         return new EditMessageReplyMarkup.Builder();
     }
 

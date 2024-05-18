@@ -59,7 +59,7 @@ public record SendVoice(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder of(String chatId, InputFile voice) {
+    public static Builder ofBuilder(String chatId, InputFile voice) {
         return new SendVoice.Builder(chatId, voice);
     }
 

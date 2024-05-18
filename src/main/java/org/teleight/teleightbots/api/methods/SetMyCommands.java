@@ -23,7 +23,7 @@ public record SetMyCommands(
         String languageCode
 ) implements ApiMethod<Boolean> {
 
-    public static Builder of(List<BotCommand> commands) {
+    public static Builder ofBuilder(List<BotCommand> commands) {
         return new SetMyCommands.Builder(commands);
     }
 

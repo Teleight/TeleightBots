@@ -12,7 +12,7 @@ public record GetChatAdministrators(
         String chatId
 ) implements ApiMethod<ChatMember[]> {
 
-    public static Builder of(String chatId) {
+    public static Builder ofBuilder(String chatId) {
         return new GetChatAdministrators.Builder(chatId);
     }
 

@@ -9,7 +9,7 @@ public record WebAppInfo(
         String url
 ) implements ApiResult {
 
-    public static @NotNull WebAppInfo of(@NotNull String url) {
+    public static @NotNull WebAppInfo ofBuilder(@NotNull String url) {
         return new WebAppInfo(url);
     }
 

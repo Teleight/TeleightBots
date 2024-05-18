@@ -23,7 +23,7 @@ public record LinkPreviewOptions(
         boolean showAboveText
 ) implements ApiResult {
 
-    public static @NotNull Builder of() {
+    public static @NotNull Builder ofBuilder() {
         return new LinkPreviewOptions.Builder();
     }
 

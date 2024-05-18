@@ -10,7 +10,7 @@ public record MenuButtonWebApp(
         WebAppInfo webAppInfo
 ) implements MenuButton {
 
-    public static Builder builder(String text, WebAppInfo webAppInfo) {
+    public static Builder ofBuilder(String text, WebAppInfo webAppInfo) {
         return new Builder(text, webAppInfo);
     }
 

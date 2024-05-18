@@ -14,7 +14,7 @@ public record SetChatMenuButton(
         MenuButton menuButton
 ) implements ApiMethodBoolean {
 
-    public static @NotNull Builder of() {
+    public static @NotNull Builder ofBuilder() {
         return new SetChatMenuButton.Builder();
     }
 

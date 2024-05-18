@@ -14,7 +14,7 @@ public record SetChatStickerSet(
         String stickerSetName
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId, String stickerSetName) {
+    public static Builder ofBuilder(String chatId, String stickerSetName) {
         return new SetChatStickerSet.Builder(chatId, stickerSetName);
     }
 

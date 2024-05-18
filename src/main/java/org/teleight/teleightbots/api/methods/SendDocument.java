@@ -63,7 +63,7 @@ public record SendDocument(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder builder(String chatId, InputFile document) {
+    public static Builder ofBuilder(String chatId, InputFile document) {
         return new SendDocument.Builder(chatId, document);
     }
 

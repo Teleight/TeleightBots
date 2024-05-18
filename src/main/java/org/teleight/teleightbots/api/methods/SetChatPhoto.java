@@ -18,7 +18,7 @@ public record SetChatPhoto(
         InputFile photo
 ) implements MultiPartApiMethodBoolean {
 
-    public static Builder of(String chatId, InputFile photo) {
+    public static Builder ofBuilder(String chatId, InputFile photo) {
         return new SetChatPhoto.Builder(chatId, photo);
     }
 

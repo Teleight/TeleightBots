@@ -16,7 +16,7 @@ public record DeleteMyCommands(
         String languageCode
 ) implements ApiMethod<Boolean> {
 
-    public static Builder of() {
+    public static Builder ofBuilder() {
         return new DeleteMyCommands.Builder();
     }
 

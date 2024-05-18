@@ -59,7 +59,7 @@ public record SendPhoto(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder builder(String chatId, InputFile photo) {
+    public static Builder ofBuilder(String chatId, InputFile photo) {
         return new SendPhoto.Builder(chatId, photo);
     }
 

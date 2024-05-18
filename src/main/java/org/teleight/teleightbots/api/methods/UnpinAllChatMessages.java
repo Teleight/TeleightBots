@@ -10,7 +10,7 @@ public record UnpinAllChatMessages(
         String chatId
 ) implements ApiMethodBoolean {
 
-    public static Builder of(String chatId) {
+    public static Builder ofBuilder(String chatId) {
         return new UnpinAllChatMessages.Builder(chatId);
     }
 

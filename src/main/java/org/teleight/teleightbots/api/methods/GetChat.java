@@ -11,7 +11,7 @@ public record GetChat(
         String chatId
 ) implements ApiMethod<Chat> {
 
-    public static Builder of(String chatId) {
+    public static Builder ofBuilder(String chatId) {
         return new GetChat.Builder(chatId);
     }
 

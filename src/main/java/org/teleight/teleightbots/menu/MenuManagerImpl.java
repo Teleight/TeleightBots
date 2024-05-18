@@ -75,14 +75,14 @@ public final class MenuManagerImpl implements MenuManager {
             final boolean shouldChangeText = text != null;
 
             if (shouldChangeText) {
-                final EditMessageText editMessageText = EditMessageText.of(text)
+                final EditMessageText editMessageText = EditMessageText.ofBuilder(text)
                         .chatId(chatId)
                         .messageId(messageId)
                         .replyMarkup(keyboard)
                         .build();
                 event.execute(editMessageText);
             } else {
-                final EditMessageReplyMarkup editMessageReplyMarkup = EditMessageReplyMarkup.of()
+                final EditMessageReplyMarkup editMessageReplyMarkup = EditMessageReplyMarkup.ofBuilder()
                         .chatId(chatId)
                         .messageId(messageId)
                         .inlineMessageId(inlineMessageId)

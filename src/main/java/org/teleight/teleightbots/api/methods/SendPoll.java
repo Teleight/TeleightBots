@@ -79,7 +79,7 @@ public record SendPoll(
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Poll> {
 
-    public static Builder of(String chatId, String question, String[] options) {
+    public static Builder ofBuilder(String chatId, String question, String[] options) {
         return new SendPoll.Builder(chatId, question, options);
     }
 

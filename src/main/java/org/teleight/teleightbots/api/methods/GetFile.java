@@ -11,7 +11,7 @@ public record GetFile(
         String fileId
 ) implements ApiMethod<File> {
 
-    public static @NotNull GetFile of(String fileId) {
+    public static @NotNull GetFile ofBuilder(String fileId) {
         return new GetFile(fileId);
     }
 
