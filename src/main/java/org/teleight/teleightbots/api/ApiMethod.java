@@ -32,8 +32,10 @@ import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeseria
 import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.MessageOriginDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.ParseModeDeserializer;
+import org.teleight.teleightbots.api.serialization.serializers.ChatActionSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.DiceEmojiSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.InputStickerFormatSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.ParseModeSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
@@ -88,9 +90,11 @@ public interface ApiMethod<R extends Serializable> {
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
             )
             .registerModule(new SimpleModule()
+                    .addSerializer(ChatAction.class, new ChatActionSerializer())
                     .addDeserializer(ChatAction.class, new ChatActionDeserializer())
             )
             .registerModule(new SimpleModule()
+                    .addSerializer(Dice.DiceEmoji.class, new DiceEmojiSerializer())
                     .addDeserializer(Dice.DiceEmoji.class, new DiceEmojiDeserializer())
             )
             .registerModule(new SimpleModule()
