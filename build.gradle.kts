@@ -26,10 +26,6 @@ dependencies {
     implementation("org.checkerframework:checker:3.42.0")
     implementation("org.checkerframework:checker-qual:3.42.0")
 
-    //Lombok
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
-
     //Annotations
     implementation("org.jetbrains:annotations:24.0.1")
 }
