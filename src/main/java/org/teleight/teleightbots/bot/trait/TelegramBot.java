@@ -114,7 +114,7 @@ public interface TelegramBot {
      * The builder is used to create the menu items and sub-menus of the menu.
      * </p>
      *
-     * @param builder the builder used to create the menu items and sub-menus
+     * @param builder the builder used to create the menu items and submenus
      * @return the created menu
      */
     default @NotNull Menu createMenu(@NotNull Menu.Builder builder) {
@@ -128,7 +128,7 @@ public interface TelegramBot {
      * </p>
      *
      * @param name    the name of the menu
-     * @param builder the builder used to create the menu items and sub-menus
+     * @param builder the builder used to create the menu items and submenus
      * @return the created menu
      */
     @NotNull Menu createMenu(@Nullable String name, @NotNull Menu.Builder builder);
@@ -201,7 +201,7 @@ public interface TelegramBot {
      * @return a future representing the result of the request
      */
     default @NotNull CompletableFuture<ChatMember> getUser(@NotNull Chat chat, long userId) {
-        return getUser(chat.id().toString(), userId);
+        return getUser(chat.id(), userId);
     }
 
     /**

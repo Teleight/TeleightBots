@@ -1,7 +1,6 @@
 package org.teleight.teleightbots.api;
 
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.objects.ChatMember;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 /**

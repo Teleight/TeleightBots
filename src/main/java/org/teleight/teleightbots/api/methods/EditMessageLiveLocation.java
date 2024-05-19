@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodSerializable;
-import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.Message;
+import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,7 +42,7 @@ public record EditMessageLiveLocation(
 
         @JsonProperty(value = "reply_markup")
         @Nullable
-        InlineKeyboardMarkup replyMarkup
+        ReplyKeyboard replyMarkup
 ) implements ApiMethodSerializable {
 
     public static Builder ofBuilder(float latitude, float longitude) {
@@ -69,7 +69,7 @@ public record EditMessageLiveLocation(
         private float horizontalAccuracy;
         private int heading;
         private int proximityAlertRadius;
-        private InlineKeyboardMarkup replyMarkup;
+        private ReplyKeyboard replyMarkup;
 
         Builder(float latitude, float longitude) {
             this.latitude = latitude;
@@ -111,7 +111,7 @@ public record EditMessageLiveLocation(
             return this;
         }
 
-        public Builder replyMarkup(InlineKeyboardMarkup replyMarkup) {
+        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
             this.replyMarkup = replyMarkup;
             return this;
         }

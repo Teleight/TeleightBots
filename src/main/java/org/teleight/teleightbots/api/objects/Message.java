@@ -325,7 +325,7 @@ public record Message(
 
         @JsonProperty("reply_markup")
         @Nullable
-        InlineKeyboardMarkup replyMarkup
+        ReplyKeyboard replyMarkup
 ) implements MaybeInaccessibleMessage {
 
     @JsonIgnore

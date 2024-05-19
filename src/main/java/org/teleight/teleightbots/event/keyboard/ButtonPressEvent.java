@@ -35,7 +35,7 @@ public record ButtonPressEvent(
     }
 
     public @NotNull String chatId() {
-        return chat().id().toString();
+        return chat().id();
     }
 
     public @NotNull CompletableFuture<Boolean> answer() {

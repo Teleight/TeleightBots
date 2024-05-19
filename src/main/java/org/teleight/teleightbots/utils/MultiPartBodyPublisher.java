@@ -12,7 +12,9 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * https://stackoverflow.com/questions/46392160/java-9-httpclient-send-a-multipart-form-data-request
+ * Utility class for generating a multipart request body.
+ * <p>
+ * <a href="https://stackoverflow.com/questions/46392160/java-9-httpclient-send-a-multipart-form-data-request">Source</a>
  */
 public class MultiPartBodyPublisher {
 

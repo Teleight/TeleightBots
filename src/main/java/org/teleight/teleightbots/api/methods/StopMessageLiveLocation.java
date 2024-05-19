@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodSerializable;
-import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.Message;
+import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,7 +24,7 @@ public record StopMessageLiveLocation(
 
         @JsonProperty(value = "reply_markup")
         @Nullable
-        InlineKeyboardMarkup replyMarkup
+        ReplyKeyboard replyMarkup
 ) implements ApiMethodSerializable {
 
     public static Builder ofBuilder() {
@@ -45,7 +45,7 @@ public record StopMessageLiveLocation(
         private String chatId;
         private int messageId;
         private String inlineMessageId;
-        private InlineKeyboardMarkup replyMarkup;
+        private ReplyKeyboard replyMarkup;
 
         public Builder chatId(String chatId) {
             this.chatId = chatId;
@@ -62,7 +62,7 @@ public record StopMessageLiveLocation(
             return this;
         }
 
-        public Builder replyMarkup(InlineKeyboardMarkup replyMarkup) {
+        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
             this.replyMarkup = replyMarkup;
             return this;
         }

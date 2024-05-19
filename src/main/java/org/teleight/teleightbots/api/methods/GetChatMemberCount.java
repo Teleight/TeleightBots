@@ -3,7 +3,6 @@ package org.teleight.teleightbots.api.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.objects.BotDescription;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetChatMemberCount(

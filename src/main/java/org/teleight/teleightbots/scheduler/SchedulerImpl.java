@@ -3,8 +3,11 @@ package org.teleight.teleightbots.scheduler;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 
-import java.io.IOException;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class SchedulerImpl implements Scheduler {
 
@@ -55,7 +58,7 @@ public class SchedulerImpl implements Scheduler {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         System.out.println("Closing Scheduler");
 
         EXECUTOR.shutdown();

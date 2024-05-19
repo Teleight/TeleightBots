@@ -101,7 +101,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
             return new LoadResult.InvalidBotLoader("Failed to find constructor for extension " + extensionName + ". " + e.getMessage());
         }
 
-        Extension extension = null;
+        Extension extension;
         try {
             extension = constructor.newInstance(bot);
         } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
@@ -143,7 +143,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
                 throw new IllegalStateException("Missing " + ExtensionManager.EXTENSION_FILE + " in extension " + file.getName() + ".");
             }
 
-            try(InputStreamReader reader = new InputStreamReader(zip.getInputStream(entry));) {
+            try(InputStreamReader reader = new InputStreamReader(zip.getInputStream(entry))) {
                 final ExtensionInfoFile extensionInfo = objectMapper.readValue(reader, ExtensionInfoFile.class);
                 final DiscoveredExtension extension = DiscoveredExtension.of(extensionInfo);
                 extension.files.add(file.toURI().toURL());
@@ -156,7 +156,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         for (Extension extension : loadedExtensions) {
             try{
                 extension.shutdown();

@@ -12,6 +12,7 @@ import org.teleight.teleightbots.api.objects.InputFile;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.Bot;
 import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.conversation.ConversationContext;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
@@ -33,8 +34,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
@@ -81,7 +80,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         updateProcessorThread.interrupt();
     }
 
-    private void executeGetUpdates() throws ExecutionException, InterruptedException, TimeoutException {
+    private void executeGetUpdates() {
         final BotSettings settings = bot.getBotSettings();
 
         final GetUpdates getUpdates = GetUpdates.ofBuilder()
@@ -158,9 +157,9 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 .call(new UpdateReceivedEvent(bot, update, responseJson))
                 .thenAccept(updateReceivedEvent -> {
                     // Handle conversation before everything else
-                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
+                    for (ConversationContext ignored : bot.getConversationManager().getRunningConversations()) {
                         bot.getEventManager().call(updateReceivedEvent);
-                    });
+                    }
 
                     // Now handle everything else
                     final Update receivedUpdate = updateReceivedEvent.update();
@@ -258,11 +257,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 return;
             }
             while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    executeGetUpdates();
-                } catch (ExecutionException | InterruptedException | TimeoutException e) {
-                    TeleightBots.getExceptionManager().handleException(e);
-                }
+                executeGetUpdates();
             }
         }
     }

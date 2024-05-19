@@ -53,7 +53,7 @@ public record BatchCopyMessages(
             this.messageId = messageId;
         }
 
-        public Builder messageThreadId(@NotNull int messageThreadId) {
+        public Builder messageThreadId(int messageThreadId) {
             this.messageThreadId = messageThreadId;
             return this;
         }

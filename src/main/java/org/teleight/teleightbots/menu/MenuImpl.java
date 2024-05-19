@@ -74,10 +74,6 @@ public class MenuImpl implements Menu {
             for (int rowIndex = 0; rowIndex < row.size(); rowIndex++) {
                 final InlineKeyboardButton oldButton = row.get(rowIndex);
 
-//                if (oldButton.url() == null || oldButton.callbackData() == null) {
-//                    throw new IllegalStateException("Button " + oldButton + " has no callback data or url");
-//                }
-
                 final InlineKeyboardButton newButton = InlineKeyboardButton.ofBuilder(oldButton.text())
                         .url(oldButton.url())
                         .callbackData(oldButton.callbackData())

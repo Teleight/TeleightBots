@@ -95,7 +95,7 @@ public class FileDownloaderImpl implements FileDownloader {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         System.out.println("Shutting down FileDownloader");
         client.close();
     }

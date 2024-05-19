@@ -14,11 +14,7 @@ import java.io.IOException;
 public class MaybeInaccessibleMessageDeserializer extends StdDeserializer<MaybeInaccessibleMessage> {
 
     public MaybeInaccessibleMessageDeserializer() {
-        this(null);
-    }
-
-    private MaybeInaccessibleMessageDeserializer(Class<?> vc) {
-        super(vc);
+        super((Class<MaybeInaccessibleMessage>) null);
     }
 
     @Override
