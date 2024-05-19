@@ -4,32 +4,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public record InlineQueryResultPhoto(
+public record InlineQueryResultVideo(
         @JsonProperty(value = "id", required = true)
         @NotNull
         String id,
 
-        @JsonProperty(value = "photo_url", required = true)
+        @JsonProperty(value = "video_url", required = true)
         @NotNull
-        String photoUrl,
+        String videoUrl,
+
+        @JsonProperty(value = "mime_type", required = true)
+        @NotNull
+        String mimeType,
 
         @JsonProperty(value = "thumbnail_url", required = true)
         @NotNull
         String thumbnailUrl,
 
-        @JsonProperty(value = "photo_width")
-        int photoWidth,
-
-        @JsonProperty(value = "photo_height")
-        int photoHeight,
-
-        @JsonProperty(value = "title")
-        @Nullable
+        @JsonProperty(value = "title", required = true)
+        @NotNull
         String title,
-
-        @JsonProperty(value = "description")
-        @Nullable
-        String description,
 
         @JsonProperty(value = "caption")
         @Nullable
@@ -43,6 +37,22 @@ public record InlineQueryResultPhoto(
         @Nullable
         MessageEntity[] captionEntities,
 
+        @JsonProperty(value = "video_width")
+        @Nullable
+        Integer videoWidth,
+
+        @JsonProperty(value = "video_height")
+        @Nullable
+        Integer videoHeight,
+
+        @JsonProperty(value = "video_duration")
+        @Nullable
+        Integer videoDuration,
+
+        @JsonProperty(value = "description")
+        @Nullable
+        String description,
+
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup,
@@ -54,7 +64,7 @@ public record InlineQueryResultPhoto(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_PHOTO;
+        return InlineQueryResultType.INLINE_QUERY_RESULT_VIDEO;
     }
 
 }

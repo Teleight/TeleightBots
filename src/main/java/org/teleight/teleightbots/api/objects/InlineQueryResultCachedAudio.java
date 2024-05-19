@@ -4,32 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public record InlineQueryResultPhoto(
+public record InlineQueryResultCachedAudio(
         @JsonProperty(value = "id", required = true)
         @NotNull
         String id,
 
-        @JsonProperty(value = "photo_url", required = true)
+        @JsonProperty(value = "audio_file_id", required = true)
         @NotNull
-        String photoUrl,
-
-        @JsonProperty(value = "thumbnail_url", required = true)
-        @NotNull
-        String thumbnailUrl,
-
-        @JsonProperty(value = "photo_width")
-        int photoWidth,
-
-        @JsonProperty(value = "photo_height")
-        int photoHeight,
-
-        @JsonProperty(value = "title")
-        @Nullable
-        String title,
-
-        @JsonProperty(value = "description")
-        @Nullable
-        String description,
+        String audioFileId,
 
         @JsonProperty(value = "caption")
         @Nullable

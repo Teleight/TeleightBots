@@ -4,32 +4,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public record InlineQueryResultPhoto(
+public record InlineQueryResultMpeg4Gif(
         @JsonProperty(value = "id", required = true)
         @NotNull
         String id,
 
-        @JsonProperty(value = "photo_url", required = true)
+        @JsonProperty(value = "mpeg4_url", required = true)
         @NotNull
-        String photoUrl,
+        String mpeg4Url,
+
+        @JsonProperty(value = "mpeg4_width")
+        @Nullable
+        Integer mpeg4Width,
+
+        @JsonProperty(value = "mpeg4_height")
+        @Nullable
+        Integer mpeg4Height,
+
+        @JsonProperty(value = "mpeg4_duration")
+        @Nullable
+        Integer mpeg4Duration,
 
         @JsonProperty(value = "thumbnail_url", required = true)
         @NotNull
         String thumbnailUrl,
 
-        @JsonProperty(value = "photo_width")
-        int photoWidth,
-
-        @JsonProperty(value = "photo_height")
-        int photoHeight,
+        @JsonProperty(value = "thumbnail_mime_type")
+        @Nullable
+        String thumbnailMimeType,
 
         @JsonProperty(value = "title")
         @Nullable
         String title,
-
-        @JsonProperty(value = "description")
-        @Nullable
-        String description,
 
         @JsonProperty(value = "caption")
         @Nullable
@@ -54,7 +60,7 @@ public record InlineQueryResultPhoto(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_PHOTO;
+        return InlineQueryResultType.INLINE_QUERY_RESULT_MPEG4_GIF;
     }
 
 }
