@@ -47,7 +47,7 @@ public interface BotSettings {
      * @return the created bot settings
      */
     static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout) {
-        return BotSettingsImpl.create(endPointUrl, updatesLimit, updatesTimeout);
+        return ofBuilder(endPointUrl).updatesLimit(updatesLimit).updatesTimeout(updatesTimeout).build();
     }
 
     /**

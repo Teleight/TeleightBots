@@ -3,7 +3,7 @@ package org.teleight.teleightbots.api.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.api.ApiMethodBoolean;
 import org.teleight.teleightbots.api.objects.ChatAdministratorRights;
 
 public record SetMyDefaultAdministratorRights(
@@ -12,9 +12,8 @@ public record SetMyDefaultAdministratorRights(
         ChatAdministratorRights rights,
 
         @JsonProperty(value = "for_channels")
-        @Nullable
-        Boolean forChannels
-) implements ApiMethod<Boolean> {
+        boolean forChannels
+) implements ApiMethodBoolean {
 
     public static Builder ofBuilder() {
         return new SetMyDefaultAdministratorRights.Builder();
@@ -27,14 +26,14 @@ public record SetMyDefaultAdministratorRights(
 
     public static class Builder {
         private ChatAdministratorRights rights;
-        private Boolean forChannels;
+        private boolean forChannels;
 
         public Builder rights(ChatAdministratorRights rights) {
             this.rights = rights;
             return this;
         }
 
-        public Builder forChannels(Boolean forChannels) {
+        public Builder forChannels(boolean forChannels) {
             this.forChannels = forChannels;
             return this;
         }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.MenuButton;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetChatMenuButton(
         @JsonProperty(value = "chat_id")
@@ -17,6 +18,11 @@ public record GetChatMenuButton(
     @Override
     public @NotNull String getEndpointURL() {
         return "getChatMenuButton";
+    }
+
+    @Override
+    public @NotNull MenuButton deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, MenuButton.class);
     }
 
     public static class Builder {

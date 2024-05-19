@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.BotName;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetMyName(
         @JsonProperty(value = "language_code")
@@ -19,6 +20,11 @@ public record GetMyName(
     @Override
     public @NotNull String getEndpointURL() {
         return "getMyName";
+    }
+
+    @Override
+    public @NotNull BotName deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, BotName.class);
     }
 
     public static class Builder {

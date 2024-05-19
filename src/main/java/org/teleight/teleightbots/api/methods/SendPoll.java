@@ -9,6 +9,7 @@ import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.Poll;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record SendPoll(
         @JsonProperty(value = "business_connection_id")
@@ -86,6 +87,11 @@ public record SendPoll(
     @Override
     public @NotNull String getEndpointURL() {
         return "sendPoll";
+    }
+
+    @Override
+    public @NotNull Poll deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, Poll.class);
     }
 
     public static class Builder {

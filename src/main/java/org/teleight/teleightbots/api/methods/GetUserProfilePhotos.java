@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.UserProfilePhotos;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetUserProfilePhotos(
         @JsonProperty(value = "user_id", required = true)
@@ -23,6 +24,11 @@ public record GetUserProfilePhotos(
     @Override
     public @NotNull String getEndpointURL() {
         return "getUserProfilePhotos";
+    }
+
+    @Override
+    public @NotNull UserProfilePhotos deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, UserProfilePhotos.class);
     }
 
     public static class Builder {

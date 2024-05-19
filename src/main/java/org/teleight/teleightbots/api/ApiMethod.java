@@ -2,7 +2,6 @@ package org.teleight.teleightbots.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -120,22 +119,7 @@ public interface ApiMethod<R extends Serializable> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
-    default @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException {
-        return deserializeResponse(answer, new TypeReference<R>() {});
-    }
-
-    /**
-     * Deserializes the response from the Telegram Bot API into a specific type reference.
-     *
-     * @param answer        the response from the Telegram Bot API
-     * @param typeReference the type reference to deserialize the response into
-     * @return the deserialized response
-     * @throws TelegramRequestException if an error occurs while deserializing the response
-     */
-    default @NotNull R deserializeResponse(@NotNull String answer, @NotNull TypeReference<R> typeReference) throws TelegramRequestException {
-        final JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(typeReference.getType());
-        return UNSAFE_deserializeResponse(answer, type);
-    }
+    @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
 
     /**
      * Deserializes the response from the Telegram Bot API into a specific class.

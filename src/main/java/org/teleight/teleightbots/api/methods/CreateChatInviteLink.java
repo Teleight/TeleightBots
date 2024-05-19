@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.ChatInviteLink;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.util.Date;
 
@@ -35,6 +36,11 @@ public record CreateChatInviteLink(
     @Override
     public @NotNull String getEndpointURL() {
         return "createChatInviteLink";
+    }
+
+    @Override
+    public @NotNull ChatInviteLink deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, ChatInviteLink.class);
     }
 
     public static class Builder {

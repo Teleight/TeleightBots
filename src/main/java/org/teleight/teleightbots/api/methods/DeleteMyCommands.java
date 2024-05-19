@@ -3,7 +3,7 @@ package org.teleight.teleightbots.api.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.api.ApiMethodBoolean;
 import org.teleight.teleightbots.api.objects.BotCommandScope;
 
 public record DeleteMyCommands(
@@ -14,7 +14,7 @@ public record DeleteMyCommands(
         @JsonProperty(value = "language_code")
         @Nullable
         String languageCode
-) implements ApiMethod<Boolean> {
+) implements ApiMethodBoolean {
 
     public static Builder ofBuilder() {
         return new DeleteMyCommands.Builder();

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.ChatAdministratorRights;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetMyDefaultAdministratorRights(
         @JsonProperty(value = "for_channels")
@@ -19,6 +20,11 @@ public record GetMyDefaultAdministratorRights(
     @Override
     public @NotNull String getEndpointURL() {
         return "getMyDefaultAdministratorRights";
+    }
+
+    @Override
+    public @NotNull ChatAdministratorRights deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, ChatAdministratorRights.class);
     }
 
     public static class Builder {

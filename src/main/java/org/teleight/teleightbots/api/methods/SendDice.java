@@ -7,6 +7,7 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.Dice;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record SendDice(
         @JsonProperty(value = "business_connection_id")
@@ -46,6 +47,11 @@ public record SendDice(
     @Override
     public @NotNull String getEndpointURL() {
         return "sendDice";
+    }
+
+    @Override
+    public @NotNull Dice deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, Dice.class);
     }
 
     public static class Builder {

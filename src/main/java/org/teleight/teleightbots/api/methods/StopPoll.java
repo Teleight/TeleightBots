@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.Poll;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record StopPoll(
         @JsonProperty(value = "chat_id", required = true)
@@ -27,6 +28,11 @@ public record StopPoll(
     @Override
     public @NotNull String getEndpointURL() {
         return "stopPoll";
+    }
+
+    @Override
+    public @NotNull Poll deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, Poll.class);
     }
 
     public static class Builder {

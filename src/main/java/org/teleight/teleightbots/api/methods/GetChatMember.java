@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.ChatMember;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetChatMember(
         @JsonProperty(value = "chat_id", required = true)
@@ -21,6 +22,11 @@ public record GetChatMember(
     @Override
     public @NotNull String getEndpointURL() {
         return "getChatMember";
+    }
+
+    @Override
+    public @NotNull ChatMember deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, ChatMember.class);
     }
 
     public static class Builder {

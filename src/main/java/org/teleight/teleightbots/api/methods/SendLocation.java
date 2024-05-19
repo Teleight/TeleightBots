@@ -7,6 +7,7 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.Location;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record SendLocation(
         @JsonProperty(value = "business_connection_id")
@@ -60,6 +61,11 @@ public record SendLocation(
     @Override
     public @NotNull String getEndpointURL() {
         return "sendLocation";
+    }
+
+    @Override
+    public @NotNull Location deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, Location.class);
     }
 
     public static class Builder {
