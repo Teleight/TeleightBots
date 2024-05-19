@@ -3,7 +3,7 @@ package org.teleight.teleightbots.commands.builder.argument;
 import org.teleight.teleightbots.commands.builder.exception.ArgumentSyntaxException;
 
 /**
- * Abstract class representing an argument.
+ * Abstract class representing a command argument.
  *
  * @param <T> the type of the argument
  */
