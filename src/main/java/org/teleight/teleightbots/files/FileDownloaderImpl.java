@@ -91,7 +91,7 @@ public class FileDownloaderImpl implements FileDownloader {
     }
 
     private @NotNull String getFileUrl(@NotNull String filePath) {
-        return String.format("https://api.telegram.org/file/bot%s/%s", bot.getBotToken(), filePath);
+        return String.format(FILE_DOWNLOAD_TEMPLATE, bot.getBotToken(), filePath);
     }
 
     @Override
