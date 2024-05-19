@@ -119,6 +119,7 @@ public interface ApiMethod<R extends Serializable> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
+    @ApiStatus.Internal
     @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
 
     /**
@@ -129,6 +130,7 @@ public interface ApiMethod<R extends Serializable> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
+    @ApiStatus.Internal
     default @NotNull R deserializeResponse(@NotNull String answer, @NotNull Class<R> returnClass) throws TelegramRequestException {
         final JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(returnClass);
         return UNSAFE_deserializeResponse(answer, type);
@@ -143,6 +145,7 @@ public interface ApiMethod<R extends Serializable> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
+    @ApiStatus.Internal
     default <K extends Serializable> @NotNull R deserializeResponseArray(@NotNull String answer, @NotNull Class<K> returnClass) throws TelegramRequestException {
         final ArrayType collectionType = OBJECT_MAPPER.getTypeFactory().constructArrayType(returnClass);
         return UNSAFE_deserializeResponse(answer, collectionType);
@@ -157,6 +160,7 @@ public interface ApiMethod<R extends Serializable> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
+    @ApiStatus.Internal
     default <K extends Serializable> R deserializeResponseSerializable(String answer, Class<K> returnClass) throws TelegramRequestException {
         JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(returnClass);
         return UNSAFE_deserializeResponse(answer, type);
