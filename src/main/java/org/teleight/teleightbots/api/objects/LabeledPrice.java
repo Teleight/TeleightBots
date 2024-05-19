@@ -7,6 +7,6 @@ public record LabeledPrice(
         String label,
 
         @JsonProperty(value = "amount", required = true)
-        Integer amount
+        int amount
 ) {
 }

@@ -14,16 +14,13 @@ public record InlineQueryResultGif(
         String gifUrl,
 
         @JsonProperty(value = "gif_width")
-        @Nullable
-        Integer gifWidth,
+        int gifWidth,
 
         @JsonProperty(value = "gif_height")
-        @Nullable
-        Integer gifHeight,
+        int gifHeight,
 
         @JsonProperty(value = "gif_duration")
-        @Nullable
-        Integer gifDuration,
+        int gifDuration,
 
         @JsonProperty(value = "thumbnail_url", required = true)
         @NotNull

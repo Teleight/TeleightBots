@@ -12,6 +12,6 @@ public record ProximityAlertTriggered(
         User watcher,
 
         @JsonProperty(value = "distance", required = true)
-        Integer distance
+        int distance
 ) implements ApiResult {
 }

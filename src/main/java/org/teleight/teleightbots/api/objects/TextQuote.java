@@ -15,11 +15,9 @@ public record TextQuote(
         MessageEntity[] entities,
 
         @JsonProperty(value = "position")
-        @Nullable
-        Integer position,
+        int position,
 
         @JsonProperty(value = "is_manual")
-        @Nullable
-        Boolean isManual
+        boolean isManual
 ) implements ApiResult {
 }

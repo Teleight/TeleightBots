@@ -75,11 +75,11 @@ public record SendLocation(
         private final Float latitude;
         private final Float longitude;
         private Float horizontalAccuracy;
-        private Integer livePeriod;
-        private Integer heading;
-        private Integer proximityAlertRadius;
-        private Boolean disableNotification;
-        private Boolean protectContent;
+        private int livePeriod;
+        private int heading;
+        private int proximityAlertRadius;
+        private boolean disableNotification;
+        private boolean protectContent;
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
@@ -104,27 +104,27 @@ public record SendLocation(
             return this;
         }
 
-        public Builder livePeriod(Integer livePeriod) {
+        public Builder livePeriod(int livePeriod) {
             this.livePeriod = livePeriod;
             return this;
         }
 
-        public Builder heading(Integer heading) {
+        public Builder heading(int heading) {
             this.heading = heading;
             return this;
         }
 
-        public Builder proximityAlertRadius(Integer proximityAlertRadius) {
+        public Builder proximityAlertRadius(int proximityAlertRadius) {
             this.proximityAlertRadius = proximityAlertRadius;
             return this;
         }
 
-        public Builder disableNotification(Boolean disableNotification) {
+        public Builder disableNotification(boolean disableNotification) {
             this.disableNotification = disableNotification;
             return this;
         }
 
-        public Builder protectContent(Boolean protectContent) {
+        public Builder protectContent(boolean protectContent) {
             this.protectContent = protectContent;
             return this;
         }

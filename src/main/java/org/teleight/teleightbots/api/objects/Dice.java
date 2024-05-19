@@ -9,7 +9,7 @@ public record Dice(
         DiceEmoji emoji,
 
         @JsonProperty(value = "value", required = true)
-        Integer value
+        int value
 ) implements ApiResult {
 
     public enum DiceEmoji implements ApiMethod.SimpleFieldValueProvider {

@@ -30,8 +30,7 @@ public record InlineQueryResultVoice(
         MessageEntity[] captionEntities,
 
         @JsonProperty(value = "voice_duration")
-        @Nullable
-        Integer voiceDuration,
+        int voiceDuration,
 
         @JsonProperty(value = "reply_markup")
         @Nullable

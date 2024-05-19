@@ -10,7 +10,6 @@ public record Story(
         Chat chat,
 
         @JsonProperty(value = "id", required = true)
-        @NotNull
-        Integer id
+        int id
 ) implements ApiResult {
 }

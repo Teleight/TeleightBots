@@ -27,7 +27,6 @@ public record InputMediaPhoto(
         MessageEntity[] captionEntities,
 
         @JsonProperty(value = "has_spoiler")
-        @Nullable
-        Boolean hasSpoiler
+        boolean hasSpoiler
 ) implements ApiResult, InputMedia {
 }

@@ -37,8 +37,8 @@ public final class MessageEventProcessor implements EventProcessor {
         final boolean hasNewChatMembers = message.newChatMembers() != null;
         if (hasNewChatMembers) {
             boolean isThisBotJoined = isThisBotJoined(bot, message);
-            Boolean groupChatCreated = message.groupChatCreated();
-            if (isThisBotJoined || (groupChatCreated != null && groupChatCreated)) {
+            boolean groupChatCreated = message.groupChatCreated();
+            if (isThisBotJoined || (groupChatCreated)) {
                 bot.getEventManager().call(new BotJoinedGroupEvent(bot, update));
             }
         }

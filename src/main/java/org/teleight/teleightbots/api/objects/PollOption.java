@@ -8,7 +8,7 @@ public record PollOption(
         String text,
 
         @JsonProperty(value = "voter_count", required = true)
-        Integer voterCount
+        int voterCount
 ) implements ApiResult {
 
 }

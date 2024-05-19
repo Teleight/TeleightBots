@@ -38,32 +38,25 @@ public record ChatMemberAdministrator(
         boolean canInviteUsers,
 
         @JsonProperty("can_post_messages")
-        @Nullable
-        Boolean canPostMessages,
+        boolean canPostMessages,
 
         @JsonProperty("can_edit_messages")
-        @Nullable
-        Boolean canEditMessages,
+        boolean canEditMessages,
 
         @JsonProperty("can_pin_messages")
-        @Nullable
-        Boolean canPinMessages,
+        boolean canPinMessages,
 
         @JsonProperty("can_post_stories")
-        @Nullable
-        Boolean canPostStories,
+        boolean canPostStories,
 
         @JsonProperty("can_edit_stories")
-        @Nullable
-        Boolean canEditStories,
+        boolean canEditStories,
 
         @JsonProperty("can_delete_stories")
-        @Nullable
-        Boolean canDeleteStories,
+        boolean canDeleteStories,
 
         @JsonProperty("can_manage_topics")
-        @Nullable
-        Boolean canManageTopics,
+        boolean canManageTopics,
 
         @JsonProperty("custom_title")
         @Nullable

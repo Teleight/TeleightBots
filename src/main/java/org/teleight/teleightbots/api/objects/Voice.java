@@ -12,7 +12,7 @@ public record Voice(
         String fileUniqueId,
 
         @JsonProperty(value = "duration", required = true)
-        Integer duration,
+        int duration,
 
         @JsonProperty("mime_type")
         @Nullable

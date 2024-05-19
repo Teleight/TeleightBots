@@ -6,8 +6,7 @@ import org.teleight.teleightbots.api.ApiResult;
 
 public record UsersShared(
         @JsonProperty(value = "request_id", required = true)
-        @NotNull
-        Integer requestId,
+        int requestId,
 
         @JsonProperty(value = "users", required = true)
         @NotNull

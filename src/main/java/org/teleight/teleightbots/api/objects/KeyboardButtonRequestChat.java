@@ -6,22 +6,19 @@ import org.teleight.teleightbots.api.ApiResult;
 
 public record KeyboardButtonRequestChat(
         @JsonProperty(value = "request_id", required = true)
-        Integer requestId,
+        int requestId,
 
         @JsonProperty(value = "chat_is_channel")
-        @Nullable
-        Boolean chatIsChannel,
+        boolean chatIsChannel,
 
         @JsonProperty(value = "chat_is_forum")
-        @Nullable
-        Boolean chatIsForum,
+        boolean chatIsForum,
 
         @JsonProperty(value = "chat_has_username")
-        @Nullable
-        Boolean chatHasUsername,
+        boolean chatHasUsername,
 
         @JsonProperty(value = "chat_is_created")
-        Boolean chatIsCreated,
+        boolean chatIsCreated,
 
         @JsonProperty(value = "user_administrator_rights")
         @Nullable
@@ -32,19 +29,15 @@ public record KeyboardButtonRequestChat(
         ChatAdministratorRights botAdministratorRights,
 
         @JsonProperty(value = "bot_is_member")
-        @Nullable
-        Boolean botIsMember,
+        boolean botIsMember,
 
         @JsonProperty(value = "request_title")
-        @Nullable
-        Boolean requestTitle,
+        boolean requestTitle,
 
         @JsonProperty(value = "request_username")
-        @Nullable
-        Boolean requestUsername,
+        boolean requestUsername,
 
         @JsonProperty(value = "request_photo")
-        @Nullable
-        Boolean requestPhoto
+        boolean requestPhoto
 ) implements ApiResult {
 }

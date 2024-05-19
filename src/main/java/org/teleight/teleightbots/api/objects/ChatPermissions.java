@@ -1,64 +1,49 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record ChatPermissions(
         @JsonProperty("can_send_messages")
-        @Nullable
-        Boolean canSendMessages,
+        boolean canSendMessages,
 
         @JsonProperty("can_send_audios")
-        @Nullable
-        Boolean canSendAudios,
+        boolean canSendAudios,
 
         @JsonProperty("can_send_documents")
-        @Nullable
-        Boolean canSendDocuments,
+        boolean canSendDocuments,
 
         @JsonProperty("can_send_photos")
-        @Nullable
-        Boolean canSendPhotos,
+        boolean canSendPhotos,
 
         @JsonProperty("can_send_videos")
-        @Nullable
-        Boolean canSendVideos,
+        boolean canSendVideos,
 
         @JsonProperty("can_send_video_notes")
-        @Nullable
-        Boolean canSendVideoNotes,
+        boolean canSendVideoNotes,
 
         @JsonProperty("can_send_voice_notes")
-        @Nullable
-        Boolean canSendVoiceNotes,
+        boolean canSendVoiceNotes,
 
         @JsonProperty("can_send_polls")
-        @Nullable
-        Boolean canSendPolls,
+        boolean canSendPolls,
 
         @JsonProperty("can_send_other_messages")
-        @Nullable
-        Boolean canSendOtherMessages,
+        boolean canSendOtherMessages,
 
         @JsonProperty("can_add_web_page_previews")
-        @Nullable
-        Boolean canAddWebPagePreviews,
+        boolean canAddWebPagePreviews,
 
         @JsonProperty("can_change_info")
-        @Nullable
-        Boolean canChangeInfo,
+        boolean canChangeInfo,
 
         @JsonProperty("can_invite_users")
-        @Nullable
-        Boolean canInviteUsers,
+        boolean canInviteUsers,
 
         @JsonProperty("can_pin_messages")
-        @Nullable
-        Boolean canPinMessages,
+        boolean canPinMessages,
 
         @JsonProperty("can_manage_topics")
-        @Nullable
-        Boolean canManageTopics
+        boolean canManageTopics
 ) implements ApiResult {
 }

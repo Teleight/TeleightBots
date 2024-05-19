@@ -12,8 +12,7 @@ public record ForceReplyKeyboard(
         String inputFieldPlaceholder,
 
         @JsonProperty(value = "selective")
-        @Nullable
-        Boolean selective
+        boolean selective
 ) implements ReplyKeyboard {
 
 }

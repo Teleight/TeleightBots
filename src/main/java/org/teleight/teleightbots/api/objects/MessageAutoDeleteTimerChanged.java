@@ -5,6 +5,6 @@ import org.teleight.teleightbots.api.ApiResult;
 
 public record MessageAutoDeleteTimerChanged(
         @JsonProperty(value = "message_auto_delete_time", required = true)
-        Integer messageAutoDeleteTime
+        int messageAutoDeleteTime
 ) implements ApiResult {
 }

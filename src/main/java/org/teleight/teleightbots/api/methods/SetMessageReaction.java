@@ -33,11 +33,11 @@ public record SetMessageReaction(
 
     public static class Builder {
         private final String chatId;
-        private final Integer messageId;
+        private final int messageId;
         private ReactionType[] reaction;
         private boolean isBig;
 
-        Builder(String chatId, Integer messageId) {
+        Builder(String chatId, int messageId) {
             this.chatId = chatId;
             this.messageId = messageId;
         }

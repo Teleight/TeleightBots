@@ -62,7 +62,7 @@ public record EditMessageText(
 
     public static class Builder {
         private String chatId;
-        private Integer messageId;
+        private int messageId;
         private String inlineMessageId;
         private final String text;
         private ParseMode parseMode;
@@ -79,7 +79,7 @@ public record EditMessageText(
             return this;
         }
 
-        public Builder messageId(Integer messageId) {
+        public Builder messageId(int messageId) {
             this.messageId = messageId;
             return this;
         }

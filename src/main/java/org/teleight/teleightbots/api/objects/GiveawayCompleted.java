@@ -1,19 +1,15 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.objects.Message;
 
 public record GiveawayCompleted(
         @JsonProperty(value = "winner_count", required = true)
-        @NotNull
-        Integer winnerCount,
+        int winnerCount,
 
         @JsonProperty(value = "unclaimed_prize_count")
-        @Nullable
-        Integer unclaimedPrizeCount,
+        int unclaimedPrizeCount,
 
         @JsonProperty(value = "giveaway_message")
         @Nullable

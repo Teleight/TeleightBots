@@ -9,7 +9,7 @@ public record User(
         Long id,
 
         @JsonProperty(value = "is_bot", required = true)
-        Boolean isBot,
+        boolean isBot,
 
         @JsonProperty(value = "first_name", required = true)
         String firstName,
@@ -27,28 +27,22 @@ public record User(
         String language_code,
 
         @JsonProperty("is_premium")
-        @Nullable
-        Boolean isPremium,
+        boolean isPremium,
 
         @JsonProperty("added_to_attachment_menu")
-        @Nullable
-        Boolean addedToAttachmentMenu,
+        boolean addedToAttachmentMenu,
 
         @JsonProperty("can_join_groups")
-        @Nullable
-        Boolean canJoinGroups,
+        boolean canJoinGroups,
 
         @JsonProperty("can_read_all_group_messages")
-        @Nullable
-        Boolean canReadAllGroupMessages,
+        boolean canReadAllGroupMessages,
 
         @JsonProperty("supports_inline_queries")
-        @Nullable
-        Boolean supportsInlineQueries,
+        boolean supportsInlineQueries,
 
         @JsonProperty("can_connect_to_business")
-        @Nullable
-        Boolean canConnectToBusiness
+        boolean canConnectToBusiness
 ) implements ApiResult {
 
 }

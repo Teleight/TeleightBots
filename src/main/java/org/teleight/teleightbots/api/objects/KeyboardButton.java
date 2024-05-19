@@ -14,10 +14,10 @@ public record KeyboardButton(
         KeyboardButtonRequestChat requestChat,
 
         @JsonProperty(value = "request_contact")
-        Boolean requestContact,
+        boolean requestContact,
 
         @JsonProperty(value = "request_location")
-        Boolean requestLocation,
+        boolean requestLocation,
 
         @JsonProperty(value = "request_poll")
         KeyboardButtonPollType requestPoll,

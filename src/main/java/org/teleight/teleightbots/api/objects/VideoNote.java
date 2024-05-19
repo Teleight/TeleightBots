@@ -12,10 +12,10 @@ public record VideoNote(
         String fileUniqueId,
 
         @JsonProperty(value = "length", required = true)
-        Integer length,
+        int length,
 
         @JsonProperty(value = "duration", required = true)
-        Integer duration,
+        int duration,
 
         @JsonProperty("thumbnail")
         @Nullable

@@ -38,12 +38,10 @@ public record InlineQueryResultContact(
         String thumbnailUrl,
 
         @JsonProperty(value = "thumbnail_width")
-        @Nullable
-        Integer thumbnailWidth,
+        int thumbnailWidth,
 
         @JsonProperty(value = "thumbnail_height")
-        @Nullable
-        Integer thumbnailHeight
+        int thumbnailHeight
 ) implements InlineQueryResult {
 
     @Override

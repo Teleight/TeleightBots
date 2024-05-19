@@ -30,7 +30,7 @@ public record PinChatMessage(
         private final int messageId;
         private boolean disableNotification;
 
-        Builder(String chatId, Integer messageId) {
+        Builder(String chatId, int messageId) {
             this.chatId = chatId;
             this.messageId = messageId;
         }

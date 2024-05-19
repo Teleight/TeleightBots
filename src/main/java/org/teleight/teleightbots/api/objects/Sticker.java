@@ -15,16 +15,16 @@ public record Sticker(
         String type,
 
         @JsonProperty(value = "width", required = true)
-        Integer width,
+        int width,
 
         @JsonProperty(value = "height", required = true)
-        Integer height,
+        int height,
 
         @JsonProperty(value = "is_animated", required = true)
-        Boolean isAnimated,
+        boolean isAnimated,
 
         @JsonProperty(value = "is_video", required = true)
-        Boolean isVideo,
+        boolean isVideo,
 
         @JsonProperty("thumbnail")
         @Nullable
@@ -51,8 +51,7 @@ public record Sticker(
         String customEmojiId,
 
         @JsonProperty("needs_repainting")
-        @Nullable
-        Boolean needsRepainting,
+        boolean needsRepainting,
 
         @JsonProperty("file_size")
         @Nullable

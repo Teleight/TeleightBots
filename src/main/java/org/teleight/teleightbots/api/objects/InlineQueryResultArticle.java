@@ -26,8 +26,7 @@ public record InlineQueryResultArticle(
         String url,
 
         @JsonProperty(value = "hide_url")
-        @Nullable
-        Boolean hideUrl,
+        boolean hideUrl,
 
         @JsonProperty(value = "description")
         @Nullable
@@ -38,12 +37,10 @@ public record InlineQueryResultArticle(
         String thumbnailUrl,
 
         @JsonProperty(value = "thumbnail_width")
-        @Nullable
-        Integer thumbnailWidth,
+        int thumbnailWidth,
 
         @JsonProperty(value = "thumbnail_height")
-        @Nullable
-        Integer thumbnailHeight
+        int thumbnailHeight
 ) implements InlineQueryResult {
 
     @Override

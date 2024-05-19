@@ -14,16 +14,13 @@ public record InlineQueryResultMpeg4Gif(
         String mpeg4Url,
 
         @JsonProperty(value = "mpeg4_width")
-        @Nullable
-        Integer mpeg4Width,
+        int mpeg4Width,
 
         @JsonProperty(value = "mpeg4_height")
-        @Nullable
-        Integer mpeg4Height,
+        int mpeg4Height,
 
         @JsonProperty(value = "mpeg4_duration")
-        @Nullable
-        Integer mpeg4Duration,
+        int mpeg4Duration,
 
         @JsonProperty(value = "thumbnail_url", required = true)
         @NotNull

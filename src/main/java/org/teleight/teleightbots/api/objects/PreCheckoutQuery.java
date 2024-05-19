@@ -15,7 +15,7 @@ public record PreCheckoutQuery(
         String currency,
 
         @JsonProperty(value = "total_amount", required = true)
-        Integer totalAmount,
+        int totalAmount,
 
         @JsonProperty(value = "invoice_payload", required = true)
         String invoicePayload,

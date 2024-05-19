@@ -25,8 +25,7 @@ public record InputInvoiceMessageContent(
         List<LabeledPrice> prices,
 
         @JsonProperty(value = "max_tip_amount")
-        @Nullable
-        Integer maxTipAmount,
+        int maxTipAmount,
 
         @JsonProperty(value = "suggested_tip_amounts")
         @Nullable
@@ -41,43 +40,33 @@ public record InputInvoiceMessageContent(
         String photoUrl,
 
         @JsonProperty(value = "photo_size")
-        @Nullable
-        Integer photoSize,
+        int photoSize,
 
         @JsonProperty(value = "photo_width")
-        @Nullable
-        Integer photoWidth,
+        int photoWidth,
 
         @JsonProperty(value = "photo_height")
-        @Nullable
-        Integer photoHeight,
+        int photoHeight,
 
         @JsonProperty(value = "need_name")
-        @Nullable
-        Boolean needName,
+        boolean needName,
 
         @JsonProperty(value = "need_phone_number")
-        @Nullable
-        Boolean needPhoneNumber,
+        boolean needPhoneNumber,
 
         @JsonProperty(value = "need_email")
-        @Nullable
-        Boolean needEmail,
+        boolean needEmail,
 
         @JsonProperty(value = "need_shipping_address")
-        @Nullable
-        Boolean needShippingAddress,
+        boolean needShippingAddress,
 
         @JsonProperty(value = "send_phone_number_to_provider")
-        @Nullable
-        Boolean sendPhoneNumberToProvider,
+        boolean sendPhoneNumberToProvider,
 
         @JsonProperty(value = "send_email_to_provider")
-        @Nullable
-        Boolean sendEmailToProvider,
+        boolean sendEmailToProvider,
 
         @JsonProperty(value = "is_flexible")
-        @Nullable
-        Boolean isFlexible
+        boolean isFlexible
 ) implements InputMessageContent {
 }

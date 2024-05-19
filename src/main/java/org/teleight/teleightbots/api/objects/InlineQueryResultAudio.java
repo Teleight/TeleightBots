@@ -34,8 +34,7 @@ public record InlineQueryResultAudio(
         String performer,
 
         @JsonProperty(value = "audio_duration")
-        @Nullable
-        Integer audioDuration,
+        int audioDuration,
 
         @JsonProperty(value = "reply_markup")
         @Nullable
@@ -63,7 +62,7 @@ public record InlineQueryResultAudio(
         private ParseMode parseMode;
         private MessageEntity[] captionEntities;
         private String performer;
-        private Integer audioDuration;
+        private int audioDuration;
         private ReplyKeyboard replyMarkup;
         private InputMessageContent inputMessageContent;
 
@@ -93,7 +92,7 @@ public record InlineQueryResultAudio(
             return this;
         }
 
-        public @NotNull Builder audioDuration(@Nullable Integer audioDuration) {
+        public @NotNull Builder audioDuration(int audioDuration) {
             this.audioDuration = audioDuration;
             return this;
         }

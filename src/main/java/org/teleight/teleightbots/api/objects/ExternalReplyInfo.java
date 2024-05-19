@@ -15,8 +15,7 @@ public record ExternalReplyInfo(
         Chat chat,
 
         @JsonProperty(value = "message_id")
-        @Nullable
-        Integer messageId,
+        int messageId,
 
         @JsonProperty(value = "link_preview_options")
         @Nullable
@@ -59,8 +58,7 @@ public record ExternalReplyInfo(
         Voice voice,
 
         @JsonProperty(value = "has_media_spoiler")
-        @Nullable
-        Boolean hasMediaSpoiler,
+        boolean hasMediaSpoiler,
 
         @JsonProperty(value = "contact")
         @Nullable

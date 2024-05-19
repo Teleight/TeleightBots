@@ -17,6 +17,6 @@ public record Invoice(
         String currency,
 
         @JsonProperty(value = "total_amount", required = true)
-        Integer totalAmount
+        int totalAmount
 ) implements ApiResult {
 }

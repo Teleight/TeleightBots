@@ -31,8 +31,7 @@ public record Chat(
         String lastName,
 
         @JsonProperty("is_forum")
-        @Nullable
-        Boolean isForum,
+        boolean isForum,
 
         @JsonProperty("photo")
         @Nullable
@@ -67,16 +66,14 @@ public record Chat(
         ReactionType[] availableReactions,
 
         @JsonProperty("accent_color_id")
-        @Nullable
-        Integer accentColorId,
+        int accentColorId,
 
         @JsonProperty("background_custom_emoji_id")
         @Nullable
         String backgroundCustomEmojiId,
 
         @JsonProperty("profile_accent_color_id")
-        @Nullable
-        Integer profileAccentColorId,
+        int profileAccentColorId,
 
         @JsonProperty("profile_background_custom_emoji_id")
         @Nullable
@@ -95,20 +92,16 @@ public record Chat(
         String bio,
 
         @JsonProperty("has_private_forwards")
-        @Nullable
-        Boolean hasPrivateForwards,
+        boolean hasPrivateForwards,
 
         @JsonProperty("has_restricted_voice_and_video_messages")
-        @Nullable
-        Boolean hasRestrictedVoiceAndVideoMessages,
+        boolean hasRestrictedVoiceAndVideoMessages,
 
         @JsonProperty("join_to_send_messages")
-        @Nullable
-        Boolean joinToSendMessages,
+        boolean joinToSendMessages,
 
         @JsonProperty("join_by_request")
-        @Nullable
-        Boolean joinByRequest,
+        boolean joinByRequest,
 
         @JsonProperty("description")
         @Nullable
@@ -127,40 +120,32 @@ public record Chat(
         ChatPermissions permissions,
 
         @JsonProperty("slow_mode_delay")
-        @Nullable
-        Integer slowModeDelay,
+        int slowModeDelay,
 
         @JsonProperty("unrestrict_boost_count")
-        @Nullable
-        Integer unrestrictBoostCount,
+        int unrestrictBoostCount,
 
         @JsonProperty("message_auto_delete_time")
-        @Nullable
-        Integer messageAutoDeleteTime,
+        int messageAutoDeleteTime,
 
         @JsonProperty("has_aggressive_anti_spam_enabled")
-        @Nullable
-        Boolean hasAggressiveAntiSpamEnabled,
+        boolean hasAggressiveAntiSpamEnabled,
 
         @JsonProperty("has_hidden_members")
-        @Nullable
-        Boolean hasHiddenMembers,
+        boolean hasHiddenMembers,
 
         @JsonProperty("has_protected_content")
-        @Nullable
-        Boolean hasProtectedContent,
+        boolean hasProtectedContent,
 
         @JsonProperty("has_visible_history")
-        @Nullable
-        Boolean hasVisibleHistory,
+        boolean hasVisibleHistory,
 
         @JsonProperty("sticker_set_name")
         @Nullable
         String stickerSetName,
 
         @JsonProperty("can_set_sticker_set")
-        @Nullable
-        Boolean canSetStickerSet,
+        boolean canSetStickerSet,
 
         @JsonProperty("custom_emoji_sticker_set_name")
         @Nullable

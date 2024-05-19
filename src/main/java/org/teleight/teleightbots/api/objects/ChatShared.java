@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.objects.PhotoSize;
 
 public record ChatShared(
         @JsonProperty(value = "request_id", required = true)
-        @NotNull
-        Integer requestId,
+        int requestId,
 
         @JsonProperty(value = "chat_id", required = true)
         @NotNull

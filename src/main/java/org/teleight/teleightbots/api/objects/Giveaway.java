@@ -17,16 +17,13 @@ public record Giveaway(
         Date winnersSelectionDate,
 
         @JsonProperty(value = "winner_count", required = true)
-        @NotNull
-        Integer winnerCount,
+        int winnerCount,
 
         @JsonProperty(value = "only_new_members")
-        @Nullable
-        Boolean onlyNewMembers,
+        boolean onlyNewMembers,
 
         @JsonProperty(value = "has_public_winners")
-        @Nullable
-        Boolean hasPublicWinners,
+        boolean hasPublicWinners,
 
         @JsonProperty(value = "prize_description")
         @Nullable
@@ -37,7 +34,6 @@ public record Giveaway(
         String[] countryCodes,
 
         @JsonProperty(value = "premium_subscription_month_count")
-        @Nullable
-        Integer premiumSubscriptionMonthCount
+        int premiumSubscriptionMonthCount
 ) implements ApiResult {
 }

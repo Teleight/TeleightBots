@@ -49,7 +49,7 @@ public class TelegramRequestException extends RuntimeException {
         return errorDescription;
     }
 
-    public Integer getErrorCode() {
+    public int getErrorCode() {
         return errorCode;
     }
 

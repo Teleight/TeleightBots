@@ -9,8 +9,7 @@ import java.util.Date;
 
 public record Message(
         @JsonProperty(value = "message_id", required = true)
-        @NotNull
-        Integer messageId,
+        int messageId,
 
         @JsonProperty("message_thread_id")
         int messageThreadId,
@@ -24,8 +23,7 @@ public record Message(
         Chat senderChat,
 
         @JsonProperty("sender_boost_count")
-        @Nullable
-        Integer senderBoostCount,
+        int senderBoostCount,
 
         @JsonProperty("sender_business_bot")
         @Nullable
@@ -48,12 +46,10 @@ public record Message(
         MessageOrigin forwardOrigin,
 
         @JsonProperty("is_topic_message")
-        @Nullable
-        Boolean isTopicMessage,
+        boolean isTopicMessage,
 
         @JsonProperty("is_automatic_forward")
-        @Nullable
-        Boolean isAutomaticForward,
+        boolean isAutomaticForward,
 
         @JsonProperty("reply_to_message")
         @Nullable
@@ -80,12 +76,10 @@ public record Message(
         Date editDate,
 
         @JsonProperty("has_protected_content")
-        @Nullable
-        Boolean hasProtectedContent,
+        boolean hasProtectedContent,
 
         @JsonProperty("is_from_offline")
-        @Nullable
-        Boolean isFromOffline,
+        boolean isFromOffline,
 
         @JsonProperty("media_group_id")
         @Nullable
@@ -152,8 +146,7 @@ public record Message(
         MessageEntity[] captionEntities,
 
         @JsonProperty("has_media_spoiler")
-        @Nullable
-        Boolean hasMediaSpoiler,
+        boolean hasMediaSpoiler,
 
         @JsonProperty("contact")
         @Nullable
@@ -196,20 +189,16 @@ public record Message(
         PhotoSize[] newChatPhoto,
 
         @JsonProperty("delete_chat_photo")
-        @Nullable
-        Boolean deleteChatPhoto,
+        boolean deleteChatPhoto,
 
         @JsonProperty("group_chat_created")
-        @Nullable
-        Boolean groupChatCreated,
+        boolean groupChatCreated,
 
         @JsonProperty("supergroup_chat_created")
-        @Nullable
-        Boolean supergroupChatCreated,
+        boolean supergroupChatCreated,
 
         @JsonProperty("channel_chat_created")
-        @Nullable
-        Boolean channelChatCreated,
+        boolean channelChatCreated,
 
         @JsonProperty("message_auto_delete_timer_changed")
         @Nullable

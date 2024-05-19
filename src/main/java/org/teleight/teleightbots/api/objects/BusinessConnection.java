@@ -18,15 +18,12 @@ public record BusinessConnection(
         Long userChatId,
 
         @JsonProperty(value = "date", required = true)
-        @NotNull
-        Integer date,
+        int date,
 
         @JsonProperty(value = "can_reply", required = true)
-        @NotNull
-        Boolean canReply,
+        boolean canReply,
 
         @JsonProperty(value = "is_enabled", required = true)
-        @NotNull
-        Boolean isEnabled
+        boolean isEnabled
 ) implements ApiResult {
 }

@@ -1,35 +1,28 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record KeyboardButtonRequestUsers(
         @JsonProperty(value = "request_id", required = true)
-        Integer requestId,
+        int requestId,
 
         @JsonProperty(value = "user_is_bot")
-        @Nullable
-        Boolean userIsBot,
+        boolean userIsBot,
 
         @JsonProperty(value = "user_is_premium")
-        @Nullable
-        Boolean userIsPremium,
+        boolean userIsPremium,
 
         @JsonProperty(value = "max_quantity")
-        @Nullable
-        Integer maxQuantity,
+        int maxQuantity,
 
         @JsonProperty(value = "request_name")
-        @Nullable
-        Boolean requestName,
+        boolean requestName,
 
         @JsonProperty(value = "request_username")
-        @Nullable
-        Boolean requestUsername,
+        boolean requestUsername,
 
         @JsonProperty(value = "request_photo")
-        @Nullable
-        Boolean requestPhoto
+        boolean requestPhoto
 ) implements ApiResult {
 }

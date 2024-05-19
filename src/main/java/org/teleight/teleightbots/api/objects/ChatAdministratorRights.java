@@ -1,60 +1,53 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record ChatAdministratorRights(
         @JsonProperty(value = "is_anonymous", required = true)
-        Boolean isAnonymous,
+        boolean isAnonymous,
 
         @JsonProperty(value = "can_manage_chat", required = true)
-        Boolean canManageChat,
+        boolean canManageChat,
 
         @JsonProperty(value = "can_delete_messages", required = true)
-        Boolean canDeleteMessages,
+        boolean canDeleteMessages,
 
         @JsonProperty(value = "can_manage_video_chats", required = true)
-        Boolean canManageVideoChats,
+        boolean canManageVideoChats,
 
         @JsonProperty(value = "can_restrict_members", required = true)
-        Boolean canRestrictMembers,
+        boolean canRestrictMembers,
 
         @JsonProperty(value = "can_promote_members", required = true)
-        Boolean canPromoteMembers,
+        boolean canPromoteMembers,
 
         @JsonProperty(value = "can_change_info", required = true)
-        Boolean canChangeInfo,
+        boolean canChangeInfo,
 
         @JsonProperty(value = "can_invite_users", required = true)
-        Boolean canInviteUsers,
+        boolean canInviteUsers,
 
         @JsonProperty(value = "can_post_messages")
-        Boolean canPostMessages,
+        boolean canPostMessages,
 
         @JsonProperty(value = "can_edit_messages")
-        @Nullable
-        Boolean canEditMessages,
+        boolean canEditMessages,
 
         @JsonProperty(value = "can_pin_messages")
-        @Nullable
-        Boolean canPinMessages,
+        boolean canPinMessages,
 
         @JsonProperty(value = "can_post_stories")
-        @Nullable
-        Boolean canPostStories,
+        boolean canPostStories,
 
         @JsonProperty(value = "can_edit_stories")
-        @Nullable
-        Boolean canEditStories,
+        boolean canEditStories,
 
         @JsonProperty(value = "can_delete_stories")
-        @Nullable
-        Boolean canDeleteStories,
+        boolean canDeleteStories,
 
         @JsonProperty(value = "can_manage_topics")
-        @Nullable
-        Boolean canManageTopics
+        boolean canManageTopics
 ) implements ApiResult {
 
 }

@@ -9,7 +9,7 @@ public record ForumTopicCreated(
         String name,
 
         @JsonProperty(value = "icon_color", required = true)
-        Integer description,
+        int description,
 
         @JsonProperty("icon_custom_emoji_id")
         @Nullable

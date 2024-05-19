@@ -8,24 +8,20 @@ public record ReplyKeyboardMarkup(
         KeyboardButton[][] keyboard,
 
         @JsonProperty("is_persistent")
-        @Nullable
-        Boolean isPersistent,
+        boolean isPersistent,
 
         @JsonProperty("resize_keyboard")
-        @Nullable
-        Boolean resizeKeyboard,
+        boolean resizeKeyboard,
 
         @JsonProperty("one_time_keyboard")
-        @Nullable
-        Boolean oneTimeKeyboard,
+        boolean oneTimeKeyboard,
 
         @JsonProperty("input_field_placeholder")
         @Nullable
         String inputFieldPlaceholder,
 
         @JsonProperty("selective")
-        @Nullable
-        Boolean selective
+        boolean selective
 ) implements ReplyKeyboard {
 
 }

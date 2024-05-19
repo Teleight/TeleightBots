@@ -10,12 +10,10 @@ public record MessageReactionCountUpdated(
         Chat chat,
 
         @JsonProperty(value = "message_id", required = true)
-        @NotNull
-        Integer messageId,
+        int messageId,
 
         @JsonProperty(value = "date", required = true)
-        @NotNull
-        Integer date,
+        int date,
 
         @JsonProperty(value = "reactions", required = true)
         @NotNull

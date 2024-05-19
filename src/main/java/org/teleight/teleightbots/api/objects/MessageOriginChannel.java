@@ -16,8 +16,7 @@ public record MessageOriginChannel(
         Chat chat,
 
         @JsonProperty(value = "message_id", required = true)
-        @NotNull
-        Integer messageId,
+        int messageId,
 
         @JsonProperty(value = "author_signature")
         @Nullable

@@ -5,6 +5,6 @@ import org.teleight.teleightbots.api.ApiResult;
 
 public record VideoChatEnded(
         @JsonProperty(value = "duration", required = true)
-        Integer duration
+        int duration
 ) implements ApiResult {
 }

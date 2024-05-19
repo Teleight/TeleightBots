@@ -9,11 +9,9 @@ public record InaccessibleMessage(
         Chat chat,
 
         @JsonProperty(value = "message_id", required = true)
-        @NotNull
-        Integer messageId,
+        int messageId,
 
         @JsonProperty(value = "date", required = true, defaultValue = "0")
-        @NotNull
-        Integer date
+        int date
 ) implements MaybeInaccessibleMessage {
 }

@@ -11,8 +11,7 @@ public record MessageReactionUpdated(
         Chat chat,
 
         @JsonProperty(value = "message_id", required = true)
-        @NotNull
-        Integer messageId,
+        int messageId,
 
         @JsonProperty(value = "user")
         @Nullable
@@ -23,8 +22,7 @@ public record MessageReactionUpdated(
         Chat actorChat,
 
         @JsonProperty(value = "date", required = true)
-        @NotNull
-        Integer date,
+        int date,
 
         @JsonProperty(value = "old_reaction", required = true)
         @NotNull

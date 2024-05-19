@@ -24,16 +24,13 @@ public record InlineQueryResultLocation(
         Float horizontalAccuracy,
 
         @JsonProperty(value = "live_period")
-        @Nullable
-        Integer livePeriod,
+        int livePeriod,
 
         @JsonProperty(value = "heading")
-        @Nullable
-        Integer heading,
+        int heading,
 
         @JsonProperty(value = "proximity_alert_radius")
-        @Nullable
-        Integer proximityAlertRadius,
+        int proximityAlertRadius,
 
         @JsonProperty(value = "reply_markup")
         @Nullable
@@ -48,12 +45,10 @@ public record InlineQueryResultLocation(
         String thumbnailUrl,
 
         @JsonProperty(value = "thumbnail_width")
-        @Nullable
-        Integer thumbnailWidth,
+        int thumbnailWidth,
 
         @JsonProperty(value = "thumbnail_height")
-        @Nullable
-        Integer thumbnailHeight
+        int thumbnailHeight
 ) implements InlineQueryResult {
 
     @Override

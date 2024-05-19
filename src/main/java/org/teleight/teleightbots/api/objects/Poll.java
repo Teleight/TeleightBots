@@ -17,24 +17,23 @@ public record Poll(
         PollOption[] options,
 
         @JsonProperty(value = "total_voter_count", required = true)
-        Integer totalVoterCount,
+        int totalVoterCount,
 
         @JsonProperty(value = "is_closed", required = true)
-        Boolean isClosed,
+        boolean isClosed,
 
         @JsonProperty(value = "is_anonymous", required = true)
-        Boolean isAnonymous,
+        boolean isAnonymous,
 
         // regular or quiz. makes more sense to get an enum here
         @JsonProperty(value = "type", required = true)
         String type,
 
         @JsonProperty(value = "allows_multiple_answers", required = true)
-        Boolean allowsMultipleAnswers,
+        boolean allowsMultipleAnswers,
 
         @JsonProperty("correct_option_id")
-        @Nullable
-        Integer correctOptionId,
+        int correctOptionId,
 
         @JsonProperty("explanation")
         @Nullable
@@ -45,8 +44,7 @@ public record Poll(
         MessageEntity[] explanationEntities,
 
         @JsonProperty("open_period")
-        @Nullable
-        Integer openPeriod,
+        int openPeriod,
 
         @JsonProperty("close_date")
         @Nullable

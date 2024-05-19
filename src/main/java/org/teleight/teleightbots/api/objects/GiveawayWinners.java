@@ -13,40 +13,33 @@ public record GiveawayWinners(
         Chat chat,
 
         @JsonProperty(value = "giveaway_message_id", required = true)
-        @NotNull
-        Integer giveawayMessageId,
+        int giveawayMessageId,
 
         @JsonProperty(value = "winners_selection_date", required = true)
         @NotNull
         Date winnersSelectionDate,
 
         @JsonProperty(value = "winner_count", required = true)
-        @NotNull
-        Integer winnerCount,
+        int winnerCount,
 
         @JsonProperty(value = "winners", required = true)
         @NotNull
         User[] winners,
 
         @JsonProperty(value = "additional_chat_count")
-        @Nullable
-        Integer additionalChatCount,
+        int additionalChatCount,
 
         @JsonProperty(value = "premium_subscription_month_count")
-        @Nullable
-        Integer premiumSubscriptionMonthCount,
+        int premiumSubscriptionMonthCount,
 
         @JsonProperty(value = "unclaimed_prize_count")
-        @Nullable
-        Integer unclaimedPrizeCount,
+        int unclaimedPrizeCount,
 
         @JsonProperty(value = "only_new_members")
-        @Nullable
-        Boolean onlyNewMembers,
+        boolean onlyNewMembers,
 
         @JsonProperty(value = "was_refunded")
-        @Nullable
-        Boolean wasRefunded,
+        boolean wasRefunded,
 
         @JsonProperty(value = "prize_description")
         @Nullable

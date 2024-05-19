@@ -38,16 +38,13 @@ public record InlineQueryResultVideo(
         MessageEntity[] captionEntities,
 
         @JsonProperty(value = "video_width")
-        @Nullable
-        Integer videoWidth,
+        int videoWidth,
 
         @JsonProperty(value = "video_height")
-        @Nullable
-        Integer videoHeight,
+        int videoHeight,
 
         @JsonProperty(value = "video_duration")
-        @Nullable
-        Integer videoDuration,
+        int videoDuration,
 
         @JsonProperty(value = "description")
         @Nullable

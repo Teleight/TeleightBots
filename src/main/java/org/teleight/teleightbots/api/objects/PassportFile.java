@@ -11,9 +11,9 @@ public record PassportFile(
         String fileUniqueId,
 
         @JsonProperty(value = "file_size")
-        Integer fileSize,
+        int fileSize,
 
         @JsonProperty(value = "file_date")
-        Integer fileDate
+        int fileDate
 ) implements ApiResult {
 }
