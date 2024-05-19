@@ -67,7 +67,7 @@ public final class CommandParserImpl implements CommandParser {
     private SyntaxResult findBestSyntax(@NotNull Chain chain) {
         for (final SyntaxResult syntaxResult : chain.syntaxesResults) {
             final CommandSyntax syntax = syntaxResult.syntax;
-            final CommandCondition condition = syntax.getCondition();
+            final CommandCondition condition = syntax.condition();
 
             final boolean hasCondition = condition != null;
             if(hasCondition && !condition.canUse(chain.bot, chain.sender, chain.message)){
@@ -92,7 +92,7 @@ public final class CommandParserImpl implements CommandParser {
 
     private SyntaxResult parseSyntax(@NotNull CommandSyntax syntax, @NotNull ArgumentReader argumentReader) {
         final SyntaxResult syntaxResult = new SyntaxResult(syntax);
-        final Argument<?>[] syntaxArgs = syntax.getArgs();
+        final Argument<?>[] syntaxArgs = syntax.args();
 
         final boolean hasEmptyArguments = syntaxArgs.length == 0;
         if(hasEmptyArguments){
@@ -191,7 +191,7 @@ public final class CommandParserImpl implements CommandParser {
             @NotNull CommandExecutor executor) implements Result {
 
         public static Result executor(@NotNull Bot bot,@NotNull Message message, @NotNull String userInput, @NotNull SyntaxResult bestSyntax) {
-            return new ValidCommand(bot, message, userInput, bestSyntax.argumentResults, bestSyntax.syntax.getExecutor());
+            return new ValidCommand(bot, message, userInput, bestSyntax.argumentResults, bestSyntax.syntax.executor());
         }
 
         public static Result defaultExecutor(@NotNull Bot bot, @NotNull Message message,@NotNull String userInput, @NotNull CommandExecutor executor) {
