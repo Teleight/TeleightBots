@@ -6,10 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 
 public record MessageOriginHiddenUser(
-        @JsonProperty(value = "type", required = true, defaultValue = "hidden_user")
-        @NotNull
-        String type,
-
         @JsonProperty(value = "date", required = true)
         @NotNull
         Date date,
@@ -18,4 +14,10 @@ public record MessageOriginHiddenUser(
         @NotNull
         String senderUserName
 ) implements MessageOrigin {
+
+    @Override
+    public MessageOriginType type() {
+        return MessageOriginType.HIDDEN_USER;
+    }
+
 }

@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.api.objects;
 
-import org.jetbrains.annotations.NotNull;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
 
 public sealed interface BotCommandScope extends ApiResult permits
@@ -12,10 +13,12 @@ public sealed interface BotCommandScope extends ApiResult permits
         BotCommandScopeChatAdministrators,
         BotCommandScopeChatMember {
 
-    @NotNull
+    String TYPE_NAME = "type";
+
+    @JsonProperty(TYPE_NAME)
     BotCommandScope.BotCommandScopeType type();
 
-    enum BotCommandScopeType {
+    enum BotCommandScopeType implements ApiMethod.WrappedFieldValueProvider<BotCommandScope> {
         DEFAULT("default", BotCommandScopeDefault.class),
         ALL_PRIVATE_CHATS("all_private_chats", BotCommandScopeAllPrivateChats.class),
         ALL_GROUP_CHATS("all_group_chats", BotCommandScopeAllGroupChats.class),
@@ -32,12 +35,19 @@ public sealed interface BotCommandScope extends ApiResult permits
             this.wrapperClass = wrapperClass;
         }
 
+        @Override
         public String getFieldValue() {
             return fieldValue;
         }
 
+        @Override
         public Class<? extends BotCommandScope> getWrapperClass() {
             return wrapperClass;
+        }
+
+        @Override
+        public String getFieldName() {
+            return TYPE_NAME;
         }
     }
 

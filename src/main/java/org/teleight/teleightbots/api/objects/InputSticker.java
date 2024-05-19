@@ -3,6 +3,7 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record InputSticker(
@@ -27,19 +28,20 @@ public record InputSticker(
         String[] keywords
 ) implements ApiResult {
 
-    public enum Format {
+    public enum Format implements ApiMethod.SimpleFieldValueProvider {
         STATIC("static"),
         ANIMATED("animated"),
         VIDEO("video");
 
-        private final String value;
+        private final String fieldValue;
 
-        Format(String value) {
-            this.value = value;
+        Format(String fieldValue) {
+            this.fieldValue = fieldValue;
         }
 
-        public String getValue() {
-            return value;
+        @Override
+        public String getFieldValue() {
+            return fieldValue;
         }
     }
 }

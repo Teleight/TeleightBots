@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record Dice(
@@ -11,7 +12,7 @@ public record Dice(
         Integer value
 ) implements ApiResult {
 
-    public enum DiceEmoji {
+    public enum DiceEmoji implements ApiMethod.SimpleFieldValueProvider {
 
         GAME_DICE("\uD83C\uDFB2"),
         DIRECT_HIT("\uD83C\uDFAF"),
@@ -26,6 +27,7 @@ public record Dice(
             this.fieldValue = fieldValue;
         }
 
+        @Override
         public String getFieldValue() {
             return fieldValue;
         }

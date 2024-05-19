@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
-public enum ChatAction {
+import org.teleight.teleightbots.api.ApiMethod;
+
+public enum ChatAction implements ApiMethod.SimpleFieldValueProvider {
 
     TYPING("typing"),
     UPLOAD_PHOTO("upload_photo"),
@@ -20,6 +22,7 @@ public enum ChatAction {
         this.fieldValue = fieldValue;
     }
 
+    @Override
     public String getFieldValue() {
         return fieldValue;
     }

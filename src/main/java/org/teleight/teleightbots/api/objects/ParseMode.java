@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
-public enum ParseMode {
+import org.teleight.teleightbots.api.ApiMethod;
+
+public enum ParseMode implements ApiMethod.SimpleFieldValueProvider {
 
     MARKDOWN("Markdown"),
     MARKDOWNV2("MarkdownV2"),
@@ -12,6 +14,7 @@ public enum ParseMode {
         this.fieldValue = fieldValue;
     }
 
+    @Override
     public String getFieldValue() {
         return fieldValue;
     }

@@ -7,10 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 
 public record MessageOriginChannel(
-        @JsonProperty(value = "type", required = true, defaultValue = "channel")
-        @NotNull
-        String type,
-
         @JsonProperty(value = "date", required = true)
         @NotNull
         Date date,
@@ -27,4 +23,10 @@ public record MessageOriginChannel(
         @Nullable
         String senderSignature
 ) implements MessageOrigin {
+
+    @Override
+    public MessageOriginType type() {
+        return MessageOriginType.CHANNEL;
+    }
+
 }

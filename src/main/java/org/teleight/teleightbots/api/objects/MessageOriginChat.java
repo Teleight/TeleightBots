@@ -6,10 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 
 public record MessageOriginChat(
-        @JsonProperty(value = "type", required = true, defaultValue = "chat")
-        @NotNull
-        String type,
-
         @JsonProperty(value = "date", required = true)
         @NotNull
         Date date,
@@ -22,4 +18,10 @@ public record MessageOriginChat(
         @NotNull
         String senderSignature
 ) implements MessageOrigin {
+
+    @Override
+    public MessageOriginType type() {
+        return MessageOriginType.CHAT;
+    }
+
 }

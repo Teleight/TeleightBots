@@ -20,25 +20,15 @@ import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.MessageOrigin;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
-import org.teleight.teleightbots.api.serialization.deserializers.BotCommandScopeDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.ChatActionDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.ChatBoostSourceDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.ChatMemberDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.CommonEnumValueDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.DateDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.DiceEmojiDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.InlineQueryResultDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.InputStickerFormatDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.MessageOriginDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.ParseModeDeserializer;
-import org.teleight.teleightbots.api.serialization.serializers.ChatActionSerializer;
+import org.teleight.teleightbots.api.serialization.deserializers.WrappedResultTypeDeserializer;
 import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.CommonEnumValueSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
-import org.teleight.teleightbots.api.serialization.serializers.DiceEmojiSerializer;
-import org.teleight.teleightbots.api.serialization.serializers.InputStickerFormatSerializer;
-import org.teleight.teleightbots.api.serialization.serializers.ParseModeSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.awt.*;
@@ -63,10 +53,6 @@ public interface ApiMethod<R extends Serializable> {
                     .addDeserializer(ReplyKeyboard.class, new KeyboardDeserializer())
             )
             .registerModule(new SimpleModule()
-                    .addSerializer(ParseMode.class, new ParseModeSerializer())
-                    .addDeserializer(ParseMode.class, new ParseModeDeserializer())
-            )
-            .registerModule(new SimpleModule()
                     .addSerializer(Color.class, new ColorSerializer())
                     .addDeserializer(Color.class, new ColorDeserializer())
             )
@@ -75,34 +61,31 @@ public interface ApiMethod<R extends Serializable> {
                     .addDeserializer(Date.class, new DateDeserializer())
             )
             .registerModule(new SimpleModule()
-                    .addSerializer(InputSticker.Format.class, new InputStickerFormatSerializer())
-                    .addDeserializer(InputSticker.Format.class, new InputStickerFormatDeserializer())
+                    .addDeserializer(ChatMember.class,
+                            new WrappedResultTypeDeserializer<>(ChatMember.class, ChatMember.ChatMemberType.class))
+                    .addDeserializer(InlineQueryResult.class,
+                            new WrappedResultTypeDeserializer<>(InlineQueryResult.class, InlineQueryResult.InlineQueryResultType.class))
+                    .addDeserializer(BotCommandScope.class,
+                            new WrappedResultTypeDeserializer<>(BotCommandScope.class, BotCommandScope.BotCommandScopeType.class))
+                    .addDeserializer(ChatBoostSource.class,
+                            new WrappedResultTypeDeserializer<>(ChatBoostSource.class, ChatBoostSource.ChatBoostSourceType.class))
+                    .addDeserializer(InlineQueryResult.class,
+                            new WrappedResultTypeDeserializer<>(InlineQueryResult.class, InlineQueryResult.InlineQueryResultType.class))
+                    .addDeserializer(MessageOrigin.class,
+                            new WrappedResultTypeDeserializer<>(MessageOrigin.class, MessageOrigin.MessageOriginType.class))
             )
             .registerModule(new SimpleModule()
-                    .addDeserializer(ChatMember.class, new ChatMemberDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(InlineQueryResult.class, new InlineQueryResultDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(MessageOrigin.class, new MessageOriginDeserializer())
+                    .addDeserializer(ChatAction.class, new CommonEnumValueDeserializer<>(ChatAction.class))
+                    .addDeserializer(Dice.DiceEmoji.class, new CommonEnumValueDeserializer<>(Dice.DiceEmoji.class))
+                    .addDeserializer(ParseMode.class, new CommonEnumValueDeserializer<>(ParseMode.class))
+                    .addDeserializer(InputSticker.Format.class, new CommonEnumValueDeserializer<>(InputSticker.Format.class))
+                    .addSerializer(ChatAction.class, new CommonEnumValueSerializer<>(ChatAction.class))
+                    .addSerializer(Dice.DiceEmoji.class, new CommonEnumValueSerializer<>(Dice.DiceEmoji.class))
+                    .addSerializer(ParseMode.class, new CommonEnumValueSerializer<>(ParseMode.class))
+                    .addSerializer(InputSticker.Format.class, new CommonEnumValueSerializer<>(InputSticker.Format.class))
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(BotCommandScope.class, new BotCommandScopeDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addSerializer(ChatAction.class, new ChatActionSerializer())
-                    .addDeserializer(ChatAction.class, new ChatActionDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addSerializer(Dice.DiceEmoji.class, new DiceEmojiSerializer())
-                    .addDeserializer(Dice.DiceEmoji.class, new DiceEmojiDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(ChatBoostSource.class, new ChatBoostSourceDeserializer())
             );
 
     /**
@@ -110,7 +93,8 @@ public interface ApiMethod<R extends Serializable> {
      *
      * @return the endpoint URL
      */
-    @NotNull String getEndpointURL();
+    @NotNull
+    String getEndpointURL();
 
     /**
      * Deserializes the response from the Telegram Bot API.
@@ -120,7 +104,8 @@ public interface ApiMethod<R extends Serializable> {
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
     @ApiStatus.Internal
-    @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
+    @NotNull
+    R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
 
     /**
      * Deserializes the response from the Telegram Bot API into a specific class.
@@ -191,6 +176,41 @@ public interface ApiMethod<R extends Serializable> {
         } catch (IOException e) {
             throw new TelegramRequestException("Unable to deserialize response", e);
         }
+    }
+
+    /**
+     * Interface that should be implemented by enums that provide only field value information.
+     */
+    interface SimpleFieldValueProvider {
+
+        /**
+         * Gets the field value associated with the enum constant.
+         *
+         * @return the field value as a String
+         */
+        String getFieldValue();
+    }
+
+    /**
+     * Interface that should be implemented by enums that provide field value and wrapper class information.
+     *
+     * @param <T> the type of the wrapper class
+     */
+    interface WrappedFieldValueProvider<T> extends SimpleFieldValueProvider {
+
+        /**
+         * Gets the wrapper class associated with the enum constant.
+         *
+         * @return the wrapper class
+         */
+        Class<? extends T> getWrapperClass();
+
+        /**
+         * Gets the field name associated with the enum constant.
+         *
+         * @return the field name as a String
+         */
+        String getFieldName();
     }
 
 }
