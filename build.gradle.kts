@@ -20,7 +20,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
 
     //Json
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
 
     //Checker
     implementation("org.checkerframework:checker:3.42.0")
