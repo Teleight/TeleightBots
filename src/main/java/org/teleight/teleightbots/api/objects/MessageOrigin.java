@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
 public sealed interface MessageOrigin extends ApiResult permits
         MessageOriginChannel,
@@ -15,7 +15,7 @@ public sealed interface MessageOrigin extends ApiResult permits
     @JsonProperty(TYPE_NAME)
     MessageOrigin.MessageOriginType type();
 
-    enum MessageOriginType implements ApiMethod.WrappedFieldValueProvider<MessageOrigin> {
+    enum MessageOriginType implements WrappedFieldValueProvider<MessageOrigin> {
 
         CHANNEL("channel", MessageOriginChannel.class),
         CHAT("chat", MessageOriginChat.class),

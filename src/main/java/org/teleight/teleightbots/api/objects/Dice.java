@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 
 public record Dice(
         @JsonProperty(value = "emoji", required = true)
@@ -12,7 +12,7 @@ public record Dice(
         int value
 ) implements ApiResult {
 
-    public enum DiceEmoji implements ApiMethod.SimpleFieldValueProvider {
+    public enum DiceEmoji implements SimpleFieldValueProvider {
 
         GAME_DICE("\uD83C\uDFB2"),
         DIRECT_HIT("\uD83C\uDFAF"),

@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
 public sealed interface InlineQueryResult extends ApiResult permits
         InlineQueryResultArticle,
@@ -31,7 +31,7 @@ public sealed interface InlineQueryResult extends ApiResult permits
     @JsonProperty(TYPE_NAME)
     InlineQueryResultType type();
 
-    enum InlineQueryResultType implements ApiMethod.WrappedFieldValueProvider<InlineQueryResult> {
+    enum InlineQueryResultType implements WrappedFieldValueProvider<InlineQueryResult> {
         INLINE_QUERY_RESULT_CACHED_AUDIO("audio", InlineQueryResultCachedAudio.class),
         INLINE_QUERY_RESULT_CACHED_DOCUMENT("document", InlineQueryResultCachedDocument.class),
         INLINE_QUERY_RESULT_CACHED_GIF("gif", InlineQueryResultCachedGif.class),

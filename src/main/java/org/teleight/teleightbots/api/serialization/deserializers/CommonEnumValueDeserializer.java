@@ -3,11 +3,11 @@ package org.teleight.teleightbots.api.serialization.deserializers;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 
 import java.io.IOException;
 
-public class CommonEnumValueDeserializer<T extends Enum<T> & ApiMethod.SimpleFieldValueProvider> extends StdDeserializer<T> {
+public class CommonEnumValueDeserializer<T extends Enum<T> & SimpleFieldValueProvider> extends StdDeserializer<T> {
 
     private final Class<T> enumClass;
 

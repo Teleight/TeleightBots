@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
 public sealed interface ChatMember extends ApiResult permits
         ChatMemberOwner,
@@ -23,7 +23,7 @@ public sealed interface ChatMember extends ApiResult permits
         return this instanceof ChatMemberOwner || this instanceof ChatMemberAdministrator;
     }
 
-    enum ChatMemberType implements ApiMethod.WrappedFieldValueProvider<ChatMember> {
+    enum ChatMemberType implements WrappedFieldValueProvider<ChatMember> {
 
         OWNER("creator", ChatMemberOwner.class),
         ADMINISTRATOR("administrator", ChatMemberAdministrator.class),

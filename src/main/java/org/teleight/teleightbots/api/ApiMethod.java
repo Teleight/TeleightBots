@@ -69,8 +69,6 @@ public interface ApiMethod<R extends Serializable> {
                             new WrappedResultTypeDeserializer<>(BotCommandScope.class, BotCommandScope.BotCommandScopeType.class))
                     .addDeserializer(ChatBoostSource.class,
                             new WrappedResultTypeDeserializer<>(ChatBoostSource.class, ChatBoostSource.ChatBoostSourceType.class))
-                    .addDeserializer(InlineQueryResult.class,
-                            new WrappedResultTypeDeserializer<>(InlineQueryResult.class, InlineQueryResult.InlineQueryResultType.class))
                     .addDeserializer(MessageOrigin.class,
                             new WrappedResultTypeDeserializer<>(MessageOrigin.class, MessageOrigin.MessageOriginType.class))
             )
@@ -177,40 +175,4 @@ public interface ApiMethod<R extends Serializable> {
             throw new TelegramRequestException("Unable to deserialize response", e);
         }
     }
-
-    /**
-     * Interface that should be implemented by enums that provide only field value information.
-     */
-    interface SimpleFieldValueProvider {
-
-        /**
-         * Gets the field value associated with the enum constant.
-         *
-         * @return the field value as a String
-         */
-        String getFieldValue();
-    }
-
-    /**
-     * Interface that should be implemented by enums that provide field value and wrapper class information.
-     *
-     * @param <T> the type of the wrapper class
-     */
-    interface WrappedFieldValueProvider<T> extends SimpleFieldValueProvider {
-
-        /**
-         * Gets the wrapper class associated with the enum constant.
-         *
-         * @return the wrapper class
-         */
-        Class<? extends T> getWrapperClass();
-
-        /**
-         * Gets the field name associated with the enum constant.
-         *
-         * @return the field name as a String
-         */
-        String getFieldName();
-    }
-
 }

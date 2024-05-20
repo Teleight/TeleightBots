@@ -3,8 +3,8 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 
 public record InputSticker(
         @JsonProperty(value = "sticker", required = true)
@@ -28,7 +28,7 @@ public record InputSticker(
         String[] keywords
 ) implements ApiResult {
 
-    public enum Format implements ApiMethod.SimpleFieldValueProvider {
+    public enum Format implements SimpleFieldValueProvider {
         STATIC("static"),
         ANIMATED("animated"),
         VIDEO("video");

@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
-import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 
-public enum ChatAction implements ApiMethod.SimpleFieldValueProvider {
+public enum ChatAction implements SimpleFieldValueProvider {
 
     TYPING("typing"),
     UPLOAD_PHOTO("upload_photo"),

@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
 public sealed interface BotCommandScope extends ApiResult permits
         BotCommandScopeDefault,
@@ -18,7 +18,7 @@ public sealed interface BotCommandScope extends ApiResult permits
     @JsonProperty(TYPE_NAME)
     BotCommandScope.BotCommandScopeType type();
 
-    enum BotCommandScopeType implements ApiMethod.WrappedFieldValueProvider<BotCommandScope> {
+    enum BotCommandScopeType implements WrappedFieldValueProvider<BotCommandScope> {
         DEFAULT("default", BotCommandScopeDefault.class),
         ALL_PRIVATE_CHATS("all_private_chats", BotCommandScopeAllPrivateChats.class),
         ALL_GROUP_CHATS("all_group_chats", BotCommandScopeAllGroupChats.class),

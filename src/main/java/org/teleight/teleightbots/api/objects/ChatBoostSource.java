@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
 public sealed interface ChatBoostSource extends ApiResult permits
         ChatBoostSourceGiftCode,
@@ -14,7 +14,7 @@ public sealed interface ChatBoostSource extends ApiResult permits
     @JsonProperty(TYPE_NAME)
     ChatBoostSourceType source();
 
-    enum ChatBoostSourceType implements ApiMethod.WrappedFieldValueProvider<ChatBoostSource> {
+    enum ChatBoostSourceType implements WrappedFieldValueProvider<ChatBoostSource> {
 
         GIFT_CODE("gift_code", ChatBoostSourceGiftCode.class),
         GIVEAWAY("giveaway", ChatBoostSourceGiveaway.class),
