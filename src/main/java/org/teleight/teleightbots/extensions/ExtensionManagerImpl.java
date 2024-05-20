@@ -150,7 +150,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
                 return extension;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            TeleightBots.getExceptionManager().handleException(e);
             return null;
         }
     }

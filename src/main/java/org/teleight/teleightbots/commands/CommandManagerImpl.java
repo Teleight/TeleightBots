@@ -54,7 +54,6 @@ public class CommandManagerImpl implements CommandManager {
             final ExecutableCommand executableCommand = result.executable();
             executableCommand.execute(sender);
         } catch (Throwable t) {
-            t.printStackTrace();
             TeleightBots.getExceptionManager().handleException(t);
         }
     }

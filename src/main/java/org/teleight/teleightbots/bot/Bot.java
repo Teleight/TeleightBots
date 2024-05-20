@@ -162,7 +162,7 @@ public final class Bot implements TelegramBot {
                 result = method.deserializeResponse(responseJson);
             } catch (Exception e) {
                 if (shouldPrintExceptions) {
-                    e.printStackTrace();
+                    TeleightBots.getExceptionManager().handleException(e);
                 }
                 throw new TelegramRequestException(e);
             }
