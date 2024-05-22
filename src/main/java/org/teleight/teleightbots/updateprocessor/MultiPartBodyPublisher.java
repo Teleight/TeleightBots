@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.utils;
+package org.teleight.teleightbots.updateprocessor;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * Utility class for generating a multipart request body.
+ * Class for generating a multipart request body.
  * <p>
  * <a href="https://stackoverflow.com/questions/46392160/java-9-httpclient-send-a-multipart-form-data-request">Source</a>
  */
