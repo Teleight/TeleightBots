@@ -8,13 +8,13 @@ import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.event.trait.Event;
 
 import java.util.concurrent.CompletableFuture;
 
 public record ButtonPressEvent(
-        @NotNull Bot bot,
+        @NotNull TelegramBot bot,
         @NotNull Update update
 ) implements Event {
 

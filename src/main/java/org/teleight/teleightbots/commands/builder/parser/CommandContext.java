@@ -3,7 +3,7 @@ package org.teleight.teleightbots.commands.builder.parser;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.Message;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.commands.builder.argument.Argument;
 
 import java.io.Serializable;
@@ -13,13 +13,13 @@ import java.util.concurrent.CompletableFuture;
 
 public class CommandContext {
 
-    private final Bot bot;
+    private final TelegramBot bot;
     private final Message message;
     private final String input;
 
     private final Map<String, Object> arguments = new HashMap<>();
 
-    public CommandContext(Bot bot, Message message, String input) {
+    public CommandContext(TelegramBot bot, Message message, String input) {
         this.bot = bot;
         this.message = message;
         this.input = input;
@@ -42,7 +42,7 @@ public class CommandContext {
         return message;
     }
 
-    public Bot bot() {
+    public TelegramBot bot() {
         return bot;
     }
 

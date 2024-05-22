@@ -4,13 +4,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.util.List;
 
 /**
  * Basic interface for a Menu. It provides methods to manipulate and retrieve information about the menu.
- * @see org.teleight.teleightbots.bot.trait.TelegramBot#createMenu(String, Builder)
- * @see org.teleight.teleightbots.bot.trait.TelegramBot#createMenu(Builder)
+ * @see TelegramBot#createMenu(String, Builder)
+ * @see TelegramBot#createMenu(Builder)
  * @see org.teleight.teleightbots.api.objects.InlineKeyboardButton
  * @see org.teleight.teleightbots.menu.MenuBuilder
  */

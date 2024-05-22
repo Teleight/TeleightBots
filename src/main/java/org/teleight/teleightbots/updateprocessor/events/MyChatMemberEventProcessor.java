@@ -9,7 +9,7 @@ import org.teleight.teleightbots.api.objects.ChatMemberMember;
 import org.teleight.teleightbots.api.objects.ChatMemberRestricted;
 import org.teleight.teleightbots.api.objects.ChatMemberUpdated;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.event.bot.channel.BotJoinChannelEvent;
 import org.teleight.teleightbots.event.bot.channel.BotQuitChannelEvent;
 import org.teleight.teleightbots.event.bot.group.BotJoinedGroupEvent;
@@ -17,7 +17,7 @@ import org.teleight.teleightbots.event.bot.group.BotLeftGroupEvent;
 
 public final class MyChatMemberEventProcessor implements EventProcessor {
     @Override
-    public void processUpdate(@NotNull Bot bot, @NotNull Update update) {
+    public void processUpdate(@NotNull TelegramBot bot, @NotNull Update update) {
         final ChatMemberUpdated myChatMember = update.myChatMember();
         final boolean hasMyChatMember = myChatMember != null;
 

@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.bot.trait;
+package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -7,7 +7,6 @@ import org.teleight.teleightbots.api.methods.GetChatMember;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.ChatMember;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.conversation.ConversationManager;
 import org.teleight.teleightbots.event.EventManager;
@@ -27,12 +26,12 @@ import java.util.concurrent.CompletableFuture;
  * This interface provides methods to interact with the bot and its components.
  * It also provides methods to send requests to the Telegram Bot API.
  * <br>
- * This interface is by default implemented by the {@link org.teleight.teleightbots.bot.Bot} class.
+ * This interface is by default implemented by the {@link TelegramBotImpl} class.
  * </p>
  *
- * @see org.teleight.teleightbots.bot.Bot
+ * @see TelegramBotImpl
  */
-public interface TelegramBot {
+public sealed interface TelegramBot permits TelegramBotImpl {
 
     /**
      * Connects the bot to the Telegram Bot API.
@@ -172,6 +171,11 @@ public interface TelegramBot {
      * @return the bot's conversation manager
      */
     @NotNull ConversationManager getConversationManager();
+
+    /**
+     * Closes the bot process
+     */
+    void shutdown();
 
     /**
      * Sends a request to the Telegram Bot API using the given method.

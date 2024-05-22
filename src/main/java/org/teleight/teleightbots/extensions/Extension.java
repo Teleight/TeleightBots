@@ -1,6 +1,6 @@
 package org.teleight.teleightbots.extensions;
 
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 /**
  * Blueprint for creating different types of extensions for the bot. Each extension has a reference to the bot
@@ -8,14 +8,14 @@ import org.teleight.teleightbots.bot.Bot;
 public abstract class Extension {
 
     // A reference to the bot that this extension is associated with.
-    protected final Bot bot;
+    protected final TelegramBot bot;
 
     /**
      * The constructor for the Extension class.
      *
      * @param bot The bot that this extension is associated with.
      */
-    public Extension(Bot bot) {
+    public Extension(TelegramBot bot) {
         this.bot = bot;
     }
 

@@ -4,13 +4,13 @@ import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.event.bot.group.BotJoinedGroupEvent;
 import org.teleight.teleightbots.event.user.UserMessageReceivedEvent;
 
 public final class MessageEventProcessor implements EventProcessor {
     @Override
-    public void processUpdate(@NotNull Bot bot, @NotNull Update update) {
+    public void processUpdate(@NotNull TelegramBot bot, @NotNull Update update) {
         if (update.message() == null) return;
 
         final Message message = update.message();
@@ -44,7 +44,7 @@ public final class MessageEventProcessor implements EventProcessor {
         }
     }
 
-    private static boolean isThisBotJoined(Bot bot, Message message) {
+    private static boolean isThisBotJoined(TelegramBot bot, Message message) {
         for (User user : message.newChatMembers()) {
             if (user != null && user.username() != null && user.username().equalsIgnoreCase(bot.getBotUsername())) {
                 return true;

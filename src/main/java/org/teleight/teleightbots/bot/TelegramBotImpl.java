@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.bot.trait.TelegramBot;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.commands.CommandManagerImpl;
 import org.teleight.teleightbots.conversation.ConversationManager;
@@ -24,7 +23,7 @@ import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 
-public final class Bot implements TelegramBot {
+public final class TelegramBotImpl implements TelegramBot {
 
     private final String token;
     private final String username;
@@ -56,10 +55,7 @@ public final class Bot implements TelegramBot {
     //FileDownloader
     private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
 
-
-    private final boolean shouldPrintExceptions = Boolean.parseBoolean(System.getenv("teleightbots.printexceptions"));
-
-    public Bot(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @NotNull BotSettings botSettings) {
+    public TelegramBotImpl(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @NotNull BotSettings botSettings) {
         this.token = token;
         this.username = username;
         this.botSettings = botSettings;
@@ -142,7 +138,8 @@ public final class Bot implements TelegramBot {
         updateProcessor.start();
     }
 
-    public void close() {
+    @Override
+    public void shutdown() {
         try {
             extensionManager.close();
             scheduler.close();
@@ -161,12 +158,12 @@ public final class Bot implements TelegramBot {
             try {
                 result = method.deserializeResponse(responseJson);
             } catch (Exception e) {
-                if (shouldPrintExceptions) {
+                if (!botSettings.silentlyThrowMethodExecution()) {
                     TeleightBots.getExceptionManager().handleException(e);
                 }
                 throw new TelegramRequestException(e);
             }
-            eventManager.call(new MethodSendEvent<>(Bot.this, method, result));
+            eventManager.call(new MethodSendEvent<>(TelegramBotImpl.this, method, result));
             return result;
         });
     }

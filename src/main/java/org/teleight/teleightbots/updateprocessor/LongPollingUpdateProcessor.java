@@ -10,7 +10,7 @@ import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.InputFile;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.BotSettings;
 import org.teleight.teleightbots.conversation.ConversationContext;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
@@ -22,7 +22,6 @@ import org.teleight.teleightbots.updateprocessor.events.EventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.InlineQueryEventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.MessageEventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.MyChatMemberEventProcessor;
-import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
 
 import java.io.IOException;
 import java.net.URI;
@@ -46,11 +45,11 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
             .version(HttpClient.Version.HTTP_2)
             .build();
     private Thread updateProcessorThread;
-    private Bot bot;
+    private TelegramBot bot;
     private int lastReceivedUpdate = 0;
 
     @Override
-    public void setBot(@NotNull Bot bot) {
+    public void setBot(@NotNull TelegramBot bot) {
         if (this.bot != null) {
             throw new IllegalArgumentException("Bot instance was already assigned to this update processor");
         }

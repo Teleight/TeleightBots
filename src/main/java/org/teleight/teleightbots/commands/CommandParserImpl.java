@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.commands.builder.Command;
 import org.teleight.teleightbots.commands.builder.CommandExecutor;
 import org.teleight.teleightbots.commands.builder.CommandSyntax;
@@ -27,7 +27,7 @@ public final class CommandParserImpl implements CommandParser {
     }
 
     @Override
-    public Result parse(Bot bot, @NotNull User sender, @NotNull String userInput, Message message) {
+    public Result parse(TelegramBot bot, @NotNull User sender, @NotNull String userInput, Message message) {
         final String commandAsString = commandManager.extractCommand(userInput);
         if (commandAsString == null) {
             return InvalidCommand.INSTANCE;
@@ -133,14 +133,14 @@ public final class CommandParserImpl implements CommandParser {
     }
 
     private static class Chain {
-        private final Bot bot;
+        private final TelegramBot bot;
         private final Command command;
         private final User sender;
         private final String userInput;
         private final Message message;
         private final List<SyntaxResult> syntaxesResults = new ArrayList<>();
 
-        private Chain(@NotNull Bot bot, @NotNull Command command, @NotNull User sender, @NotNull String userInput, @NotNull Message message) {
+        private Chain(@NotNull TelegramBot bot, @NotNull Command command, @NotNull User sender, @NotNull String userInput, @NotNull Message message) {
             this.bot = bot;
             this.command = command;
             this.sender = sender;
@@ -184,17 +184,17 @@ public final class CommandParserImpl implements CommandParser {
     }
 
     private record ValidCommand(
-            @NotNull Bot bot,
+            @NotNull TelegramBot bot,
             @NotNull Message message,
             @NotNull String userInput,
             @Nullable List<ArgumentResult<?>> argumentResults,
             @NotNull CommandExecutor executor) implements Result {
 
-        public static Result executor(@NotNull Bot bot,@NotNull Message message, @NotNull String userInput, @NotNull SyntaxResult bestSyntax) {
+        public static Result executor(@NotNull TelegramBot bot, @NotNull Message message, @NotNull String userInput, @NotNull SyntaxResult bestSyntax) {
             return new ValidCommand(bot, message, userInput, bestSyntax.argumentResults, bestSyntax.syntax.executor());
         }
 
-        public static Result defaultExecutor(@NotNull Bot bot, @NotNull Message message,@NotNull String userInput, @NotNull CommandExecutor executor) {
+        public static Result defaultExecutor(@NotNull TelegramBot bot, @NotNull Message message, @NotNull String userInput, @NotNull CommandExecutor executor) {
             return new ValidCommand(bot, message, userInput, null, executor);
         }
 

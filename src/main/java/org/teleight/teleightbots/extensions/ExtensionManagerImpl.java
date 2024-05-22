@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.extensions.annotation.ExtensionInfoFile;
 
 import java.io.File;
@@ -23,13 +23,13 @@ import java.util.zip.ZipFile;
 
 public class ExtensionManagerImpl implements ExtensionManager {
 
-    private final Bot bot;
+    private final TelegramBot bot;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final File extensionFolder = new File("extensions");
 
     private final Set<Extension> loadedExtensions = new HashSet<>();
 
-    public ExtensionManagerImpl(Bot bot) {
+    public ExtensionManagerImpl(TelegramBot bot) {
         this.bot = bot;
     }
 
@@ -94,7 +94,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
 
         final Constructor<? extends Extension> constructor;
         try {
-            constructor = extensionClass.getDeclaredConstructor(Bot.class);
+            constructor = extensionClass.getDeclaredConstructor(TelegramBot.class);
             constructor.setAccessible(true);
         } catch (NoSuchMethodException e) {
             TeleightBots.getExceptionManager().handleException(e);

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 
 import java.util.concurrent.BlockingQueue;
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class ConversationContext {
 
     // The bot associated with this ConversationContext
-    private final Bot bot;
+    private final TelegramBot bot;
     // The chat associated with this ConversationContext
     private final Chat chat;
     // The user associated with this ConversationContext
@@ -47,7 +47,7 @@ public class ConversationContext {
      * @param conversation The conversation to be executed.
      */
     @ApiStatus.Internal
-    protected ConversationContext(@NotNull Bot bot,
+    protected ConversationContext(@NotNull TelegramBot bot,
                                   @NotNull Chat chat,
                                   @NotNull User user,
                                   @NotNull Conversation conversation) {
@@ -67,7 +67,7 @@ public class ConversationContext {
     /**
      * @return The bot associated with this ConversationContext.
      */
-    public Bot bot() {
+    public TelegramBot bot() {
         return bot;
     }
 

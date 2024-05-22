@@ -35,19 +35,18 @@ public interface ApiMethodSerializable extends ApiMethod<Serializable> {
      *
      * @param answer           The string representing the response.
      * @param possibleValues   The list of possible classes for deserialization.
-     * @return The deserialized response object.
+     * @return The deserialized response object. Null if an error occurs during deserialization.
      * @throws TelegramRequestException If an error occurs during deserialization.
      */
     default Serializable deserializeResponse(String answer, List<Class<? extends Serializable>> possibleValues) throws TelegramRequestException {
-        Exception localException = null;
         for (Class<? extends Serializable> possibleValue : possibleValues) {
             try {
                 return deserializeResponseSerializable(answer, possibleValue);
             } catch (TelegramRequestException e) {
-                localException = e;
+                throw new TelegramRequestException("Unable to deserialize response", e);
             }
         }
-        throw new TelegramRequestException("Unable to deserialize response", localException);
+        return null;
     }
 
 }

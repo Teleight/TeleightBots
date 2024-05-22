@@ -2,7 +2,7 @@ package org.teleight.teleightbots.event.trait;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
@@ -17,7 +17,8 @@ public interface Event {
      *
      * @return the Bot instance associated with the event
      */
-    @NotNull Bot bot();
+    @NotNull
+    TelegramBot bot();
 
     /**
      * Executes an API method.

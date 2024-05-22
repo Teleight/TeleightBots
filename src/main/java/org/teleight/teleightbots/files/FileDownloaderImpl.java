@@ -3,7 +3,7 @@ package org.teleight.teleightbots.files;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.File;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,14 +17,14 @@ import java.util.concurrent.CompletableFuture;
 
 public class FileDownloaderImpl implements FileDownloader {
 
-    private final Bot bot;
+    private final TelegramBot bot;
 
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.of(10, ChronoUnit.SECONDS))
             .version(HttpClient.Version.HTTP_2)
             .build();
 
-    public FileDownloaderImpl(Bot bot) {
+    public FileDownloaderImpl(TelegramBot bot) {
         this.bot = bot;
     }
 
