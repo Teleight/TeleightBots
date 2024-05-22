@@ -5,32 +5,15 @@ import org.jetbrains.annotations.NotNull;
 public record BotSettingsImpl(
         String endpointUrl,
         int updatesLimit,
-        int updatesTimeout
+        int updatesTimeout,
+        boolean silentlyThrowMethodExecution
 ) implements BotSettings {
-
-    public static @NotNull BotSettings create(String endpointUrl, int updatesLimit, int updatesTimeout) {
-        return new BotSettingsImpl(endpointUrl, updatesLimit, updatesTimeout);
-    }
-
-    @Override
-    public String endpointUrl() {
-        return endpointUrl;
-    }
-
-    @Override
-    public int updatesLimit() {
-        return updatesLimit;
-    }
-
 
     static class Builder implements BotSettings.Builder {
         private String endpointUrl;
         private int updatesLimit = 100;
         private int updatesTimeout = 50;
-
-        Builder(@NotNull String endpointUrl) {
-            this.endpointUrl = endpointUrl;
-        }
+        private boolean silentlyThrowMethodExecution;
 
         @Override
         public BotSettings.@NotNull Builder endpointUrl(@NotNull String url) {
@@ -51,8 +34,14 @@ public record BotSettingsImpl(
         }
 
         @Override
+        public BotSettings.@NotNull Builder silentlyThrowMethodExecution(boolean silentlyThrowMethodExecution) {
+            this.silentlyThrowMethodExecution = silentlyThrowMethodExecution;
+            return this;
+        }
+
+        @Override
         public @NotNull BotSettings build() {
-            return create(endpointUrl, updatesLimit, updatesTimeout);
+            return new BotSettingsImpl(endpointUrl, updatesLimit, updatesTimeout, silentlyThrowMethodExecution);
         }
     }
 
