@@ -44,7 +44,7 @@ public class MainDemo {
                 subMenu3.setText("SubMenu 3");
 
 
-                InlineKeyboardButton button1_1 = InlineKeyboardButton.ofBuilder("menu 2 - button 1").destinationMenu(subMenu2).build();
+                InlineKeyboardButton button1_1 = InlineKeyboardButton.ofBuilder("menu 1 - button 1").destinationMenu(subMenu2).build();
 
                 InlineKeyboardButton button2_1 = InlineKeyboardButton.ofBuilder("menu 2 - button 1").build();
                 InlineKeyboardButton button2_2 = InlineKeyboardButton.ofBuilder("menu 2 - button 2").destinationMenu(rootMenu).build();
