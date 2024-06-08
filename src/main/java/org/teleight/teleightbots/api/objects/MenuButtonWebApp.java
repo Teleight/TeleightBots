@@ -11,7 +11,7 @@ public record MenuButtonWebApp(
 ) implements MenuButton {
 
     public static Builder ofBuilder(String text, WebAppInfo webAppInfo) {
-        return new Builder(text, webAppInfo);
+        return new MenuButtonWebApp.Builder(text, webAppInfo);
     }
 
     @Override

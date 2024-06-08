@@ -26,7 +26,7 @@ public record GetUpdates(
 ) implements ApiMethod<Update[]> {
 
     public static @NotNull Builder ofBuilder() {
-        return new Builder();
+        return new GetUpdates.Builder();
     }
 
     @Override

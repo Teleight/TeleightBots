@@ -15,7 +15,7 @@ public record RevokeChatInviteLink(
 ) implements ApiMethodBoolean {
 
     public static Builder ofBuilder(String chatId, String inviteLink) {
-        return new Builder(chatId, inviteLink);
+        return new RevokeChatInviteLink.Builder(chatId, inviteLink);
     }
 
     @Override

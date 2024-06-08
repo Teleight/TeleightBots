@@ -32,7 +32,7 @@ public record EditChatInviteLink(
 ) implements ApiMethodBoolean {
 
     public static Builder ofBuilder(String chatId, String inviteLink) {
-        return new Builder(chatId, inviteLink);
+        return new EditChatInviteLink.Builder(chatId, inviteLink);
     }
 
     @Override

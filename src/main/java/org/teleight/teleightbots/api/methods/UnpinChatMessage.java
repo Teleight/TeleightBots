@@ -14,7 +14,7 @@ public record UnpinChatMessage(
 ) implements ApiMethodBoolean {
 
     public static Builder ofBuilder(String chatId) {
-        return new Builder(chatId);
+        return new UnpinChatMessage.Builder(chatId);
     }
 
     @Override

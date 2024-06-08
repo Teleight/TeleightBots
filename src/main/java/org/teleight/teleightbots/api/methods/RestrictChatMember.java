@@ -25,7 +25,7 @@ public record RestrictChatMember(
 ) implements ApiMethodBoolean {
 
     public static Builder ofBuilder(String chatId, long userId, ChatPermissions chatPermissions) {
-        return new Builder(chatId, userId, chatPermissions);
+        return new RestrictChatMember.Builder(chatId, userId, chatPermissions);
     }
 
     @Override

@@ -54,7 +54,7 @@ public record SendMessage(
 ) implements ApiMethodMessage {
 
     public static Builder ofBuilder(String chatId, String text) {
-        return new Builder(chatId, text);
+        return new SendMessage.Builder(chatId, text);
     }
 
     @Override

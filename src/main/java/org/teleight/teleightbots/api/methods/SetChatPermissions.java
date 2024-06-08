@@ -19,7 +19,7 @@ public record SetChatPermissions(
 ) implements ApiMethodBoolean {
 
     public static Builder ofBuilder(String chatId, ChatPermissions senderChatId) {
-        return new Builder(chatId, senderChatId);
+        return new SetChatPermissions.Builder(chatId, senderChatId);
     }
 
     @Override

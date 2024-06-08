@@ -21,7 +21,7 @@ public record EditForumTopic(
 ) implements ApiMethodBoolean {
 
     public static Builder ofBuilder(String chatId, int messageThreadId) {
-        return new Builder(chatId, messageThreadId);
+        return new EditForumTopic.Builder(chatId, messageThreadId);
     }
 
     @Override
