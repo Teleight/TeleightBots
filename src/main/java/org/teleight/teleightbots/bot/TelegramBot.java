@@ -7,6 +7,7 @@ import org.teleight.teleightbots.api.methods.GetChatMember;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.ChatMember;
 import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.conversation.ConversationManager;
 import org.teleight.teleightbots.event.EventManager;
@@ -85,7 +86,8 @@ public sealed interface TelegramBot permits TelegramBotImpl {
      *
      * @return the bot's settings
      */
-    @NotNull BotSettings getBotSettings();
+    @NotNull
+    BotSettings getBotSettings();
 
     /**
      * Returns the bot's event manager.

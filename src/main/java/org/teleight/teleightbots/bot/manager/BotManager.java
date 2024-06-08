@@ -1,7 +1,9 @@
-package org.teleight.teleightbots.bot;
+package org.teleight.teleightbots.bot.manager;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
+import org.teleight.teleightbots.bot.settings.BotSettings;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.io.Closeable;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.bot;
+package org.teleight.teleightbots.bot.settings;
 
 import org.jetbrains.annotations.NotNull;
 

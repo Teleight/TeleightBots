@@ -1,8 +1,12 @@
-package org.teleight.teleightbots.bot;
+package org.teleight.teleightbots.bot.manager;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
+import org.teleight.teleightbots.bot.BotProvider;
+import org.teleight.teleightbots.bot.settings.BotSettings;
+import org.teleight.teleightbots.bot.TelegramBot;
+import org.teleight.teleightbots.bot.TelegramBotImpl;
 import org.teleight.teleightbots.updateprocessor.LongPollingUpdateProcessor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 

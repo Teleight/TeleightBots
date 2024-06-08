@@ -4,7 +4,7 @@ import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.ParseMode;
-import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.demo.command.TestCommand;
 import org.teleight.teleightbots.demo.command.TestConversationCommand;
 import org.teleight.teleightbots.demo.conversations.TestConversation;

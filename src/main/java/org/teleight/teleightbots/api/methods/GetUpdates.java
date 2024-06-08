@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.util.List;

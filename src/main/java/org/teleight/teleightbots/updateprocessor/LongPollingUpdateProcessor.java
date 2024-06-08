@@ -11,7 +11,7 @@ import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.InputFile;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.TelegramBot;
-import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.conversation.ConversationContext;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;

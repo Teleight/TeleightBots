@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.commands.CommandManagerImpl;
 import org.teleight.teleightbots.conversation.ConversationManager;

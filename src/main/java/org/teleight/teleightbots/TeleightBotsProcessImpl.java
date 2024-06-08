@@ -1,8 +1,8 @@
 package org.teleight.teleightbots;
 
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.bot.BotManager;
-import org.teleight.teleightbots.bot.BotManagerImpl;
+import org.teleight.teleightbots.bot.manager.BotManager;
+import org.teleight.teleightbots.bot.manager.BotManagerImpl;
 import org.teleight.teleightbots.exception.ExceptionManager;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.scheduler.SchedulerImpl;

@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
 /**
