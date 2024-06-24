@@ -34,7 +34,7 @@ public class WrappedResultTypeDeserializer<T extends ApiResult, E extends Enum<E
         for (E enumConstant : enumType.getEnumConstants()) {
             if (node.has(enumConstant.getFieldName())) {
                 final JsonNode statusField = node.get(enumConstant.getFieldName());
-                if (statusField.asText().equals(statusField.asText())) {
+                if (enumConstant.getFieldValue().equals(statusField.asText())) {
                     return enumConstant;
                 }
             }
