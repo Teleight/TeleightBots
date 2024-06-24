@@ -225,6 +225,10 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 final String key = stringObjectEntry.getKey();
                 final Object value = stringObjectEntry.getValue();
 
+                if (value == null) {
+                    continue;
+                }
+
                 switch (value) {
                     case String string -> publisher.addPart(key, string);
                     case SimpleFieldValueProvider simpleFieldValueProvider ->
