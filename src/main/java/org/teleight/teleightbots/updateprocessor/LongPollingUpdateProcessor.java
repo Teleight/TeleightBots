@@ -10,6 +10,7 @@ import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.InputFile;
 import org.teleight.teleightbots.api.objects.Update;
+import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.conversation.ConversationContext;
@@ -223,7 +224,14 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
             for (Map.Entry<String, Object> stringObjectEntry : multiPartApiMethod.getParameters().entrySet()) {
                 final String key = stringObjectEntry.getKey();
                 final Object value = stringObjectEntry.getValue();
-                publisher.addPart(key, value instanceof String ? (String) value : OBJECT_MAPPER.writeValueAsString(value));
+
+                switch (value) {
+                    case String string -> publisher.addPart(key, string);
+                    case SimpleFieldValueProvider simpleFieldValueProvider ->
+                            publisher.addPart(key, simpleFieldValueProvider.getFieldValue());
+                    default -> publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(value));
+                }
+
             }
             for (Map.Entry<String, InputFile> stringObjectEntry : multiPartApiMethod.getInputFiles().entrySet()) {
                 final String key = stringObjectEntry.getKey();
