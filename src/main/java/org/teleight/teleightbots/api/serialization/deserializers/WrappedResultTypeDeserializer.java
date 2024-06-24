@@ -33,7 +33,7 @@ public class WrappedResultTypeDeserializer<T extends ApiResult, E extends Enum<E
     private WrappedFieldValueProvider<T> findWrappedMemberType(JsonNode node, Class<E> enumType) {
         for (E enumConstant : enumType.getEnumConstants()) {
             if (node.has(enumConstant.getFieldName())) {
-                final JsonNode statusField = node.get("status");
+                final JsonNode statusField = node.get(enumConstant.getFieldName());
                 if (statusField.asText().equals(statusField.asText())) {
                     return enumConstant;
                 }
