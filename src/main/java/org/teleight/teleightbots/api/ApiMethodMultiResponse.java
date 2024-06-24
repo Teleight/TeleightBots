@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Base API method that supports requests with multiple response types
  */
-public interface ApiMethodSerializable extends ApiMethod<Serializable> {
+public interface ApiMethodMultiResponse extends ApiMethod<Serializable> {
 
     /**
      * Retrieves the list of classes representing possible types for deserialization of the response.

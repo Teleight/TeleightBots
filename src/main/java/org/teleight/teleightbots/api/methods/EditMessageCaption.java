@@ -3,7 +3,7 @@ package org.teleight.teleightbots.api.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiMethodSerializable;
+import org.teleight.teleightbots.api.ApiMethodMultiResponse;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
@@ -39,7 +39,7 @@ public record EditMessageCaption(
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
-) implements ApiMethodSerializable {
+) implements ApiMethodMultiResponse {
 
     public static Builder ofBuilder() {
         return new EditMessageCaption.Builder();
