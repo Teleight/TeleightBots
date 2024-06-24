@@ -23,7 +23,7 @@ public record SendDice(
 
         @JsonProperty(value = "emoji")
         @Nullable
-        Dice.DiceEmoji emoji,
+        String emoji,
 
         @JsonProperty(value = "disable_notification")
         boolean disableNotification,
@@ -58,7 +58,7 @@ public record SendDice(
         private String businessConnectionId;
         private final String chatId;
         private int messageThreadId;
-        private Dice.DiceEmoji emoji;
+        private String emoji;
         private boolean disableNotification;
         private boolean protectContent;
         private ReplyParameters replyParameters;
@@ -78,7 +78,7 @@ public record SendDice(
             return this;
         }
 
-        public Builder emoji(Dice.DiceEmoji emoji) {
+        public Builder emoji(String emoji) {
             this.emoji = emoji;
             return this;
         }

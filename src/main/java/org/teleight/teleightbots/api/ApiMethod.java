@@ -13,7 +13,6 @@ import org.teleight.teleightbots.api.objects.BotCommandScope;
 import org.teleight.teleightbots.api.objects.ChatAction;
 import org.teleight.teleightbots.api.objects.ChatBoostSource;
 import org.teleight.teleightbots.api.objects.ChatMember;
-import org.teleight.teleightbots.api.objects.Dice;
 import org.teleight.teleightbots.api.objects.InlineQueryResult;
 import org.teleight.teleightbots.api.objects.InputSticker;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
@@ -74,11 +73,9 @@ public interface ApiMethod<R extends Serializable> {
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(ChatAction.class, new CommonEnumValueDeserializer<>(ChatAction.class))
-                    .addDeserializer(Dice.DiceEmoji.class, new CommonEnumValueDeserializer<>(Dice.DiceEmoji.class))
                     .addDeserializer(ParseMode.class, new CommonEnumValueDeserializer<>(ParseMode.class))
                     .addDeserializer(InputSticker.Format.class, new CommonEnumValueDeserializer<>(InputSticker.Format.class))
                     .addSerializer(ChatAction.class, new CommonEnumValueSerializer<>(ChatAction.class))
-                    .addSerializer(Dice.DiceEmoji.class, new CommonEnumValueSerializer<>(Dice.DiceEmoji.class))
                     .addSerializer(ParseMode.class, new CommonEnumValueSerializer<>(ParseMode.class))
                     .addSerializer(InputSticker.Format.class, new CommonEnumValueSerializer<>(InputSticker.Format.class))
             )
