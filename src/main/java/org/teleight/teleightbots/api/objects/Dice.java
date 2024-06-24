@@ -14,12 +14,12 @@ public record Dice(
 
     public enum DiceEmoji implements SimpleFieldValueProvider {
 
-        GAME_DICE("\uD83C\uDFB2"),
-        DIRECT_HIT("\uD83C\uDFAF"),
-        BASKETBALL("\uD83C\uDFC0"),
-        SOCCER_BALL("\\u26BD"),
-        BOWLING("\uD83C\uDFB3"),
-        SLOT_MACHINE("\uD83C\uDFB0");
+        GAME_DICE("\\ud83c\\udfb2"),
+        DIRECT_HIT("\\ud83c\\udfaf"),
+        BASKETBALL("\\ud83c\\udfc0"),
+        SOCCER_BALL("\\u26bd"),
+        BOWLING("\\ud83c\\udfb3"),
+        SLOT_MACHINE("\\ud83c\\udfb0");
 
         private final String fieldValue;
 
