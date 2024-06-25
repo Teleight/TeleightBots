@@ -11,6 +11,7 @@ import org.teleight.teleightbots.conversation.ConversationManager;
 import org.teleight.teleightbots.conversation.ConversationManagerImpl;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
+import org.teleight.teleightbots.event.bot.BotShutdownEvent;
 import org.teleight.teleightbots.event.bot.MethodSendEvent;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.extensions.ExtensionManager;
@@ -142,6 +143,8 @@ public final class Bot implements TelegramBot {
     }
 
     public void close() {
+        eventManager.call(new BotShutdownEvent(this));
+
         try {
             extensionManager.close();
             scheduler.close();
