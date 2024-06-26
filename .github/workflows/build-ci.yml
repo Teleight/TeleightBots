@@ -17,7 +17,7 @@ jobs:
         uses: burrunan/gradle-cache-action@v1
         with:
           save-gradle-dependencies-cache: true
-          save-maven-dependencies-cache: true
+          save-maven-dependencies-cache: false
           save-local-build-cache: false
           save-generated-gradle-jars: false
           maven-local-ignore-paths: |
