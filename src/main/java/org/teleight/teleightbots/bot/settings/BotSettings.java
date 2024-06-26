@@ -14,9 +14,14 @@ import org.jetbrains.annotations.NotNull;
 public sealed interface BotSettings permits BotSettingsImpl {
 
     /**
+     * Default Bot API endpoint
+     */
+    String DEFAULT_BOT_API_URL = "https://api.telegram.org/bot";
+
+    /**
      * Default bot settings with the default endpoint URL.
      */
-    BotSettings DEFAULT = BotSettings.of("https://api.telegram.org/bot");
+    BotSettings DEFAULT = BotSettings.of(DEFAULT_BOT_API_URL);
 
     /**
      * Creates bot settings with the specified endpoint URL and default values for update limit and timeout.
@@ -49,6 +54,20 @@ public sealed interface BotSettings permits BotSettingsImpl {
      */
     static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout) {
         return ofBuilder(endPointUrl).updatesLimit(updatesLimit).updatesTimeout(updatesTimeout).build();
+    }
+
+    /**
+     * Creates bot settings with the specified endpoint URL,
+     * update limit, timeout and whether extensions are enabled or not
+     *
+     * @param endPointUrl       the endpoint URL to be used for the bot
+     * @param updatesLimit      the maximum number of updates to be fetched in a single call
+     * @param updatesTimeout    the timeout in seconds for fetching updates
+     * @param extensionsEnabled whether extensions should be enabled or not
+     * @return the created bot settings instance
+     */
+    static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout, boolean extensionsEnabled) {
+        return ofBuilder(endPointUrl).updatesLimit(updatesLimit).updatesTimeout(updatesTimeout).extensionsEnabled(extensionsEnabled).build();
     }
 
     /**
@@ -98,6 +117,17 @@ public sealed interface BotSettings permits BotSettingsImpl {
     boolean silentlyThrowMethodExecution();
 
     /**
+     * Returns whether extensions are enabled or not
+     * <p>
+     * Extensions are separate pieces of software that connect to a specific bot instance
+     *
+     * @see org.teleight.teleightbots.extensions.Extension
+     * @see org.teleight.teleightbots.extensions.ExtensionManager
+     * @return true if extensions are enabled, false otherwise
+     */
+    boolean extensionsEnabled();
+
+    /**
      * Interface for building {@link BotSettings} instances.
      */
     interface Builder {
@@ -137,6 +167,15 @@ public sealed interface BotSettings permits BotSettingsImpl {
          */
         @NotNull
         Builder silentlyThrowMethodExecution(boolean silentlyThrowMethodExecution);
+
+        /**
+         * Enables or disable bot extensions.
+         *
+         * @param extensionsEnabled whether extensions should be enabled or not
+         * @return this builder instance for chaining configuration methods
+         */
+        @NotNull
+        Builder extensionsEnabled(boolean extensionsEnabled);
 
         /**
          * Builds and returns the configured {@link BotSettings} instance.
