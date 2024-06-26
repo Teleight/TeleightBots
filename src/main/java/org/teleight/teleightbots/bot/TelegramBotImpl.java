@@ -136,7 +136,9 @@ public final class TelegramBotImpl implements TelegramBot {
 
     @Override
     public void connect() {
-        extensionManager.start();
+        if (botSettings.extensionsEnabled()) {
+            extensionManager.start();
+        }
         updateProcessor.start();
     }
 
@@ -144,7 +146,9 @@ public final class TelegramBotImpl implements TelegramBot {
         eventManager.call(new BotShutdownEvent(this));
 
         try {
-            extensionManager.close();
+            if (botSettings.extensionsEnabled()) {
+                extensionManager.close();
+            }
             scheduler.close();
             updateProcessor.close();
             fileDownloader.close();

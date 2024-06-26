@@ -6,7 +6,8 @@ public record BotSettingsImpl(
         String endpointUrl,
         int updatesLimit,
         int updatesTimeout,
-        boolean silentlyThrowMethodExecution
+        boolean silentlyThrowMethodExecution,
+        boolean extensionsEnabled
 ) implements BotSettings {
 
     static class Builder implements BotSettings.Builder {
@@ -14,6 +15,7 @@ public record BotSettingsImpl(
         private int updatesLimit = 100;
         private int updatesTimeout = 50;
         private boolean silentlyThrowMethodExecution;
+        private boolean extensionsEnabled;
 
         @Override
         public BotSettings.@NotNull Builder endpointUrl(@NotNull String url) {
@@ -40,8 +42,14 @@ public record BotSettingsImpl(
         }
 
         @Override
+        public BotSettings.@NotNull Builder extensionsEnabled(boolean extensionsEnabled) {
+            this.extensionsEnabled = extensionsEnabled;
+            return this;
+        }
+
+        @Override
         public @NotNull BotSettings build() {
-            return new BotSettingsImpl(endpointUrl, updatesLimit, updatesTimeout, silentlyThrowMethodExecution);
+            return new BotSettingsImpl(endpointUrl, updatesLimit, updatesTimeout, silentlyThrowMethodExecution, extensionsEnabled);
         }
     }
 
