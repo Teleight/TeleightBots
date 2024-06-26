@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.api.objects.InputPollOption;
 import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.Poll;
@@ -27,9 +28,17 @@ public record SendPoll(
         @NotNull
         String question,
 
+        @JsonProperty("question_parse_mode")
+        @Nullable
+        ParseMode questionParseMode,
+
+        @JsonProperty("question_entities")
+        @Nullable
+        MessageEntity[] questionEntities,
+
         @JsonProperty(value = "options", required = true)
         @NotNull
-        String[] options,
+        InputPollOption[] options,
 
         @JsonProperty(value = "is_anonymous")
         boolean isAnonymous,
@@ -80,7 +89,7 @@ public record SendPoll(
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Poll> {
 
-    public static Builder ofBuilder(String chatId, String question, String[] options) {
+    public static Builder ofBuilder(String chatId, String question, InputPollOption[] options) {
         return new SendPoll.Builder(chatId, question, options);
     }
 
@@ -99,7 +108,9 @@ public record SendPoll(
         private final String chatId;
         private int messageThreadId;
         private final String question;
-        private final String[] options;
+        private ParseMode questionParseMode;
+        private MessageEntity[] questionEntities;
+        private final InputPollOption[] options;
         private boolean isAnonymous;
         private String type;
         private boolean allowsMultipleAnswers;
@@ -115,10 +126,20 @@ public record SendPoll(
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
-        Builder(String chatId, String question, String[] options) {
+        Builder(String chatId, String question, InputPollOption[] options) {
             this.chatId = chatId;
             this.question = question;
             this.options = options;
+        }
+
+        public Builder questionParseMode(ParseMode questionParseMode) {
+            this.questionParseMode = questionParseMode;
+            return this;
+        }
+
+        public Builder questionEntities(MessageEntity[] questionEntities) {
+            this.questionEntities = questionEntities;
+            return this;
         }
 
         public Builder businessConnectionId(String businessConnectionId) {
@@ -202,7 +223,7 @@ public record SendPoll(
         }
 
         public SendPoll build() {
-            return new SendPoll(this.businessConnectionId, this.chatId, this.messageThreadId, this.question, this.options, this.isAnonymous, this.type, this.allowsMultipleAnswers, this.correctOptionId, this.explanation, this.explanationParseMode, this.explanationEntities, this.openPeriod, this.closeDate, this.isClosed, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
+            return new SendPoll(this.businessConnectionId, this.chatId, this.messageThreadId, this.question, this.questionParseMode, this.questionEntities, this.options, this.isAnonymous, this.type, this.allowsMultipleAnswers, this.correctOptionId, this.explanation, this.explanationParseMode, this.explanationEntities, this.openPeriod, this.closeDate, this.isClosed, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
         }
     }
 }

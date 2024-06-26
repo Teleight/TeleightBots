@@ -3,14 +3,14 @@ package org.teleight.teleightbots.api.methods;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.objects.Chat;
+import org.teleight.teleightbots.api.objects.ChatFullInfo;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record GetChat(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId
-) implements ApiMethod<Chat> {
+) implements ApiMethod<ChatFullInfo> {
 
     public static Builder ofBuilder(String chatId) {
         return new GetChat.Builder(chatId);
@@ -22,8 +22,8 @@ public record GetChat(
     }
 
     @Override
-    public @NotNull Chat deserializeResponse(@NotNull String answer) throws TelegramRequestException {
-        return deserializeResponse(answer, Chat.class);
+    public @NotNull ChatFullInfo deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, ChatFullInfo.class);
     }
 
     public static class Builder {

@@ -252,6 +252,10 @@ public record Message(
         @Nullable
         ChatBoostAdded boostAdded,
 
+        @JsonProperty("chat_background_set")
+        @Nullable
+        ChatBackground chatBackgroundSet,
+
         @JsonProperty("forum_topic_created")
         @Nullable
         ForumTopicCreated forumTopicCreated,
