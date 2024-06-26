@@ -13,5 +13,14 @@ jobs:
           java-version: 21
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Setup gradle cache
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          save-gradle-dependencies-cache: true
+          save-maven-dependencies-cache: true
+          save-local-build-cache: false
+          save-generated-gradle-jars: false
+          maven-local-ignore-paths: |
+            org/teleight
       - name: Build with Gradle
         run: ./gradlew build
