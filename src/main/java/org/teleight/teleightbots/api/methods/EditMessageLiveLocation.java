@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMultiResponse;
+import org.teleight.teleightbots.api.objects.LivePeriod;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 
@@ -29,7 +30,7 @@ public record EditMessageLiveLocation(
         float longitude,
 
         @JsonProperty(value = "live_period")
-        int livePeriod,
+        LivePeriod livePeriod,
 
         @JsonProperty(value = "horizontal_accuracy")
         float horizontalAccuracy,
@@ -65,7 +66,7 @@ public record EditMessageLiveLocation(
         private String inlineMessageId;
         private final float latitude;
         private final float longitude;
-        private int livePeriod;
+        private LivePeriod livePeriod;
         private float horizontalAccuracy;
         private int heading;
         private int proximityAlertRadius;
@@ -91,7 +92,7 @@ public record EditMessageLiveLocation(
             return this;
         }
 
-        public Builder livePeriod(int livePeriod) {
+        public Builder livePeriod(LivePeriod livePeriod) {
             this.livePeriod = livePeriod;
             return this;
         }

@@ -9,12 +9,15 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
+import org.teleight.teleightbots.api.objects.BackgroundFill;
+import org.teleight.teleightbots.api.objects.BackgroundType;
 import org.teleight.teleightbots.api.objects.BotCommandScope;
 import org.teleight.teleightbots.api.objects.ChatAction;
 import org.teleight.teleightbots.api.objects.ChatBoostSource;
 import org.teleight.teleightbots.api.objects.ChatMember;
 import org.teleight.teleightbots.api.objects.InlineQueryResult;
 import org.teleight.teleightbots.api.objects.InputSticker;
+import org.teleight.teleightbots.api.objects.LivePeriod;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.MessageOrigin;
 import org.teleight.teleightbots.api.objects.ParseMode;
@@ -23,11 +26,13 @@ import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializ
 import org.teleight.teleightbots.api.serialization.deserializers.CommonEnumValueDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.DateDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.LivePeriodDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.WrappedResultTypeDeserializer;
 import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.CommonEnumValueSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.LivePeriodSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.awt.*;
@@ -60,6 +65,10 @@ public interface ApiMethod<R extends Serializable> {
                     .addDeserializer(Date.class, new DateDeserializer())
             )
             .registerModule(new SimpleModule()
+                    .addSerializer(LivePeriod.class, new LivePeriodSerializer())
+                    .addDeserializer(LivePeriod.class, new LivePeriodDeserializer())
+            )
+            .registerModule(new SimpleModule()
                     .addDeserializer(ChatMember.class,
                             new WrappedResultTypeDeserializer<>(ChatMember.class, ChatMember.ChatMemberType.class))
                     .addDeserializer(InlineQueryResult.class,
@@ -70,6 +79,10 @@ public interface ApiMethod<R extends Serializable> {
                             new WrappedResultTypeDeserializer<>(ChatBoostSource.class, ChatBoostSource.ChatBoostSourceType.class))
                     .addDeserializer(MessageOrigin.class,
                             new WrappedResultTypeDeserializer<>(MessageOrigin.class, MessageOrigin.MessageOriginType.class))
+                    .addDeserializer(BackgroundFill.class,
+                            new WrappedResultTypeDeserializer<>(BackgroundFill.class, BackgroundFill.BackgroundFillType.class))
+                    .addDeserializer(BackgroundType.class,
+                            new WrappedResultTypeDeserializer<>(BackgroundType.class, BackgroundType.BackgroundTypeType.class))
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(ChatAction.class, new CommonEnumValueDeserializer<>(ChatAction.class))

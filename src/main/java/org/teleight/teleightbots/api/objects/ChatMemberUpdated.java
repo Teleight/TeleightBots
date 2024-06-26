@@ -32,6 +32,9 @@ public record ChatMemberUpdated(
         @Nullable
         ChatInviteLink inviteLink,
 
+        @JsonProperty("via_join_request")
+        boolean viaJoinRequest,
+
         @JsonProperty("via_chat_folder_invite_link")
         boolean viaChatFolderInviteLink
 ) implements ApiResult {

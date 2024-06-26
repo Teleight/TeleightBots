@@ -13,6 +13,10 @@ public record Poll(
         @JsonProperty(value = "question", required = true)
         String question,
 
+        @JsonProperty("question_entities")
+        @Nullable
+        MessageEntity[] questionEntities,
+
         @JsonProperty(value = "options", required = true)
         PollOption[] options,
 
