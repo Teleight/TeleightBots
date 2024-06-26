@@ -1,0 +1,26 @@
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 21
+        uses: actions/setup-java@v1
+        with:
+          java-version: 21
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Setup gradle cache
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          save-gradle-dependencies-cache: true
+          save-maven-dependencies-cache: false
+          save-local-build-cache: false
+          save-generated-gradle-jars: false
+          maven-local-ignore-paths: |
+            org/teleight
+      - name: Build with Gradle
+        run: ./gradlew build
