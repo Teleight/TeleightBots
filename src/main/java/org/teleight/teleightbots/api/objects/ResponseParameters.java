@@ -8,6 +8,6 @@ public record ResponseParameters(
         Long migrateToChatId,
 
         @JsonProperty("retry_after")
-        Integer retryAfter
+        int retryAfter
 ) implements ApiResult {
 }

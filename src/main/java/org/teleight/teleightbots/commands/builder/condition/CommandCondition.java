@@ -3,7 +3,7 @@ package org.teleight.teleightbots.commands.builder.condition;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 /**
  * Functional interface representing a command condition.
@@ -21,6 +21,6 @@ public interface CommandCondition {
      * @param message the message containing the command
      * @return true if the command can be used, false otherwise
      */
-    boolean canUse(@NotNull Bot bot, @NotNull User sender, @NotNull Message message);
+    boolean canUse(@NotNull TelegramBot bot, @NotNull User sender, @NotNull Message message);
 
 }

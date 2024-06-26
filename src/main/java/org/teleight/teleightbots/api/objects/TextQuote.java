@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.objects.entities.MessageEntity;
 
 public record TextQuote(
         @JsonProperty(value = "text", required = true)
@@ -16,11 +15,9 @@ public record TextQuote(
         MessageEntity[] entities,
 
         @JsonProperty(value = "position")
-        @Nullable
-        Integer position,
+        int position,
 
         @JsonProperty(value = "is_manual")
-        @Nullable
-        Boolean isManual
+        boolean isManual
 ) implements ApiResult {
 }

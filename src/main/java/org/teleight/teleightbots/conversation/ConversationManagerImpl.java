@@ -2,9 +2,9 @@ package org.teleight.teleightbots.conversation;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
+import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.api.objects.chat.Chat;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -16,9 +16,9 @@ public final class ConversationManagerImpl implements ConversationManager {
     private final Map<String, Conversation> conversations = new HashMap<>();
     private final Map<Long, ConversationContext> usersInConversation = new HashMap<>();
 
-    private final Bot bot;
+    private final TelegramBot bot;
 
-    public ConversationManagerImpl(@NotNull Bot bot) {
+    public ConversationManagerImpl(@NotNull TelegramBot bot) {
         this.bot = bot;
     }
 

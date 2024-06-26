@@ -11,6 +11,8 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface FileDownloader extends Closeable {
 
+    String FILE_DOWNLOAD_TEMPLATE = "https://api.telegram.org/file/bot%s/%s";
+
     /**
      * Downloads a file from a given file path.
      *

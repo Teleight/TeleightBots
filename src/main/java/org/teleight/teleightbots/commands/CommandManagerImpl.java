@@ -1,23 +1,23 @@
 package org.teleight.teleightbots.commands;
 
+import org.checkerframework.com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.commands.builder.Command;
-import org.teleight.teleightbots.utils.validate.Check;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CommandManagerImpl implements CommandManager {
 
-    private final Bot bot;
+    private final TelegramBot bot;
     private final Map<String, Command> commandMap = new HashMap<>();
 
-    public CommandManagerImpl(Bot bot){
+    public CommandManagerImpl(TelegramBot bot){
         this.bot = bot;
     }
 
@@ -26,9 +26,9 @@ public class CommandManagerImpl implements CommandManager {
         final String commandName = command.getName();
         final String[] commandAliases = command.getAliases();
 
-        Check.stateCondition(commandExists(commandName), "A command with the name " + commandName + " is already registered!");
+        Preconditions.checkState(!commandExists(commandName), "A command with the name " + commandName + " is already registered!");
         for (String alias : commandAliases) {
-            Check.stateCondition(commandExists(alias), "A command with the name " + alias + " is already registered!");
+            Preconditions.checkState(!commandExists(alias), "A command with the name " + alias + " is already registered!");
         }
         commandMap.put(commandName, command);
         for (String name : commandAliases) {
@@ -54,7 +54,6 @@ public class CommandManagerImpl implements CommandManager {
             final ExecutableCommand executableCommand = result.executable();
             executableCommand.execute(sender);
         } catch (Throwable t) {
-            t.printStackTrace();
             TeleightBots.getExceptionManager().handleException(t);
         }
     }

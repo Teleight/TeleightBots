@@ -6,8 +6,7 @@ import org.teleight.teleightbots.api.ApiResult;
 
 public record UserProfilePhotos(
         @JsonProperty(value = "total_count", required = true)
-        @NotNull
-        Integer totalCount,
+        int totalCount,
 
         @JsonProperty(value = "photos", required = true)
         @NotNull

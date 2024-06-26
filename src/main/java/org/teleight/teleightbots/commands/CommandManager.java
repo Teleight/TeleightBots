@@ -4,12 +4,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.commands.builder.Command;
 
 /**
  * Basic interface for a CommandManager. Provides methods to manage commands.
- * @see Bot#getCommandManager()
+ * @see TelegramBot#getCommandManager()
  */
 public interface CommandManager {
 

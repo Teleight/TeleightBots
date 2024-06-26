@@ -1,13 +1,10 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
-import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
+import org.teleight.teleightbots.api.objects.InlineQueryResult;
 
-@Builder
 public record AnswerInlineQuery(
         @JsonProperty(value = "inline_query_id", required = true)
         @NotNull
@@ -18,17 +15,48 @@ public record AnswerInlineQuery(
         InlineQueryResult[] results,
 
         @JsonProperty(value = "cache_time")
-        @Nullable
-        Integer cacheTime,
+        int cacheTime,
 
         @JsonProperty(value = "is_personal")
-        @Nullable
-        Boolean isPersonal
+        boolean isPersonal
 ) implements ApiMethodBoolean {
+
+    public static AnswerInlineQuery.Builder ofBuilder(String inlineQueryId) {
+        return new AnswerInlineQuery.Builder(inlineQueryId);
+    }
 
     @Override
     public @NotNull String getEndpointURL() {
         return "answerInlineQuery";
     }
 
+    public static class Builder {
+        private final String inlineQueryId;
+        private InlineQueryResult[] results;
+        private int cacheTime;
+        private boolean isPersonal;
+
+        Builder(String inlineQueryId) {
+            this.inlineQueryId = inlineQueryId;
+        }
+
+        public Builder results(InlineQueryResult[] results) {
+            this.results = results;
+            return this;
+        }
+
+        public Builder cacheTime(int cacheTime) {
+            this.cacheTime = cacheTime;
+            return this;
+        }
+
+        public Builder isPersonal(boolean isPersonal) {
+            this.isPersonal = isPersonal;
+            return this;
+        }
+
+        public AnswerInlineQuery build() {
+            return new AnswerInlineQuery(this.inlineQueryId, this.results, this.cacheTime, this.isPersonal);
+        }
+    }
 }

@@ -8,9 +8,12 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
+import org.teleight.teleightbots.api.objects.InputFile;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.bot.Bot;
-import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
+import org.teleight.teleightbots.bot.TelegramBot;
+import org.teleight.teleightbots.bot.settings.BotSettings;
+import org.teleight.teleightbots.conversation.ConversationContext;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
@@ -20,7 +23,6 @@ import org.teleight.teleightbots.updateprocessor.events.EventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.InlineQueryEventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.MessageEventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.MyChatMemberEventProcessor;
-import org.teleight.teleightbots.utils.MultiPartBodyPublisher;
 
 import java.io.IOException;
 import java.net.URI;
@@ -29,10 +31,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
+
+import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
 public class LongPollingUpdateProcessor implements UpdateProcessor {
 
@@ -43,11 +46,11 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
             .version(HttpClient.Version.HTTP_2)
             .build();
     private Thread updateProcessorThread;
-    private Bot bot;
+    private TelegramBot bot;
     private int lastReceivedUpdate = 0;
 
     @Override
-    public void setBot(@NotNull Bot bot) {
+    public void setBot(@NotNull TelegramBot bot) {
         if (this.bot != null) {
             throw new IllegalArgumentException("Bot instance was already assigned to this update processor");
         }
@@ -77,13 +80,14 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         updateProcessorThread.interrupt();
     }
 
-    private void executeGetUpdates() throws ExecutionException, InterruptedException, TimeoutException {
+    private void executeGetUpdates() {
         final BotSettings settings = bot.getBotSettings();
 
-        final GetUpdates getUpdates = GetUpdates.of()
-                .withTimeout(settings.updatesTimeout())
-                .withLimit(settings.updatesLimit())
-                .withOffset(lastReceivedUpdate + 1);
+        final GetUpdates getUpdates = GetUpdates.ofBuilder()
+                .timeout(settings.updatesTimeout())
+                .limit(settings.updatesLimit())
+                .offset(lastReceivedUpdate + 1)
+                .build();
 
         final String responseJson = UNSAFE_executeMethod(getUpdates)
                 .exceptionally(throwable -> {
@@ -153,9 +157,9 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 .call(new UpdateReceivedEvent(bot, update, responseJson))
                 .thenAccept(updateReceivedEvent -> {
                     // Handle conversation before everything else
-                    bot.getConversationManager().getRunningConversations().forEach(runningConversation -> {
+                    for (ConversationContext ignored : bot.getConversationManager().getRunningConversations()) {
                         bot.getEventManager().call(updateReceivedEvent);
-                    });
+                    }
 
                     // Now handle everything else
                     final Update receivedUpdate = updateReceivedEvent.update();
@@ -217,12 +221,35 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
         if (method instanceof MultiPartApiMethod<?> multiPartApiMethod) {
             final MultiPartBodyPublisher publisher = new MultiPartBodyPublisher();
-            multiPartApiMethod.buildRequest(publisher);
-            body = publisher.build();
+            for (Map.Entry<String, Object> stringObjectEntry : multiPartApiMethod.getParameters().entrySet()) {
+                final String key = stringObjectEntry.getKey();
+                final Object value = stringObjectEntry.getValue();
 
+                if (value == null) {
+                    continue;
+                }
+
+                switch (value) {
+                    case String string -> publisher.addPart(key, string);
+                    case SimpleFieldValueProvider simpleFieldValueProvider ->
+                            publisher.addPart(key, simpleFieldValueProvider.getFieldValue());
+                    default -> publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(value));
+                }
+
+            }
+            for (Map.Entry<String, InputFile> stringObjectEntry : multiPartApiMethod.getInputFiles().entrySet()) {
+                final String key = stringObjectEntry.getKey();
+                final InputFile value = stringObjectEntry.getValue();
+                if (value.telegramFileId() != null) {
+                    publisher.addPart(key, value.telegramFileId());
+                } else {
+                    publisher.addPart(key, value.file(), value.fileName());
+                }
+            }
+            body = publisher.build();
             requestBuilder.header("Content-Type", "multipart/form-data; boundary=" + publisher.getBoundary());
         } else {
-            final String jsonString = ApiMethod.OBJECT_MAPPER.writeValueAsString(method);
+            final String jsonString = OBJECT_MAPPER.writeValueAsString(method);
             body = HttpRequest.BodyPublishers.ofString(jsonString);
 
             requestBuilder.header("Content-Type", "application/json");
@@ -241,11 +268,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 return;
             }
             while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    executeGetUpdates();
-                } catch (ExecutionException | InterruptedException | TimeoutException e) {
-                    TeleightBots.getExceptionManager().handleException(e);
-                }
+                executeGetUpdates();
             }
         }
     }

@@ -12,7 +12,7 @@ public record Audio(
         String fileUniqueId,
 
         @JsonProperty(value = "duration", required = true)
-        Integer duration,
+        int duration,
 
         @JsonProperty("performer")
         @Nullable

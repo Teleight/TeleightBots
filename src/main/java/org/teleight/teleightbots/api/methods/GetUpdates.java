@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.util.List;
@@ -25,28 +25,8 @@ public record GetUpdates(
         List<String> allowedUpdates
 ) implements ApiMethod<Update[]> {
 
-    public static @NotNull GetUpdates of() {
-        return new GetUpdates(0, BotSettings.DEFAULT.updatesTimeout(), BotSettings.DEFAULT.updatesTimeout(), null);
-    }
-
-    public @NotNull GetUpdates withOffset(int offset) {
-        return new GetUpdates(offset, limit, timeout, allowedUpdates);
-    }
-
-    public @NotNull GetUpdates withLimit(int limit) {
-        return new GetUpdates(offset, limit, timeout, allowedUpdates);
-    }
-
-    public @NotNull GetUpdates withTimeout(int timeout) {
-        return new GetUpdates(offset, limit, timeout, allowedUpdates);
-    }
-
-    public @NotNull GetUpdates withAllowedUpdates(List<String> allowedUpdates) {
-        return new GetUpdates(offset, limit, timeout, allowedUpdates);
-    }
-
-    public static @NotNull Builder builder() {
-        return new BuilderImpl();
+    public static @NotNull Builder ofBuilder() {
+        return new GetUpdates.Builder();
     }
 
     @Override
@@ -59,51 +39,34 @@ public record GetUpdates(
         return "getUpdates";
     }
 
-    public sealed interface Builder permits BuilderImpl {
-        @NotNull Builder offset(int offset);
-
-        @NotNull Builder limit(int limit);
-
-        @NotNull Builder timeout(int timeout);
-
-        @NotNull Builder allowedUpdates(@Nullable List<String> allowedUpdates);
-
-        @NotNull GetUpdates build();
-    }
-
-    static final class BuilderImpl implements Builder {
+    public static final class Builder {
         private int offset;
-        private int limit;
-        private int timeout;
+        private int limit = BotSettings.DEFAULT.updatesTimeout();
+        private int timeout = BotSettings.DEFAULT.updatesTimeout();
         private List<String> allowedUpdates;
 
-        @Override
-        public @NotNull Builder offset(int offset) {
+        public Builder offset(int offset) {
             this.offset = offset;
             return this;
         }
 
-        @Override
-        public @NotNull Builder limit(int limit) {
+        public Builder limit(int limit) {
             this.limit = limit;
             return this;
         }
 
-        @Override
-        public @NotNull Builder timeout(int timeout) {
+        public Builder timeout(int timeout) {
             this.timeout = timeout;
             return this;
         }
 
-        @Override
-        public @NotNull Builder allowedUpdates(@Nullable List<String> allowedUpdates) {
+        public Builder allowedUpdates(@Nullable List<String> allowedUpdates) {
             this.allowedUpdates = allowedUpdates;
             return this;
         }
 
-        @Override
-        public @NotNull GetUpdates build() {
-            return new GetUpdates(offset, limit, timeout, allowedUpdates);
+        public GetUpdates build() {
+            return new GetUpdates(this.offset, this.limit, this.timeout, this.allowedUpdates);
         }
     }
 

@@ -12,8 +12,13 @@ public record GetFile(
         String fileId
 ) implements ApiMethod<File> {
 
-    public static @NotNull GetFile of(@NotNull String fileId) {
-        return new GetFile(fileId);
+    public static @NotNull Builder ofBuilder(String fileId) {
+        return new GetFile.Builder(fileId);
+    }
+
+    @Override
+    public @NotNull String getEndpointURL() {
+        return "getFile";
     }
 
     @Override
@@ -21,9 +26,16 @@ public record GetFile(
         return deserializeResponse(answer, File.class);
     }
 
-    @Override
-    public @NotNull String getEndpointURL() {
-        return "getFile";
+    public static class Builder {
+        private final String fileId;
+
+        public Builder(String fileId) {
+            this.fileId = fileId;
+        }
+
+        public @NotNull GetFile build() {
+            return new GetFile(this.fileId);
+        }
     }
 
 }

@@ -9,34 +9,40 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
+import org.teleight.teleightbots.api.objects.BotCommandScope;
+import org.teleight.teleightbots.api.objects.ChatAction;
+import org.teleight.teleightbots.api.objects.ChatBoostSource;
+import org.teleight.teleightbots.api.objects.ChatMember;
+import org.teleight.teleightbots.api.objects.InlineQueryResult;
+import org.teleight.teleightbots.api.objects.InputSticker;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
-import org.teleight.teleightbots.api.objects.chat.boost.source.ChatBoostSource;
-import org.teleight.teleightbots.api.objects.chat.boost.source.serialization.ChatBoostSourceDeserializer;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMember;
-import org.teleight.teleightbots.api.objects.chat.member.ChatMemberDeserializer;
-import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResult;
-import org.teleight.teleightbots.api.objects.inline.result.InlineQueryResultDeserializer;
-import org.teleight.teleightbots.api.objects.input.InputSticker;
-import org.teleight.teleightbots.api.objects.keyboard.ReplyKeyboard;
-import org.teleight.teleightbots.api.objects.keyboard.serialization.KeyboardDeserializer;
-import org.teleight.teleightbots.api.objects.origin.MessageOrigin;
-import org.teleight.teleightbots.api.objects.origin.serialization.MessageOriginDeserializer;
-import org.teleight.teleightbots.api.objects.serialization.MaybeInaccessibleMessageDeserializer;
-import org.teleight.teleightbots.api.utils.*;
+import org.teleight.teleightbots.api.objects.MessageOrigin;
+import org.teleight.teleightbots.api.objects.ParseMode;
+import org.teleight.teleightbots.api.objects.ReplyKeyboard;
+import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.CommonEnumValueDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.DateDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.WrappedResultTypeDeserializer;
+import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.CommonEnumValueSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.awt.*;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Base interface for all Telegram Bot API methods.
  *
- * @param <R> type of the result of the method
+ * @param <R> result type of the method
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public interface ApiMethod<R> {
+public interface ApiMethod<R extends Serializable> {
 
     /**
      * The object mapper used to serialize and deserialize objects to and from JSON.
@@ -44,10 +50,6 @@ public interface ApiMethod<R> {
     ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .registerModule(new SimpleModule()
                     .addDeserializer(ReplyKeyboard.class, new KeyboardDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addSerializer(ParseMode.class, new ParseModeSerializer())
-                    .addDeserializer(ParseMode.class, new ParseModeDeserializer())
             )
             .registerModule(new SimpleModule()
                     .addSerializer(Color.class, new ColorSerializer())
@@ -58,23 +60,36 @@ public interface ApiMethod<R> {
                     .addDeserializer(Date.class, new DateDeserializer())
             )
             .registerModule(new SimpleModule()
-                    .addSerializer(InputSticker.Format.class, new InputStickerFormatSerializer())
-                    .addDeserializer(InputSticker.Format.class, new InputStickerFormatDeserializer())
+                    .addDeserializer(ChatMember.class,
+                            new WrappedResultTypeDeserializer<>(ChatMember.class, ChatMember.ChatMemberType.class))
+                    .addDeserializer(InlineQueryResult.class,
+                            new WrappedResultTypeDeserializer<>(InlineQueryResult.class, InlineQueryResult.InlineQueryResultType.class))
+                    .addDeserializer(BotCommandScope.class,
+                            new WrappedResultTypeDeserializer<>(BotCommandScope.class, BotCommandScope.BotCommandScopeType.class))
+                    .addDeserializer(ChatBoostSource.class,
+                            new WrappedResultTypeDeserializer<>(ChatBoostSource.class, ChatBoostSource.ChatBoostSourceType.class))
+                    .addDeserializer(MessageOrigin.class,
+                            new WrappedResultTypeDeserializer<>(MessageOrigin.class, MessageOrigin.MessageOriginType.class))
             )
             .registerModule(new SimpleModule()
-                    .addDeserializer(ChatMember.class, new ChatMemberDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(InlineQueryResult.class, new InlineQueryResultDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(MessageOrigin.class, new MessageOriginDeserializer())
+                    .addDeserializer(ChatAction.class, new CommonEnumValueDeserializer<>(ChatAction.class))
+                    .addDeserializer(ParseMode.class, new CommonEnumValueDeserializer<>(ParseMode.class))
+                    .addDeserializer(InputSticker.Format.class, new CommonEnumValueDeserializer<>(InputSticker.Format.class))
+                    .addSerializer(ChatAction.class, new CommonEnumValueSerializer<>(ChatAction.class))
+                    .addSerializer(ParseMode.class, new CommonEnumValueSerializer<>(ParseMode.class))
+                    .addSerializer(InputSticker.Format.class, new CommonEnumValueSerializer<>(InputSticker.Format.class))
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(ChatBoostSource.class, new ChatBoostSourceDeserializer()));
+            );
+
+    /**
+     * Returns the endpoint URL for the Telegram Bot API method.
+     *
+     * @return the endpoint URL
+     */
+    @NotNull
+    String getEndpointURL();
 
     /**
      * Deserializes the response from the Telegram Bot API.
@@ -83,14 +98,9 @@ public interface ApiMethod<R> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
-    @NotNull R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
-
-    /**
-     * Returns the endpoint URL for the Telegram Bot API method.
-     *
-     * @return the endpoint URL
-     */
-    @NotNull String getEndpointURL();
+    @ApiStatus.Internal
+    @NotNull
+    R deserializeResponse(@NotNull String answer) throws TelegramRequestException;
 
     /**
      * Deserializes the response from the Telegram Bot API into a specific class.
@@ -100,6 +110,7 @@ public interface ApiMethod<R> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
+    @ApiStatus.Internal
     default @NotNull R deserializeResponse(@NotNull String answer, @NotNull Class<R> returnClass) throws TelegramRequestException {
         final JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(returnClass);
         return UNSAFE_deserializeResponse(answer, type);
@@ -114,9 +125,25 @@ public interface ApiMethod<R> {
      * @return the deserialized response
      * @throws TelegramRequestException if an error occurs while deserializing the response
      */
-    default <K> @NotNull R deserializeResponseArray(@NotNull String answer, @NotNull Class<K> returnClass) throws TelegramRequestException {
+    @ApiStatus.Internal
+    default <K extends Serializable> @NotNull R deserializeResponseArray(@NotNull String answer, @NotNull Class<K> returnClass) throws TelegramRequestException {
         final ArrayType collectionType = OBJECT_MAPPER.getTypeFactory().constructArrayType(returnClass);
         return UNSAFE_deserializeResponse(answer, collectionType);
+    }
+
+    /**
+     * Deserializes the response from the Telegram Bot API into a specific serializable class
+     *
+     * @param answer      the response from the Telegram Bot API
+     * @param returnClass the class to deserialize the response into
+     * @param <K>         the class to deserialize the response into
+     * @return the deserialized response
+     * @throws TelegramRequestException if an error occurs while deserializing the response
+     */
+    @ApiStatus.Internal
+    default <K extends Serializable> R deserializeResponseSerializable(String answer, Class<K> returnClass) throws TelegramRequestException {
+        JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(returnClass);
+        return UNSAFE_deserializeResponse(answer, type);
     }
 
     /**
@@ -145,5 +172,4 @@ public interface ApiMethod<R> {
             throw new TelegramRequestException("Unable to deserialize response", e);
         }
     }
-
 }

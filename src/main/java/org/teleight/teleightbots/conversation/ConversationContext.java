@@ -3,10 +3,10 @@ package org.teleight.teleightbots.conversation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.api.objects.chat.Chat;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 
 import java.util.concurrent.BlockingQueue;
@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class ConversationContext {
 
     // The bot associated with this ConversationContext
-    private final Bot bot;
+    private final TelegramBot bot;
     // The chat associated with this ConversationContext
     private final Chat chat;
     // The user associated with this ConversationContext
@@ -33,7 +33,7 @@ public class ConversationContext {
 
     // The running conversation thread associated with this ConversationContext
     @ApiStatus.Internal
-    private final RunningConversation runningConversation = new RunningConversation();
+    private final ConversationLifecycle conversationLifecycle = new ConversationLifecycle();
 
     // Queue to store updates received during the conversation
     private final BlockingQueue<Update> updateQueue = new LinkedBlockingQueue<>();
@@ -47,7 +47,7 @@ public class ConversationContext {
      * @param conversation The conversation to be executed.
      */
     @ApiStatus.Internal
-    protected ConversationContext(@NotNull Bot bot,
+    protected ConversationContext(@NotNull TelegramBot bot,
                                   @NotNull Chat chat,
                                   @NotNull User user,
                                   @NotNull Conversation conversation) {
@@ -60,14 +60,14 @@ public class ConversationContext {
         bot.getEventManager().addListener(UpdateReceivedEvent.class, event -> updateQueue.add(event.update()));
 
         // Schedule the conversation to run asynchronously
-        runningConversation.setName(String.format("Conversation-%s-%s", conversation.name(), user.id()));
-        bot.getScheduler().buildTask(runningConversation).schedule();
+        conversationLifecycle.setName(String.format("Conversation-%s-%s", conversation.name(), user.id()));
+        bot.getScheduler().buildTask(conversationLifecycle).schedule();
     }
 
     /**
      * @return The bot associated with this ConversationContext.
      */
-    public Bot bot() {
+    public TelegramBot bot() {
         return bot;
     }
 
@@ -90,8 +90,8 @@ public class ConversationContext {
      * @return The running conversation thread associated with this ConversationContext.
      */
     @ApiStatus.Internal
-    protected RunningConversation runningConversation() {
-        return runningConversation;
+    protected ConversationLifecycle runningConversation() {
+        return conversationLifecycle;
     }
 
     /**
@@ -127,7 +127,7 @@ public class ConversationContext {
      * This class is internal and SHOULD NOT be accessed elsewhere.
      */
     @ApiStatus.Internal
-    protected class RunningConversation extends Thread {
+    protected class ConversationLifecycle extends Thread {
         @Override
         public void run() {
             // Start the conversation

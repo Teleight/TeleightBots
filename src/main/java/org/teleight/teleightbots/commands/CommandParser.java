@@ -3,7 +3,7 @@ package org.teleight.teleightbots.commands;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 /**
  * Interface for parsing commands.
@@ -29,7 +29,7 @@ public interface CommandParser {
      * @param message   the Message object containing the user's input
      * @return a Result object containing the parsed command
      */
-    Result parse(Bot bot, @NotNull User sender, @NotNull String userInput, Message message);
+    Result parse(TelegramBot bot, @NotNull User sender, @NotNull String userInput, Message message);
 
     interface Result {
         /**

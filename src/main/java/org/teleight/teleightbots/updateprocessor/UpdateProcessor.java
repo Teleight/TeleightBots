@@ -2,7 +2,7 @@ package org.teleight.teleightbots.updateprocessor;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
@@ -13,6 +13,6 @@ public interface UpdateProcessor extends Closeable {
 
     @NotNull CompletableFuture<String> executeMethod(@NotNull ApiMethod<?> method);
 
-    void setBot(@NotNull Bot bot);
+    void setBot(@NotNull TelegramBot bot);
 
 }

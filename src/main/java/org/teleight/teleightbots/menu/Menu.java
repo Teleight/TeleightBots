@@ -2,15 +2,17 @@ package org.teleight.teleightbots.menu;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.objects.keyboard.InlineKeyboardMarkup;
+import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
+import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.util.List;
 
 /**
  * Basic interface for a Menu. It provides methods to manipulate and retrieve information about the menu.
- * @see org.teleight.teleightbots.bot.trait.TelegramBot#createMenu(String, Builder)
- * @see org.teleight.teleightbots.bot.trait.TelegramBot#createMenu(Builder)
- * @see org.teleight.teleightbots.menu.MenuButton
+ * @see TelegramBot#createMenu(String, Builder)
+ * @see TelegramBot#createMenu(Builder)
+ * @see org.teleight.teleightbots.api.objects.InlineKeyboardButton
  * @see org.teleight.teleightbots.menu.MenuBuilder
  */
 public interface Menu {
@@ -42,14 +44,14 @@ public interface Menu {
      * @param buttons The MenuButtons to add.
      * @return The Menu instance.
      */
-    @NotNull Menu addRow(@NotNull MenuButton... buttons);
+    @NotNull Menu addRow(@NotNull InlineKeyboardButton... buttons);
 
     /**
      * Adds a row of MenuButtons to the menu.
      * @param buttons The list of MenuButtons to add.
      * @return The Menu instance.
      */
-    @NotNull Menu addRow(@NotNull List<MenuButton> buttons);
+    @NotNull Menu addRow(@NotNull List<InlineKeyboardButton> buttons);
 
     /**
      * Returns the keyboard of the menu.

@@ -4,12 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.objects.chat.Chat;
-import org.teleight.teleightbots.api.objects.giveaway.Giveaway;
-import org.teleight.teleightbots.api.objects.giveaway.GiveawayWinners;
-import org.teleight.teleightbots.api.objects.origin.MessageOrigin;
-import org.teleight.teleightbots.api.objects.payment.Invoice;
-import org.teleight.teleightbots.api.objects.poll.Poll;
 
 public record ExternalReplyInfo(
         @JsonProperty(value = "origin", required = true)
@@ -21,8 +15,7 @@ public record ExternalReplyInfo(
         Chat chat,
 
         @JsonProperty(value = "message_id")
-        @Nullable
-        Integer messageId,
+        int messageId,
 
         @JsonProperty(value = "link_preview_options")
         @Nullable
@@ -65,8 +58,7 @@ public record ExternalReplyInfo(
         Voice voice,
 
         @JsonProperty(value = "has_media_spoiler")
-        @Nullable
-        Boolean hasMediaSpoiler,
+        boolean hasMediaSpoiler,
 
         @JsonProperty(value = "contact")
         @Nullable

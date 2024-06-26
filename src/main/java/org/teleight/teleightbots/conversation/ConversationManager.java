@@ -3,15 +3,15 @@ package org.teleight.teleightbots.conversation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
+import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.api.objects.chat.Chat;
-import org.teleight.teleightbots.bot.Bot;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.util.Collection;
 
 /**
  * This is an interface for a ConversationManager. It provides methods to manage conversations.
- * @see Bot#getConversationManager()
+ * @see TelegramBot#getConversationManager()
  */
 public sealed interface ConversationManager permits ConversationManagerImpl {
 

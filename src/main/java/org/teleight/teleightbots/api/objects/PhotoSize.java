@@ -12,10 +12,10 @@ public record PhotoSize(
         String fileUniqueId,
 
         @JsonProperty(value = "width", required = true)
-        Integer width,
+        int width,
 
         @JsonProperty(value = "height", required = true)
-        Integer height,
+        int height,
 
         @JsonProperty("file_size")
         @Nullable

@@ -1,20 +1,3 @@
-/*
- * This file is part of TelegramBots.
- *
- * TelegramBots is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * TelegramBots is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with TelegramBots.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package org.teleight.teleightbots.exception.exceptions;
 
 import org.teleight.teleightbots.api.objects.ApiResponse;
@@ -49,7 +32,7 @@ public class TelegramRequestException extends RuntimeException {
         return errorDescription;
     }
 
-    public Integer getErrorCode() {
+    public int getErrorCode() {
         return errorCode;
     }
 
@@ -59,13 +42,13 @@ public class TelegramRequestException extends RuntimeException {
 
     @Override
     public String getMessage() {
+        if (errorCode != 0) {
+            return super.getMessage() + ": " + errorDescription;
+        }
         if (errorDescription == null) {
             return super.getMessage();
-        } else if (errorCode != 0) {
-            return super.getMessage() + ": " + errorDescription;
-        } else {
-            return super.getMessage() + ": [" + errorCode + "] " + errorDescription;
         }
+        return super.getMessage() + ": (" + errorCode + ") " + errorDescription;
     }
 
     @Override

@@ -25,7 +25,7 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
      * @param eventType The type of event for which the EventListener is being built.
      * @return A new Builder instance.
      */
-    static <T extends Event> Builder<T> builder(@NotNull Class<T> eventType) {
+    static <T extends Event> Builder<T> ofBuilder(@NotNull Class<T> eventType) {
         return new EventListenerImpl.BuilderImpl<>(eventType);
     }
 
@@ -37,7 +37,7 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
      * @return A new EventListener instance.
      */
     static <T extends Event> EventListener<T> of(@NotNull Class<T> eventType, @NotNull Consumer<T> listener) {
-        return builder(eventType).handler(listener).build();
+        return ofBuilder(eventType).handler(listener).build();
     }
 
     /**
@@ -75,9 +75,9 @@ public sealed interface EventListener<T extends Event> permits EventListenerImpl
         @NotNull Builder<T> filter(@NotNull Predicate<T> filter);
 
         /**
-         * Sets whether the Builder should ignore cancelled events.
+         * Sets whether the Builder should ignore canceled events.
          *
-         * @param ignoreCancelled Whether to ignore cancelled events.
+         * @param ignoreCancelled Whether to ignore canceled events.
          * @return The Builder instance.
          */
         @NotNull Builder<T> ignoreCancelled(boolean ignoreCancelled);

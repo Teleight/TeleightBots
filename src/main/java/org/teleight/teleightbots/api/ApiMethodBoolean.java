@@ -8,6 +8,7 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
  */
 public interface ApiMethodBoolean extends ApiMethod<Boolean> {
 
+    @Override
     default @NotNull Boolean deserializeResponse(@NotNull String answer) throws TelegramRequestException {
         return deserializeResponse(answer, Boolean.class);
     }

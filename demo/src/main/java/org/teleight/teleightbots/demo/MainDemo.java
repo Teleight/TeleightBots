@@ -1,16 +1,16 @@
 package org.teleight.teleightbots.demo;
 
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.api.methods.send.SendMessage;
-import org.teleight.teleightbots.api.utils.ParseMode;
-import org.teleight.teleightbots.bot.BotSettings;
+import org.teleight.teleightbots.api.methods.SendMessage;
+import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
+import org.teleight.teleightbots.api.objects.ParseMode;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.demo.command.TestCommand;
 import org.teleight.teleightbots.demo.command.TestConversationCommand;
 import org.teleight.teleightbots.demo.conversations.TestConversation;
 import org.teleight.teleightbots.event.EventListener;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.menu.Menu;
-import org.teleight.teleightbots.menu.MenuButton;
 
 public class MainDemo {
 
@@ -22,7 +22,7 @@ public class MainDemo {
         final String botUsername = System.getenv("bot.username") != null ? System.getenv("bot.username") : "--INSERT-USERNAME--HERE";
         final String chatId = System.getenv("bot.default_chatid") != null ? System.getenv("bot.default_chatid") : "--INSERT-CHATID--HERE";
 
-        final EventListener<UpdateReceivedEvent> updateEvent = EventListener.builder(UpdateReceivedEvent.class)
+        final EventListener<UpdateReceivedEvent> updateEvent = EventListener.ofBuilder(UpdateReceivedEvent.class)
                 .handler(event -> System.out.println("UpdateReceivedEvent: " + event.bot().getBotUsername() + " -> " + event))
                 .build();
 
@@ -44,13 +44,13 @@ public class MainDemo {
                 subMenu3.setText("SubMenu 3");
 
 
-                MenuButton button1_1 = MenuButton.builder().text("menu 1 - button 1").destinationMenu(subMenu2).build();
+                InlineKeyboardButton button1_1 = InlineKeyboardButton.ofBuilder("menu 1 - button 1").destinationMenu(subMenu2).build();
 
-                MenuButton button2_1 = MenuButton.builder().text("menu 2 - button 1").build();
-                MenuButton button2_2 = MenuButton.builder().text("menu 2 - button 2").destinationMenu(rootMenu).build();
-                MenuButton button2_3 = MenuButton.builder().text("menu 2 - button 3").destinationMenu(subMenu3).build();
+                InlineKeyboardButton button2_1 = InlineKeyboardButton.ofBuilder("menu 2 - button 1").build();
+                InlineKeyboardButton button2_2 = InlineKeyboardButton.ofBuilder("menu 2 - button 2").destinationMenu(rootMenu).build();
+                InlineKeyboardButton button2_3 = InlineKeyboardButton.ofBuilder("menu 2 - button 3").destinationMenu(subMenu3).build();
 
-                MenuButton button3_1 = MenuButton.builder().text("menu 3 - button 4").destinationMenu(subMenu2).build();
+                InlineKeyboardButton button3_1 = InlineKeyboardButton.ofBuilder("menu 3 - button 4").destinationMenu(subMenu2).build();
 
 
                 rootMenu.addRow(button1_1);
@@ -61,10 +61,7 @@ public class MainDemo {
                 subMenu3.addRow(button3_1);
             });
 
-
-            SendMessage sendMessage = SendMessage.builder()
-                    .text("<b>Test message</b>")
-                    .chatId(chatId)
+            SendMessage sendMessage = SendMessage.ofBuilder(chatId, "<b>Test message</b>")
                     .replyMarkup(menu.getKeyboard())
                     .parseMode(ParseMode.HTML)
                     .build();

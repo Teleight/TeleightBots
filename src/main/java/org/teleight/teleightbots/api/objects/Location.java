@@ -16,15 +16,12 @@ public record Location(
         Float horizontalAccuracy,
 
         @JsonProperty("live_period")
-        @Nullable
-        Integer livePeriod,
+        int livePeriod,
 
         @JsonProperty("heading")
-        @Nullable
-        Integer heading,
+        int heading,
 
         @JsonProperty("proximity_alert_radius")
-        @Nullable
-        Integer proximityAlertRadius
+        int proximityAlertRadius
 ) implements ApiResult {
 }

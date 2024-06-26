@@ -12,13 +12,13 @@ public record Animation(
         String fileUniqueId,
 
         @JsonProperty(value = "width", required = true)
-        Integer width,
+        int width,
 
         @JsonProperty(value = "height", required = true)
-        Integer height,
+        int height,
 
         @JsonProperty(value = "duration", required = true)
-        Integer duration,
+        int duration,
 
         @JsonProperty("thumbnail")
         @Nullable

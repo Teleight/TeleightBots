@@ -8,6 +8,7 @@ public record Dice(
         String emoji,
 
         @JsonProperty(value = "value", required = true)
-        Integer value
+        int value
 ) implements ApiResult {
+
 }

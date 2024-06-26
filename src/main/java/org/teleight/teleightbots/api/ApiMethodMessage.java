@@ -9,6 +9,7 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
  */
 public interface ApiMethodMessage extends ApiMethod<Message> {
 
+    @Override
     default @NotNull Message deserializeResponse(@NotNull String answer) throws TelegramRequestException {
         return deserializeResponse(answer, Message.class);
     }
