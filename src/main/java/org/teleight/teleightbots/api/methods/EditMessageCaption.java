@@ -36,6 +36,9 @@ public record EditMessageCaption(
         @Nullable
         MessageEntity[] captionEntities,
 
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
+
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
@@ -62,6 +65,7 @@ public record EditMessageCaption(
         private String caption;
         private ParseMode parseMode;
         private MessageEntity[] captionEntities;
+        private boolean showCaptionAboveMedia;
         private ReplyKeyboard replyMarkup;
 
         public Builder chatId(String chatId) {
@@ -94,13 +98,18 @@ public record EditMessageCaption(
             return this;
         }
 
+        public Builder showCaptionAboveMedia(boolean showCaptionAboveMedia) {
+            this.showCaptionAboveMedia = showCaptionAboveMedia;
+            return this;
+        }
+
         public Builder replyMarkup(ReplyKeyboard replyMarkup) {
             this.replyMarkup = replyMarkup;
             return this;
         }
 
         public EditMessageCaption build() {
-            return new EditMessageCaption(this.chatId, this.messageId, this.inlineMessageId, this.caption, this.parseMode, this.captionEntities, this.replyMarkup);
+            return new EditMessageCaption(this.chatId, this.messageId, this.inlineMessageId, this.caption, this.parseMode, this.captionEntities, this.showCaptionAboveMedia, this.replyMarkup);
         }
 
     }

@@ -29,6 +29,9 @@ public record InlineQueryResultCachedMpeg4Gif(
         @Nullable
         MessageEntity[] captionEntities,
 
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
+
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup,
@@ -40,7 +43,7 @@ public record InlineQueryResultCachedMpeg4Gif(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_MPEG4_GIF;
+        return InlineQueryResultType.MPEG4_GIF;
     }
 
 }

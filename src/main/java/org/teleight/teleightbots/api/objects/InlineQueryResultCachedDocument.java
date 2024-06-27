@@ -44,7 +44,7 @@ public record InlineQueryResultCachedDocument(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_DOCUMENT;
+        return InlineQueryResultType.DOCUMENT;
     }
 
 }

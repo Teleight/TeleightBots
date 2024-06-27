@@ -44,6 +44,9 @@ public record SendMessage(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "message_effect_id")
+        String messageEffectId,
+
         @JsonProperty(value = "reply_parameters")
         @Nullable
         ReplyParameters replyParameters,
@@ -72,6 +75,7 @@ public record SendMessage(
         private LinkPreviewOptions linkPreviewOptions;
         private boolean disableNotification;
         private boolean protectContent;
+        private String messageEffectId;
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
@@ -115,6 +119,11 @@ public record SendMessage(
             return this;
         }
 
+        public Builder messageEffectId(String messageEffectId) {
+            this.messageEffectId = messageEffectId;
+            return this;
+        }
+
         public Builder replyParameters(ReplyParameters replyParameters) {
             this.replyParameters = replyParameters;
             return this;
@@ -126,7 +135,7 @@ public record SendMessage(
         }
 
         public SendMessage build() {
-            return new SendMessage(this.businessConnectionId, this.chatId, this.messageThreadId, this.text, this.parseMode, this.entities, this.linkPreviewOptions, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
+            return new SendMessage(this.businessConnectionId, this.chatId, this.messageThreadId, this.text, this.parseMode, this.entities, this.linkPreviewOptions, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
         }
     }
 

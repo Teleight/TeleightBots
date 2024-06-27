@@ -31,6 +31,9 @@ public record SendDice(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "message_effect_id")
+        String messageEffectId,
+
         @JsonProperty(value = "reply_parameters")
         @Nullable
         ReplyParameters replyParameters,
@@ -61,6 +64,7 @@ public record SendDice(
         private String emoji;
         private boolean disableNotification;
         private boolean protectContent;
+        private String messageEffectId;
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
@@ -93,6 +97,11 @@ public record SendDice(
             return this;
         }
 
+        public Builder messageEffectId(String messageEffectId) {
+            this.messageEffectId = messageEffectId;
+            return this;
+        }
+
         public Builder replyParameters(ReplyParameters replyParameters) {
             this.replyParameters = replyParameters;
             return this;
@@ -104,7 +113,7 @@ public record SendDice(
         }
 
         public SendDice build() {
-            return new SendDice(this.businessConnectionId, this.chatId, this.messageThreadId, this.emoji, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
+            return new SendDice(this.businessConnectionId, this.chatId, this.messageThreadId, this.emoji, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
         }
     }
 }

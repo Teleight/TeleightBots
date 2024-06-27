@@ -24,7 +24,7 @@ public record InlineQueryResultCachedSticker(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_CACHED_STICKER;
+        return InlineQueryResultType.CACHED_STICKER;
     }
 
 }

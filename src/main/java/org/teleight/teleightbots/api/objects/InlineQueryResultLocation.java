@@ -53,7 +53,7 @@ public record InlineQueryResultLocation(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_LOCATION;
+        return InlineQueryResultType.LOCATION;
     }
 
 }

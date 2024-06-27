@@ -33,6 +33,9 @@ public record InlineQueryResultCachedVideo(
         @Nullable
         MessageEntity[] captionEntities,
 
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
+
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup,
@@ -44,7 +47,7 @@ public record InlineQueryResultCachedVideo(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_VIDEO;
+        return InlineQueryResultType.VIDEO;
     }
 
 }

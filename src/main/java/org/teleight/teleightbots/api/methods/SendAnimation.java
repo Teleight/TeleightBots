@@ -54,6 +54,9 @@ public record SendAnimation(
         @Nullable
         MessageEntity[] captionEntities,
 
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
+
         @JsonProperty(value = "has_spoiler")
         boolean hasSpoiler,
 
@@ -62,6 +65,9 @@ public record SendAnimation(
 
         @JsonProperty(value = "protect_content")
         boolean protectContent,
+
+        @JsonProperty(value = "message_effect_id")
+        String messageEffectId,
 
         @JsonProperty(value = "reply_parameters")
         @Nullable
@@ -94,9 +100,11 @@ public record SendAnimation(
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
         parameters.put("caption_entities", captionEntities);
+        parameters.put("show_caption_above_media", showCaptionAboveMedia);
         parameters.put("has_spoiler", hasSpoiler);
         parameters.put("disable_notification", disableNotification);
         parameters.put("protect_content", protectContent);
+        parameters.put("message_effect_id", messageEffectId);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
@@ -122,9 +130,11 @@ public record SendAnimation(
         private String caption;
         private ParseMode parseMode;
         private MessageEntity[] captionEntities;
+        private boolean showCaptionAboveMedia;
         private boolean hasSpoiler;
         private boolean disableNotification;
         private boolean protectContent;
+        private String messageEffectId;
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
@@ -178,6 +188,11 @@ public record SendAnimation(
             return this;
         }
 
+        public Builder showCaptionAboveMedia(boolean showCaptionAboveMedia) {
+            this.showCaptionAboveMedia = showCaptionAboveMedia;
+            return this;
+        }
+
         public Builder hasSpoiler(boolean hasSpoiler) {
             this.hasSpoiler = hasSpoiler;
             return this;
@@ -193,6 +208,11 @@ public record SendAnimation(
             return this;
         }
 
+        public Builder messageEffectId(String messageEffectId) {
+            this.messageEffectId = messageEffectId;
+            return this;
+        }
+
         public Builder replyParameters(ReplyParameters replyParameters) {
             this.replyParameters = replyParameters;
             return this;
@@ -204,7 +224,7 @@ public record SendAnimation(
         }
 
         public SendAnimation build() {
-            return new SendAnimation(this.businessConnectionId, this.chatId, this.messageThreadId, this.animation, this.duration, this.width, this.height, this.thumbnail, this.caption, this.parseMode, this.captionEntities, this.hasSpoiler, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
+            return new SendAnimation(this.businessConnectionId, this.chatId, this.messageThreadId, this.animation, this.duration, this.width, this.height, this.thumbnail, this.caption, this.parseMode, this.captionEntities, this.showCaptionAboveMedia, this.hasSpoiler, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
         }
     }
 

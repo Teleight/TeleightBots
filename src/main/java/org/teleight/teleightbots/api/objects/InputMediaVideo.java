@@ -4,33 +4,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public record InputMediaPhoto(
+public record InputMediaVideo(
         @JsonProperty(value = "media", required = true)
         @NotNull
-        InputFile media,
+        String media,
 
-        @JsonProperty(value = "caption")
+        @JsonProperty("thumbnail")
+        @Nullable
+        InputFile thumbnail,
+
+        @JsonProperty("caption")
         @Nullable
         String caption,
 
-        @JsonProperty(value = "parse_mode")
+        @JsonProperty("parse_mode")
         @Nullable
         ParseMode parseMode,
 
-        @JsonProperty(value = "caption_entities")
+        @JsonProperty("caption_entities")
         @Nullable
         MessageEntity[] captionEntities,
 
         @JsonProperty("show_caption_above_media")
         boolean showCaptionAboveMedia,
 
-        @JsonProperty(value = "has_spoiler")
+        @JsonProperty("width")
+        int width,
+
+        @JsonProperty("height")
+        int height,
+
+        @JsonProperty("duration")
+        int duration,
+
+        @JsonProperty("supports_streaming")
+        boolean supportStreaming,
+
+        @JsonProperty("has_spoiler")
         boolean hasSpoiler
 ) implements InputMedia {
 
     @Override
     public InputMediaType type() {
-        return InputMediaType.PHOTO;
+        return InputMediaType.VIDEO;
     }
 
 }

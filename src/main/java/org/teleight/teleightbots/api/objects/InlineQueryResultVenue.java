@@ -60,7 +60,7 @@ public record InlineQueryResultVenue(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_VENUE;
+        return InlineQueryResultType.VENUE;
     }
 
 }

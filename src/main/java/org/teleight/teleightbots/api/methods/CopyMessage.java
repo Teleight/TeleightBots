@@ -36,6 +36,9 @@ public record CopyMessage(
         @Nullable
         MessageEntity[] captionEntities,
 
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
+
         @JsonProperty(value = "disable_notification")
         boolean disableNotification,
 
@@ -68,6 +71,7 @@ public record CopyMessage(
         private String caption;
         private ParseMode parseMode;
         private MessageEntity[] captionEntities;
+        private boolean showCaptionAboveMedia;
         private boolean disableNotification;
         private boolean protectContent;
         private ReplyParameters replyParameters;
@@ -99,6 +103,11 @@ public record CopyMessage(
             return this;
         }
 
+        public Builder showCaptionAboveMedia(boolean showCaptionAboveMedia) {
+            this.showCaptionAboveMedia = showCaptionAboveMedia;
+            return this;
+        }
+
         public Builder disableNotification(boolean disableNotification) {
             this.disableNotification = disableNotification;
             return this;
@@ -120,7 +129,7 @@ public record CopyMessage(
         }
 
         public CopyMessage build() {
-            return new CopyMessage(this.chatId, this.messageThreadId, this.fromChatId, this.messageId, this.caption, this.parseMode, this.captionEntities, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
+            return new CopyMessage(this.chatId, this.messageThreadId, this.fromChatId, this.messageId, this.caption, this.parseMode, this.captionEntities, this.showCaptionAboveMedia, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
         }
     }
 }

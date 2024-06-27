@@ -80,6 +80,9 @@ public record SendPoll(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "message_effect_id")
+        String messageEffectId,
+
         @JsonProperty(value = "reply_parameters")
         @Nullable
         ReplyParameters replyParameters,
@@ -123,6 +126,7 @@ public record SendPoll(
         private boolean isClosed;
         private boolean disableNotification;
         private boolean protectContent;
+        private String messageEffectId;
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
@@ -212,6 +216,11 @@ public record SendPoll(
             return this;
         }
 
+        public Builder messageEffectId(String messageEffectId) {
+            this.messageEffectId = messageEffectId;
+            return this;
+        }
+
         public Builder replyParameters(ReplyParameters replyParameters) {
             this.replyParameters = replyParameters;
             return this;
@@ -223,7 +232,7 @@ public record SendPoll(
         }
 
         public SendPoll build() {
-            return new SendPoll(this.businessConnectionId, this.chatId, this.messageThreadId, this.question, this.questionParseMode, this.questionEntities, this.options, this.isAnonymous, this.type, this.allowsMultipleAnswers, this.correctOptionId, this.explanation, this.explanationParseMode, this.explanationEntities, this.openPeriod, this.closeDate, this.isClosed, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
+            return new SendPoll(this.businessConnectionId, this.chatId, this.messageThreadId, this.question, this.questionParseMode, this.questionEntities, this.options, this.isAnonymous, this.type, this.allowsMultipleAnswers, this.correctOptionId, this.explanation, this.explanationParseMode, this.explanationEntities, this.openPeriod, this.closeDate, this.isClosed, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
         }
     }
 }
