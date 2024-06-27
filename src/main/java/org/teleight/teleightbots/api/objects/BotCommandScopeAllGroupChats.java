@@ -2,7 +2,7 @@ package org.teleight.teleightbots.api.objects;
 
 import org.jetbrains.annotations.NotNull;
 
-record BotCommandScopeAllGroupChats() implements BotCommandScope {
+public record BotCommandScopeAllGroupChats() implements BotCommandScope {
 
     @Override
     public @NotNull BotCommandScope.BotCommandScopeType type() {

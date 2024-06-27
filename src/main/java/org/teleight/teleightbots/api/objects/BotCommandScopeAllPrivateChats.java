@@ -3,7 +3,7 @@ package org.teleight.teleightbots.api.objects;
 
 import org.jetbrains.annotations.NotNull;
 
-record BotCommandScopeAllPrivateChats() implements BotCommandScope {
+public record BotCommandScopeAllPrivateChats() implements BotCommandScope {
 
     @Override
     public @NotNull BotCommandScope.BotCommandScopeType type() {
