@@ -22,7 +22,7 @@ public record CopyMessage(
         String fromChatId,
 
         @JsonProperty(value = "message_id", required = true)
-        long messageId,
+        int messageId,
 
         @JsonProperty(value = "caption")
         @Nullable
@@ -35,6 +35,9 @@ public record CopyMessage(
         @JsonProperty(value = "caption_entities")
         @Nullable
         MessageEntity[] captionEntities,
+
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
 
         @JsonProperty(value = "disable_notification")
         boolean disableNotification,
@@ -51,7 +54,7 @@ public record CopyMessage(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
 
-    public static Builder ofBuilder(String chatId, String fromChatId, long messageId) {
+    public static Builder ofBuilder(String chatId, String fromChatId, int messageId) {
         return new CopyMessage.Builder(chatId, fromChatId, messageId);
     }
 
@@ -64,16 +67,17 @@ public record CopyMessage(
         private final String chatId;
         private int messageThreadId;
         private final String fromChatId;
-        private final long messageId;
+        private final int messageId;
         private String caption;
         private ParseMode parseMode;
         private MessageEntity[] captionEntities;
+        private boolean showCaptionAboveMedia;
         private boolean disableNotification;
         private boolean protectContent;
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
-        Builder(String chatId, String fromChatId, long messageId) {
+        Builder(String chatId, String fromChatId, int messageId) {
             this.chatId = chatId;
             this.fromChatId = fromChatId;
             this.messageId = messageId;
@@ -99,6 +103,11 @@ public record CopyMessage(
             return this;
         }
 
+        public Builder showCaptionAboveMedia(boolean showCaptionAboveMedia) {
+            this.showCaptionAboveMedia = showCaptionAboveMedia;
+            return this;
+        }
+
         public Builder disableNotification(boolean disableNotification) {
             this.disableNotification = disableNotification;
             return this;
@@ -120,7 +129,7 @@ public record CopyMessage(
         }
 
         public CopyMessage build() {
-            return new CopyMessage(this.chatId, this.messageThreadId, this.fromChatId, this.messageId, this.caption, this.parseMode, this.captionEntities, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
+            return new CopyMessage(this.chatId, this.messageThreadId, this.fromChatId, this.messageId, this.caption, this.parseMode, this.captionEntities, this.showCaptionAboveMedia, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
         }
     }
 }

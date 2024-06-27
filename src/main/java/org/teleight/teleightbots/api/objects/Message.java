@@ -101,6 +101,10 @@ public record Message(
         @Nullable
         LinkPreviewOptions linkPreviewOptions,
 
+        @JsonProperty("effect_id")
+        @Nullable
+        String effectId,
+
         @JsonProperty("animation")
         @Nullable
         Animation animation,
@@ -144,6 +148,9 @@ public record Message(
         @JsonProperty("caption_entities")
         @Nullable
         MessageEntity[] captionEntities,
+
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
 
         @JsonProperty("has_media_spoiler")
         boolean hasMediaSpoiler,

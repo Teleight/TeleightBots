@@ -40,7 +40,7 @@ public record InlineQueryResultCachedVoice(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_VOICE;
+        return InlineQueryResultType.VOICE;
     }
 
 }

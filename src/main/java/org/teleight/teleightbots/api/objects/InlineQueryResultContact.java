@@ -46,7 +46,7 @@ public record InlineQueryResultContact(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_CONTACT;
+        return InlineQueryResultType.CONTACT;
     }
 
 }

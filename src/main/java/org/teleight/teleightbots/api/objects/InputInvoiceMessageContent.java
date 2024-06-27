@@ -15,7 +15,8 @@ public record InputInvoiceMessageContent(
         @JsonProperty(value = "payload", required = true)
         String payload,
 
-        @JsonProperty(value = "provider_token", required = true)
+        @JsonProperty(value = "provider_token")
+        @Nullable
         String providerToken,
 
         @JsonProperty(value = "currency", required = true)

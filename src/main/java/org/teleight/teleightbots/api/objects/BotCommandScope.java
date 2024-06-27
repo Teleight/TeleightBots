@@ -25,7 +25,7 @@ public sealed interface BotCommandScope extends ApiResult permits
         ALL_CHAT_ADMINS("all_chat_administrators", BotCommandScopeAllChatAdministrators.class),
         CHAT("chat", BotCommandScopeChat.class),
         CHAT_ADMINS("chat_administrators", BotCommandScopeChatAdministrators.class),
-        CHAT_MEMBER("chat_member", BotCommandScopeChatMember.class),;
+        CHAT_MEMBER("chat_member", BotCommandScopeChatMember.class);
 
         private final String fieldValue;
         private final Class<? extends BotCommandScope> wrapperClass;

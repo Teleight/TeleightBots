@@ -3,7 +3,7 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 
-record BotCommandScopeChatAdministrators(
+public record BotCommandScopeChatAdministrators(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId

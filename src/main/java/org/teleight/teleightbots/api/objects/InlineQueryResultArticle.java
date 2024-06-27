@@ -45,7 +45,7 @@ public record InlineQueryResultArticle(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_ARTICLE;
+        return InlineQueryResultType.ARTICLE;
     }
 
 }

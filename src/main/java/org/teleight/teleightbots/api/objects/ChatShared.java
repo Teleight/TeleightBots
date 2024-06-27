@@ -11,7 +11,7 @@ public record ChatShared(
 
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
-        Long chatId,
+        String chatId,
 
         @JsonProperty(value = "title")
         @Nullable

@@ -20,7 +20,7 @@ public record InlineQueryResultGame(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_GAME;
+        return InlineQueryResultType.GAME;
     }
 
 }

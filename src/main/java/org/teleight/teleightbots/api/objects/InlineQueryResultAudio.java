@@ -51,7 +51,7 @@ public record InlineQueryResultAudio(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_AUDIO;
+        return InlineQueryResultType.AUDIO;
     }
 
     public static final class Builder {

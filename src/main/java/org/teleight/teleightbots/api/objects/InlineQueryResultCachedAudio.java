@@ -36,7 +36,7 @@ public record InlineQueryResultCachedAudio(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_PHOTO;
+        return InlineQueryResultType.PHOTO;
     }
 
 }

@@ -57,6 +57,9 @@ public record SendVenue(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "message_effect_id")
+        String messageEffectId,
+
         @JsonProperty(value = "reply_parameters")
         @Nullable
         ReplyParameters replyParameters,
@@ -94,6 +97,7 @@ public record SendVenue(
         private String googlePlaceType;
         private boolean disableNotification;
         private boolean protectContent;
+        private String messageEffectId;
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
@@ -145,6 +149,11 @@ public record SendVenue(
             return this;
         }
 
+        public Builder messageEffectId(String messageEffectId) {
+            this.messageEffectId = messageEffectId;
+            return this;
+        }
+
         public Builder replyParameters(ReplyParameters replyParameters) {
             this.replyParameters = replyParameters;
             return this;
@@ -156,7 +165,7 @@ public record SendVenue(
         }
 
         public SendVenue build() {
-            return new SendVenue(this.businessConnectionId, this.chatId, this.messageThreadId, this.latitude, this.longitude, this.title, this.address, this.foursquareId, this.foursquareType, this.googlePlaceId, this.googlePlaceType, this.disableNotification, this.protectContent, this.replyParameters, this.replyMarkup);
+            return new SendVenue(this.businessConnectionId, this.chatId, this.messageThreadId, this.latitude, this.longitude, this.title, this.address, this.foursquareId, this.foursquareType, this.googlePlaceId, this.googlePlaceType, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
         }
     }
 }

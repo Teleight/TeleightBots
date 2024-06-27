@@ -37,6 +37,9 @@ public record InlineQueryResultVideo(
         @Nullable
         MessageEntity[] captionEntities,
 
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
+
         @JsonProperty(value = "video_width")
         int videoWidth,
 
@@ -61,7 +64,7 @@ public record InlineQueryResultVideo(
 
     @Override
     public InlineQueryResultType type() {
-        return InlineQueryResultType.INLINE_QUERY_RESULT_VIDEO;
+        return InlineQueryResultType.VIDEO;
     }
 
 }

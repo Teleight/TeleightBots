@@ -3,13 +3,8 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiResult;
 
 public record InputMediaPhoto(
-        @JsonProperty(value = "type", required = true)
-        @NotNull
-        String type,
-
         @JsonProperty(value = "media", required = true)
         @NotNull
         InputFile media,
@@ -26,7 +21,16 @@ public record InputMediaPhoto(
         @Nullable
         MessageEntity[] captionEntities,
 
+        @JsonProperty("show_caption_above_media")
+        boolean showCaptionAboveMedia,
+
         @JsonProperty(value = "has_spoiler")
         boolean hasSpoiler
-) implements ApiResult, InputMedia {
+) implements InputMedia {
+
+    @Override
+    public InputMediaType type() {
+        return InputMediaType.PHOTO;
+    }
+
 }
