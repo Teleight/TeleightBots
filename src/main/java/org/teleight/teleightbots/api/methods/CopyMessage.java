@@ -22,7 +22,7 @@ public record CopyMessage(
         String fromChatId,
 
         @JsonProperty(value = "message_id", required = true)
-        long messageId,
+        int messageId,
 
         @JsonProperty(value = "caption")
         @Nullable
@@ -54,7 +54,7 @@ public record CopyMessage(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
 
-    public static Builder ofBuilder(String chatId, String fromChatId, long messageId) {
+    public static Builder ofBuilder(String chatId, String fromChatId, int messageId) {
         return new CopyMessage.Builder(chatId, fromChatId, messageId);
     }
 
@@ -67,7 +67,7 @@ public record CopyMessage(
         private final String chatId;
         private int messageThreadId;
         private final String fromChatId;
-        private final long messageId;
+        private final int messageId;
         private String caption;
         private ParseMode parseMode;
         private MessageEntity[] captionEntities;
@@ -77,7 +77,7 @@ public record CopyMessage(
         private ReplyParameters replyParameters;
         private ReplyKeyboard replyMarkup;
 
-        Builder(String chatId, String fromChatId, long messageId) {
+        Builder(String chatId, String fromChatId, int messageId) {
             this.chatId = chatId;
             this.fromChatId = fromChatId;
             this.messageId = messageId;

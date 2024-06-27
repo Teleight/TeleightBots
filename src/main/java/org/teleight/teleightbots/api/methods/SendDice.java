@@ -10,7 +10,7 @@ import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 public record SendDice(
-        @JsonProperty(value = "business_connection_id")
+        @JsonProperty("business_connection_id")
         @Nullable
         String businessConnectionId,
 
@@ -18,27 +18,28 @@ public record SendDice(
         @NotNull
         String chatId,
 
-        @JsonProperty(value = "message_thread_id")
+        @JsonProperty("message_thread_id")
         int messageThreadId,
 
-        @JsonProperty(value = "emoji")
+        @JsonProperty("emoji")
         @Nullable
         String emoji,
 
-        @JsonProperty(value = "disable_notification")
+        @JsonProperty("disable_notification")
         boolean disableNotification,
 
-        @JsonProperty(value = "protect_content")
+        @JsonProperty("protect_content")
         boolean protectContent,
 
-        @JsonProperty(value = "message_effect_id")
+        @JsonProperty("message_effect_id")
+        @Nullable
         String messageEffectId,
 
-        @JsonProperty(value = "reply_parameters")
+        @JsonProperty("reply_parameters")
         @Nullable
         ReplyParameters replyParameters,
 
-        @JsonProperty(value = "reply_markup")
+        @JsonProperty("reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Dice> {
