@@ -1,10 +1,14 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetMyName(
         @JsonProperty(value = "name")
         @Nullable
@@ -15,31 +19,9 @@ public record SetMyName(
         String languageCode
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder() {
-        return new SetMyName.Builder();
-    }
-
     @Override
     public @NotNull String getEndpointURL() {
         return "setMyName";
     }
 
-    public static class Builder {
-        private String name;
-        private String languageCode;
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder languageCode(String languageCode) {
-            this.languageCode = languageCode;
-            return this;
-        }
-
-        public SetMyName build() {
-            return new SetMyName(this.name, this.languageCode);
-        }
-    }
 }

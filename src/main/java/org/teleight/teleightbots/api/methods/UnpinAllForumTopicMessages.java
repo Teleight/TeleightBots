@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record UnpinAllForumTopicMessages(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -13,8 +17,8 @@ public record UnpinAllForumTopicMessages(
         int messageThreadId
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, int messageThreadId) {
-        return new UnpinAllForumTopicMessages.Builder(chatId, messageThreadId);
+    public static @NotNull Builder ofBuilder(String chatId, int messageThreadId) {
+        return new UnpinAllForumTopicMessages.Builder().chatId(chatId).messageThreadId(messageThreadId);
     }
 
     @Override
@@ -22,17 +26,4 @@ public record UnpinAllForumTopicMessages(
         return "unpinAllForumTopicMessages";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final int messageThreadId;
-
-        Builder(String chatId, int messageThreadId) {
-            this.chatId = chatId;
-            this.messageThreadId = messageThreadId;
-        }
-
-        public UnpinAllForumTopicMessages build() {
-            return new UnpinAllForumTopicMessages(this.chatId, this.messageThreadId);
-        }
-    }
 }

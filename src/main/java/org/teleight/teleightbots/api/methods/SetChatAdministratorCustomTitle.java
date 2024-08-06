@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetChatAdministratorCustomTitle(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -17,8 +21,8 @@ public record SetChatAdministratorCustomTitle(
         String customTitle
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, long userId, String customTitle) {
-        return new SetChatAdministratorCustomTitle.Builder(chatId, userId, customTitle);
+    public static @NotNull Builder ofBuilder(String chatId, long userId, String customTitle) {
+        return new SetChatAdministratorCustomTitle.Builder().chatId(chatId).userId(userId).customTitle(customTitle);
     }
 
     @Override
@@ -26,19 +30,4 @@ public record SetChatAdministratorCustomTitle(
         return "setChatAdministratorCustomTitle";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final long userId;
-        private final String customTitle;
-
-        Builder(String chatId, long userId, String customTitle) {
-            this.chatId = chatId;
-            this.userId = userId;
-            this.customTitle = customTitle;
-        }
-
-        public SetChatAdministratorCustomTitle build() {
-            return new SetChatAdministratorCustomTitle(this.chatId, this.userId, this.customTitle);
-        }
-    }
 }

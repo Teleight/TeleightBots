@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMultiResponse;
@@ -11,6 +13,8 @@ import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import java.io.Serializable;
 import java.util.List;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record EditMessageLiveLocation(
         @JsonProperty(value = "chat_id")
         @Nullable
@@ -46,8 +50,8 @@ public record EditMessageLiveLocation(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMultiResponse {
 
-    public static Builder ofBuilder(float latitude, float longitude) {
-        return new EditMessageLiveLocation.Builder(latitude, longitude);
+    public static @NotNull Builder ofBuilder(float latitude, float longitude) {
+        return new EditMessageLiveLocation.Builder().latitude(latitude).longitude(longitude);
     }
 
     @Override
@@ -60,66 +64,4 @@ public record EditMessageLiveLocation(
         return "editMessageLiveLocation";
     }
 
-    public static class Builder {
-        private String chatId;
-        private int messageId;
-        private String inlineMessageId;
-        private final float latitude;
-        private final float longitude;
-        private LivePeriod livePeriod;
-        private float horizontalAccuracy;
-        private int heading;
-        private int proximityAlertRadius;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(float latitude, float longitude) {
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
-
-        public Builder chatId(String chatId) {
-            this.chatId = chatId;
-            return this;
-        }
-
-        public Builder messageId(int messageId) {
-            this.messageId = messageId;
-            return this;
-        }
-
-        public Builder inlineMessageId(String inlineMessageId) {
-            this.inlineMessageId = inlineMessageId;
-            return this;
-        }
-
-        public Builder livePeriod(LivePeriod livePeriod) {
-            this.livePeriod = livePeriod;
-            return this;
-        }
-
-        public Builder horizontalAccuracy(float horizontalAccuracy) {
-            this.horizontalAccuracy = horizontalAccuracy;
-            return this;
-        }
-
-        public Builder heading(int heading) {
-            this.heading = heading;
-            return this;
-        }
-
-        public Builder proximityAlertRadius(int proximityAlertRadius) {
-            this.proximityAlertRadius = proximityAlertRadius;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public EditMessageLiveLocation build() {
-            return new EditMessageLiveLocation(this.chatId, this.messageId, this.inlineMessageId, this.latitude, this.longitude, this.livePeriod, this.horizontalAccuracy, this.heading, this.proximityAlertRadius, this.replyMarkup);
-        }
-
-    }
 }

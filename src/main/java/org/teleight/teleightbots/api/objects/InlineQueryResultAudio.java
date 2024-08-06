@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record InlineQueryResultAudio(
         @JsonProperty(value = "id", required = true)
         @NotNull
@@ -46,7 +50,7 @@ public record InlineQueryResultAudio(
 ) implements InlineQueryResult {
 
     public static @NotNull Builder ofBuilder(String id, String audioUrl, String title) {
-        return new InlineQueryResultAudio.Builder(id, audioUrl, title);
+        return new InlineQueryResultAudio.Builder().id(id).audioUrl(audioUrl).title(title);
     }
 
     @Override
@@ -54,72 +58,4 @@ public record InlineQueryResultAudio(
         return InlineQueryResultType.AUDIO;
     }
 
-    public static final class Builder {
-        private final String id;
-        private final String audioUrl;
-        private final String title;
-        private String caption;
-        private ParseMode parseMode;
-        private MessageEntity[] captionEntities;
-        private String performer;
-        private int audioDuration;
-        private ReplyKeyboard replyMarkup;
-        private InputMessageContent inputMessageContent;
-
-        public Builder(String id, String audioUrl, String title) {
-            this.id = id;
-            this.audioUrl = audioUrl;
-            this.title = title;
-        }
-
-        public @NotNull Builder caption(@Nullable String caption) {
-            this.caption = caption;
-            return this;
-        }
-
-        public @NotNull Builder parseMode(@Nullable ParseMode parseMode) {
-            this.parseMode = parseMode;
-            return this;
-        }
-
-        public @NotNull Builder captionEntities(@Nullable MessageEntity... captionEntities) {
-            this.captionEntities = captionEntities;
-            return this;
-        }
-
-        public @NotNull Builder performer(@Nullable String performer) {
-            this.performer = performer;
-            return this;
-        }
-
-        public @NotNull Builder audioDuration(int audioDuration) {
-            this.audioDuration = audioDuration;
-            return this;
-        }
-
-        public @NotNull Builder replyMarkup(@Nullable ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public @NotNull Builder inputMessageContent(@Nullable InputMessageContent inputMessageContent) {
-            this.inputMessageContent = inputMessageContent;
-            return this;
-        }
-
-        public @NotNull InlineQueryResultAudio build() {
-            return new InlineQueryResultAudio(
-                    this.id,
-                    this.audioUrl,
-                    this.title,
-                    this.caption,
-                    this.parseMode,
-                    this.captionEntities,
-                    this.performer,
-                    this.audioDuration,
-                    this.replyMarkup,
-                    this.inputMessageContent
-            );
-        }
-    }
 }

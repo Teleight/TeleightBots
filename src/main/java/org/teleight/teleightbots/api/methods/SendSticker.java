@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
@@ -11,6 +13,8 @@ import org.teleight.teleightbots.api.objects.ReplyParameters;
 import java.util.HashMap;
 import java.util.Map;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SendSticker(
         @JsonProperty(value = "business_connection_id")
         @Nullable
@@ -49,8 +53,8 @@ public record SendSticker(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder ofBuilder(String chatId, InputFile document) {
-        return new SendSticker.Builder(chatId, document);
+    public static @NotNull Builder ofBuilder(String chatId, InputFile sticker) {
+        return new SendSticker.Builder().chatId(chatId).sticker(sticker);
     }
 
     @Override
@@ -80,65 +84,4 @@ public record SendSticker(
         return files;
     }
 
-    public static class Builder {
-        private String businessConnectionId;
-        private final String chatId;
-        private int messageThreadId;
-        private final InputFile sticker;
-        private String emoji;
-        private boolean disableNotification;
-        private boolean protectContent;
-        private String messageEffectId;
-        private ReplyParameters replyParameters;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(String chatId, InputFile sticker) {
-            this.chatId = chatId;
-            this.sticker = sticker;
-        }
-
-        public Builder businessConnectionId(String businessConnectionId) {
-            this.businessConnectionId = businessConnectionId;
-            return this;
-        }
-
-        public Builder messageThreadId(int messageThreadId) {
-            this.messageThreadId = messageThreadId;
-            return this;
-        }
-
-        public Builder emoji(String emoji) {
-            this.emoji = emoji;
-            return this;
-        }
-
-        public Builder disableNotification(boolean disableNotification) {
-            this.disableNotification = disableNotification;
-            return this;
-        }
-
-        public Builder protectContent(boolean protectContent) {
-            this.protectContent = protectContent;
-            return this;
-        }
-
-        public Builder messageEffectId(String messageEffectId) {
-            this.messageEffectId = messageEffectId;
-            return this;
-        }
-
-        public Builder replyParameters(ReplyParameters replyParameters) {
-            this.replyParameters = replyParameters;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public SendSticker build() {
-            return new SendSticker(this.businessConnectionId, this.chatId, this.messageThreadId, this.sticker, this.emoji, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
-        }
-    }
 }

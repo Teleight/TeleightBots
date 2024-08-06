@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
@@ -9,6 +11,8 @@ import org.teleight.teleightbots.api.objects.BotCommandScope;
 
 import java.util.List;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetMyCommands(
         @JsonProperty(value = "commands", required = true)
         @NotNull
@@ -23,8 +27,8 @@ public record SetMyCommands(
         String languageCode
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(List<BotCommand> commands) {
-        return new SetMyCommands.Builder(commands);
+    public static @NotNull Builder ofBuilder(List<BotCommand> commands) {
+        return new SetMyCommands.Builder().commands(commands);
     }
 
     @Override
@@ -32,27 +36,4 @@ public record SetMyCommands(
         return "setMyCommands";
     }
 
-    public static class Builder {
-        private final List<BotCommand> commands;
-        private BotCommandScope scope;
-        private String languageCode;
-
-        Builder(List<BotCommand> commands) {
-            this.commands = commands;
-        }
-
-        public Builder scope(@Nullable BotCommandScope scope) {
-            this.scope = scope;
-            return this;
-        }
-
-        public Builder languageCode(@Nullable String languageCode) {
-            this.languageCode = languageCode;
-            return this;
-        }
-
-        public SetMyCommands build() {
-            return new SetMyCommands(this.commands, this.scope, this.languageCode);
-        }
-    }
 }

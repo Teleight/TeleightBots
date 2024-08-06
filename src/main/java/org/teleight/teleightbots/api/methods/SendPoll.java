@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
@@ -12,6 +14,8 @@ import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SendPoll(
         @JsonProperty(value = "business_connection_id")
         @Nullable
@@ -92,8 +96,8 @@ public record SendPoll(
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Poll> {
 
-    public static Builder ofBuilder(String chatId, String question, InputPollOption[] options) {
-        return new SendPoll.Builder(chatId, question, options);
+    public static @NotNull Builder ofBuilder(String chatId, String question, InputPollOption[] options) {
+        return new SendPoll.Builder().chatId(chatId).question(question).options(options);
     }
 
     @Override
@@ -106,133 +110,4 @@ public record SendPoll(
         return deserializeResponse(answer, Poll.class);
     }
 
-    public static class Builder {
-        private String businessConnectionId;
-        private final String chatId;
-        private int messageThreadId;
-        private final String question;
-        private ParseMode questionParseMode;
-        private MessageEntity[] questionEntities;
-        private final InputPollOption[] options;
-        private boolean isAnonymous;
-        private String type;
-        private boolean allowsMultipleAnswers;
-        private int correctOptionId;
-        private String explanation;
-        private ParseMode explanationParseMode;
-        private MessageEntity[] explanationEntities;
-        private int openPeriod;
-        private int closeDate;
-        private boolean isClosed;
-        private boolean disableNotification;
-        private boolean protectContent;
-        private String messageEffectId;
-        private ReplyParameters replyParameters;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(String chatId, String question, InputPollOption[] options) {
-            this.chatId = chatId;
-            this.question = question;
-            this.options = options;
-        }
-
-        public Builder questionParseMode(ParseMode questionParseMode) {
-            this.questionParseMode = questionParseMode;
-            return this;
-        }
-
-        public Builder questionEntities(MessageEntity[] questionEntities) {
-            this.questionEntities = questionEntities;
-            return this;
-        }
-
-        public Builder businessConnectionId(String businessConnectionId) {
-            this.businessConnectionId = businessConnectionId;
-            return this;
-        }
-
-        public Builder messageThreadId(int messageThreadId) {
-            this.messageThreadId = messageThreadId;
-            return this;
-        }
-
-        public Builder isAnonymous(boolean isAnonymous) {
-            this.isAnonymous = isAnonymous;
-            return this;
-        }
-
-        public Builder type(String type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder allowsMultipleAnswers(boolean allowsMultipleAnswers) {
-            this.allowsMultipleAnswers = allowsMultipleAnswers;
-            return this;
-        }
-
-        public Builder correctOptionId(int correctOptionId) {
-            this.correctOptionId = correctOptionId;
-            return this;
-        }
-
-        public Builder explanation(String explanation) {
-            this.explanation = explanation;
-            return this;
-        }
-
-        public Builder explanationParseMode(ParseMode explanationParseMode) {
-            this.explanationParseMode = explanationParseMode;
-            return this;
-        }
-
-        public Builder explanationEntities(MessageEntity[] explanationEntities) {
-            this.explanationEntities = explanationEntities;
-            return this;
-        }
-
-        public Builder openPeriod(int openPeriod) {
-            this.openPeriod = openPeriod;
-            return this;
-        }
-
-        public Builder closeDate(int closeDate) {
-            this.closeDate = closeDate;
-            return this;
-        }
-
-        public Builder isClosed(boolean isClosed) {
-            this.isClosed = isClosed;
-            return this;
-        }
-
-        public Builder disableNotification(boolean disableNotification) {
-            this.disableNotification = disableNotification;
-            return this;
-        }
-
-        public Builder protectContent(boolean protectContent) {
-            this.protectContent = protectContent;
-            return this;
-        }
-
-        public Builder messageEffectId(String messageEffectId) {
-            this.messageEffectId = messageEffectId;
-            return this;
-        }
-
-        public Builder replyParameters(ReplyParameters replyParameters) {
-            this.replyParameters = replyParameters;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public SendPoll build() {
-            return new SendPoll(this.businessConnectionId, this.chatId, this.messageThreadId, this.question, this.questionParseMode, this.questionEntities, this.options, this.isAnonymous, this.type, this.allowsMultipleAnswers, this.correctOptionId, this.explanation, this.explanationParseMode, this.explanationEntities, this.openPeriod, this.closeDate, this.isClosed, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
-        }
-    }
 }

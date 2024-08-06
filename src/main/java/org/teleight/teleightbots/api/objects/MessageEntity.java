@@ -1,10 +1,14 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record MessageEntity(
         @JsonProperty(value = "type", required = true)
         String type,
@@ -33,46 +37,7 @@ public record MessageEntity(
 ) implements ApiResult {
 
     public static @NotNull Builder ofBuilder(String type, int offset, int length) {
-        return new MessageEntity.Builder(type, offset, length);
+        return new MessageEntity.Builder().type(type).offset(offset).length(length);
     }
 
-    public static final class Builder {
-        private final String type;
-        private final int offset;
-        private final int length;
-        private String url;
-        private User user;
-        private String language;
-        private String customEmojiId;
-
-        public Builder(String type, int offset, int length) {
-            this.type = type;
-            this.offset = offset;
-            this.length = length;
-        }
-
-        public Builder url(String url) {
-            this.url = url;
-            return this;
-        }
-
-        public Builder user(User user) {
-            this.user = user;
-            return this;
-        }
-
-        public Builder language(String language) {
-            this.language = language;
-            return this;
-        }
-
-        public Builder customEmojiId(String customEmojiId) {
-            this.customEmojiId = customEmojiId;
-            return this;
-        }
-
-        public MessageEntity build() {
-            return new MessageEntity(this.type, this.offset, this.length, this.url, this.user, this.language, this.customEmojiId);
-        }
-    }
 }

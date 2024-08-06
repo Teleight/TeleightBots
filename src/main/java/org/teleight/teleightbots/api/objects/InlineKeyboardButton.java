@@ -2,6 +2,8 @@ package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
@@ -11,6 +13,8 @@ import org.teleight.teleightbots.menu.Menu;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record InlineKeyboardButton(
         @JsonProperty(value = "text", required = true)
         @NotNull
@@ -20,7 +24,7 @@ public record InlineKeyboardButton(
         @Nullable
         String url,
 
-        @JsonProperty("callback_data")
+        @JsonProperty(value = "callback_data")
         @Nullable
         String callbackData,
 
@@ -36,49 +40,9 @@ public record InlineKeyboardButton(
 ) implements ApiResult {
 
     public static @NotNull Builder ofBuilder(String text) {
-        return new InlineKeyboardButton.Builder(text);
-    }
-
-    public static final class Builder {
-        private final String text;
-        private String url;
-        private String callbackData = UUID.randomUUID().toString();
-        private WebAppInfo webApp;
-        private Menu destinationMenu;
-        private BiConsumer<ButtonPressEvent, User> callback;
-
-        public Builder(String text) {
-            this.text = text;
-        }
-
-        public @NotNull Builder url(@NotNull String url) {
-            this.url = url;
-            return this;
-        }
-
-        public @NotNull Builder callbackData(@NotNull String callbackData) {
-            this.callbackData = callbackData;
-            return this;
-        }
-
-        public @NotNull Builder webApp(@NotNull WebAppInfo webApp) {
-            this.webApp = webApp;
-            return this;
-        }
-
-        public @NotNull Builder destinationMenu(@NotNull Menu destinationMenu) {
-            this.destinationMenu = destinationMenu;
-            return this;
-        }
-
-        public @NotNull Builder callback(@NotNull BiConsumer<ButtonPressEvent, User> callback) {
-            this.callback = callback;
-            return this;
-        }
-
-        public @NotNull InlineKeyboardButton build() {
-            return new InlineKeyboardButton(text, url, callbackData, webApp, destinationMenu, callback);
-        }
+        return new InlineKeyboardButton.Builder()
+                .callbackData(UUID.randomUUID().toString())
+                .text(text);
     }
 
 }

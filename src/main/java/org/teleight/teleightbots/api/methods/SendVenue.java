@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
@@ -9,6 +11,8 @@ import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.api.objects.Venue;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SendVenue(
         @JsonProperty(value = "business_connection_id")
         @Nullable
@@ -69,8 +73,13 @@ public record SendVenue(
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Venue> {
 
-    public static Builder ofBuilder(String chatId, float latitude, float longitude, String title, String address) {
-        return new SendVenue.Builder(chatId, latitude, longitude, title, address);
+    public static @NotNull Builder ofBuilder(String chatId, float latitude, float longitude, String title, String address) {
+        return new SendVenue.Builder()
+                .chatId(chatId)
+                .latitude(latitude)
+                .longitude(longitude)
+                .title(title)
+                .address(address);
     }
 
     @Override
@@ -83,89 +92,4 @@ public record SendVenue(
         return deserializeResponse(answer, Venue.class);
     }
 
-    public static class Builder {
-        private String businessConnectionId;
-        private final String chatId;
-        private int messageThreadId;
-        private final float latitude;
-        private final float longitude;
-        private final String title;
-        private final String address;
-        private String foursquareId;
-        private String foursquareType;
-        private String googlePlaceId;
-        private String googlePlaceType;
-        private boolean disableNotification;
-        private boolean protectContent;
-        private String messageEffectId;
-        private ReplyParameters replyParameters;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(String chatId, float latitude, float longitude, String title, String address) {
-            this.chatId = chatId;
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.title = title;
-            this.address = address;
-        }
-
-        public Builder businessConnectionId(String businessConnectionId) {
-            this.businessConnectionId = businessConnectionId;
-            return this;
-        }
-
-        public Builder messageThreadId(int messageThreadId) {
-            this.messageThreadId = messageThreadId;
-            return this;
-        }
-
-        public Builder foursquareId(String foursquareId) {
-            this.foursquareId = foursquareId;
-            return this;
-        }
-
-        public Builder foursquareType(String foursquareType) {
-            this.foursquareType = foursquareType;
-            return this;
-        }
-
-        public Builder googlePlaceId(String googlePlaceId) {
-            this.googlePlaceId = googlePlaceId;
-            return this;
-        }
-
-        public Builder googlePlaceType(String googlePlaceType) {
-            this.googlePlaceType = googlePlaceType;
-            return this;
-        }
-
-        public Builder disableNotification(boolean disableNotification) {
-            this.disableNotification = disableNotification;
-            return this;
-        }
-
-        public Builder protectContent(boolean protectContent) {
-            this.protectContent = protectContent;
-            return this;
-        }
-
-        public Builder messageEffectId(String messageEffectId) {
-            this.messageEffectId = messageEffectId;
-            return this;
-        }
-
-        public Builder replyParameters(ReplyParameters replyParameters) {
-            this.replyParameters = replyParameters;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public SendVenue build() {
-            return new SendVenue(this.businessConnectionId, this.chatId, this.messageThreadId, this.latitude, this.longitude, this.title, this.address, this.foursquareId, this.foursquareType, this.googlePlaceId, this.googlePlaceType, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
-        }
-    }
 }

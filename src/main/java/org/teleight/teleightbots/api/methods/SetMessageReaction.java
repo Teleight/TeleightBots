@@ -1,11 +1,15 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 import org.teleight.teleightbots.api.objects.ReactionType;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetMessageReaction(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -22,8 +26,8 @@ public record SetMessageReaction(
         boolean isBig
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, int messageId) {
-        return new SetMessageReaction.Builder(chatId, messageId);
+    public static @NotNull Builder ofBuilder(String chatId, int messageId) {
+        return new SetMessageReaction.Builder().chatId(chatId).messageId(messageId);
     }
 
     @Override
@@ -31,29 +35,4 @@ public record SetMessageReaction(
         return "setMessageReaction";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final int messageId;
-        private ReactionType[] reaction;
-        private boolean isBig;
-
-        Builder(String chatId, int messageId) {
-            this.chatId = chatId;
-            this.messageId = messageId;
-        }
-
-        public Builder reaction(ReactionType[] reaction) {
-            this.reaction = reaction;
-            return this;
-        }
-
-        public Builder isBig(boolean isBig) {
-            this.isBig = isBig;
-            return this;
-        }
-
-        public SetMessageReaction build() {
-            return new SetMessageReaction(this.chatId, this.messageId, this.reaction, this.isBig);
-        }
-    }
 }

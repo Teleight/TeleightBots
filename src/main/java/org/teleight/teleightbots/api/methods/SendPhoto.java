@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
@@ -13,6 +15,8 @@ import org.teleight.teleightbots.api.objects.ReplyParameters;
 import java.util.HashMap;
 import java.util.Map;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SendPhoto(
         @JsonProperty(value = "business_connection_id")
         @Nullable
@@ -65,8 +69,8 @@ public record SendPhoto(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder ofBuilder(String chatId, InputFile photo) {
-        return new SendPhoto.Builder(chatId, photo);
+    public static @NotNull Builder ofBuilder(String chatId, InputFile photo) {
+        return new SendPhoto.Builder().chatId(chatId).photo(photo);
     }
 
     @Override
@@ -98,92 +102,6 @@ public record SendPhoto(
         final Map<String, InputFile> files = new HashMap<>();
         files.put("photo", photo);
         return files;
-    }
-
-    public static class Builder {
-        private String businessConnectionId;
-        private final String chatId;
-        private int messageThreadId;
-        private final InputFile photo;
-        private String caption;
-        private ParseMode parseMode;
-        private MessageEntity[] captionEntities;
-        private boolean showCaptionAboveMedia;
-        private boolean hasSpoiler;
-        private boolean disableNotification;
-        private boolean protectContent;
-        private String messageEffectId;
-        private ReplyParameters replyParameters;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(String chatId, InputFile photo) {
-            this.chatId = chatId;
-            this.photo = photo;
-        }
-
-        public Builder businessConnectionId(String businessConnectionId) {
-            this.businessConnectionId = businessConnectionId;
-            return this;
-        }
-
-        public Builder messageThreadId(int messageThreadId) {
-            this.messageThreadId = messageThreadId;
-            return this;
-        }
-
-        public Builder caption(String caption) {
-            this.caption = caption;
-            return this;
-        }
-
-        public Builder parseMode(ParseMode parseMode) {
-            this.parseMode = parseMode;
-            return this;
-        }
-
-        public Builder captionEntities(MessageEntity[] captionEntities) {
-            this.captionEntities = captionEntities;
-            return this;
-        }
-
-        public Builder showCaptionAboveMedia(boolean showCaptionAboveMedia) {
-            this.showCaptionAboveMedia = showCaptionAboveMedia;
-            return this;
-        }
-
-        public Builder hasSpoiler(boolean hasSpoiler) {
-            this.hasSpoiler = hasSpoiler;
-            return this;
-        }
-
-        public Builder disableNotification(boolean disableNotification) {
-            this.disableNotification = disableNotification;
-            return this;
-        }
-
-        public Builder protectContent(boolean protectContent) {
-            this.protectContent = protectContent;
-            return this;
-        }
-
-        public Builder messageEffectId(String messageEffectId) {
-            this.messageEffectId = messageEffectId;
-            return this;
-        }
-
-        public Builder replyParameters(ReplyParameters replyParameters) {
-            this.replyParameters = replyParameters;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public SendPhoto build() {
-            return new SendPhoto(this.businessConnectionId, this.chatId, this.messageThreadId, this.photo, this.caption, this.parseMode, this.captionEntities, this.showCaptionAboveMedia, this.hasSpoiler, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
-        }
     }
 
 }

@@ -1,10 +1,14 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 import org.teleight.teleightbots.api.objects.ChatPermissions;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetChatPermissions(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -18,8 +22,8 @@ public record SetChatPermissions(
         boolean useIndependentChatPermissions
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, ChatPermissions senderChatId) {
-        return new SetChatPermissions.Builder(chatId, senderChatId);
+    public static @NotNull Builder ofBuilder(String chatId, ChatPermissions senderChatId) {
+        return new SetChatPermissions.Builder().chatId(chatId).senderChatId(senderChatId);
     }
 
     @Override
@@ -27,23 +31,4 @@ public record SetChatPermissions(
         return "setChatPermissions";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final ChatPermissions senderChatId;
-        private boolean useIndependentChatPermissions;
-
-        Builder(String chatId, ChatPermissions senderChatId) {
-            this.chatId = chatId;
-            this.senderChatId = senderChatId;
-        }
-
-        public Builder useIndependentChatPermissions(boolean useIndependentChatPermissions) {
-            this.useIndependentChatPermissions = useIndependentChatPermissions;
-            return this;
-        }
-
-        public SetChatPermissions build() {
-            return new SetChatPermissions(this.chatId, this.senderChatId, this.useIndependentChatPermissions);
-        }
-    }
 }

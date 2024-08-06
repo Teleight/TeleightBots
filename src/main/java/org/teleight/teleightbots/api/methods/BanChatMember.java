@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record BanChatMember(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -19,8 +23,8 @@ public record BanChatMember(
         boolean revokeMessages
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, long userId) {
-        return new BanChatMember.Builder(chatId, userId);
+    public static @NotNull Builder ofBuilder(String chatId, long userId) {
+        return new BanChatMember.Builder().chatId(chatId).userId(userId);
     }
 
     @Override
@@ -28,29 +32,4 @@ public record BanChatMember(
         return "banChatMember";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final long userId;
-        private int untilDate;
-        private boolean revokeMessages;
-
-        Builder(String chatId, long userId) {
-            this.chatId = chatId;
-            this.userId = userId;
-        }
-
-        public Builder untilDate(int untilDate) {
-            this.untilDate = untilDate;
-            return this;
-        }
-
-        public Builder revokeMessages(boolean revokeMessages) {
-            this.revokeMessages = revokeMessages;
-            return this;
-        }
-
-        public BanChatMember build() {
-            return new BanChatMember(this.chatId, this.userId, this.untilDate, this.revokeMessages);
-        }
-    }
 }

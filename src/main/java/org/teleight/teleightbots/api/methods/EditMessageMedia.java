@@ -1,12 +1,16 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
 import org.teleight.teleightbots.api.objects.InputMedia;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record EditMessageMedia(
         @JsonProperty("chat_id")
         @Nullable
@@ -28,8 +32,8 @@ public record EditMessageMedia(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
 
-    public static Builder ofBuilder(InputMedia media) {
-        return new EditMessageMedia.Builder(media);
+    public static @NotNull Builder ofBuilder(InputMedia media) {
+        return new EditMessageMedia.Builder().media(media);
     }
 
     @Override
@@ -37,34 +41,4 @@ public record EditMessageMedia(
         return "editMessageMedia";
     }
 
-    public static class Builder {
-        private String chatId;
-        private int messageId;
-        private String inlineMessageId;
-        private final InputMedia media;
-        private ReplyKeyboard replyKeyboard;
-
-        public Builder(InputMedia media) {
-            this.media = media;
-        }
-
-        public Builder messageId(int messageId) {
-            this.messageId = messageId;
-            return this;
-        }
-
-        public Builder inlineMessageId(String inlineMessageId) {
-            this.inlineMessageId = inlineMessageId;
-            return this;
-        }
-
-        public Builder replyKeyboard(ReplyKeyboard replyKeyboard) {
-            this.replyKeyboard = replyKeyboard;
-            return this;
-        }
-
-        public EditMessageMedia build() {
-            return new EditMessageMedia(this.chatId, this.messageId, this.inlineMessageId, this.media, this.replyKeyboard);
-        }
-    }
 }

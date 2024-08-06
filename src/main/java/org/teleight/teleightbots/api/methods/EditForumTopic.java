@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record EditForumTopic(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -20,8 +24,8 @@ public record EditForumTopic(
         String iconCustomEmojiId
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, int messageThreadId) {
-        return new EditForumTopic.Builder(chatId, messageThreadId);
+    public static @NotNull Builder ofBuilder(String chatId, int messageThreadId) {
+        return new EditForumTopic.Builder().chatId(chatId).messageThreadId(messageThreadId);
     }
 
     @Override
@@ -29,29 +33,4 @@ public record EditForumTopic(
         return "editForumTopic";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final int messageThreadId;
-        private String name;
-        private String iconCustomEmojiId;
-
-        Builder(String chatId, int messageThreadId) {
-            this.chatId = chatId;
-            this.messageThreadId = messageThreadId;
-        }
-
-        public Builder name(@NotNull String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder iconCustomEmojiId(String iconCustomEmojiId) {
-            this.iconCustomEmojiId = iconCustomEmojiId;
-            return this;
-        }
-
-        public EditForumTopic build() {
-            return new EditForumTopic(this.chatId, this.messageThreadId, this.name, this.iconCustomEmojiId);
-        }
-    }
 }

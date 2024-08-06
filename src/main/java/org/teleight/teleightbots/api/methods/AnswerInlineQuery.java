@@ -1,10 +1,14 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 import org.teleight.teleightbots.api.objects.InlineQueryResult;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record AnswerInlineQuery(
         @JsonProperty(value = "inline_query_id", required = true)
         @NotNull
@@ -21,8 +25,8 @@ public record AnswerInlineQuery(
         boolean isPersonal
 ) implements ApiMethodBoolean {
 
-    public static AnswerInlineQuery.Builder ofBuilder(String inlineQueryId) {
-        return new AnswerInlineQuery.Builder(inlineQueryId);
+    public static @NotNull Builder ofBuilder(String inlineQueryId) {
+        return new AnswerInlineQuery.Builder().inlineQueryId(inlineQueryId);
     }
 
     @Override
@@ -30,33 +34,4 @@ public record AnswerInlineQuery(
         return "answerInlineQuery";
     }
 
-    public static class Builder {
-        private final String inlineQueryId;
-        private InlineQueryResult[] results;
-        private int cacheTime;
-        private boolean isPersonal;
-
-        Builder(String inlineQueryId) {
-            this.inlineQueryId = inlineQueryId;
-        }
-
-        public Builder results(InlineQueryResult[] results) {
-            this.results = results;
-            return this;
-        }
-
-        public Builder cacheTime(int cacheTime) {
-            this.cacheTime = cacheTime;
-            return this;
-        }
-
-        public Builder isPersonal(boolean isPersonal) {
-            this.isPersonal = isPersonal;
-            return this;
-        }
-
-        public AnswerInlineQuery build() {
-            return new AnswerInlineQuery(this.inlineQueryId, this.results, this.cacheTime, this.isPersonal);
-        }
-    }
 }

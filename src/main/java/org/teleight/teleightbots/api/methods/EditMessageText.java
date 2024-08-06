@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMultiResponse;
@@ -13,6 +15,8 @@ import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import java.io.Serializable;
 import java.util.List;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record EditMessageText(
         @JsonProperty(value = "chat_id")
         @Nullable
@@ -46,8 +50,8 @@ public record EditMessageText(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMultiResponse {
 
-    public static Builder ofBuilder(String text) {
-        return new EditMessageText.Builder(text);
+    public static @NotNull Builder ofBuilder(String text) {
+        return new EditMessageText.Builder().text(text);
     }
 
     @Override
@@ -58,61 +62,6 @@ public record EditMessageText(
     @Override
     public @NotNull String getEndpointURL() {
         return "editMessageText";
-    }
-
-    public static class Builder {
-        private String chatId;
-        private int messageId;
-        private String inlineMessageId;
-        private final String text;
-        private ParseMode parseMode;
-        private MessageEntity[] entities;
-        private LinkPreviewOptions linkPreviewOptions;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(String text) {
-            this.text = text;
-        }
-
-        public Builder chatId(String chatId) {
-            this.chatId = chatId;
-            return this;
-        }
-
-        public Builder messageId(int messageId) {
-            this.messageId = messageId;
-            return this;
-        }
-
-        public Builder inlineMessageId(String inlineMessageId) {
-            this.inlineMessageId = inlineMessageId;
-            return this;
-        }
-
-        public Builder parseMode(ParseMode parseMode) {
-            this.parseMode = parseMode;
-            return this;
-        }
-
-        public Builder entities(MessageEntity[] entities) {
-            this.entities = entities;
-            return this;
-        }
-
-        public Builder linkPreviewOptions(LinkPreviewOptions linkPreviewOptions) {
-            this.linkPreviewOptions = linkPreviewOptions;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public EditMessageText build() {
-            return new EditMessageText(this.chatId, this.messageId, this.inlineMessageId, this.text, this.parseMode, this.entities, this.linkPreviewOptions, this.replyMarkup);
-        }
-
     }
 
 }

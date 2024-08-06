@@ -1,10 +1,14 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record AnswerCallbackQuery(
         @JsonProperty(value = "callback_query_id", required = true)
         @NotNull
@@ -18,37 +22,13 @@ public record AnswerCallbackQuery(
         boolean showAlert
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String callbackQueryId) {
-        return new AnswerCallbackQuery.Builder(callbackQueryId);
+    public static @NotNull Builder ofBuilder(String callbackQueryId) {
+        return new AnswerCallbackQuery.Builder().callbackQueryId(callbackQueryId);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
         return "answerCallbackQuery";
-    }
-
-    public static final class Builder {
-        private final String callbackQueryId;
-        private String text;
-        private boolean showAlert;
-
-        public Builder(String callbackQueryId) {
-            this.callbackQueryId = callbackQueryId;
-        }
-
-        public @NotNull Builder text(String text) {
-            this.text = text;
-            return this;
-        }
-
-        public @NotNull Builder showAlert(boolean showAlert) {
-            this.showAlert = showAlert;
-            return this;
-        }
-
-        public AnswerCallbackQuery build() {
-            return new AnswerCallbackQuery(this.callbackQueryId, this.text, this.showAlert);
-        }
     }
 
 }
