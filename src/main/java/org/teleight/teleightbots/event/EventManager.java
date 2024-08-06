@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 /**
  * This is an interface for an EventManager. It provides methods to add listeners and call events.
  */
-public interface EventManager {
+public sealed interface EventManager permits EventManagerImpl {
 
     /**
      * Adds an EventListener to the EventManager.

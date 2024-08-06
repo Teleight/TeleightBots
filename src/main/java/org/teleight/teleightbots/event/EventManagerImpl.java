@@ -1,6 +1,5 @@
 package org.teleight.teleightbots.event;
 
-
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.event.trait.Event;
 
@@ -12,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 
-public class EventManagerImpl implements EventManager {
+public final class EventManagerImpl implements EventManager {
 
     private final Map<Class<? extends Event>, Queue<EventListener<? extends Event>>> listeners = new ConcurrentHashMap<>();
 

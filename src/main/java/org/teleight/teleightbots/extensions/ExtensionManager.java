@@ -11,7 +11,7 @@ import java.util.Set;
  *
  * @see ExtensionManagerImpl for the default implementation.
  */
-public interface ExtensionManager extends Closeable {
+public sealed interface ExtensionManager extends Closeable permits ExtensionManagerImpl {
 
     // The name of the extension blueprint file.
     String EXTENSION_FILE = "teleight-extension.json";

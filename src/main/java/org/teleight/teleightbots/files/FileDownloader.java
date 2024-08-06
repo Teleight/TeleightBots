@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Interface for a File Downloader that provides methods for downloading files from a given path or a Telegram File object.
  */
-public interface FileDownloader extends Closeable {
+public sealed interface FileDownloader extends Closeable permits FileDownloaderImpl {
 
     String FILE_DOWNLOAD_TEMPLATE = "https://api.telegram.org/file/bot%s/%s";
 
