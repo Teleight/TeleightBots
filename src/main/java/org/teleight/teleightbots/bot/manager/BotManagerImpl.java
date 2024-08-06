@@ -10,6 +10,7 @@ import org.teleight.teleightbots.bot.TelegramBotImpl;
 import org.teleight.teleightbots.updateprocessor.LongPollingUpdateProcessor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -48,7 +49,7 @@ public final class BotManagerImpl implements BotManager {
     }
 
     @Override
-    public void close() {
+    public void close() throws IOException {
         for (final TelegramBot registeredBot : registeredBots) {
             registeredBot.shutdown();
         }

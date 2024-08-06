@@ -6,31 +6,16 @@ import org.teleight.teleightbots.bot.manager.BotManager;
 import org.teleight.teleightbots.exception.ExceptionManager;
 import org.teleight.teleightbots.scheduler.Scheduler;
 
+import java.io.IOException;
+
 public final class TeleightBots {
 
     @ApiStatus.Internal
-    private static TeleightBotsProcess teleightBotsProcess;
+    private static final TeleightBotsProcess teleightBotsProcess;
 
-    /**
-     * Initializes the TeleightBots API.
-     * <p>
-     * This method should be called before any other method from the TeleightBots API.
-     * It initializes the TeleightBots API and returns a new instance of TeleightBots.
-     * This method should be called only once.
-     * </p>
-     *
-     * @return a new instance of TeleightBots
-     */
-    public static @NotNull TeleightBots init() {
-        updateProcess();
-        return new TeleightBots();
-    }
-
-    @ApiStatus.Internal
-    public static TeleightBotsProcess updateProcess() {
-        TeleightBotsProcess process = new TeleightBotsProcessImpl();
-        teleightBotsProcess = process;
-        return process;
+    // Initializes the TeleightBots API
+    static {
+        teleightBotsProcess = new TeleightBotsProcessImpl();
     }
 
     /**
@@ -41,7 +26,11 @@ public final class TeleightBots {
      * </p>
      */
     public static void stopCleanly() {
-        teleightBotsProcess.close();
+        try {
+            teleightBotsProcess.close();
+        } catch (IOException e) {
+            getExceptionManager().handleException(e);
+        }
     }
 
     /**
@@ -79,16 +68,6 @@ public final class TeleightBots {
      */
     public static @NotNull ExceptionManager getExceptionManager() {
         return teleightBotsProcess.exceptionManager();
-    }
-
-    /**
-     * Starts the TeleightBots API.
-     * <p>
-     * This method should be called after the TeleightBots API has been initialized and configured.
-     * </p>
-     */
-    public void start() {
-        teleightBotsProcess.start();
     }
 
 }

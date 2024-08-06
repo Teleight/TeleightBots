@@ -5,16 +5,15 @@ import org.teleight.teleightbots.bot.manager.BotManager;
 import org.teleight.teleightbots.exception.ExceptionManager;
 import org.teleight.teleightbots.scheduler.Scheduler;
 
-public sealed interface TeleightBotsProcess permits TeleightBotsProcessImpl {
+import java.io.Closeable;
 
-    void start();
-
-    void close();
+public sealed interface TeleightBotsProcess extends Closeable permits TeleightBotsProcessImpl {
 
     @NotNull Scheduler scheduler();
 
     @NotNull BotManager botManager();
 
-    @NotNull ExceptionManager exceptionManager();
+    @NotNull
+    ExceptionManager exceptionManager();
 
 }
