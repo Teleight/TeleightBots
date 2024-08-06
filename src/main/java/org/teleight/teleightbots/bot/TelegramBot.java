@@ -43,6 +43,14 @@ public sealed interface TelegramBot permits TelegramBotImpl {
     void connect();
 
     /**
+     * Closes the bot from the Telegram Bot API.
+     * <p>
+     * This method will also close all attached processors to the specified bot instance
+     * </p>
+     */
+    void shutdown();
+
+    /**
      * Returns the bot's token. The token is used to authenticate the bot with the Telegram Bot API.
      *
      * @return the bot's token
@@ -173,11 +181,6 @@ public sealed interface TelegramBot permits TelegramBotImpl {
      * @return the bot's conversation manager
      */
     @NotNull ConversationManager getConversationManager();
-
-    /**
-     * Closes the bot process
-     */
-    void shutdown();
 
     /**
      * Sends a request to the Telegram Bot API using the given method.

@@ -66,7 +66,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                 })
                 .exceptionally(throwable -> {
                     System.out.println("Failed to authenticate bot: " + throwable.getMessage());
-                    close();
+                    bot.shutdown();
                     return null;
                 });
 
