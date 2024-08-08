@@ -22,6 +22,8 @@ import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.MessageOrigin;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
+import org.teleight.teleightbots.api.objects.RevenueWithdrawalState;
+import org.teleight.teleightbots.api.objects.TransactionPartner;
 import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.CommonEnumValueDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.DateDeserializer;
@@ -83,6 +85,10 @@ public interface ApiMethod<R extends Serializable> {
                             new WrappedResultTypeDeserializer<>(BackgroundFill.class, BackgroundFill.BackgroundFillType.class))
                     .addDeserializer(BackgroundType.class,
                             new WrappedResultTypeDeserializer<>(BackgroundType.class, BackgroundType.BackgroundTypeType.class))
+                    .addDeserializer(RevenueWithdrawalState.class,
+                            new WrappedResultTypeDeserializer<>(RevenueWithdrawalState.class, RevenueWithdrawalState.RevenueWithdrawalStateType.class))
+                    .addDeserializer(TransactionPartner.class,
+                            new WrappedResultTypeDeserializer<>(TransactionPartner.class, TransactionPartner.TransactionPartnerType.class))
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(ChatAction.class, new CommonEnumValueDeserializer<>(ChatAction.class))
