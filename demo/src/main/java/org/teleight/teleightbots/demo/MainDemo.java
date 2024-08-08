@@ -15,9 +15,6 @@ import org.teleight.teleightbots.menu.Menu;
 public class MainDemo {
 
     public static void main(String[] args) {
-        final TeleightBots teleightBots = TeleightBots.init();
-        teleightBots.start();
-
         final String botToken = System.getenv("bot.token") != null ? System.getenv("bot.token") : "--INSERT-TOKEN-HERE--";
         final String botUsername = System.getenv("bot.username") != null ? System.getenv("bot.username") : "--INSERT-USERNAME--HERE";
         final String chatId = System.getenv("bot.default_chatid") != null ? System.getenv("bot.default_chatid") : "--INSERT-CHATID--HERE";
