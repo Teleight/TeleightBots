@@ -15,6 +15,10 @@ import java.util.List;
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record StopMessageLiveLocation(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "chat_id")
         @Nullable
         String chatId,

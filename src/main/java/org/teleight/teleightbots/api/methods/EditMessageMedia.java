@@ -12,6 +12,10 @@ import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record EditMessageMedia(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty("chat_id")
         @Nullable
         String chatId,
