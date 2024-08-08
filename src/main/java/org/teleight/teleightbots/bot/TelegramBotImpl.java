@@ -142,6 +142,7 @@ public final class TelegramBotImpl implements TelegramBot {
         updateProcessor.start();
     }
 
+    @Override
     public void shutdown() {
         eventManager.call(new BotShutdownEvent(this));
 
