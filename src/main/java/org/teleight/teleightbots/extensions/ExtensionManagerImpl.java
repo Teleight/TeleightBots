@@ -21,7 +21,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class ExtensionManagerImpl implements ExtensionManager {
+public final class ExtensionManagerImpl implements ExtensionManager {
 
     private final TelegramBot bot;
     private final ObjectMapper objectMapper = new ObjectMapper();

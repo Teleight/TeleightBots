@@ -14,9 +14,6 @@ public class SchedulerImpl implements Scheduler {
     private static final ExecutorService EXECUTOR = Executors.newVirtualThreadPerTaskExecutor();
     private static final ScheduledExecutorService SCHEDULED = Executors.newScheduledThreadPool(10, Thread.ofVirtual().factory());
 
-    public SchedulerImpl() {
-    }
-
     @Override
     public @NotNull Task submitTask(Task.@NotNull Builder builder) {
         final long delayMillis = builder.delayMillis;

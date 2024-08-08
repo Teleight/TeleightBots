@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public non-sealed class EventListenerImpl<T extends Event> implements EventListener<T> {
+public final class EventListenerImpl<T extends Event> implements EventListener<T> {
 
     private final Class<T> eventType;
     private final List<Predicate<T>> filters;
@@ -61,7 +61,7 @@ public non-sealed class EventListenerImpl<T extends Event> implements EventListe
         return Result.SUCCESS;
     }
 
-    static non-sealed class BuilderImpl<T extends Event> implements Builder<T> {
+    static final class BuilderImpl<T extends Event> implements Builder<T> {
         private final Class<T> eventType;
         private final List<Predicate<T>> filters = new ArrayList<>();
         private boolean ignoreCancelled = true;

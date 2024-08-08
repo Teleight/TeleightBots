@@ -15,7 +15,7 @@ import java.util.List;
  * @see org.teleight.teleightbots.api.objects.InlineKeyboardButton
  * @see org.teleight.teleightbots.menu.MenuBuilder
  */
-public interface Menu {
+public sealed interface Menu permits MenuImpl {
 
     /**
      * @return The ID of the menu.
