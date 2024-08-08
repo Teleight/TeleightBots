@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record UnpinChatMessage(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -13,8 +17,8 @@ public record UnpinChatMessage(
         int messageId
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId) {
-        return new UnpinChatMessage.Builder(chatId);
+    public static @NotNull Builder ofBuilder(String chatId) {
+        return new UnpinChatMessage.Builder().chatId(chatId);
     }
 
     @Override
@@ -22,21 +26,4 @@ public record UnpinChatMessage(
         return "unpinChatMessage";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private int messageId;
-
-        Builder(String chatId) {
-            this.chatId = chatId;
-        }
-
-        public Builder messageId(int messageId) {
-            this.messageId = messageId;
-            return this;
-        }
-
-        public UnpinChatMessage build() {
-            return new UnpinChatMessage(this.chatId, this.messageId);
-        }
-    }
 }

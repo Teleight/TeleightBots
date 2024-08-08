@@ -1,8 +1,12 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record InlineKeyboardMarkup(
         @JsonProperty(value = "inline_keyboard", required = true)
         @NotNull
@@ -10,19 +14,7 @@ public record InlineKeyboardMarkup(
 ) implements ReplyKeyboard {
 
     public Builder ofBuilder(InlineKeyboardButton[][] keyboard) {
-        return new InlineKeyboardMarkup.Builder(keyboard);
-    }
-
-    public static final class Builder {
-        private final InlineKeyboardButton[][] keyboard;
-
-        public Builder(InlineKeyboardButton[][] keyboard) {
-            this.keyboard = keyboard;
-        }
-
-        public @NotNull InlineKeyboardMarkup build() {
-            return new InlineKeyboardMarkup(keyboard);
-        }
+        return new InlineKeyboardMarkup.Builder().keyboard(keyboard);
     }
 
 }

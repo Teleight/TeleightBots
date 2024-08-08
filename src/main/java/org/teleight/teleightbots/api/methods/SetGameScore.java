@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +12,8 @@ import org.teleight.teleightbots.api.objects.Message;
 import java.io.Serializable;
 import java.util.List;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetGameScore(
         @JsonProperty(value = "user_id", required = true)
         long userId,
@@ -36,8 +40,8 @@ public record SetGameScore(
         String inlineMessageId
 ) implements ApiMethodMultiResponse {
 
-    public static SetGameScore.Builder ofBuilder(long userId, @IntRange(from = 0) int score) {
-        return new SetGameScore.Builder(userId, score);
+    public static @NotNull Builder ofBuilder(long userId, @IntRange(from = 0) int score) {
+        return new SetGameScore.Builder().userId(userId).score(score);
     }
 
     @Override
@@ -48,55 +52,6 @@ public record SetGameScore(
     @Override
     public @NotNull String getEndpointURL() {
         return "setGameScore";
-    }
-
-    public static class Builder {
-        private final long userId;
-        private int score;
-        private boolean force;
-        private boolean disableEditMessage;
-        private String chatId;
-        private int messageId;
-        private String inlineMessageId;
-
-        Builder(long userId, @IntRange(from = 0) int score) {
-            this.userId = userId;
-            this.score = score;
-        }
-
-        public Builder score(int score) {
-            this.score = score;
-            return this;
-        }
-
-        public Builder force(boolean force) {
-            this.force = force;
-            return this;
-        }
-
-        public Builder disableEditMessage(boolean disableEditMessage) {
-            this.disableEditMessage = disableEditMessage;
-            return this;
-        }
-
-        public Builder chatId(String chatId) {
-            this.chatId = chatId;
-            return this;
-        }
-
-        public Builder messageId(int messageId) {
-            this.messageId = messageId;
-            return this;
-        }
-
-        public Builder inlineMessageId(String inlineMessageId) {
-            this.inlineMessageId = inlineMessageId;
-            return this;
-        }
-
-        public SetGameScore build() {
-            return new SetGameScore(this.userId, this.score, this.force, this.disableEditMessage, this.chatId, this.messageId, this.inlineMessageId);
-        }
     }
 
 }

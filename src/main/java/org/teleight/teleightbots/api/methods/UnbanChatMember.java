@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record UnbanChatMember(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -16,8 +20,8 @@ public record UnbanChatMember(
         boolean onlyIfBanned
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, long userId) {
-        return new UnbanChatMember.Builder(chatId, userId);
+    public static @NotNull Builder ofBuilder(String chatId, long userId) {
+        return new UnbanChatMember.Builder().chatId(chatId).userId(userId);
     }
 
     @Override
@@ -25,23 +29,4 @@ public record UnbanChatMember(
         return "unbanChatMember";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final Long userId;
-        private boolean onlyIfBanned;
-
-        Builder(String chatId, Long userId) {
-            this.chatId = chatId;
-            this.userId = userId;
-        }
-
-        public Builder onlyIfBanned(boolean onlyIfBanned) {
-            this.onlyIfBanned = onlyIfBanned;
-            return this;
-        }
-
-        public UnbanChatMember build() {
-            return new UnbanChatMember(this.chatId, this.userId, this.onlyIfBanned);
-        }
-    }
 }

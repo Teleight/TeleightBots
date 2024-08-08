@@ -6,7 +6,7 @@ public class LivePeriod {
 
     private final int seconds;
 
-    public LivePeriod(int seconds) {
+    private LivePeriod(int seconds) {
         this.seconds = seconds;
     }
 

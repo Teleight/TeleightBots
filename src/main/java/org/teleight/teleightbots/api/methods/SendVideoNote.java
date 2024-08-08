@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
@@ -11,6 +13,8 @@ import org.teleight.teleightbots.api.objects.ReplyParameters;
 import java.util.HashMap;
 import java.util.Map;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SendVideoNote(
         @JsonProperty(value = "business_connection_id")
         @Nullable
@@ -55,8 +59,8 @@ public record SendVideoNote(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder ofBuilder(String chatId, InputFile videoNote) {
-        return new SendVideoNote.Builder(chatId, videoNote);
+    public static @NotNull Builder ofBuilder(String chatId, InputFile videoNote) {
+        return new SendVideoNote.Builder().chatId(chatId).videoNote(videoNote);
     }
 
     @Override
@@ -88,77 +92,4 @@ public record SendVideoNote(
         return files;
     }
 
-    public static class Builder {
-        private String businessConnectionId;
-        private final String chatId;
-        private int messageThreadId;
-        private final InputFile videoNote;
-        private int duration;
-        private int length;
-        private InputFile thumbnail;
-        private boolean disableNotification;
-        private boolean protectContent;
-        private String messageEffectId;
-        private ReplyParameters replyParameters;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(String chatId, InputFile videoNote) {
-            this.chatId = chatId;
-            this.videoNote = videoNote;
-        }
-
-        public Builder businessConnectionId(String businessConnectionId) {
-            this.businessConnectionId = businessConnectionId;
-            return this;
-        }
-
-        public Builder messageThreadId(int messageThreadId) {
-            this.messageThreadId = messageThreadId;
-            return this;
-        }
-
-        public Builder duration(int duration) {
-            this.duration = duration;
-            return this;
-        }
-
-        public Builder length(int length) {
-            this.length = length;
-            return this;
-        }
-
-        public Builder thumbnail(InputFile thumbnail) {
-            this.thumbnail = thumbnail;
-            return this;
-        }
-
-        public Builder disableNotification(boolean disableNotification) {
-            this.disableNotification = disableNotification;
-            return this;
-        }
-
-        public Builder protectContent(boolean protectContent) {
-            this.protectContent = protectContent;
-            return this;
-        }
-
-        public Builder messageEffectId(String messageEffectId) {
-            this.messageEffectId = messageEffectId;
-            return this;
-        }
-
-        public Builder replyParameters(ReplyParameters replyParameters) {
-            this.replyParameters = replyParameters;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public SendVideoNote build() {
-            return new SendVideoNote(this.businessConnectionId, this.chatId, this.messageThreadId, this.videoNote, this.duration, this.length, this.thumbnail, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
-        }
-    }
 }

@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
@@ -9,6 +11,8 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.util.Date;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record CreateChatInviteLink(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -29,8 +33,8 @@ public record CreateChatInviteLink(
         boolean createsJoinRequest
 ) implements ApiMethod<ChatInviteLink> {
 
-    public static Builder ofBuilder(String chatId) {
-        return new CreateChatInviteLink.Builder(chatId);
+    public static @NotNull Builder ofBuilder(String chatId) {
+        return new CreateChatInviteLink.Builder().chatId(chatId);
     }
 
     @Override
@@ -41,42 +45,6 @@ public record CreateChatInviteLink(
     @Override
     public @NotNull ChatInviteLink deserializeResponse(@NotNull String answer) throws TelegramRequestException {
         return deserializeResponse(answer, ChatInviteLink.class);
-    }
-
-    public static class Builder {
-        private final String chatId;
-        private String name;
-        private Date expireDate;
-        private int memberLimit;
-        private boolean createsJoinRequest;
-
-        Builder(String chatId) {
-            this.chatId = chatId;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder expireDate(Date expireDate) {
-            this.expireDate = expireDate;
-            return this;
-        }
-
-        public Builder memberLimit(int memberLimit) {
-            this.memberLimit = memberLimit;
-            return this;
-        }
-
-        public Builder createsJoinRequest(boolean createsJoinRequest) {
-            this.createsJoinRequest = createsJoinRequest;
-            return this;
-        }
-
-        public CreateChatInviteLink build() {
-            return new CreateChatInviteLink(this.chatId, this.name, this.expireDate, this.memberLimit, this.createsJoinRequest);
-        }
     }
 
 }

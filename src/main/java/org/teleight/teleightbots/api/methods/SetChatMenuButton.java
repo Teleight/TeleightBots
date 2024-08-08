@@ -1,11 +1,14 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 import org.teleight.teleightbots.api.objects.MenuButton;
-import org.teleight.teleightbots.api.objects.MenuButtonDefault;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetChatMenuButton(
         @JsonProperty(value = "chat_id")
         String chatId,
@@ -21,25 +24,6 @@ public record SetChatMenuButton(
     @Override
     public @NotNull String getEndpointURL() {
         return "setChatMenuButton";
-    }
-
-    public static class Builder {
-        private String chatId;
-        private MenuButton menuButton = new MenuButtonDefault();
-
-        public Builder chatId(String chatId) {
-            this.chatId = chatId;
-            return this;
-        }
-
-        public Builder menuButton(MenuButton menuButton) {
-            this.menuButton = menuButton;
-            return this;
-        }
-
-        public @NotNull SetChatMenuButton build() {
-            return new SetChatMenuButton(this.chatId, this.menuButton);
-        }
     }
 
 }

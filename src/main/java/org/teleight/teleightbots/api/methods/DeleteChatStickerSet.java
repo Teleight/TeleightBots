@@ -1,17 +1,21 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record DeleteChatStickerSet(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId) {
-        return new DeleteChatStickerSet.Builder(chatId);
+    public static @NotNull Builder ofBuilder(String chatId) {
+        return new DeleteChatStickerSet.Builder().chatId(chatId);
     }
 
     @Override
@@ -19,15 +23,4 @@ public record DeleteChatStickerSet(
         return "deleteChatStickerSet";
     }
 
-    public static class Builder {
-        private final String chatId;
-
-        Builder(String chatId) {
-            this.chatId = chatId;
-        }
-
-        public DeleteChatStickerSet build() {
-            return new DeleteChatStickerSet(this.chatId);
-        }
-    }
 }

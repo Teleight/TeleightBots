@@ -1,10 +1,14 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 import org.teleight.teleightbots.api.objects.ChatPermissions;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record RestrictChatMember(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -24,8 +28,8 @@ public record RestrictChatMember(
         int untilDate
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, long userId, ChatPermissions chatPermissions) {
-        return new RestrictChatMember.Builder(chatId, userId, chatPermissions);
+    public static @NotNull Builder ofBuilder(String chatId, long userId, ChatPermissions permissions) {
+        return new Builder().chatId(chatId).userId(userId).permissions(permissions);
     }
 
     @Override
@@ -33,31 +37,4 @@ public record RestrictChatMember(
         return "restrictChatMember";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final long userId;
-        private final ChatPermissions permissions;
-        private boolean useIndependentChatPermissions;
-        private int untilDate;
-
-        Builder(String chatId, long userId, ChatPermissions permissions) {
-            this.chatId = chatId;
-            this.userId = userId;
-            this.permissions = permissions;
-        }
-
-        public Builder useIndependentChatPermissions(boolean useIndependentChatPermissions) {
-            this.useIndependentChatPermissions = useIndependentChatPermissions;
-            return this;
-        }
-
-        public Builder untilDate(int untilDate) {
-            this.untilDate = untilDate;
-            return this;
-        }
-
-        public RestrictChatMember build() {
-            return new RestrictChatMember(this.chatId, this.userId, this.permissions, this.useIndependentChatPermissions, this.untilDate);
-        }
-    }
 }

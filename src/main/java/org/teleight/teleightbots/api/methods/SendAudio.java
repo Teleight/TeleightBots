@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
@@ -13,6 +15,8 @@ import org.teleight.teleightbots.api.objects.ReplyParameters;
 import java.util.HashMap;
 import java.util.Map;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SendAudio(
         @JsonProperty(value = "business_connection_id")
         @Nullable
@@ -74,8 +78,8 @@ public record SendAudio(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static Builder ofBuilder(String chatId, InputFile audio) {
-        return new SendAudio.Builder(chatId, audio);
+    public static @NotNull Builder ofBuilder(String chatId, InputFile audio) {
+        return new SendAudio.Builder().chatId(chatId).audio(audio);
     }
 
     @Override
@@ -109,104 +113,6 @@ public record SendAudio(
         files.put("audio", audio);
         files.put("thumbnail", thumbnail);
         return files;
-    }
-
-    public static class Builder {
-        private String businessConnectionId;
-        private final String chatId;
-        private int messageThreadId;
-        private final InputFile audio;
-        private String caption;
-        private ParseMode parseMode;
-        private MessageEntity[] captionEntities;
-        private int duration;
-        private String performer;
-        private String title;
-        private InputFile thumbnail;
-        private boolean disableNotification;
-        private boolean protectContent;
-        private String messageEffectId;
-        private ReplyParameters replyParameters;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(String chatId, InputFile audio) {
-            this.chatId = chatId;
-            this.audio = audio;
-        }
-
-        public Builder businessConnectionId(String businessConnectionId) {
-            this.businessConnectionId = businessConnectionId;
-            return this;
-        }
-
-        public Builder messageThreadId(int messageThreadId) {
-            this.messageThreadId = messageThreadId;
-            return this;
-        }
-
-        public Builder caption(String caption) {
-            this.caption = caption;
-            return this;
-        }
-
-        public Builder parseMode(ParseMode parseMode) {
-            this.parseMode = parseMode;
-            return this;
-        }
-
-        public Builder captionEntities(MessageEntity[] captionEntities) {
-            this.captionEntities = captionEntities;
-            return this;
-        }
-
-        public Builder duration(int duration) {
-            this.duration = duration;
-            return this;
-        }
-
-        public Builder performer(String performer) {
-            this.performer = performer;
-            return this;
-        }
-
-        public Builder title(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public Builder thumbnail(InputFile thumbnail) {
-            this.thumbnail = thumbnail;
-            return this;
-        }
-
-        public Builder disableNotification(boolean disableNotification) {
-            this.disableNotification = disableNotification;
-            return this;
-        }
-
-        public Builder protectContent(boolean protectContent) {
-            this.protectContent = protectContent;
-            return this;
-        }
-
-        public Builder messageEffectId(String messageEffectId) {
-            this.messageEffectId = messageEffectId;
-            return this;
-        }
-
-        public Builder replyParameters(ReplyParameters replyParameters) {
-            this.replyParameters = replyParameters;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public SendAudio build() {
-            return new SendAudio(this.businessConnectionId, this.chatId, this.messageThreadId, this.audio, this.caption, this.parseMode, this.captionEntities, this.duration, this.performer, this.title, this.thumbnail, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
-        }
     }
 
 }

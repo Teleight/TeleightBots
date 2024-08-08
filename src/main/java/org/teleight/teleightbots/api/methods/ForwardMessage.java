@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodMessage;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record ForwardMessage(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -26,47 +30,13 @@ public record ForwardMessage(
         int messageId
 ) implements ApiMethodMessage {
 
-    public static Builder ofBuilder(String chatId, String fromChatId, int messageId) {
-        return new ForwardMessage.Builder(chatId, fromChatId, messageId);
+    public static @NotNull Builder ofBuilder(String chatId, String fromChatId, int messageId) {
+        return new ForwardMessage.Builder().chatId(chatId).fromChatId(fromChatId).messageId(messageId);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
         return "forwardMessage";
-    }
-
-    public static class Builder {
-        private final String chatId;
-        private int messageThreadId;
-        private final String fromChatId;
-        private boolean disableNotification;
-        private boolean protectContent;
-        private final int messageId;
-
-        Builder(String chatId, String fromChatId, int messageId) {
-            this.chatId = chatId;
-            this.fromChatId = fromChatId;
-            this.messageId = messageId;
-        }
-
-        public Builder messageThreadId(int messageThreadId) {
-            this.messageThreadId = messageThreadId;
-            return this;
-        }
-
-        public Builder disableNotification(boolean disableNotification) {
-            this.disableNotification = disableNotification;
-            return this;
-        }
-
-        public Builder protectContent(boolean protectContent) {
-            this.protectContent = protectContent;
-            return this;
-        }
-
-        public ForwardMessage build() {
-            return new ForwardMessage(this.chatId, this.messageThreadId, this.fromChatId, this.disableNotification, this.protectContent, this.messageId);
-        }
     }
 
 }

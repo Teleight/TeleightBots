@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record EditGeneralForumTopic(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -14,8 +18,8 @@ public record EditGeneralForumTopic(
         String name
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, String name) {
-        return new EditGeneralForumTopic.Builder(chatId, name);
+    public static @NotNull Builder ofBuilder(String chatId, String name) {
+        return new EditGeneralForumTopic.Builder().chatId(chatId).name(name);
     }
 
     @Override
@@ -23,17 +27,4 @@ public record EditGeneralForumTopic(
         return "editGeneralForumTopic";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final String name;
-
-        Builder(String chatId, String name) {
-            this.chatId = chatId;
-            this.name = name;
-        }
-
-        public EditGeneralForumTopic build() {
-            return new EditGeneralForumTopic(this.chatId, this.name);
-        }
-    }
 }

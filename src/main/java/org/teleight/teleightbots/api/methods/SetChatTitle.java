@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetChatTitle(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -14,8 +18,8 @@ public record SetChatTitle(
         String title
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, String title) {
-        return new SetChatTitle.Builder(chatId, title);
+    public static @NotNull Builder ofBuilder(String chatId, String title) {
+        return new SetChatTitle.Builder().chatId(chatId).title(title);
     }
 
     @Override
@@ -23,17 +27,4 @@ public record SetChatTitle(
         return "setChatTitle";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final String title;
-
-        Builder(String chatId, String title) {
-            this.chatId = chatId;
-            this.title = title;
-        }
-
-        public SetChatTitle build() {
-            return new SetChatTitle(this.chatId, this.title);
-        }
-    }
 }

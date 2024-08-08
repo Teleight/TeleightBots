@@ -28,6 +28,10 @@ dependencies {
 
     //Annotations
     implementation("org.jetbrains:annotations:24.0.1")
+
+    //Lombok
+    compileOnly("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
 }
 
 tasks.test {

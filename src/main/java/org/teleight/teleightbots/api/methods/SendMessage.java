@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
@@ -10,6 +12,8 @@ import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 
+@Builder(builderClassName = "Builder", toBuilder = true)
+@Jacksonized
 public record SendMessage(
         @JsonProperty(value = "business_connection_id")
         @Nullable
@@ -56,87 +60,13 @@ public record SendMessage(
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMessage {
 
-    public static Builder ofBuilder(String chatId, String text) {
-        return new SendMessage.Builder(chatId, text);
+    public static @NotNull Builder ofBuilder(String chatId, String text) {
+        return new Builder().chatId(chatId).text(text);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
         return "sendMessage";
-    }
-
-    public static class Builder {
-        private String businessConnectionId;
-        private final String chatId;
-        private int messageThreadId;
-        private final String text;
-        private ParseMode parseMode;
-        private MessageEntity[] entities;
-        private LinkPreviewOptions linkPreviewOptions;
-        private boolean disableNotification;
-        private boolean protectContent;
-        private String messageEffectId;
-        private ReplyParameters replyParameters;
-        private ReplyKeyboard replyMarkup;
-
-        Builder(String chatId, String text) {
-            this.chatId = chatId;
-            this.text = text;
-        }
-
-        public Builder businessConnectionId(String businessConnectionId) {
-            this.businessConnectionId = businessConnectionId;
-            return this;
-        }
-
-        public Builder messageThreadId(int messageThreadId) {
-            this.messageThreadId = messageThreadId;
-            return this;
-        }
-
-        public Builder parseMode(ParseMode parseMode) {
-            this.parseMode = parseMode;
-            return this;
-        }
-
-        public Builder entities(MessageEntity[] entities) {
-            this.entities = entities;
-            return this;
-        }
-
-        public Builder linkPreviewOptions(LinkPreviewOptions linkPreviewOptions) {
-            this.linkPreviewOptions = linkPreviewOptions;
-            return this;
-        }
-
-        public Builder disableNotification(boolean disableNotification) {
-            this.disableNotification = disableNotification;
-            return this;
-        }
-
-        public Builder protectContent(boolean protectContent) {
-            this.protectContent = protectContent;
-            return this;
-        }
-
-        public Builder messageEffectId(String messageEffectId) {
-            this.messageEffectId = messageEffectId;
-            return this;
-        }
-
-        public Builder replyParameters(ReplyParameters replyParameters) {
-            this.replyParameters = replyParameters;
-            return this;
-        }
-
-        public Builder replyMarkup(ReplyKeyboard replyMarkup) {
-            this.replyMarkup = replyMarkup;
-            return this;
-        }
-
-        public SendMessage build() {
-            return new SendMessage(this.businessConnectionId, this.chatId, this.messageThreadId, this.text, this.parseMode, this.entities, this.linkPreviewOptions, this.disableNotification, this.protectContent, this.messageEffectId, this.replyParameters, this.replyMarkup);
-        }
     }
 
 }

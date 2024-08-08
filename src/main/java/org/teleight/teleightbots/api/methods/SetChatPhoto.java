@@ -1,6 +1,8 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.MultiPartApiMethodBoolean;
 import org.teleight.teleightbots.api.objects.InputFile;
@@ -8,6 +10,8 @@ import org.teleight.teleightbots.api.objects.InputFile;
 import java.util.HashMap;
 import java.util.Map;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record SetChatPhoto(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -18,8 +22,8 @@ public record SetChatPhoto(
         InputFile photo
 ) implements MultiPartApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, InputFile photo) {
-        return new SetChatPhoto.Builder(chatId, photo);
+    public static @NotNull Builder ofBuilder(String chatId, InputFile photo) {
+        return new SetChatPhoto.Builder().chatId(chatId).photo(photo);
     }
 
     @Override
@@ -41,17 +45,4 @@ public record SetChatPhoto(
         return files;
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final InputFile photo;
-
-        Builder(String chatId, InputFile photo) {
-            this.chatId = chatId;
-            this.photo = photo;
-        }
-
-        public SetChatPhoto build() {
-            return new SetChatPhoto(this.chatId, this.photo);
-        }
-    }
 }

@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record BatchDeleteMessages(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -13,27 +17,13 @@ public record BatchDeleteMessages(
         long[] messageIds
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, long[] messageIds) {
-        return new BatchDeleteMessages.Builder(chatId, messageIds);
+    public static @NotNull Builder ofBuilder(String chatId, long[] messageIds) {
+        return new BatchDeleteMessages.Builder().chatId(chatId).messageIds(messageIds);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
         return "deleteMessages";
-    }
-
-    public static class Builder {
-        private final String chatId;
-        private final long[] messageIds;
-
-        public Builder(String chatId, long[] messageIds) {
-            this.chatId = chatId;
-            this.messageIds = messageIds;
-        }
-
-        public BatchDeleteMessages build() {
-            return new BatchDeleteMessages(this.chatId, this.messageIds);
-        }
     }
 
 }

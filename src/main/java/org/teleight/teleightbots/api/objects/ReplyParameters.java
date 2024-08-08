@@ -1,9 +1,14 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record ReplyParameters(
         @JsonProperty(value = "message_id", required = true)
         int messageId,
@@ -31,56 +36,8 @@ public record ReplyParameters(
         int quotePosition
 ) implements ApiResult {
 
-    public static Builder ofBuilder(int messageId) {
-        return new ReplyParameters.Builder(messageId);
-    }
-
-    public static class Builder {
-        private final int messageId;
-        private String chatId;
-        private boolean allowSendingWithoutReply;
-        private String quote;
-        private ParseMode quoteParseMode;
-        private MessageEntity[] quoteEntities;
-        private int quotePosition;
-
-        public Builder(int messageId) {
-            this.messageId = messageId;
-        }
-
-        public Builder chatId(String chatId) {
-            this.chatId = chatId;
-            return this;
-        }
-
-        public Builder allowSendingWithoutReply(boolean allowSendingWithoutReply) {
-            this.allowSendingWithoutReply = allowSendingWithoutReply;
-            return this;
-        }
-
-        public Builder quote(@Nullable String quote) {
-            this.quote = quote;
-            return this;
-        }
-
-        public Builder quoteParseMode(@Nullable ParseMode quoteParseMode) {
-            this.quoteParseMode = quoteParseMode;
-            return this;
-        }
-
-        public Builder quoteEntities(@Nullable MessageEntity[] quoteEntities) {
-            this.quoteEntities = quoteEntities;
-            return this;
-        }
-
-        public Builder quotePosition(int quotePosition) {
-            this.quotePosition = quotePosition;
-            return this;
-        }
-
-        public ReplyParameters build() {
-            return new ReplyParameters(this.messageId, this.chatId, this.allowSendingWithoutReply, this.quote, this.quoteParseMode, this.quoteEntities, this.quotePosition);
-        }
+    public static @NotNull Builder ofBuilder(int messageId) {
+        return new ReplyParameters.Builder().messageId(messageId);
     }
 
 }

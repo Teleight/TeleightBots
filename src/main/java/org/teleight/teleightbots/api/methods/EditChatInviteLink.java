@@ -1,12 +1,16 @@
 package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
 import java.util.Date;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record EditChatInviteLink(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
@@ -31,8 +35,8 @@ public record EditChatInviteLink(
         boolean createsJoinRequest
 ) implements ApiMethodBoolean {
 
-    public static Builder ofBuilder(String chatId, String inviteLink) {
-        return new EditChatInviteLink.Builder(chatId, inviteLink);
+    public static @NotNull Builder ofBuilder(String chatId, String inviteLink) {
+        return new EditChatInviteLink.Builder().chatId(chatId).inviteLink(inviteLink);
     }
 
     @Override
@@ -40,41 +44,4 @@ public record EditChatInviteLink(
         return "editChatInviteLink";
     }
 
-    public static class Builder {
-        private final String chatId;
-        private final String inviteLink;
-        private String name;
-        private Date expireDate;
-        private int memberLimit;
-        private boolean createsJoinRequest;
-
-        Builder(String chatId, String inviteLink) {
-            this.chatId = chatId;
-            this.inviteLink = inviteLink;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder expireDate(Date expireDate) {
-            this.expireDate = expireDate;
-            return this;
-        }
-
-        public Builder memberLimit(int memberLimit) {
-            this.memberLimit = memberLimit;
-            return this;
-        }
-
-        public Builder createsJoinRequest(boolean createsJoinRequest) {
-            this.createsJoinRequest = createsJoinRequest;
-            return this;
-        }
-
-        public EditChatInviteLink build() {
-            return new EditChatInviteLink(this.chatId, this.inviteLink, this.name, this.expireDate, this.memberLimit, this.createsJoinRequest);
-        }
-    }
 }
