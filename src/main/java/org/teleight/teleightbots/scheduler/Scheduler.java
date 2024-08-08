@@ -14,7 +14,7 @@ import java.io.Closeable;
  *
  * @see SchedulerImpl
  */
-public sealed interface Scheduler extends Closeable permits SchedulerImpl {
+public interface Scheduler extends Closeable {
 
     /**
      * Creates a new scheduler.
