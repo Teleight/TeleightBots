@@ -10,8 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@ApiStatus.Internal
-public class MenuImpl implements Menu {
+public final class MenuImpl implements Menu {
 
     private static final AtomicInteger LAST_MENU_ID = new AtomicInteger();
     private final int menuId = LAST_MENU_ID.incrementAndGet();
