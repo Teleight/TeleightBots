@@ -24,6 +24,9 @@ public record CallbackQuery(
         @Nullable
         String inlineMessageId,
 
+        @JsonProperty(value = "chat_instance", required = true)
+        String chatInstance,
+
         @JsonProperty("data")
         @Nullable
         String data
