@@ -32,6 +32,10 @@ public record InlineKeyboardButton(
         @Nullable
         WebAppInfo webApp,
 
+        @JsonProperty(value = "login_url")
+        @Nullable
+        LoginUrl loginUrl,
+
         @JsonProperty(value = "switch_inline_query")
         @Nullable
         String switchInlineQuery,
@@ -40,9 +44,16 @@ public record InlineKeyboardButton(
         @Nullable
         String switchInlineQueryCurrentChat,
 
+        @JsonProperty(value = "switch_inline_query_chosen_chat")
+        @Nullable
+        SwitchInlineQueryChosenChat switchInlineQueryChosenChat,
+
         @JsonProperty(value = "callback_game")
         @Nullable
         CallbackGame callbackGame,
+
+        @JsonProperty(value = "pay")
+        boolean pay,
 
         @JsonIgnore
         Menu destinationMenu,
