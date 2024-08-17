@@ -52,7 +52,7 @@ public sealed interface ChatMember extends ApiResult permits
 
         @Override
         public String getFieldName() {
-            return TYPE_NAME;
+            return "status";
         }
     }
 
