@@ -121,6 +121,9 @@ public record ChatFullInfo(
         @Nullable
         ChatPermissions permissions,
 
+        @JsonProperty("can_send_paid_media")
+        boolean canSendPaidMedia,
+
         @JsonProperty("slow_mode_delay")
         int slowModeDelay,
 

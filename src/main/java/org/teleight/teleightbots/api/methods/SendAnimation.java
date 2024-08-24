@@ -101,6 +101,7 @@ public record SendAnimation(
         parameters.put("width", width);
         parameters.put("height", height);
         parameters.put("thumbnail", thumbnail);
+        parameters.put("animation", animation);
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
         parameters.put("caption_entities", captionEntities);
@@ -112,14 +113,6 @@ public record SendAnimation(
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("animation", animation);
-        files.put("thumbnail", thumbnail);
-        return files;
     }
 
 }

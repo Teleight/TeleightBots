@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 
 public record InputFile(
         @JsonIgnore
-        String telegramFileId,
+        String id,
 
         @JsonIgnore
         File file,
@@ -46,6 +46,10 @@ public record InputFile(
     }
 
     public static @NotNull InputFile fromTelegramId(@NotNull String id) {
+        return new InputFile(id, null, null);
+    }
+
+    public static @NotNull InputFile fromUrl(@NotNull String id) {
         return new InputFile(id, null, null);
     }
 

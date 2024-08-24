@@ -1,7 +1,6 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record PhotoSize(
@@ -18,7 +17,6 @@ public record PhotoSize(
         int height,
 
         @JsonProperty("file_size")
-        @Nullable
-        Long fileSize
+        long fileSize
 ) implements ApiResult {
 }

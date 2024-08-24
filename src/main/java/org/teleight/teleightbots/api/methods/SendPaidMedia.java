@@ -6,7 +6,7 @@ import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
-import org.teleight.teleightbots.api.objects.InputFile;
+import org.teleight.teleightbots.api.objects.InputPaidMedia;
 import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
@@ -17,21 +17,17 @@ import java.util.Map;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
-public record SendPhoto(
-        @JsonProperty(value = "business_connection_id")
-        @Nullable
-        String businessConnectionId,
-
+public record SendPaidMedia(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
 
-        @JsonProperty(value = "message_thread_id")
-        int messageThreadId,
+        @JsonProperty(value = "star_count", required = true)
+        int starCount,
 
-        @JsonProperty(value = "photo", required = true)
+        @JsonProperty(value = "media", required = true)
         @NotNull
-        InputFile photo,
+        InputPaidMedia[] media,
 
         @JsonProperty(value = "caption")
         @Nullable
@@ -48,17 +44,11 @@ public record SendPhoto(
         @JsonProperty("show_caption_above_media")
         boolean showCaptionAboveMedia,
 
-        @JsonProperty(value = "has_spoiler")
-        boolean hasSpoiler,
-
         @JsonProperty(value = "disable_notification")
         boolean disableNotification,
 
         @JsonProperty(value = "protect_content")
         boolean protectContent,
-
-        @JsonProperty(value = "message_effect_id")
-        String messageEffectId,
 
         @JsonProperty(value = "reply_parameters")
         @Nullable
@@ -69,30 +59,27 @@ public record SendPhoto(
         ReplyKeyboard replyMarkup
 ) implements MultiPartApiMethodMessage {
 
-    public static @NotNull Builder ofBuilder(String chatId, InputFile photo) {
-        return new SendPhoto.Builder().chatId(chatId).photo(photo);
+    public static @NotNull Builder ofBuilder(String chatId, int starCount, InputPaidMedia[] media) {
+        return new Builder().chatId(chatId).starCount(starCount).media(media);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "sendPhoto";
+        return "sendPaidMedia";
     }
 
     @Override
     public Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
-        parameters.put("message_thread_id", messageThreadId);
+        parameters.put("star_count", starCount);
+        parameters.put("media", media);
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
         parameters.put("caption_entities", captionEntities);
         parameters.put("show_caption_above_media", showCaptionAboveMedia);
-        parameters.put("photo", photo);
-        parameters.put("has_spoiler", hasSpoiler);
         parameters.put("disable_notification", disableNotification);
         parameters.put("protect_content", protectContent);
-        parameters.put("message_effect_id", messageEffectId);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;

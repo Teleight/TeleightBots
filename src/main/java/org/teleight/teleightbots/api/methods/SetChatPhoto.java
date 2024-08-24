@@ -35,14 +35,8 @@ public record SetChatPhoto(
     public Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("chat_id", chatId);
+        parameters.put("photo", photo);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("photo", photo);
-        return files;
     }
 
 }

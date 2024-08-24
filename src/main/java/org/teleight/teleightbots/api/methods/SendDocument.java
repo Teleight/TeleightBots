@@ -87,6 +87,8 @@ public record SendDocument(
         parameters.put("message_thread_id", messageThreadId);
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
+        parameters.put("document", document);
+        parameters.put("thumbnail", thumbnail);
         parameters.put("caption_entities", captionEntities);
         parameters.put("disable_content_type_detection", disableContentTypeDetection);
         parameters.put("disable_notification", disableNotification);
@@ -95,14 +97,6 @@ public record SendDocument(
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("document", document);
-        files.put("thumbnail", thumbnail);
-        return files;
     }
 
 }

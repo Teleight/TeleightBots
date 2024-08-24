@@ -16,10 +16,12 @@ import org.teleight.teleightbots.api.objects.ChatAction;
 import org.teleight.teleightbots.api.objects.ChatBoostSource;
 import org.teleight.teleightbots.api.objects.ChatMember;
 import org.teleight.teleightbots.api.objects.InlineQueryResult;
+import org.teleight.teleightbots.api.objects.InputPaidMedia;
 import org.teleight.teleightbots.api.objects.InputSticker;
 import org.teleight.teleightbots.api.objects.LivePeriod;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.MessageOrigin;
+import org.teleight.teleightbots.api.objects.PaidMedia;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.RevenueWithdrawalState;
@@ -34,6 +36,7 @@ import org.teleight.teleightbots.api.serialization.deserializers.WrappedResultTy
 import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.CommonEnumValueSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.InputPaidMediasSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.LivePeriodSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
@@ -89,6 +92,10 @@ public interface ApiMethod<R extends Serializable> {
                             new WrappedResultTypeDeserializer<>(RevenueWithdrawalState.class, RevenueWithdrawalState.RevenueWithdrawalStateType.class))
                     .addDeserializer(TransactionPartner.class,
                             new WrappedResultTypeDeserializer<>(TransactionPartner.class, TransactionPartner.TransactionPartnerType.class))
+                    .addDeserializer(PaidMedia.class,
+                            new WrappedResultTypeDeserializer<>(PaidMedia.class, PaidMedia.PaidMediaType.class))
+                    .addDeserializer(InputPaidMedia.class,
+                            new WrappedResultTypeDeserializer<>(InputPaidMedia.class, InputPaidMedia.InputPaidMediaType.class))
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(ChatAction.class, new CommonEnumValueDeserializer<>(ChatAction.class))
@@ -97,9 +104,13 @@ public interface ApiMethod<R extends Serializable> {
                     .addSerializer(ChatAction.class, new CommonEnumValueSerializer<>(ChatAction.class))
                     .addSerializer(ParseMode.class, new CommonEnumValueSerializer<>(ParseMode.class))
                     .addSerializer(InputSticker.Format.class, new CommonEnumValueSerializer<>(InputSticker.Format.class))
+
             )
             .registerModule(new SimpleModule()
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addSerializer(InputPaidMedia[].class, new InputPaidMediasSerializer())
             );
 
     /**

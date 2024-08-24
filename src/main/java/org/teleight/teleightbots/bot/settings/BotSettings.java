@@ -53,21 +53,35 @@ public sealed interface BotSettings permits BotSettingsImpl {
      * @return the created bot settings instance
      */
     static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout) {
-        return ofBuilder(endPointUrl).updatesLimit(updatesLimit).updatesTimeout(updatesTimeout).build();
+        return of(endPointUrl, updatesLimit, updatesTimeout, false);
+    }
+
+    /**
+     * Creates bot settings with the specified endpoint URL, update limit, timeout, and silent method throwing
+     *
+     * @param endPointUrl                  the endpoint URL to be used for the bot
+     * @param updatesLimit                 the maximum number of updates to be fetched in a single call
+     * @param updatesTimeout               the timeout in seconds for fetching updates
+     * @param silentlyThrowMethodExecution whether the method execution should throw exceptions silently.
+     * @return the created bot settings instance
+     */
+    static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout, boolean silentlyThrowMethodExecution) {
+        return of(endPointUrl, updatesLimit, updatesTimeout, silentlyThrowMethodExecution, false);
     }
 
     /**
      * Creates bot settings with the specified endpoint URL,
      * update limit, timeout and whether extensions are enabled or not
      *
-     * @param endPointUrl       the endpoint URL to be used for the bot
-     * @param updatesLimit      the maximum number of updates to be fetched in a single call
-     * @param updatesTimeout    the timeout in seconds for fetching updates
-     * @param extensionsEnabled whether extensions should be enabled or not
+     * @param endPointUrl                  the endpoint URL to be used for the bot
+     * @param updatesLimit                 the maximum number of updates to be fetched in a single call
+     * @param updatesTimeout               the timeout in seconds for fetching updates
+     * @param extensionsEnabled            whether extensions should be enabled or not
+     * @param silentlyThrowMethodExecution whether the method execution should throw exceptions silently.
      * @return the created bot settings instance
      */
-    static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout, boolean extensionsEnabled) {
-        return ofBuilder(endPointUrl).updatesLimit(updatesLimit).updatesTimeout(updatesTimeout).extensionsEnabled(extensionsEnabled).build();
+    static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout, boolean silentlyThrowMethodExecution, boolean extensionsEnabled) {
+        return ofBuilder(endPointUrl).updatesLimit(updatesLimit).updatesTimeout(updatesTimeout).silentlyThrowMethodExecution(silentlyThrowMethodExecution).extensionsEnabled(extensionsEnabled).build();
     }
 
     /**
@@ -121,9 +135,9 @@ public sealed interface BotSettings permits BotSettingsImpl {
      * <p>
      * Extensions are separate pieces of software that connect to a specific bot instance
      *
+     * @return true if extensions are enabled, false otherwise
      * @see org.teleight.teleightbots.extensions.Extension
      * @see org.teleight.teleightbots.extensions.ExtensionManager
-     * @return true if extensions are enabled, false otherwise
      */
     boolean extensionsEnabled();
 

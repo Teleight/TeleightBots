@@ -77,19 +77,13 @@ public record SendVideoNote(
         parameters.put("duration", duration);
         parameters.put("length", length);
         parameters.put("disable_notification", disableNotification);
+        parameters.put("video_note", videoNote);
+        parameters.put("thumbnail", thumbnail);
         parameters.put("protect_content", protectContent);
         parameters.put("message_effect_id", messageEffectId);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("video_note", videoNote);
-        files.put("thumbnail", thumbnail);
-        return files;
     }
 
 }

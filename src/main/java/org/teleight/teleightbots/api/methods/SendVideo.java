@@ -102,6 +102,8 @@ public record SendVideo(
         parameters.put("message_thread_id", messageThreadId);
         parameters.put("duration", duration);
         parameters.put("width", width);
+        parameters.put("video", video);
+        parameters.put("thumbnail", thumbnail);
         parameters.put("height", height);
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
@@ -115,14 +117,6 @@ public record SendVideo(
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("video", video);
-        files.put("thumbnail", thumbnail);
-        return files;
     }
 
 }

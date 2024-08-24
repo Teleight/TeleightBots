@@ -9,6 +9,9 @@ import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.InputFile;
+import org.teleight.teleightbots.api.objects.InputPaidMedia;
+import org.teleight.teleightbots.api.objects.InputPaidMediaPhoto;
+import org.teleight.teleightbots.api.objects.InputPaidMediaVideo;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 import org.teleight.teleightbots.bot.TelegramBot;
@@ -233,17 +236,43 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                     case String string -> publisher.addPart(key, string);
                     case SimpleFieldValueProvider simpleFieldValueProvider ->
                             publisher.addPart(key, simpleFieldValueProvider.getFieldValue());
+                    case InputFile inputFile -> {
+                        if (inputFile.id() != null) {
+                            publisher.addPart(key, inputFile.id());
+                        } else {
+                            publisher.addPart(key, inputFile.file(), inputFile.fileName());
+                        }
+                    }
+                    case InputPaidMedia[] inputPaidMedias -> {
+                        for (InputPaidMedia inputPaidMedia : inputPaidMedias) {
+                            switch (inputPaidMedia) {
+                                case InputPaidMediaPhoto inputPaidMediaPhoto -> {
+                                    if (inputPaidMediaPhoto.media().id() != null) {
+                                        publisher.addPart(inputPaidMediaPhoto.media().fileName(), inputPaidMediaPhoto.media().id());
+                                    } else {
+                                        publisher.addPart(inputPaidMediaPhoto.media().fileName(), inputPaidMediaPhoto.media().file(), inputPaidMediaPhoto.media().fileName());
+                                    }
+                                }
+                                case InputPaidMediaVideo inputPaidMediaVideo -> {
+                                    if (inputPaidMediaVideo.media().id() != null) {
+                                        publisher.addPart(inputPaidMediaVideo.media().fileName(), inputPaidMediaVideo.media().id());
+                                    } else {
+                                        publisher.addPart(inputPaidMediaVideo.media().fileName(), inputPaidMediaVideo.media().file(), inputPaidMediaVideo.media().fileName());
+                                    }
+                                    if (inputPaidMediaVideo.thumbnail() != null) {
+                                        if (inputPaidMediaVideo.thumbnail().id() != null) {
+                                            publisher.addPart(inputPaidMediaVideo.thumbnail().fileName(), inputPaidMediaVideo.thumbnail().id());
+                                        } else {
+                                            publisher.addPart(inputPaidMediaVideo.thumbnail().fileName(), inputPaidMediaVideo.thumbnail().file(), inputPaidMediaVideo.thumbnail().fileName());
+                                        }
+                                    }
+                                }
+                                default -> throw new IllegalStateException("Unexpected value: " + inputPaidMedia);
+                            }
+                        }
+                        publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputPaidMedias));
+                    }
                     default -> publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(value));
-                }
-
-            }
-            for (Map.Entry<String, InputFile> stringObjectEntry : multiPartApiMethod.getInputFiles().entrySet()) {
-                final String key = stringObjectEntry.getKey();
-                final InputFile value = stringObjectEntry.getValue();
-                if (value.telegramFileId() != null) {
-                    publisher.addPart(key, value.telegramFileId());
-                } else {
-                    publisher.addPart(key, value.file(), value.fileName());
                 }
             }
             body = publisher.build();

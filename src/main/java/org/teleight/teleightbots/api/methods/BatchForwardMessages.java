@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.api.ApiMethodMessage;
+import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.api.objects.MessageId;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 @Builder(builderClassName = "Builder", toBuilder = true)
 @Jacksonized
@@ -28,7 +30,7 @@ public record BatchForwardMessages(
 
         @JsonProperty(value = "message_ids", required = true)
         long[] messageIds
-) implements ApiMethodMessage {
+) implements ApiMethod<MessageId[]> {
 
     public static @NotNull Builder ofBuilder(String chatId, String fromChatId, long[] messageIds) {
         return new BatchForwardMessages.Builder().chatId(chatId).fromChatId(fromChatId).messageIds(messageIds);
@@ -37,6 +39,11 @@ public record BatchForwardMessages(
     @Override
     public @NotNull String getEndpointURL() {
         return "forwardMessages";
+    }
+
+    @Override
+    public MessageId @NotNull [] deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, MessageId[].class);
     }
 
 }
