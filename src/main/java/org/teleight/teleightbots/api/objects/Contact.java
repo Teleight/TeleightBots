@@ -16,8 +16,7 @@ public record Contact(
         String lastName,
 
         @JsonProperty("user_id")
-        @Nullable
-        Long userId,
+        long userId,
 
         @JsonProperty("vcard")
         @Nullable

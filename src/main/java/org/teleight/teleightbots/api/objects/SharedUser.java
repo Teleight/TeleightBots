@@ -1,15 +1,12 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.objects.PhotoSize;
 
 public record SharedUser(
         @JsonProperty(value = "user_id", required = true)
-        @NotNull
-        Long userId,
+        long userId,
 
         @JsonProperty(value = "first_name")
         @Nullable
