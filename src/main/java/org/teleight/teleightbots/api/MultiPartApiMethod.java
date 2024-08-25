@@ -1,5 +1,7 @@
 package org.teleight.teleightbots.api;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -18,6 +20,6 @@ public interface MultiPartApiMethod<R extends Serializable> extends ApiMethod<R>
      *
      * @return a map containing the parameters of the multipart API method
      */
-    Map<String, Object> getParameters();
+    @NotNull Map<String, Object> getParameters();
 
 }

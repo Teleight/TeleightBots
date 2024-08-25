@@ -106,7 +106,7 @@ public interface ApiMethod<R extends Serializable> {
      */
     @ApiStatus.Internal
     default <K extends Serializable> R deserializeResponseSerializable(String answer, Class<K> returnClass) throws TelegramRequestException {
-        JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(returnClass);
+        final JavaType type = OBJECT_MAPPER.getTypeFactory().constructType(returnClass);
         return UNSAFE_deserializeResponse(answer, type);
     }
 

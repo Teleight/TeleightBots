@@ -43,7 +43,7 @@ public final class ConversationManagerImpl implements ConversationManager {
         final long userId = user.id();
         final Conversation conversation = conversations.get(conversationName);
         if (usersInConversation.containsKey(userId)) {
-            throw new IllegalArgumentException("The user " + userId + " is already in a conversation");
+            throw new IllegalStateException("The user " + userId + " is already in a conversation");
         }
         if (conversation == null) {
             throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
@@ -52,18 +52,18 @@ public final class ConversationManagerImpl implements ConversationManager {
     }
 
     @Override
-    public void leaveConversation(@NotNull User user, @NotNull String conversationName) {
+    public void leaveConversation(@NotNull User user) {
         final long userId = user.id();
         final ConversationContext conversation = usersInConversation.get(userId);
         if (conversation == null) {
-            throw new IllegalArgumentException("The user " + userId + " is not in a conversation");
+            throw new IllegalStateException("The user " + userId + " is not in a conversation");
         }
         conversation.runningConversation().interrupt();
         usersInConversation.remove(userId);
     }
 
     @Override
-    public boolean isUserInConversation(@NotNull User user, @NotNull String conversationName) {
+    public boolean isUserInConversation(@NotNull User user) {
         return usersInConversation.containsKey(user.id());
     }
 

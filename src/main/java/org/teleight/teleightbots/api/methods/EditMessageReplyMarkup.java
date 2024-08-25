@@ -45,7 +45,7 @@ public record EditMessageReplyMarkup(
     }
 
     @Override
-    public List<Class<? extends Serializable>> getSerializableClasses() {
+    public @NotNull List<Class<? extends Serializable>> getSerializableClasses() {
         return List.of(Message.class, Boolean.class);
     }
 

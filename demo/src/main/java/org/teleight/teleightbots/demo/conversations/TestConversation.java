@@ -7,7 +7,6 @@ import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.conversation.Conversation;
 import org.teleight.teleightbots.conversation.ConversationContext;
-import org.teleight.teleightbots.conversation.ConversationTimeout;
 
 import java.util.concurrent.TimeUnit;
 
@@ -60,11 +59,6 @@ public class TestConversation implements Conversation {
     @Override
     public @NotNull String name() {
         return "test";
-    }
-
-    @Override
-    public @NotNull ConversationTimeout conversationTimeout() {
-        return new ConversationTimeout(10, TimeUnit.SECONDS);
     }
 
 }

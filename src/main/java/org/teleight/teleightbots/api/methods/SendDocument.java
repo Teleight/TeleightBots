@@ -80,7 +80,7 @@ public record SendDocument(
     }
 
     @Override
-    public Map<String, Object> getParameters() {
+    public @NotNull Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);

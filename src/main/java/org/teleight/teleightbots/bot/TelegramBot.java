@@ -94,8 +94,7 @@ public sealed interface TelegramBot permits TelegramBotImpl {
      *
      * @return the bot's settings
      */
-    @NotNull
-    BotSettings getBotSettings();
+    @NotNull BotSettings getBotSettings();
 
     /**
      * Returns the bot's event manager.

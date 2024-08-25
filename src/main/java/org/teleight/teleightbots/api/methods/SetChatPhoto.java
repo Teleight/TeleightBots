@@ -32,7 +32,7 @@ public record SetChatPhoto(
     }
 
     @Override
-    public Map<String, Object> getParameters() {
+    public @NotNull Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("chat_id", chatId);
         parameters.put("photo", photo);

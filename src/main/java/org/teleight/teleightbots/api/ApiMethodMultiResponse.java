@@ -16,7 +16,7 @@ public interface ApiMethodMultiResponse extends ApiMethod<Serializable> {
      *
      * @return A {@code List} of classes extending {@code Serializable}.
      */
-    List<Class<? extends Serializable>> getSerializableClasses();
+    @NotNull List<Class<? extends Serializable>> getSerializableClasses();
 
     /**
      * Deserializes the response from a string answer.
@@ -33,8 +33,8 @@ public interface ApiMethodMultiResponse extends ApiMethod<Serializable> {
     /**
      * Deserializes the response from a string answer using a list of possible classes.
      *
-     * @param answer           The string representing the response.
-     * @param possibleValues   The list of possible classes for deserialization.
+     * @param answer         The string representing the response.
+     * @param possibleValues The list of possible classes for deserialization.
      * @return The deserialized response object. Null if an error occurs during deserialization.
      * @throws TelegramRequestException If an error occurs during deserialization.
      */
