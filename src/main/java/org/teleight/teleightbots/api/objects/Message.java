@@ -235,6 +235,10 @@ public record Message(
         @Nullable
         SuccessfulPayment successfulPayment,
 
+        @JsonProperty("refunded_payment")
+        @Nullable
+        RefundedPayment refundedPayment,
+
         @JsonProperty("users_shared")
         @Nullable
         UsersShared userShared,
