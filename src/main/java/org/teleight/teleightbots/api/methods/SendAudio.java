@@ -88,7 +88,7 @@ public record SendAudio(
     }
 
     @Override
-    public Map<String, Object> getParameters() {
+    public @NotNull Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
@@ -96,6 +96,8 @@ public record SendAudio(
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
         parameters.put("caption_entities", captionEntities);
+        parameters.put("audio", audio);
+        parameters.put("thumbnail", thumbnail);
         parameters.put("duration", duration);
         parameters.put("performer", performer);
         parameters.put("title", title);
@@ -105,14 +107,6 @@ public record SendAudio(
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("audio", audio);
-        files.put("thumbnail", thumbnail);
-        return files;
     }
 
 }

@@ -10,89 +10,93 @@ public record ExternalReplyInfo(
         @NotNull
         MessageOrigin origin,
 
-        @JsonProperty(value = "chat")
+        @JsonProperty("chat")
         @Nullable
         Chat chat,
 
-        @JsonProperty(value = "message_id")
+        @JsonProperty("message_id")
         int messageId,
 
-        @JsonProperty(value = "link_preview_options")
+        @JsonProperty("link_preview_options")
         @Nullable
         LinkPreviewOptions linkPreviewOptions,
 
-        @JsonProperty(value = "animation")
+        @JsonProperty("animation")
         @Nullable
         Animation animation,
 
-        @JsonProperty(value = "audio")
+        @JsonProperty("audio")
         @Nullable
         Audio audio,
 
-        @JsonProperty(value = "document")
+        @JsonProperty("document")
         @Nullable
         Document document,
 
-        @JsonProperty(value = "photo")
+        @JsonProperty("paid_media")
+        @Nullable
+        PaidMedia paidMedia,
+
+        @JsonProperty("photo")
         @Nullable
         PhotoSize[] photo,
 
-        @JsonProperty(value = "sticker")
+        @JsonProperty("sticker")
         @Nullable
         Sticker sticker,
 
-        @JsonProperty(value = "story")
+        @JsonProperty("story")
         @Nullable
         Story story,
 
-        @JsonProperty(value = "video")
+        @JsonProperty("video")
         @Nullable
         Video video,
 
-        @JsonProperty(value = "video_note")
+        @JsonProperty("video_note")
         @Nullable
         VideoNote videoNote,
 
-        @JsonProperty(value = "voice")
+        @JsonProperty("voice")
         @Nullable
         Voice voice,
 
-        @JsonProperty(value = "has_media_spoiler")
+        @JsonProperty("has_media_spoiler")
         boolean hasMediaSpoiler,
 
-        @JsonProperty(value = "contact")
+        @JsonProperty("contact")
         @Nullable
         Contact contact,
 
-        @JsonProperty(value = "dice")
+        @JsonProperty("dice")
         @Nullable
         Dice dice,
 
-        @JsonProperty(value = "game")
+        @JsonProperty("game")
         @Nullable
         Game game,
 
-        @JsonProperty(value = "giveaway")
+        @JsonProperty("giveaway")
         @Nullable
         Giveaway giveaway,
 
-        @JsonProperty(value = "giveaway_winners")
+        @JsonProperty("giveaway_winners")
         @Nullable
         GiveawayWinners giveawayWinners,
 
-        @JsonProperty(value = "invoice")
+        @JsonProperty("invoice")
         @Nullable
         Invoice invoice,
 
-        @JsonProperty(value = "location")
+        @JsonProperty("location")
         @Nullable
         Location location,
 
-        @JsonProperty(value = "poll")
+        @JsonProperty("poll")
         @Nullable
         Poll poll,
 
-        @JsonProperty(value = "venue")
+        @JsonProperty("venue")
         @Nullable
         Venue venue
 ) implements ApiResult {

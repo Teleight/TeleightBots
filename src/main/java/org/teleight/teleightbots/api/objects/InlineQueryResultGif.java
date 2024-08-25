@@ -59,8 +59,8 @@ public record InlineQueryResultGif(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.GIF;
+    public String type() {
+            return "gif";
     }
 
 }

@@ -116,7 +116,7 @@ public class ConversationContext {
         try {
             return updateQueue.poll(timeout, unit);
         } catch (InterruptedException e) {
-            bot.getConversationManager().leaveConversation(user, conversation.name());
+            bot.getConversationManager().leaveConversation(user);
             return null;
         }
     }
@@ -133,7 +133,7 @@ public class ConversationContext {
             // Start the conversation
             conversation.execute(ConversationContext.this);
             // All work is done, leave the conversation
-            bot.getConversationManager().leaveConversation(user, conversation.name());
+            bot.getConversationManager().leaveConversation(user);
         }
     }
 

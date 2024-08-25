@@ -19,8 +19,8 @@ public record InlineQueryResultGame(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.GAME;
+    public String type() {
+        return "game";
     }
 
 }

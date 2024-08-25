@@ -1,189 +1,72 @@
 package org.teleight.teleightbots.bot.settings;
 
+import lombok.Builder;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Interface representing the settings for a bot.
- * <p>
- * This interface provides methods to retrieve and configure bot settings,
- * such as the endpoint URL, update limit, and update timeout.
- * Additionally, it offers a builder interface for creating customized bot settings.
+ * Represents the settings for configuring a Telegram bot.
  *
- * @see Builder
+ * <p>
+ * Example usage:
+ * <pre>{@code
+ * BotSettings settings = BotSettings.ofBuilder()
+ *                                   .endpointUrl("https://custom.api.url/bot")
+ *                                   .updatesLimit(100)
+ *                                   .updatesTimeout(300)
+ *                                   .silentlyThrowMethodExecution(true)
+ *                                   .extensionsEnabled(true)
+ *                                   .build();
+ * }</pre>
+ * </p>
+ *
+ * @param endpointUrl                  The endpoint URL to be used for connecting with the Telegram Bot API.
+ * @param updatesLimit                 The maximum number of updates that the bot will fetch in a single API call.
+ * @param updatesTimeout               The timeout, in seconds, for fetching updates from the Telegram API.
+ *                                     This is the maximum time the server will wait for a response before timing out.
+ * @param silentlyThrowMethodExecution Indicates whether exceptions that occur during method execution should be
+ *                                     thrown silently or not.
+ * @param extensionsEnabled            Specifies whether bot extensions (additional plugins) should be enabled.
+ *                                     When set to {@code true}, extensions are enabled.
  */
-public sealed interface BotSettings permits BotSettingsImpl {
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+public record BotSettings(
+        String endpointUrl,
+        int updatesLimit,
+        int updatesTimeout,
+        boolean silentlyThrowMethodExecution,
+        boolean extensionsEnabled
+) {
 
     /**
-     * Default Bot API endpoint
+     * The default Bot API endpoint URL used to connect with the Telegram Bot API.
      */
-    String DEFAULT_BOT_API_URL = "https://api.telegram.org/bot";
+    public static final String DEFAULT_BOT_API_URL = "https://api.telegram.org/bot";
 
     /**
-     * Default bot settings with the default endpoint URL.
+     * Default instance of BotSettings with standard configurations:
+     * <ul>
+     *     <li>{@link #endpointUrl} is set to {@link #DEFAULT_BOT_API_URL}</li>
+     *     <li>{@link #updatesLimit} is set to 50</li>
+     *     <li>{@link #updatesTimeout} is set to 100</li>
+     *     <li>{@link #silentlyThrowMethodExecution} is set to {@code false}</li>
+     *     <li>{@link #extensionsEnabled} is set to {@code false}</li>
+     * </ul>
      */
-    BotSettings DEFAULT = BotSettings.of(DEFAULT_BOT_API_URL);
+    public static final BotSettings DEFAULT = ofBuilder().build();
 
     /**
-     * Creates bot settings with the specified endpoint URL and default values for update limit and timeout.
+     * Returns a new {@link Builder} preconfigured with default settings.
      *
-     * @param endPointUrl the endpoint URL to be used for the bot
-     * @return the created bot settings instance
+     * @return a new {@link Builder} instance.
+     * @see BotSettings#DEFAULT
      */
-    static @NotNull BotSettings of(@NotNull String endPointUrl) {
-        return of(endPointUrl, 100);
-    }
-
-    /**
-     * Creates bot settings with the specified endpoint URL and update limit, using a default timeout.
-     *
-     * @param endPointUrl  the endpoint URL to be used for the bot
-     * @param updatesLimit the maximum number of updates to be fetched in a single call
-     * @return the created bot settings instance
-     */
-    static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit) {
-        return of(endPointUrl, updatesLimit, 50);
-    }
-
-    /**
-     * Creates bot settings with the specified endpoint URL, update limit, and timeout.
-     *
-     * @param endPointUrl    the endpoint URL to be used for the bot
-     * @param updatesLimit   the maximum number of updates to be fetched in a single call
-     * @param updatesTimeout the timeout in seconds for fetching updates
-     * @return the created bot settings instance
-     */
-    static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout) {
-        return ofBuilder(endPointUrl).updatesLimit(updatesLimit).updatesTimeout(updatesTimeout).build();
-    }
-
-    /**
-     * Creates bot settings with the specified endpoint URL,
-     * update limit, timeout and whether extensions are enabled or not
-     *
-     * @param endPointUrl       the endpoint URL to be used for the bot
-     * @param updatesLimit      the maximum number of updates to be fetched in a single call
-     * @param updatesTimeout    the timeout in seconds for fetching updates
-     * @param extensionsEnabled whether extensions should be enabled or not
-     * @return the created bot settings instance
-     */
-    static @NotNull BotSettings of(@NotNull String endPointUrl, int updatesLimit, int updatesTimeout, boolean extensionsEnabled) {
-        return ofBuilder(endPointUrl).updatesLimit(updatesLimit).updatesTimeout(updatesTimeout).extensionsEnabled(extensionsEnabled).build();
-    }
-
-    /**
-     * Returns a builder for creating bot settings with the specified endpoint URL.
-     *
-     * @param endPointUrl the endpoint URL to be used for the bot
-     * @return the builder instance for chaining configuration methods
-     */
-    static @NotNull Builder ofBuilder(@NotNull String endPointUrl) {
-        return new BotSettingsImpl.Builder().endpointUrl(endPointUrl);
-    }
-
-    /**
-     * Returns the configured endpoint URL.
-     * <p>
-     * The endpoint URL is the base URL used by the bot to connect to the API
-     *
-     * @return the endpoint URL as a string, never null
-     */
-    String endpointUrl();
-
-    /**
-     * Returns the configured update limit.
-     * <p>
-     * The update limit specifies the maximum number of updates that the bot can fetch
-     * in a single call to the API
-     *
-     * @return the update limit as an integer, representing the maximum number of updates per call
-     */
-    int updatesLimit();
-
-    /**
-     * Returns the configured update timeout.
-     * <p>
-     * The update timeout specifies the maximum time in seconds that the bot will wait
-     * for updates from the API.
-     *
-     * @return the update timeout in seconds as an integer, representing the wait time for updates
-     */
-    int updatesTimeout();
-
-    /**
-     * Indicates whether the method execution should throw exceptions silently.
-     *
-     * @return true if method execution should throw silently, false otherwise
-     */
-    boolean silentlyThrowMethodExecution();
-
-    /**
-     * Returns whether extensions are enabled or not
-     * <p>
-     * Extensions are separate pieces of software that connect to a specific bot instance
-     *
-     * @see org.teleight.teleightbots.extensions.Extension
-     * @see org.teleight.teleightbots.extensions.ExtensionManager
-     * @return true if extensions are enabled, false otherwise
-     */
-    boolean extensionsEnabled();
-
-    /**
-     * Interface for building {@link BotSettings} instances.
-     */
-    interface Builder {
-        /**
-         * Sets the endpoint URL.
-         *
-         * @param url the endpoint URL to be used for the bot
-         * @return this builder instance for chaining configuration methods
-         */
-        @NotNull
-        Builder endpointUrl(@NotNull String url);
-
-        /**
-         * Sets the update limit.
-         *
-         * @param limit the maximum number of updates to be fetched in a single call
-         * @return this builder instance for chaining configuration methods
-         */
-        @NotNull
-        Builder updatesLimit(int limit);
-
-        /**
-         * Sets the update timeout.
-         *
-         * @param timeout the timeout in seconds for fetching updates
-         * @return this builder instance for chaining configuration methods
-         */
-        @NotNull
-        Builder updatesTimeout(int timeout);
-
-        /**
-         * Sets whether the method execution should throw exceptions silently.
-         * If set to true, exceptions during method execution will not be thrown.
-         *
-         * @param silentlyThrowMethodExecution true if exceptions should be thrown silently, false otherwise
-         * @return this builder instance for chaining configuration methods
-         */
-        @NotNull
-        Builder silentlyThrowMethodExecution(boolean silentlyThrowMethodExecution);
-
-        /**
-         * Enables or disable bot extensions.
-         *
-         * @param extensionsEnabled whether extensions should be enabled or not
-         * @return this builder instance for chaining configuration methods
-         */
-        @NotNull
-        Builder extensionsEnabled(boolean extensionsEnabled);
-
-        /**
-         * Builds and returns the configured {@link BotSettings} instance.
-         *
-         * @return the created {@link BotSettings} instance
-         */
-        @NotNull
-        BotSettings build();
+    public static @NotNull Builder ofBuilder() {
+        return new Builder()
+                .endpointUrl(DEFAULT_BOT_API_URL)
+                .updatesLimit(50)
+                .updatesTimeout(100)
+                .silentlyThrowMethodExecution(false)
+                .extensionsEnabled(false);
     }
 
 }

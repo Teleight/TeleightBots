@@ -12,7 +12,7 @@ public class TestConversationCommand extends Command {
 
             final String conversationName = "test";
 
-            if (context.bot().getConversationManager().isUserInConversation(sender, conversationName)) {
+            if (context.bot().getConversationManager().isUserInConversation(sender)) {
                 System.out.println("User is already in conversation");
                 return;
             }

@@ -10,8 +10,8 @@ public record ChatBoostSourceGiftCode(
 ) implements ChatBoostSource {
 
     @Override
-    public ChatBoostSourceType source() {
-        return ChatBoostSourceType.GIFT_CODE;
+    public String source() {
+        return "gift_code";
     }
 
 }

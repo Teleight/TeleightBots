@@ -57,8 +57,8 @@ public record InlineQueryResultDocument(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.DOCUMENT;
+    public String type() {
+            return "document";
     }
 
 }

@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 
 public record ChatMemberAdministrator(
-        @JsonProperty("status")
-        String status,
-
         @JsonProperty("user")
         User user,
 
@@ -64,8 +61,8 @@ public record ChatMemberAdministrator(
 ) implements ChatMember {
 
     @Override
-    public ChatMemberType type() {
-        return ChatMemberType.ADMINISTRATOR;
+    public String status() {
+        return "administrator";
     }
 
 }

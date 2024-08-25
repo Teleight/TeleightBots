@@ -1,6 +1,6 @@
 package org.teleight.teleightbots.api;
 
-import org.teleight.teleightbots.api.objects.InputFile;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -20,14 +20,6 @@ public interface MultiPartApiMethod<R extends Serializable> extends ApiMethod<R>
      *
      * @return a map containing the parameters of the multipart API method
      */
-    Map<String, Object> getParameters();
-
-
-    /**
-     * Gets the input files of the multipart API method.
-     *
-     * @return a map containing the input files of the multipart API method
-     */
-    Map<String, InputFile> getInputFiles();
+    @NotNull Map<String, Object> getParameters();
 
 }

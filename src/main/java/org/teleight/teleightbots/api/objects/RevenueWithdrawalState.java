@@ -1,9 +1,21 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        defaultImpl = Void.class
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = RevenueWithdrawalStatePending.class, name = "pending"),
+        @JsonSubTypes.Type(value = RevenueWithdrawalStateSucceeded.class, name = "succeeded"),
+        @JsonSubTypes.Type(value = RevenueWithdrawalStateFailed.class, name = "failed"),
+})
 public sealed interface RevenueWithdrawalState extends ApiResult permits
         RevenueWithdrawalStatePending,
         RevenueWithdrawalStateSucceeded,
@@ -12,35 +24,6 @@ public sealed interface RevenueWithdrawalState extends ApiResult permits
     String TYPE_NAME = "type";
 
     @JsonProperty(TYPE_NAME)
-    RevenueWithdrawalStateType type();
-
-    enum RevenueWithdrawalStateType implements WrappedFieldValueProvider<RevenueWithdrawalState> {
-        PENDING("pending", RevenueWithdrawalStatePending.class),
-        SUCCEEDED("succeeded", RevenueWithdrawalStateSucceeded.class),
-        FAILED("failed", RevenueWithdrawalStateFailed.class);
-
-        private final String fieldValue;
-        private final Class<? extends RevenueWithdrawalState> wrapperClass;
-
-        RevenueWithdrawalStateType(String fieldValue, Class<? extends RevenueWithdrawalState> wrapperClass) {
-            this.fieldValue = fieldValue;
-            this.wrapperClass = wrapperClass;
-        }
-
-        @Override
-        public String getFieldValue() {
-            return fieldValue;
-        }
-
-        @Override
-        public Class<? extends RevenueWithdrawalState> getWrapperClass() {
-            return wrapperClass;
-        }
-
-        @Override
-        public String getFieldName() {
-            return TYPE_NAME;
-        }
-    }
+    String type();
 
 }

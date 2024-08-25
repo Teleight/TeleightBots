@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Interface representing an exception handler.
- * <p>
- * This interface provides a single method to handle exceptions.
  */
 @FunctionalInterface
 public interface ExceptionHandler {

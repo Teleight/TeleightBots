@@ -12,8 +12,8 @@ public record BackgroundFillFreeformGradient(
 ) implements BackgroundFill {
 
     @Override
-    public BackgroundFillType type() {
-        return BackgroundFillType.FREEFORM_GRADIENT;
+    public String type() {
+        return "freeform_gradient";
     }
 
 }

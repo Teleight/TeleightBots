@@ -16,8 +16,8 @@ public record ChatBoostSourceGiveaway(
 ) implements ChatBoostSource {
 
     @Override
-    public ChatBoostSourceType source() {
-        return ChatBoostSourceType.GIVEAWAY;
+    public String source() {
+        return "giveaway";
     }
 
 }

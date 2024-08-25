@@ -1,9 +1,23 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        defaultImpl = Void.class
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = InputMediaPhoto.class, name = "photo"),
+        @JsonSubTypes.Type(value = InputMediaVideo.class, name = "video"),
+        @JsonSubTypes.Type(value = InputMediaAnimation.class, name = "animation"),
+        @JsonSubTypes.Type(value = InputMediaAudio.class, name = "audio"),
+        @JsonSubTypes.Type(value = InputMediaDocument.class, name = "document"),
+})
 public sealed interface InputMedia extends ApiResult permits
         InputMediaPhoto,
         InputMediaVideo,
@@ -14,37 +28,6 @@ public sealed interface InputMedia extends ApiResult permits
     String TYPE_NAME = "type";
 
     @JsonProperty(TYPE_NAME)
-    InputMediaType type();
-
-    enum InputMediaType implements WrappedFieldValueProvider<InputMedia> {
-        PHOTO("photo", InputMediaPhoto.class),
-        VIDEO("video", InputMediaVideo.class),
-        ANIMATION("animation", InputMediaAnimation.class),
-        AUDIO("audio", InputMediaAudio.class),
-        DOCUMENT("document", InputMediaDocument.class);
-
-        private final String fieldValue;
-        private final Class<? extends InputMedia> wrapperClass;
-
-        InputMediaType(String fieldValue, Class<? extends InputMedia> wrapperClass) {
-            this.fieldValue = fieldValue;
-            this.wrapperClass = wrapperClass;
-        }
-
-        @Override
-        public Class<? extends InputMedia> getWrapperClass() {
-            return wrapperClass;
-        }
-
-        @Override
-        public String getFieldName() {
-            return TYPE_NAME;
-        }
-
-        @Override
-        public String getFieldValue() {
-            return fieldValue;
-        }
-    }
+    String type();
 
 }

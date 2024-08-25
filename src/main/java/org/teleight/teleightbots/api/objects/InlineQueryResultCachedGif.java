@@ -42,8 +42,8 @@ public record InlineQueryResultCachedGif(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.GIF;
+    public String type() {
+            return "gif";
     }
 
 }

@@ -76,11 +76,12 @@ public record SendVoice(
     }
 
     @Override
-    public Map<String, Object> getParameters() {
+    public @NotNull Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
+        parameters.put("voice", voice);
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
         parameters.put("caption_entities", captionEntities);
@@ -91,13 +92,6 @@ public record SendVoice(
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("voice", voice);
-        return files;
     }
 
 }

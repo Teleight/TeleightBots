@@ -10,8 +10,8 @@ public record TransactionPartnerFragment(
 ) implements TransactionPartner {
 
     @Override
-    public TransactionPartnerType type() {
-        return TransactionPartnerType.FRAGMENT;
+    public String type() {
+        return "fragment";
     }
 
 }

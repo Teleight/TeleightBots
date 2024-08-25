@@ -46,8 +46,8 @@ public record InlineQueryResultCachedVideo(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.VIDEO;
+    public String type() {
+            return "video";
     }
 
 }

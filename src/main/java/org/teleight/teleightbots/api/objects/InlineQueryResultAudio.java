@@ -54,8 +54,8 @@ public record InlineQueryResultAudio(
     }
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.AUDIO;
+    public String type() {
+        return "audio";
     }
 
 }

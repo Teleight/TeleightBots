@@ -1,8 +1,9 @@
 package org.teleight.teleightbots.api.objects;
 
-import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ChatAction implements SimpleFieldValueProvider {
+public enum ChatAction {
 
     TYPING("typing"),
     UPLOAD_PHOTO("upload_photo"),
@@ -22,9 +23,19 @@ public enum ChatAction implements SimpleFieldValueProvider {
         this.fieldValue = fieldValue;
     }
 
-    @Override
+    @JsonValue
     public String getFieldValue() {
         return fieldValue;
+    }
+
+    @JsonCreator
+    public static ChatAction fromValue(String value) {
+        for (ChatAction chatAction : ChatAction.values()) {
+            if (chatAction.fieldValue.equalsIgnoreCase(value)) {
+                return chatAction;
+            }
+        }
+        throw new IllegalArgumentException("Unknown enum type " + value);
     }
 
 }

@@ -1,19 +1,16 @@
 package org.teleight.teleightbots.exception.exceptions;
 
 import org.teleight.teleightbots.api.objects.ApiResponse;
-import org.teleight.teleightbots.api.objects.ResponseParameters;
 
 public class TelegramRequestException extends RuntimeException {
 
-    private String errorDescription;
     private int errorCode;
-    private ResponseParameters parameters;
+    private String errorDescription;
 
     public TelegramRequestException(String message, ApiResponse<?> response) {
         super(message);
-        errorDescription = response.errorDescription();
         errorCode = response.errorCode();
-        parameters = response.parameters();
+        errorDescription = response.errorDescription();
     }
 
     public TelegramRequestException(String message, Throwable cause) {
@@ -28,27 +25,18 @@ public class TelegramRequestException extends RuntimeException {
         super();
     }
 
-    public String getErrorDescription() {
-        return errorDescription;
-    }
-
-    public int getErrorCode() {
-        return errorCode;
-    }
-
-    public ResponseParameters getParameters() {
-        return parameters;
-    }
-
     @Override
     public String getMessage() {
+        if (errorCode != 0 && errorDescription != null) {
+            return super.getMessage() + " [" + errorCode + "] - " + errorDescription;
+        }
         if (errorCode != 0) {
-            return super.getMessage() + ": " + errorDescription;
+            return super.getMessage() + " [" + errorCode + "]";
         }
-        if (errorDescription == null) {
-            return super.getMessage();
+        if (errorDescription != null) {
+            return super.getMessage() + " - " + errorDescription;
         }
-        return super.getMessage() + ": (" + errorCode + ") " + errorDescription;
+        return super.getMessage();
     }
 
     @Override

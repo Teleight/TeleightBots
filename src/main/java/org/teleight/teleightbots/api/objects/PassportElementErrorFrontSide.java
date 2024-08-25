@@ -14,8 +14,8 @@ public record PassportElementErrorFrontSide(
 ) implements PassportElementError {
 
     @Override
-    public PassportElementErrorType source() {
-        return PassportElementErrorType.FRONT_SIDE;
+    public String source() {
+        return "front_side";
     }
 
 }

@@ -1,13 +1,17 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record InputMediaDocument(
         @JsonProperty(value = "media", required = true)
         @NotNull
-        String media,
+        InputFile media,
 
         @JsonProperty("thumbnail")
         @Nullable
@@ -29,9 +33,13 @@ public record InputMediaDocument(
         boolean disableContentTypeDetection
 ) implements InputMedia {
 
+    public static @NotNull Builder ofBuilder(InputFile media) {
+        return new InputMediaDocument.Builder().media(media);
+    }
+
     @Override
-    public InputMediaType type() {
-        return InputMediaType.DOCUMENT;
+    public String type() {
+        return "document";
     }
 
 }

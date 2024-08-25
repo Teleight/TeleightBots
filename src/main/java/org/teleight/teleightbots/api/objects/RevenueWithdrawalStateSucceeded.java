@@ -16,8 +16,8 @@ public record RevenueWithdrawalStateSucceeded(
 ) implements RevenueWithdrawalState {
 
     @Override
-    public RevenueWithdrawalStateType type() {
-        return RevenueWithdrawalStateType.SUCCEEDED;
+    public String type() {
+        return "succeeded";
     }
 
 }

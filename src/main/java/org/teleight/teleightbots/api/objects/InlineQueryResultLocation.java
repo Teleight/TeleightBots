@@ -52,8 +52,8 @@ public record InlineQueryResultLocation(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.LOCATION;
+    public String type() {
+            return "location";
     }
 
 }

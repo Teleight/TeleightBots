@@ -12,8 +12,8 @@ public record BackgroundFillSolid(
 ) implements BackgroundFill {
 
     @Override
-    public BackgroundFillType type() {
-        return BackgroundFillType.SOLID;
+    public String type() {
+        return "solid";
     }
 
 }

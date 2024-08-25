@@ -3,9 +3,6 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ChatMemberRestricted(
-        @JsonProperty("status")
-        String status,
-
         @JsonProperty("user")
         User user,
 
@@ -59,8 +56,8 @@ public record ChatMemberRestricted(
 ) implements ChatMember {
 
     @Override
-    public ChatMemberType type() {
-        return ChatMemberType.RESTRICTED;
+    public String status() {
+            return "restricted";
     }
 
 }

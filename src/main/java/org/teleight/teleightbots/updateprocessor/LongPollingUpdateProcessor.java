@@ -9,8 +9,16 @@ import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.InputFile;
+import org.teleight.teleightbots.api.objects.InputMedia;
+import org.teleight.teleightbots.api.objects.InputMediaAnimation;
+import org.teleight.teleightbots.api.objects.InputMediaAudio;
+import org.teleight.teleightbots.api.objects.InputMediaDocument;
+import org.teleight.teleightbots.api.objects.InputMediaPhoto;
+import org.teleight.teleightbots.api.objects.InputMediaVideo;
+import org.teleight.teleightbots.api.objects.InputPaidMedia;
+import org.teleight.teleightbots.api.objects.InputPaidMediaPhoto;
+import org.teleight.teleightbots.api.objects.InputPaidMediaVideo;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.conversation.ConversationContext;
@@ -231,19 +239,22 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
                 switch (value) {
                     case String string -> publisher.addPart(key, string);
-                    case SimpleFieldValueProvider simpleFieldValueProvider ->
-                            publisher.addPart(key, simpleFieldValueProvider.getFieldValue());
+                    case InputFile inputFile -> {
+                        if (inputFile.id() != null) {
+                            publisher.addPart(key, inputFile.id());
+                        } else {
+                            publisher.addPart(key, inputFile.file(), inputFile.fileName());
+                        }
+                    }
+                    case InputMedia inputMedia -> {
+                        handleInputMedia(publisher, inputMedia);
+                        publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputMedia));
+                    }
+                    case InputPaidMedia[] inputPaidMedias -> {
+                        handleInputPaidMedias(publisher, inputPaidMedias);
+                        publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputPaidMedias));
+                    }
                     default -> publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(value));
-                }
-
-            }
-            for (Map.Entry<String, InputFile> stringObjectEntry : multiPartApiMethod.getInputFiles().entrySet()) {
-                final String key = stringObjectEntry.getKey();
-                final InputFile value = stringObjectEntry.getValue();
-                if (value.telegramFileId() != null) {
-                    publisher.addPart(key, value.telegramFileId());
-                } else {
-                    publisher.addPart(key, value.file(), value.fileName());
                 }
             }
             body = publisher.build();
@@ -256,6 +267,42 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         }
 
         return requestBuilder.POST(body).build();
+    }
+
+    private void addMultiMediaPart(MultiPartBodyPublisher publisher, InputFile inputFileMedia, InputFile inputFileThumbnail) {
+        if (inputFileMedia.id() != null) {
+            publisher.addPart(inputFileMedia.fileName(), inputFileMedia.id());
+        } else {
+            publisher.addPart(inputFileMedia.fileName(), inputFileMedia.file(), inputFileMedia.fileName());
+        }
+        if (inputFileThumbnail != null) {
+            if (inputFileThumbnail.id() != null) {
+                publisher.addPart(inputFileThumbnail.fileName(), inputFileThumbnail.id());
+            } else {
+                publisher.addPart(inputFileThumbnail.fileName(), inputFileThumbnail.file(), inputFileThumbnail.fileName());
+            }
+        }
+    }
+
+    private void handleInputMedia(MultiPartBodyPublisher publisher, InputMedia inputMedia) {
+        switch (inputMedia) {
+            case InputMediaPhoto photo -> addMultiMediaPart(publisher, photo.media(), null);
+            case InputMediaDocument document -> addMultiMediaPart(publisher, document.media(), document.thumbnail());
+            case InputMediaAudio audio -> addMultiMediaPart(publisher, audio.media(), audio.thumbnail());
+            case InputMediaAnimation animation -> addMultiMediaPart(publisher, animation.media(), animation.thumbnail());
+            case InputMediaVideo video -> addMultiMediaPart(publisher, video.media(), video.thumbnail());
+            default -> throw new IllegalStateException("Unexpected value: " + inputMedia);
+        }
+    }
+
+    private void handleInputPaidMedias(MultiPartBodyPublisher publisher, InputPaidMedia[] inputPaidMedias) {
+        for (InputPaidMedia inputPaidMedia : inputPaidMedias) {
+            switch (inputPaidMedia) {
+                case InputPaidMediaPhoto photo -> addMultiMediaPart(publisher, photo.media(), null);
+                case InputPaidMediaVideo video -> addMultiMediaPart(publisher, video.media(), video.thumbnail());
+                default -> throw new IllegalStateException("Unexpected value: " + inputPaidMedia);
+            }
+        }
     }
 
     private class UpdateProcessorThread extends Thread {

@@ -16,8 +16,8 @@ public record MessageOriginHiddenUser(
 ) implements MessageOrigin {
 
     @Override
-    public MessageOriginType type() {
-        return MessageOriginType.HIDDEN_USER;
+    public String type() {
+        return "hidden_user";
     }
 
 }

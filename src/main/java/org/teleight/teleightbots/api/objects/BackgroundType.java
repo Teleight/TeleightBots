@@ -1,9 +1,22 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "status",
+        defaultImpl = Void.class
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = BackgroundTypeFill.class, name = "fill"),
+        @JsonSubTypes.Type(value = BackgroundTypeWallpaper.class, name = "wallpaper"),
+        @JsonSubTypes.Type(value = BackgroundTypePattern.class, name = "pattern"),
+        @JsonSubTypes.Type(value = BackgroundTypeChatTheme.class, name = "chat_theme"),
+})
 public sealed interface BackgroundType extends ApiResult permits
         BackgroundTypeFill,
         BackgroundTypeWallpaper,
@@ -13,37 +26,6 @@ public sealed interface BackgroundType extends ApiResult permits
     String TYPE_NAME = "type";
 
     @JsonProperty(TYPE_NAME)
-    BackgroundType.BackgroundTypeType type();
-
-    enum BackgroundTypeType implements WrappedFieldValueProvider<BackgroundType> {
-
-        FILL("fill", BackgroundTypeFill.class),
-        WALLPAPER("wallpaper", BackgroundTypeWallpaper.class),
-        PATTERN("pattern", BackgroundTypePattern.class),
-        CHAT_THEME("chat_theme", BackgroundTypeChatTheme.class);
-
-        private final String fieldValue;
-        private final Class<? extends BackgroundType> wrapperClass;
-
-        BackgroundTypeType(String fieldValue, Class<? extends BackgroundType> wrapperClass) {
-            this.fieldValue = fieldValue;
-            this.wrapperClass = wrapperClass;
-        }
-
-        @Override
-        public Class<? extends BackgroundType> getWrapperClass() {
-            return wrapperClass;
-        }
-
-        @Override
-        public String getFieldName() {
-            return TYPE_NAME;
-        }
-
-        @Override
-        public String getFieldValue() {
-            return fieldValue;
-        }
-    }
+    String type();
 
 }

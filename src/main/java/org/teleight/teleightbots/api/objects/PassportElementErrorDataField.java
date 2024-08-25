@@ -17,8 +17,8 @@ public record PassportElementErrorDataField(
 ) implements PassportElementError {
 
     @Override
-    public PassportElementErrorType source() {
-        return PassportElementErrorType.DATA_FIELD;
+    public String source() {
+        return "data";
     }
 
 }

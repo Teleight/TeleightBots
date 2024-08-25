@@ -48,8 +48,8 @@ public record InlineQueryResultArticle(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.ARTICLE;
+    public String type() {
+        return "article";
     }
 
 }

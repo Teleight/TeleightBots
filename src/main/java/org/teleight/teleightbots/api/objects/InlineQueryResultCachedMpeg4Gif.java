@@ -42,8 +42,8 @@ public record InlineQueryResultCachedMpeg4Gif(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.MPEG4_GIF;
+    public String type() {
+            return "mpeg4_gif";
     }
 
 }

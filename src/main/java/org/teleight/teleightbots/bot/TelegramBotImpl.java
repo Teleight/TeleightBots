@@ -165,11 +165,12 @@ public final class TelegramBotImpl implements TelegramBot {
             final R result;
             try {
                 result = method.deserializeResponse(responseJson);
-            } catch (Exception e) {
+            } catch (TelegramRequestException e) {
                 if (!botSettings.silentlyThrowMethodExecution()) {
                     TeleightBots.getExceptionManager().handleException(e);
                 }
-                throw new TelegramRequestException(e);
+                responseFuture.completeExceptionally(e);
+                return null;
             }
             eventManager.call(new MethodSendEvent<>(TelegramBotImpl.this, method, result));
             return result;

@@ -117,6 +117,10 @@ public record Message(
         @Nullable
         Document document,
 
+        @JsonProperty("paid_media")
+        @Nullable
+        PaidMedia paidMedia,
+
         @JsonProperty("photo")
         @Nullable
         PhotoSize[] photo,

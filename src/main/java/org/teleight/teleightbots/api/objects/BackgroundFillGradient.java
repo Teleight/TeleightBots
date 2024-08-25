@@ -21,8 +21,8 @@ public record BackgroundFillGradient(
 ) implements BackgroundFill {
 
     @Override
-    public BackgroundFillType type() {
-        return BackgroundFillType.GRADIENT;
+    public String type() {
+        return "gradient";
     }
 
 }

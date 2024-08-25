@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiMethodMessage;
+import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.MessageEntity;
+import org.teleight.teleightbots.api.objects.MessageId;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
@@ -56,7 +58,7 @@ public record CopyMessage(
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
-) implements ApiMethodMessage {
+) implements ApiMethod<MessageId> {
 
     public static @NotNull Builder ofBuilder(String chatId, String fromChatId, int messageId) {
         return new CopyMessage.Builder().chatId(chatId).fromChatId(fromChatId).messageId(messageId);
@@ -65,6 +67,11 @@ public record CopyMessage(
     @Override
     public @NotNull String getEndpointURL() {
         return "copyMessage";
+    }
+
+    @Override
+    public @NotNull MessageId deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, MessageId.class);
     }
 
 }

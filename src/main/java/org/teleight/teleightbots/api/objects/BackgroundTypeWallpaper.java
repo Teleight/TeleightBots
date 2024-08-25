@@ -21,8 +21,8 @@ public record BackgroundTypeWallpaper(
 ) implements BackgroundType {
 
     @Override
-    public BackgroundTypeType type() {
-        return BackgroundTypeType.WALLPAPER;
+    public String type() {
+        return "wallpaper";
     }
 
 }

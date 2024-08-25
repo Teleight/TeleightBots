@@ -79,7 +79,7 @@ public record SendPhoto(
     }
 
     @Override
-    public Map<String, Object> getParameters() {
+    public @NotNull Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
@@ -88,6 +88,7 @@ public record SendPhoto(
         parameters.put("parse_mode", parseMode);
         parameters.put("caption_entities", captionEntities);
         parameters.put("show_caption_above_media", showCaptionAboveMedia);
+        parameters.put("photo", photo);
         parameters.put("has_spoiler", hasSpoiler);
         parameters.put("disable_notification", disableNotification);
         parameters.put("protect_content", protectContent);
@@ -95,13 +96,6 @@ public record SendPhoto(
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("photo", photo);
-        return files;
     }
 
 }

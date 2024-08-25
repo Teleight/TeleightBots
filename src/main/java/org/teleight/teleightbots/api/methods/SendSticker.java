@@ -63,25 +63,19 @@ public record SendSticker(
     }
 
     @Override
-    public Map<String, Object> getParameters() {
+    public @NotNull Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
         parameters.put("emoji", emoji);
+        parameters.put("sticker", sticker);
         parameters.put("disable_notification", disableNotification);
         parameters.put("protect_content", protectContent);
         parameters.put("message_effect_id", messageEffectId);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
-    }
-
-    @Override
-    public Map<String, InputFile> getInputFiles() {
-        final Map<String, InputFile> files = new HashMap<>();
-        files.put("sticker", sticker);
-        return files;
     }
 
 }

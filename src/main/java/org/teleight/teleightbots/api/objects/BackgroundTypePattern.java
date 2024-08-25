@@ -25,8 +25,8 @@ public record BackgroundTypePattern(
 ) implements BackgroundType {
 
     @Override
-    public BackgroundTypeType type() {
-        return BackgroundTypeType.PATTERN;
+    public String type() {
+        return "pattern";
     }
 
 }
