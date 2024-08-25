@@ -9,6 +9,12 @@ import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.InputFile;
+import org.teleight.teleightbots.api.objects.InputMedia;
+import org.teleight.teleightbots.api.objects.InputMediaAnimation;
+import org.teleight.teleightbots.api.objects.InputMediaAudio;
+import org.teleight.teleightbots.api.objects.InputMediaDocument;
+import org.teleight.teleightbots.api.objects.InputMediaPhoto;
+import org.teleight.teleightbots.api.objects.InputMediaVideo;
 import org.teleight.teleightbots.api.objects.InputPaidMedia;
 import org.teleight.teleightbots.api.objects.InputPaidMediaPhoto;
 import org.teleight.teleightbots.api.objects.InputPaidMediaVideo;
@@ -243,33 +249,12 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
                             publisher.addPart(key, inputFile.file(), inputFile.fileName());
                         }
                     }
+                    case InputMedia inputMedia -> {
+                        handleInputMedia(publisher, inputMedia);
+                        publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputMedia));
+                    }
                     case InputPaidMedia[] inputPaidMedias -> {
-                        for (InputPaidMedia inputPaidMedia : inputPaidMedias) {
-                            switch (inputPaidMedia) {
-                                case InputPaidMediaPhoto inputPaidMediaPhoto -> {
-                                    if (inputPaidMediaPhoto.media().id() != null) {
-                                        publisher.addPart(inputPaidMediaPhoto.media().fileName(), inputPaidMediaPhoto.media().id());
-                                    } else {
-                                        publisher.addPart(inputPaidMediaPhoto.media().fileName(), inputPaidMediaPhoto.media().file(), inputPaidMediaPhoto.media().fileName());
-                                    }
-                                }
-                                case InputPaidMediaVideo inputPaidMediaVideo -> {
-                                    if (inputPaidMediaVideo.media().id() != null) {
-                                        publisher.addPart(inputPaidMediaVideo.media().fileName(), inputPaidMediaVideo.media().id());
-                                    } else {
-                                        publisher.addPart(inputPaidMediaVideo.media().fileName(), inputPaidMediaVideo.media().file(), inputPaidMediaVideo.media().fileName());
-                                    }
-                                    if (inputPaidMediaVideo.thumbnail() != null) {
-                                        if (inputPaidMediaVideo.thumbnail().id() != null) {
-                                            publisher.addPart(inputPaidMediaVideo.thumbnail().fileName(), inputPaidMediaVideo.thumbnail().id());
-                                        } else {
-                                            publisher.addPart(inputPaidMediaVideo.thumbnail().fileName(), inputPaidMediaVideo.thumbnail().file(), inputPaidMediaVideo.thumbnail().fileName());
-                                        }
-                                    }
-                                }
-                                default -> throw new IllegalStateException("Unexpected value: " + inputPaidMedia);
-                            }
-                        }
+                        handleInputPaidMedias(publisher, inputPaidMedias);
                         publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputPaidMedias));
                     }
                     default -> publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(value));
@@ -285,6 +270,56 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         }
 
         return requestBuilder.POST(body).build();
+    }
+
+    private void addMultiMediaPart(MultiPartBodyPublisher publisher, InputFile inputFileMedia, InputFile inputFileThumbnail) {
+        if (inputFileMedia.id() != null) {
+            publisher.addPart(inputFileMedia.fileName(), inputFileMedia.id());
+        } else {
+            publisher.addPart(inputFileMedia.fileName(), inputFileMedia.file(), inputFileMedia.fileName());
+        }
+        if (inputFileThumbnail != null) {
+            if (inputFileThumbnail.id() != null) {
+                publisher.addPart(inputFileThumbnail.fileName(), inputFileThumbnail.id());
+            } else {
+                publisher.addPart(inputFileThumbnail.fileName(), inputFileThumbnail.file(), inputFileThumbnail.fileName());
+            }
+        }
+    }
+
+    private void handleInputMedia(MultiPartBodyPublisher publisher, InputMedia inputMedia) {
+        switch (inputMedia) {
+            case InputMediaPhoto inputMediaPhoto -> {
+                addMultiMediaPart(publisher, inputMediaPhoto.media(), null);
+            }
+            case InputMediaDocument inputMediaDocument -> {
+                addMultiMediaPart(publisher, inputMediaDocument.media(), inputMediaDocument.thumbnail());
+            }
+            case InputMediaAudio inputMediaAudio -> {
+                addMultiMediaPart(publisher, inputMediaAudio.media(), inputMediaAudio.thumbnail());
+            }
+            case InputMediaAnimation inputMediaAnimation -> {
+                addMultiMediaPart(publisher, inputMediaAnimation.media(), inputMediaAnimation.thumbnail());
+            }
+            case InputMediaVideo inputMediaVideo -> {
+                addMultiMediaPart(publisher, inputMediaVideo.media(), inputMediaVideo.thumbnail());
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + inputMedia);
+        }
+    }
+
+    private void handleInputPaidMedias(MultiPartBodyPublisher publisher, InputPaidMedia[] inputPaidMedias) {
+        for (InputPaidMedia inputPaidMedia : inputPaidMedias) {
+            switch (inputPaidMedia) {
+                case InputPaidMediaPhoto inputPaidMediaPhoto -> {
+                    addMultiMediaPart(publisher, inputPaidMediaPhoto.media(), null);
+                }
+                case InputPaidMediaVideo inputPaidMediaVideo -> {
+                    addMultiMediaPart(publisher, inputPaidMediaVideo.media(), inputPaidMediaVideo.thumbnail());
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + inputPaidMedia);
+            }
+        }
     }
 
     private class UpdateProcessorThread extends Thread {
