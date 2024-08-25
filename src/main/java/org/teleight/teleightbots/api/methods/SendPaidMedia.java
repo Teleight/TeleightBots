@@ -18,6 +18,10 @@ import java.util.Map;
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record SendPaidMedia(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
@@ -71,6 +75,7 @@ public record SendPaidMedia(
     @Override
     public @NotNull Map<String, Object> getParameters() {
         final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("star_count", starCount);
         parameters.put("media", media);

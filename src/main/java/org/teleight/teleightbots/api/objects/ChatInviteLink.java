@@ -32,10 +32,16 @@ public record ChatInviteLink(
         Date expireDate,
 
         @JsonProperty("member_limit")
-        @Range(from = 1, to = 99999)
+        @Range(from = 1, to = 99_999)
         int memberLimit,
 
         @JsonProperty("pending_join_request_count")
-        int pendingJoinRequestCount
+        int pendingJoinRequestCount,
+
+        @JsonProperty("subscription_period")
+        int subscriptionPeriod,
+
+        @JsonProperty("subscription_price")
+        int subscriptionPrice
 ) implements ApiResult {
 }

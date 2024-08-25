@@ -1,10 +1,18 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Date;
 
 public record ChatMemberMember(
-        @JsonProperty("user")
-        User user
+        @JsonProperty(value = "user", required = true)
+        @NotNull
+        User user,
+
+        @JsonProperty("until_date")
+        @NotNull
+        Date untilDate
 ) implements ChatMember {
 
     @Override
