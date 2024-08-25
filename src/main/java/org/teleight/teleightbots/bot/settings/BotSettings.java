@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
  *                                   .extensionsEnabled(true)
  *                                   .build();
  * }</pre>
- * </p>
  *
  * @param endpointUrl                  The endpoint URL to be used for connecting with the Telegram Bot API.
  * @param updatesLimit                 The maximum number of updates that the bot will fetch in a single API call.
