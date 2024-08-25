@@ -289,21 +289,11 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
     private void handleInputMedia(MultiPartBodyPublisher publisher, InputMedia inputMedia) {
         switch (inputMedia) {
-            case InputMediaPhoto inputMediaPhoto -> {
-                addMultiMediaPart(publisher, inputMediaPhoto.media(), null);
-            }
-            case InputMediaDocument inputMediaDocument -> {
-                addMultiMediaPart(publisher, inputMediaDocument.media(), inputMediaDocument.thumbnail());
-            }
-            case InputMediaAudio inputMediaAudio -> {
-                addMultiMediaPart(publisher, inputMediaAudio.media(), inputMediaAudio.thumbnail());
-            }
-            case InputMediaAnimation inputMediaAnimation -> {
-                addMultiMediaPart(publisher, inputMediaAnimation.media(), inputMediaAnimation.thumbnail());
-            }
-            case InputMediaVideo inputMediaVideo -> {
-                addMultiMediaPart(publisher, inputMediaVideo.media(), inputMediaVideo.thumbnail());
-            }
+            case InputMediaPhoto photo -> addMultiMediaPart(publisher, photo.media(), null);
+            case InputMediaDocument document -> addMultiMediaPart(publisher, document.media(), document.thumbnail());
+            case InputMediaAudio audio -> addMultiMediaPart(publisher, audio.media(), audio.thumbnail());
+            case InputMediaAnimation animation -> addMultiMediaPart(publisher, animation.media(), animation.thumbnail());
+            case InputMediaVideo video -> addMultiMediaPart(publisher, video.media(), video.thumbnail());
             default -> throw new IllegalStateException("Unexpected value: " + inputMedia);
         }
     }
@@ -311,12 +301,8 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     private void handleInputPaidMedias(MultiPartBodyPublisher publisher, InputPaidMedia[] inputPaidMedias) {
         for (InputPaidMedia inputPaidMedia : inputPaidMedias) {
             switch (inputPaidMedia) {
-                case InputPaidMediaPhoto inputPaidMediaPhoto -> {
-                    addMultiMediaPart(publisher, inputPaidMediaPhoto.media(), null);
-                }
-                case InputPaidMediaVideo inputPaidMediaVideo -> {
-                    addMultiMediaPart(publisher, inputPaidMediaVideo.media(), inputPaidMediaVideo.thumbnail());
-                }
+                case InputPaidMediaPhoto photo -> addMultiMediaPart(publisher, photo.media(), null);
+                case InputPaidMediaVideo video -> addMultiMediaPart(publisher, video.media(), video.thumbnail());
                 default -> throw new IllegalStateException("Unexpected value: " + inputPaidMedia);
             }
         }
