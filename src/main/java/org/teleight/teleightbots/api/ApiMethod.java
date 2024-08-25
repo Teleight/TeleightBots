@@ -17,7 +17,7 @@ import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
