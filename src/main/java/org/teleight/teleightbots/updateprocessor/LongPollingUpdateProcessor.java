@@ -19,7 +19,6 @@ import org.teleight.teleightbots.api.objects.InputPaidMedia;
 import org.teleight.teleightbots.api.objects.InputPaidMediaPhoto;
 import org.teleight.teleightbots.api.objects.InputPaidMediaVideo;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.conversation.ConversationContext;
@@ -240,8 +239,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
 
                 switch (value) {
                     case String string -> publisher.addPart(key, string);
-                    case SimpleFieldValueProvider simpleFieldValueProvider ->
-                            publisher.addPart(key, simpleFieldValueProvider.getFieldValue());
                     case InputFile inputFile -> {
                         if (inputFile.id() != null) {
                             publisher.addPart(key, inputFile.id());
