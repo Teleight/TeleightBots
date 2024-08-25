@@ -1,8 +1,10 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.serialization.serializers.InputFileSerializer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,6 +13,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+@JsonSerialize(using = InputFileSerializer.class)
 public record InputFile(
         @JsonIgnore
         String id,

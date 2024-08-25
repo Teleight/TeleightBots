@@ -64,8 +64,8 @@ public record InlineQueryResultPhoto(
     }
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.PHOTO;
+    public String type() {
+        return "photo";
     }
 
 }

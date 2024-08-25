@@ -35,8 +35,8 @@ public record InputPaidMediaVideo(
     }
 
     @Override
-    public InputPaidMediaType type() {
-        return InputPaidMediaType.VIDEO;
+    public String type() {
+        return "video";
     }
 
 }

@@ -45,8 +45,8 @@ public record InlineQueryResultContact(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.CONTACT;
+    public String type() {
+            return "contact";
     }
 
 }

@@ -2,8 +2,8 @@ package org.teleight.teleightbots.api.serialization.deserializers;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.teleight.teleightbots.api.objects.ForceReplyKeyboard;
 import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
@@ -14,11 +14,7 @@ import java.io.IOException;
 
 import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
-public class KeyboardDeserializer extends StdDeserializer<ReplyKeyboard> {
-
-    public KeyboardDeserializer() {
-        super((Class<ReplyKeyboard>) null);
-    }
+public class KeyboardDeserializer extends JsonDeserializer<ReplyKeyboard> {
 
     @Override
     public ReplyKeyboard deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

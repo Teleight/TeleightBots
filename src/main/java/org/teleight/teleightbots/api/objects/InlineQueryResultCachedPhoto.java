@@ -46,8 +46,8 @@ public record InlineQueryResultCachedPhoto(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.PHOTO;
+    public String type() {
+            return "photo";
     }
 
 }

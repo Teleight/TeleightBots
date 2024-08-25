@@ -14,8 +14,8 @@ public record PassportElementErrorTranslationFiles(
 ) implements PassportElementError {
 
     @Override
-    public PassportElementErrorType source() {
-        return PassportElementErrorType.TRANSLATION_FILES;
+    public String source() {
+        return "translation_files";
     }
 
 }

@@ -30,8 +30,8 @@ public record InputMediaDocument(
 ) implements InputMedia {
 
     @Override
-    public InputMediaType type() {
-        return InputMediaType.DOCUMENT;
+    public String type() {
+        return "document";
     }
 
 }

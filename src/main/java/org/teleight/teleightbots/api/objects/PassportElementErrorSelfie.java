@@ -14,8 +14,8 @@ public record PassportElementErrorSelfie(
 ) implements PassportElementError {
 
     @Override
-    public PassportElementErrorType source() {
-        return PassportElementErrorType.SELFIE;
+    public String source() {
+        return "selfie";
     }
 
 }

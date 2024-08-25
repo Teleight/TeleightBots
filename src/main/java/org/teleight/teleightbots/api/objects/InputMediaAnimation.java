@@ -42,8 +42,8 @@ public record InputMediaAnimation(
 ) implements InputMedia {
 
     @Override
-    public InputMediaType type() {
-        return InputMediaType.ANIMATION;
+    public String type() {
+        return "animation";
     }
 
 }

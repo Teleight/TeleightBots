@@ -1,9 +1,24 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "status",
+        defaultImpl = Void.class
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ChatMemberAdministrator.class, name = "administrator"),
+        @JsonSubTypes.Type(value = ChatMemberBanned.class, name = "kicked"),
+        @JsonSubTypes.Type(value = ChatMemberLeft.class, name = "left"),
+        @JsonSubTypes.Type(value = ChatMemberMember.class, name = "member"),
+        @JsonSubTypes.Type(value = ChatMemberOwner.class, name = "creator"),
+        @JsonSubTypes.Type(value = ChatMemberRestricted.class, name = "restricted"),
+})
 public sealed interface ChatMember extends ApiResult permits
         ChatMemberOwner,
         ChatMemberAdministrator,
@@ -12,48 +27,15 @@ public sealed interface ChatMember extends ApiResult permits
         ChatMemberLeft,
         ChatMemberBanned {
 
-    String TYPE_NAME = "type";
+    String TYPE_NAME = "status";
 
     @JsonProperty(TYPE_NAME)
-    ChatMemberType type();
+    String status();
 
     User user();
 
     default boolean isAdmin() {
         return this instanceof ChatMemberOwner || this instanceof ChatMemberAdministrator;
-    }
-
-    enum ChatMemberType implements WrappedFieldValueProvider<ChatMember> {
-
-        OWNER("creator", ChatMemberOwner.class),
-        ADMINISTRATOR("administrator", ChatMemberAdministrator.class),
-        MEMBER("member", ChatMemberMember.class),
-        RESTRICTED("restricted", ChatMemberRestricted.class),
-        LEFT("left", ChatMemberLeft.class),
-        BANNED("kicked", ChatMemberBanned.class);
-
-        private final String fieldValue;
-        private final Class<? extends ChatMember> wrapperClass;
-
-        ChatMemberType(String fieldValue, Class<? extends ChatMember> wrapperClass) {
-            this.fieldValue = fieldValue;
-            this.wrapperClass = wrapperClass;
-        }
-
-        @Override
-        public String getFieldValue() {
-            return fieldValue;
-        }
-
-        @Override
-        public Class<? extends ChatMember> getWrapperClass() {
-            return wrapperClass;
-        }
-
-        @Override
-        public String getFieldName() {
-            return "status";
-        }
     }
 
 }

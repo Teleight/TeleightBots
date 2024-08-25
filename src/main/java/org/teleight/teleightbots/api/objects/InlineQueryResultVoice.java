@@ -42,8 +42,8 @@ public record InlineQueryResultVoice(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.VOICE;
+    public String type() {
+            return "voice";
     }
 
 }

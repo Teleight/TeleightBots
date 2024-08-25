@@ -10,8 +10,8 @@ public record BotCommandScopeChat(
 ) implements BotCommandScope {
 
     @Override
-    public @NotNull BotCommandScope.BotCommandScopeType type() {
-        return BotCommandScopeType.CHAT;
+    public @NotNull String type() {
+        return "chat";
     }
 
 }

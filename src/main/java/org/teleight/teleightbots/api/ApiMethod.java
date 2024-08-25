@@ -9,35 +9,12 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
-import org.teleight.teleightbots.api.objects.BackgroundFill;
-import org.teleight.teleightbots.api.objects.BackgroundType;
-import org.teleight.teleightbots.api.objects.BotCommandScope;
-import org.teleight.teleightbots.api.objects.ChatAction;
-import org.teleight.teleightbots.api.objects.ChatBoostSource;
-import org.teleight.teleightbots.api.objects.ChatMember;
-import org.teleight.teleightbots.api.objects.InlineQueryResult;
-import org.teleight.teleightbots.api.objects.InputPaidMedia;
-import org.teleight.teleightbots.api.objects.InputSticker;
-import org.teleight.teleightbots.api.objects.LivePeriod;
-import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
-import org.teleight.teleightbots.api.objects.MessageOrigin;
-import org.teleight.teleightbots.api.objects.PaidMedia;
-import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
-import org.teleight.teleightbots.api.objects.RevenueWithdrawalState;
-import org.teleight.teleightbots.api.objects.TransactionPartner;
 import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.CommonEnumValueDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.DateDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.LivePeriodDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.WrappedResultTypeDeserializer;
 import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
-import org.teleight.teleightbots.api.serialization.serializers.CommonEnumValueSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
-import org.teleight.teleightbots.api.serialization.serializers.InputPaidMediasSerializer;
-import org.teleight.teleightbots.api.serialization.serializers.LivePeriodSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.awt.*;
@@ -68,49 +45,6 @@ public interface ApiMethod<R extends Serializable> {
             .registerModule(new SimpleModule()
                     .addSerializer(Date.class, new DateSerializer())
                     .addDeserializer(Date.class, new DateDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addSerializer(LivePeriod.class, new LivePeriodSerializer())
-                    .addDeserializer(LivePeriod.class, new LivePeriodDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(ChatMember.class,
-                            new WrappedResultTypeDeserializer<>(ChatMember.class, ChatMember.ChatMemberType.class))
-                    .addDeserializer(InlineQueryResult.class,
-                            new WrappedResultTypeDeserializer<>(InlineQueryResult.class, InlineQueryResult.InlineQueryResultType.class))
-                    .addDeserializer(BotCommandScope.class,
-                            new WrappedResultTypeDeserializer<>(BotCommandScope.class, BotCommandScope.BotCommandScopeType.class))
-                    .addDeserializer(ChatBoostSource.class,
-                            new WrappedResultTypeDeserializer<>(ChatBoostSource.class, ChatBoostSource.ChatBoostSourceType.class))
-                    .addDeserializer(MessageOrigin.class,
-                            new WrappedResultTypeDeserializer<>(MessageOrigin.class, MessageOrigin.MessageOriginType.class))
-                    .addDeserializer(BackgroundFill.class,
-                            new WrappedResultTypeDeserializer<>(BackgroundFill.class, BackgroundFill.BackgroundFillType.class))
-                    .addDeserializer(BackgroundType.class,
-                            new WrappedResultTypeDeserializer<>(BackgroundType.class, BackgroundType.BackgroundTypeType.class))
-                    .addDeserializer(RevenueWithdrawalState.class,
-                            new WrappedResultTypeDeserializer<>(RevenueWithdrawalState.class, RevenueWithdrawalState.RevenueWithdrawalStateType.class))
-                    .addDeserializer(TransactionPartner.class,
-                            new WrappedResultTypeDeserializer<>(TransactionPartner.class, TransactionPartner.TransactionPartnerType.class))
-                    .addDeserializer(PaidMedia.class,
-                            new WrappedResultTypeDeserializer<>(PaidMedia.class, PaidMedia.PaidMediaType.class))
-                    .addDeserializer(InputPaidMedia.class,
-                            new WrappedResultTypeDeserializer<>(InputPaidMedia.class, InputPaidMedia.InputPaidMediaType.class))
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(ChatAction.class, new CommonEnumValueDeserializer<>(ChatAction.class))
-                    .addDeserializer(ParseMode.class, new CommonEnumValueDeserializer<>(ParseMode.class))
-                    .addDeserializer(InputSticker.Format.class, new CommonEnumValueDeserializer<>(InputSticker.Format.class))
-                    .addSerializer(ChatAction.class, new CommonEnumValueSerializer<>(ChatAction.class))
-                    .addSerializer(ParseMode.class, new CommonEnumValueSerializer<>(ParseMode.class))
-                    .addSerializer(InputSticker.Format.class, new CommonEnumValueSerializer<>(InputSticker.Format.class))
-
-            )
-            .registerModule(new SimpleModule()
-                    .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
-            )
-            .registerModule(new SimpleModule()
-                    .addSerializer(InputPaidMedia[].class, new InputPaidMediasSerializer())
             );
 
     /**

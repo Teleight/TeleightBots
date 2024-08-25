@@ -20,8 +20,8 @@ public record MessageOriginChat(
 ) implements MessageOrigin {
 
     @Override
-    public MessageOriginType type() {
-        return MessageOriginType.CHAT;
+    public String type() {
+        return "chat";
     }
 
 }

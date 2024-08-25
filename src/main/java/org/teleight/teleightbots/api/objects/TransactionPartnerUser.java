@@ -15,8 +15,8 @@ public record TransactionPartnerUser(
 ) implements TransactionPartner {
 
     @Override
-    public TransactionPartnerType type() {
-        return TransactionPartnerType.USER;
+    public String type() {
+        return "user";
     }
 
 }

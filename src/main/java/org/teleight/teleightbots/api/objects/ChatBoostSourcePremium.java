@@ -10,8 +10,8 @@ public record ChatBoostSourcePremium(
 ) implements ChatBoostSource {
 
     @Override
-    public ChatBoostSourceType source() {
-        return ChatBoostSourceType.PREMIUM;
+    public String source() {
+        return "premium";
     }
 
 }

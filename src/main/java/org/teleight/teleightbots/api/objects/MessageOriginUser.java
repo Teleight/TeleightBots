@@ -16,8 +16,8 @@ public record MessageOriginUser(
 ) implements MessageOrigin {
 
     @Override
-    public MessageOriginType type() {
-        return MessageOriginType.USER;
+    public String type() {
+        return "user";
     }
 
 }

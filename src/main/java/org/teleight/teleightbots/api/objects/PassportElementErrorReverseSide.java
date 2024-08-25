@@ -14,8 +14,8 @@ public record PassportElementErrorReverseSide(
 ) implements PassportElementError {
 
     @Override
-    public PassportElementErrorType source() {
-        return PassportElementErrorType.REVERSE_SIDE;
+    public String source() {
+        return "reverse_side";
     }
 
 }

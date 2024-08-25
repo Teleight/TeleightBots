@@ -1,9 +1,39 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
+// We use DEDUCTION because of cached results
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "status",
+        defaultImpl = Void.class
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = InlineQueryResultArticle.class),
+        @JsonSubTypes.Type(value = InlineQueryResultAudio.class),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedAudio.class),
+        @JsonSubTypes.Type(value = InlineQueryResultContact.class),
+        @JsonSubTypes.Type(value = InlineQueryResultDocument.class),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedDocument.class),
+        @JsonSubTypes.Type(value = InlineQueryResultGame.class),
+        @JsonSubTypes.Type(value = InlineQueryResultGif.class),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedGif.class),
+        @JsonSubTypes.Type(value = InlineQueryResultLocation.class),
+        @JsonSubTypes.Type(value = InlineQueryResultMpeg4Gif.class),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedMpeg4Gif.class),
+        @JsonSubTypes.Type(value = InlineQueryResultPhoto.class),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedPhoto.class),
+        @JsonSubTypes.Type(value = InlineQueryResultVenue.class),
+        @JsonSubTypes.Type(value = InlineQueryResultVideo.class),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedVideo.class),
+        @JsonSubTypes.Type(value = InlineQueryResultVoice.class),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedVoice.class),
+        @JsonSubTypes.Type(value = InlineQueryResultCachedSticker.class),
+})
 public sealed interface InlineQueryResult extends ApiResult permits
         InlineQueryResultArticle,
         InlineQueryResultAudio,
@@ -29,53 +59,5 @@ public sealed interface InlineQueryResult extends ApiResult permits
     String TYPE_NAME = "type";
 
     @JsonProperty(TYPE_NAME)
-    InlineQueryResultType type();
-
-    enum InlineQueryResultType implements WrappedFieldValueProvider<InlineQueryResult> {
-
-        CACHED_AUDIO("audio", InlineQueryResultCachedAudio.class),
-        CACHED_DOCUMENT("document", InlineQueryResultCachedDocument.class),
-        CACHED_GIF("gif", InlineQueryResultCachedGif.class),
-        CACHED_MPEG4_GIF("mpeg4_gif", InlineQueryResultCachedMpeg4Gif.class),
-        CACHED_PHOTO("photo", InlineQueryResultCachedPhoto.class),
-        CACHED_STICKER("sticker", InlineQueryResultCachedSticker.class),
-        CACHED_VIDEO("video", InlineQueryResultCachedVideo.class),
-        CACHED_VOICE("voice", InlineQueryResultCachedVoice.class),
-        ARTICLE("article", InlineQueryResultArticle.class),
-        AUDIO("audio", InlineQueryResultAudio.class),
-        CONTACT("contact", InlineQueryResultContact.class),
-        GAME("game", InlineQueryResultGame.class),
-        DOCUMENT("document", InlineQueryResultDocument.class),
-        GIF("gif", InlineQueryResultGif.class),
-        LOCATION("location", InlineQueryResultLocation.class),
-        MPEG4_GIF("mpeg4_gif", InlineQueryResultMpeg4Gif.class),
-        PHOTO("photo", InlineQueryResultPhoto.class),
-        VENUE("venue", InlineQueryResultVenue.class),
-        VIDEO("video", InlineQueryResultVideo.class),
-        VOICE("voice", InlineQueryResultVoice.class);
-
-        private final String fieldValue;
-        private final Class<? extends InlineQueryResult> wrapperClass;
-
-        InlineQueryResultType(String fieldValue, Class<? extends InlineQueryResult> wrapperClass) {
-            this.fieldValue = fieldValue;
-            this.wrapperClass = wrapperClass;
-        }
-
-        @Override
-        public String getFieldValue() {
-            return fieldValue;
-        }
-
-        @Override
-        public Class<? extends InlineQueryResult> getWrapperClass() {
-            return wrapperClass;
-        }
-
-        @Override
-        public String getFieldName() {
-            return TYPE_NAME;
-        }
-    }
-
+    String type();
 }

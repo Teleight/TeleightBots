@@ -2,8 +2,8 @@ package org.teleight.teleightbots.api.serialization.deserializers;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.InaccessibleMessage;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
@@ -11,11 +11,7 @@ import org.teleight.teleightbots.api.objects.Message;
 
 import java.io.IOException;
 
-public class MaybeInaccessibleMessageDeserializer extends StdDeserializer<MaybeInaccessibleMessage> {
-
-    public MaybeInaccessibleMessageDeserializer() {
-        super((Class<MaybeInaccessibleMessage>) null);
-    }
+public class MaybeInaccessibleMessageDeserializer extends JsonDeserializer<MaybeInaccessibleMessage> {
 
     @Override
     public MaybeInaccessibleMessage deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {

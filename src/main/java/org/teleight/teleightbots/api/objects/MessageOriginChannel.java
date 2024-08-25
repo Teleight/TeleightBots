@@ -24,8 +24,8 @@ public record MessageOriginChannel(
 ) implements MessageOrigin {
 
     @Override
-    public MessageOriginType type() {
-        return MessageOriginType.CHANNEL;
+    public String type() {
+        return "channel";
     }
 
 }

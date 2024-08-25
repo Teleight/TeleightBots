@@ -1,9 +1,25 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        defaultImpl = Void.class
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = BotCommandScopeDefault.class, name = "default"),
+        @JsonSubTypes.Type(value = BotCommandScopeAllPrivateChats.class, name = "all_private_chats"),
+        @JsonSubTypes.Type(value = BotCommandScopeAllGroupChats.class, name = "all_group_chats"),
+        @JsonSubTypes.Type(value = BotCommandScopeAllChatAdministrators.class, name = "all_chat_administrators"),
+        @JsonSubTypes.Type(value = BotCommandScopeChat.class, name = "chat"),
+        @JsonSubTypes.Type(value = BotCommandScopeChatAdministrators.class, name = "chat_administrators"),
+        @JsonSubTypes.Type(value = BotCommandScopeChatMember.class, name = "chat_member"),
+})
 public sealed interface BotCommandScope extends ApiResult permits
         BotCommandScopeDefault,
         BotCommandScopeAllPrivateChats,
@@ -16,39 +32,6 @@ public sealed interface BotCommandScope extends ApiResult permits
     String TYPE_NAME = "type";
 
     @JsonProperty(TYPE_NAME)
-    BotCommandScope.BotCommandScopeType type();
-
-    enum BotCommandScopeType implements WrappedFieldValueProvider<BotCommandScope> {
-        DEFAULT("default", BotCommandScopeDefault.class),
-        ALL_PRIVATE_CHATS("all_private_chats", BotCommandScopeAllPrivateChats.class),
-        ALL_GROUP_CHATS("all_group_chats", BotCommandScopeAllGroupChats.class),
-        ALL_CHAT_ADMINS("all_chat_administrators", BotCommandScopeAllChatAdministrators.class),
-        CHAT("chat", BotCommandScopeChat.class),
-        CHAT_ADMINS("chat_administrators", BotCommandScopeChatAdministrators.class),
-        CHAT_MEMBER("chat_member", BotCommandScopeChatMember.class);
-
-        private final String fieldValue;
-        private final Class<? extends BotCommandScope> wrapperClass;
-
-        BotCommandScopeType(String fieldValue, Class<? extends BotCommandScope> wrapperClass) {
-            this.fieldValue = fieldValue;
-            this.wrapperClass = wrapperClass;
-        }
-
-        @Override
-        public String getFieldValue() {
-            return fieldValue;
-        }
-
-        @Override
-        public Class<? extends BotCommandScope> getWrapperClass() {
-            return wrapperClass;
-        }
-
-        @Override
-        public String getFieldName() {
-            return TYPE_NAME;
-        }
-    }
+    String type();
 
 }

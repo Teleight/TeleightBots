@@ -30,8 +30,8 @@ public record InputMediaAudio(
 ) implements InputMedia {
 
     @Override
-    public InputMediaType type() {
-        return InputMediaType.AUDIO;
+    public String type() {
+        return "audio";
     }
 
 }

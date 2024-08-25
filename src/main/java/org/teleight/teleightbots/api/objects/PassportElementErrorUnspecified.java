@@ -14,8 +14,8 @@ public record PassportElementErrorUnspecified(
 ) implements PassportElementError {
 
     @Override
-    public PassportElementErrorType source() {
-        return PassportElementErrorType.UNSPECIFIED;
+    public String source() {
+        return "unspecified";
     }
 
 }

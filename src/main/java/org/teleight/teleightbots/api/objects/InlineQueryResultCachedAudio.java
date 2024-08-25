@@ -35,8 +35,8 @@ public record InlineQueryResultCachedAudio(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.PHOTO;
+    public String type() {
+        return "audio";
     }
 
 }

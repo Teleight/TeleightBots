@@ -29,8 +29,8 @@ public record InputMediaPhoto(
 ) implements InputMedia {
 
     @Override
-    public InputMediaType type() {
-        return InputMediaType.PHOTO;
+    public String type() {
+        return "photo";
     }
 
 }

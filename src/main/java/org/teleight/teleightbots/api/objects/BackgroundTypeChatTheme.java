@@ -10,8 +10,8 @@ public record BackgroundTypeChatTheme(
 ) implements BackgroundType {
 
     @Override
-    public BackgroundTypeType type() {
-        return BackgroundTypeType.CHAT_THEME;
+    public String type() {
+        return "chat_theme";
     }
 
 }

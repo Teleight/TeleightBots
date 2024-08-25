@@ -1,9 +1,20 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        defaultImpl = Void.class
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = InputPaidMediaPhoto.class, name = "photo"),
+        @JsonSubTypes.Type(value = InputPaidMediaVideo.class, name = "video")
+})
 public sealed interface InputPaidMedia extends ApiResult permits
         InputPaidMediaPhoto,
         InputPaidMediaVideo {
@@ -11,35 +22,6 @@ public sealed interface InputPaidMedia extends ApiResult permits
     String TYPE_NAME = "type";
 
     @JsonProperty(TYPE_NAME)
-    InputPaidMediaType type();
-
-    enum InputPaidMediaType implements WrappedFieldValueProvider<InputPaidMedia> {
-
-        PHOTO("photo", InputPaidMediaPhoto.class),
-        VIDEO("video", InputPaidMediaVideo.class);
-
-        private final String fieldValue;
-        private final Class<? extends InputPaidMedia> wrapperClass;
-
-        InputPaidMediaType(String fieldValue, Class<? extends InputPaidMedia> wrapperClass) {
-            this.fieldValue = fieldValue;
-            this.wrapperClass = wrapperClass;
-        }
-
-        @Override
-        public String getFieldValue() {
-            return fieldValue;
-        }
-
-        @Override
-        public Class<? extends InputPaidMedia> getWrapperClass() {
-            return wrapperClass;
-        }
-
-        @Override
-        public String getFieldName() {
-            return TYPE_NAME;
-        }
-    }
+    String type();
 
 }

@@ -45,8 +45,8 @@ public record InputMediaVideo(
 ) implements InputMedia {
 
     @Override
-    public InputMediaType type() {
-        return InputMediaType.VIDEO;
+    public String type() {
+        return "video";
     }
 
 }

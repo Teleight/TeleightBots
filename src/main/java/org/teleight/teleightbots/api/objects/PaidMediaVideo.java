@@ -10,8 +10,8 @@ public record PaidMediaVideo(
 ) implements PaidMedia {
 
     @Override
-    public PaidMediaType type() {
-        return PaidMediaType.VIDEO;
+    public String type() {
+        return "video";
     }
 
 }

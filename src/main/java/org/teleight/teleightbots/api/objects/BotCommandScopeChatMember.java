@@ -13,8 +13,8 @@ public record BotCommandScopeChatMember(
 ) implements BotCommandScope {
 
     @Override
-    public @NotNull BotCommandScope.BotCommandScopeType type() {
-        return BotCommandScopeType.CHAT_MEMBER;
+    public @NotNull String type() {
+        return "chat_member";
     }
 
 }

@@ -14,8 +14,8 @@ public record PassportElementErrorFile(
 ) implements PassportElementError {
 
     @Override
-    public PassportElementErrorType source() {
-        return PassportElementErrorType.FILE;
+    public String source() {
+        return "file";
     }
 
 }

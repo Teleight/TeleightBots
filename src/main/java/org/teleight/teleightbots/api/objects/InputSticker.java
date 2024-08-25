@@ -1,10 +1,11 @@
 package org.teleight.teleightbots.api.objects;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.SimpleFieldValueProvider;
 
 public record InputSticker(
         @JsonProperty(value = "sticker", required = true)
@@ -28,7 +29,7 @@ public record InputSticker(
         String[] keywords
 ) implements ApiResult {
 
-    public enum Format implements SimpleFieldValueProvider {
+    public enum Format {
         STATIC("static"),
         ANIMATED("animated"),
         VIDEO("video");
@@ -39,9 +40,19 @@ public record InputSticker(
             this.fieldValue = fieldValue;
         }
 
-        @Override
+        @JsonValue
         public String getFieldValue() {
             return fieldValue;
+        }
+
+        @JsonCreator
+        public static InputSticker.Format fromValue(String value) {
+            for (InputSticker.Format format : InputSticker.Format.values()) {
+                if (format.fieldValue.equalsIgnoreCase(value)) {
+                    return format;
+                }
+            }
+            throw new IllegalArgumentException("Unknown enum type " + value);
         }
     }
 }

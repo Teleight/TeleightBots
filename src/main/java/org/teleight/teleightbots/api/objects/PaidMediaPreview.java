@@ -14,8 +14,8 @@ public record PaidMediaPreview(
 ) implements PaidMedia {
 
     @Override
-    public PaidMediaType type() {
-        return PaidMediaType.PREVIEW;
+    public String type() {
+        return "preview";
     }
 
 }

@@ -18,8 +18,8 @@ public record InputPaidMediaPhoto(
     }
 
     @Override
-    public InputPaidMediaType type() {
-        return InputPaidMediaType.PHOTO;
+    public String type() {
+        return "photo";
     }
 
 }

@@ -23,8 +23,8 @@ public record InlineQueryResultCachedSticker(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.CACHED_STICKER;
+    public String type() {
+        return "sticker";
     }
 
 }

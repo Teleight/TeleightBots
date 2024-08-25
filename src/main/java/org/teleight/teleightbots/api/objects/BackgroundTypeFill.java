@@ -15,8 +15,8 @@ public record BackgroundTypeFill(
 ) implements BackgroundType {
 
     @Override
-    public BackgroundType.BackgroundTypeType type() {
-        return BackgroundTypeType.FILL;
+    public String type() {
+        return "fill";
     }
 
 }

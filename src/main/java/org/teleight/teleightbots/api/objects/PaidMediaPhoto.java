@@ -10,8 +10,8 @@ public record PaidMediaPhoto(
 ) implements PaidMedia {
 
     @Override
-    public PaidMediaType type() {
-        return PaidMediaType.PHOTO;
+    public String type() {
+        return "photo";
     }
 
 }

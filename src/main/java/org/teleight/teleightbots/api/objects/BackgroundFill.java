@@ -1,9 +1,21 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.teleight.teleightbots.api.ApiResult;
-import org.teleight.teleightbots.api.serialization.WrappedFieldValueProvider;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        defaultImpl = Void.class
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = BackgroundFillSolid.class, name = "solid"),
+        @JsonSubTypes.Type(value = BackgroundFillGradient.class, name = "gradient"),
+        @JsonSubTypes.Type(value = BackgroundFillFreeformGradient.class, name = "freeform_gradient"),
+})
 public sealed interface BackgroundFill extends ApiResult permits
         BackgroundFillSolid,
         BackgroundFillGradient,
@@ -12,37 +24,6 @@ public sealed interface BackgroundFill extends ApiResult permits
     String TYPE_NAME = "type";
 
     @JsonProperty(TYPE_NAME)
-    BackgroundFill.BackgroundFillType type();
-
-    enum BackgroundFillType implements WrappedFieldValueProvider<BackgroundFill> {
-
-        SOLID("solid", BackgroundFillSolid.class),
-        GRADIENT("gradient", BackgroundFillGradient.class),
-        FREEFORM_GRADIENT("freeform_gradient", BackgroundFillFreeformGradient.class);
-
-        private final String fieldValue;
-        private final Class<? extends BackgroundFill> wrapperClass;
-
-        BackgroundFillType(String fieldValue, Class<? extends BackgroundFill> wrapperClass) {
-            this.fieldValue = fieldValue;
-            this.wrapperClass = wrapperClass;
-        }
-
-        @Override
-        public Class<? extends BackgroundFill> getWrapperClass() {
-            return wrapperClass;
-        }
-
-        @Override
-        public String getFieldName() {
-            return TYPE_NAME;
-        }
-
-        @Override
-        public String getFieldValue() {
-            return fieldValue;
-        }
-    }
-
+    String type();
 
 }

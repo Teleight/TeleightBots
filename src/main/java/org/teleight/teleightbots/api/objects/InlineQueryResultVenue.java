@@ -59,8 +59,8 @@ public record InlineQueryResultVenue(
 ) implements InlineQueryResult {
 
     @Override
-    public InlineQueryResultType type() {
-        return InlineQueryResultType.VENUE;
+    public String type() {
+            return "venue";
     }
 
 }
