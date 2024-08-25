@@ -8,7 +8,7 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.MessageId;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
-@Builder(builderClassName = "Builder", toBuilder = true)
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record BatchForwardMessages(
         @JsonProperty(value = "chat_id", required = true)

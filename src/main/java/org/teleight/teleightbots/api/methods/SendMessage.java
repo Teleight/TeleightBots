@@ -12,7 +12,7 @@ import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 
-@Builder(builderClassName = "Builder", toBuilder = true)
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record SendMessage(
         @JsonProperty(value = "business_connection_id")
