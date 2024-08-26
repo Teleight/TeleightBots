@@ -22,8 +22,6 @@ public interface Event {
 
     /**
      * Executes an API method.
-     * <p>
-     * This method is a default implementation provided by this interface.
      *
      * @param method the API method to be executed
      * @return a CompletableFuture that will complete with the result of the API method execution

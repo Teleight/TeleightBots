@@ -1,16 +1,17 @@
-package org.teleight.teleightbots.event.user.channel;
+package org.teleight.teleightbots.event.bot.group;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.TelegramBot;
-import org.teleight.teleightbots.event.trait.Event;
+import org.teleight.teleightbots.event.trait.GroupBotEvent;
 
-public record UserQuitChannelEvent(
+public record SelfQuitGroupEvent(
         @NotNull TelegramBot bot,
         @NotNull User user,
         @NotNull Chat chat,
         @NotNull Update update
-) implements Event {
+) implements GroupBotEvent {
+
 }

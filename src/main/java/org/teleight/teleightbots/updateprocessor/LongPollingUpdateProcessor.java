@@ -30,7 +30,7 @@ import org.teleight.teleightbots.updateprocessor.events.ChannelPostEventProcesso
 import org.teleight.teleightbots.updateprocessor.events.EventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.InlineQueryEventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.MessageEventProcessor;
-import org.teleight.teleightbots.updateprocessor.events.ChatMemberEventProcessor;
+import org.teleight.teleightbots.updateprocessor.events.ChatMemberStatusEventProcessor;
 
 import java.io.IOException;
 import java.net.URI;
@@ -156,7 +156,7 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
             new ChannelPostEventProcessor(),
             new InlineQueryEventProcessor(),
             new MessageEventProcessor(),
-            new ChatMemberEventProcessor()
+            new ChatMemberStatusEventProcessor()
     };
 
     @ApiStatus.Internal

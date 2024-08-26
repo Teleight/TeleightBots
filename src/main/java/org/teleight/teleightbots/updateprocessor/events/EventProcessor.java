@@ -9,7 +9,7 @@ public sealed interface EventProcessor permits
         ChannelPostEventProcessor,
         InlineQueryEventProcessor,
         MessageEventProcessor,
-        ChatMemberEventProcessor {
+        ChatMemberStatusEventProcessor {
 
     void processUpdate(@NotNull TelegramBot bot, @NotNull Update update);
 
