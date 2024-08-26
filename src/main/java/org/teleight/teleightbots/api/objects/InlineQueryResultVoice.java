@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record InlineQueryResultVoice(
         @JsonProperty(value = "id", required = true)
         @NotNull
@@ -41,9 +45,13 @@ public record InlineQueryResultVoice(
         InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static @NotNull Builder ofBuilder(String id, String voiceUrl, String title) {
+        return new InlineQueryResultVoice.Builder().id(id).voiceUrl(voiceUrl).title(title);
+    }
+
     @Override
     public String type() {
-            return "voice";
+        return "voice";
     }
 
 }

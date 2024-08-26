@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record InlineQueryResultCachedGif(
         @JsonProperty(value = "id", required = true)
         @NotNull
@@ -41,9 +45,13 @@ public record InlineQueryResultCachedGif(
         InputMessageContent inputMessageContent
 ) implements InlineQueryResult {
 
+    public static @NotNull Builder ofBuilder(String id, String gifFileId) {
+        return new InlineQueryResultCachedGif.Builder().id(id).gifFileId(gifFileId);
+    }
+
     @Override
     public String type() {
-            return "gif";
+        return "gif";
     }
 
 }

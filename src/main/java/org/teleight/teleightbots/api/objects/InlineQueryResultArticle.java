@@ -47,6 +47,10 @@ public record InlineQueryResultArticle(
         int thumbnailHeight
 ) implements InlineQueryResult {
 
+    public static @NotNull Builder ofBuilder(String id, InputMessageContent inputMessageContent) {
+        return new InlineQueryResultArticle.Builder().id(id).inputMessageContent(inputMessageContent);
+    }
+
     @Override
     public String type() {
         return "article";

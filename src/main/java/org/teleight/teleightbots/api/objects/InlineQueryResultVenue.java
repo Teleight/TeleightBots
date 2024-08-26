@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record InlineQueryResultVenue(
         @JsonProperty(value = "id", required = true)
         @NotNull
@@ -58,9 +62,18 @@ public record InlineQueryResultVenue(
         int thumbnailHeight
 ) implements InlineQueryResult {
 
+    public static @NotNull Builder ofBuilder(String id, float latitude, float longitude, String title, String address) {
+        return new InlineQueryResultVenue.Builder()
+                .id(id)
+                .latitude(latitude)
+                .longitude(longitude)
+                .title(title)
+                .address(address);
+    }
+
     @Override
     public String type() {
-            return "venue";
+        return "venue";
     }
 
 }

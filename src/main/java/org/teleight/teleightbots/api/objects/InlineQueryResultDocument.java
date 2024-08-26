@@ -1,9 +1,13 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Jacksonized
 public record InlineQueryResultDocument(
         @JsonProperty(value = "id", required = true)
         @NotNull
@@ -56,9 +60,13 @@ public record InlineQueryResultDocument(
         int thumbnailHeight
 ) implements InlineQueryResult {
 
+    public static @NotNull Builder ofBuilder(String id, String title, String documentUrl, String mimeType) {
+        return new InlineQueryResultDocument.Builder().id(id).title(title).documentUrl(documentUrl).mimeType(mimeType);
+    }
+
     @Override
     public String type() {
-            return "document";
+        return "document";
     }
 
 }
