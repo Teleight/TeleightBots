@@ -5,7 +5,6 @@ import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.TelegramBot;
-import org.teleight.teleightbots.event.bot.group.BotJoinedGroupEvent;
 import org.teleight.teleightbots.event.user.UserMessageReceivedEvent;
 
 public final class MessageEventProcessor implements EventProcessor {
@@ -32,24 +31,5 @@ public final class MessageEventProcessor implements EventProcessor {
         if (hasText && hasFormat) {
             bot.getEventManager().call(new UserMessageReceivedEvent(bot, update));
         }
-
-        //Bot join
-        final boolean hasNewChatMembers = message.newChatMembers() != null;
-        if (hasNewChatMembers) {
-            boolean isThisBotJoined = isThisBotJoined(bot, message);
-            boolean groupChatCreated = message.groupChatCreated();
-            if (isThisBotJoined || (groupChatCreated)) {
-                bot.getEventManager().call(new BotJoinedGroupEvent(bot, update));
-            }
-        }
-    }
-
-    private static boolean isThisBotJoined(TelegramBot bot, Message message) {
-        for (User user : message.newChatMembers()) {
-            if (user != null && user.username() != null && user.username().equalsIgnoreCase(bot.getBotUsername())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

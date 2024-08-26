@@ -5,7 +5,7 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.event.trait.GroupBotEvent;
 
-public record BotJoinedGroupEvent(
+public record BotJoinGroupEvent(
         @NotNull TelegramBot bot,
         @NotNull Update update
 ) implements GroupBotEvent {
