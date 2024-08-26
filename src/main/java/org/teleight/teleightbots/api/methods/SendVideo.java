@@ -91,7 +91,7 @@ public record SendVideo(
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "sendDocument";
+        return "sendVideo";
     }
 
     @Override
