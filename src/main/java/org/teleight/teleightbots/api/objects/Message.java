@@ -225,7 +225,7 @@ public record Message(
 
         @JsonProperty("pinned_message")
         @Nullable
-        MaybeInaccessibleMessage pinnedMessage,
+        Message pinnedMessage,
 
         @JsonProperty("invoice")
         @Nullable
