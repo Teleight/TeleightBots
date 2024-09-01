@@ -9,6 +9,7 @@ import org.teleight.teleightbots.api.objects.CallbackQuery;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
+import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
@@ -45,7 +46,10 @@ public final class MenuManagerImpl implements MenuManager {
 
     private void handleButton(@NotNull InlineKeyboardButton rowButton, @NotNull ButtonPressEvent event) {
         final CallbackQuery callbackQuery = event.callbackQuery();
-        final Message message = callbackQuery.message();
+        final MaybeInaccessibleMessage maybeInaccessibleMessage = callbackQuery.message();
+        if (!(maybeInaccessibleMessage instanceof Message message)) {
+            return;
+        }
         final Chat chat = message.chat();
         final String chatId = chat.id();
         final String callbackData = callbackQuery.data();

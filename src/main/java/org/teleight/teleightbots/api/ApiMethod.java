@@ -9,15 +9,17 @@ import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
+import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.DateDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
 import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
 import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
@@ -45,6 +47,9 @@ public interface ApiMethod<R extends Serializable> {
             .registerModule(new SimpleModule()
                     .addSerializer(Date.class, new DateSerializer())
                     .addDeserializer(Date.class, new DateDeserializer())
+            )
+            .registerModule(new SimpleModule()
+                    .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
             );
 
     /**

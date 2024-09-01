@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.methods.AnswerCallbackQuery;
 import org.teleight.teleightbots.api.objects.CallbackQuery;
 import org.teleight.teleightbots.api.objects.Chat;
+import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
@@ -18,24 +19,34 @@ public record ButtonPressEvent(
         @NotNull Update update
 ) implements Event {
 
-    public @NotNull CallbackQuery callbackQuery() {
+    public @Nullable CallbackQuery callbackQuery() {
         return update.callbackQuery();
     }
 
-    public @NotNull User from() {
-        return callbackQuery().from();
+    public @Nullable User from() {
+        final CallbackQuery callbackQuery = callbackQuery();
+        if (callbackQuery == null) return null;
+        return callbackQuery.from();
     }
 
-    public @Nullable Message message() {
-        return callbackQuery().message();
+    public @Nullable MaybeInaccessibleMessage message() {
+        final CallbackQuery callbackQuery = callbackQuery();
+        if (callbackQuery == null) return null;
+        return callbackQuery.message();
     }
 
-    public @NotNull Chat chat() {
-        return message().chat();
+    public @Nullable Chat chat() {
+        final MaybeInaccessibleMessage maybeInaccessibleMessage = message();
+        if (!(maybeInaccessibleMessage instanceof Message message)) {
+            return null;
+        }
+        return message.chat();
     }
 
-    public @NotNull String chatId() {
-        return chat().id();
+    public @Nullable String chatId() {
+        final Chat chat = chat();
+        if (chat == null) return null;
+        return chat.id();
     }
 
     public @NotNull CompletableFuture<Boolean> answer() {

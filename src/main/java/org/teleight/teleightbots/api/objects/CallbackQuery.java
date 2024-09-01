@@ -18,7 +18,7 @@ public record CallbackQuery(
 
         @JsonProperty("message")
         @Nullable
-        Message message,
+        MaybeInaccessibleMessage message,
 
         @JsonProperty("inline_message_id")
         @Nullable
