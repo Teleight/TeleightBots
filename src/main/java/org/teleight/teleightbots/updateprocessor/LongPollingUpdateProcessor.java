@@ -21,16 +21,15 @@ import org.teleight.teleightbots.api.objects.InputPaidMediaVideo;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.settings.BotSettings;
-import org.teleight.teleightbots.conversation.ConversationContext;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.RateLimitException;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.updateprocessor.events.CallbackQueryEventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.ChannelPostEventProcessor;
+import org.teleight.teleightbots.updateprocessor.events.ChatMemberStatusEventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.EventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.InlineQueryEventProcessor;
 import org.teleight.teleightbots.updateprocessor.events.MessageEventProcessor;
-import org.teleight.teleightbots.updateprocessor.events.ChatMemberStatusEventProcessor;
 
 import java.io.IOException;
 import java.net.URI;
@@ -164,12 +163,6 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
         bot.getEventManager()
                 .call(new UpdateReceivedEvent(bot, update, responseJson))
                 .thenAccept(updateReceivedEvent -> {
-                    // Handle conversation before everything else
-                    for (ConversationContext ignored : bot.getConversationManager().getRunningConversations()) {
-                        bot.getEventManager().call(updateReceivedEvent);
-                    }
-
-                    // Now handle everything else
                     final Update receivedUpdate = updateReceivedEvent.update();
                     for (EventProcessor processorEvent : processorEvents) {
                         processorEvent.processUpdate(bot, receivedUpdate);
