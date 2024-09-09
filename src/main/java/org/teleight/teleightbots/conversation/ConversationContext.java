@@ -9,13 +9,17 @@ import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This is a class for a ConversationContext.
- * It provides methods to interact with the bot, chat, and the user in an active conversation
+ * Represents the context of an active conversation between a bot and a user in a specific chat.
+ * <p>
+ * This class provides mechanisms to manage the conversation's lifecycle, fetch custom properties,
+ * interact with the bot, and capture updates from the user during the conversation.
  *
  * @see Conversation
  * @see ConversationManager#registerConversation(Conversation)
@@ -36,7 +40,12 @@ public class ConversationContext {
     private final ConversationLifecycle conversationLifecycle = new ConversationLifecycle();
 
     // Queue to store updates received during the conversation
+    @ApiStatus.Internal
     private final BlockingQueue<Update> updateQueue = new LinkedBlockingQueue<>();
+
+    // Map to store the properties applied to the conversation
+    @ApiStatus.Internal
+    private final Map<String, Property<?>> appliedProperties = new HashMap<>();
 
     /**
      * Constructs a new ConversationContext. Used internally and SHOULD NOT be used elsewhere
@@ -50,11 +59,14 @@ public class ConversationContext {
     protected ConversationContext(@NotNull TelegramBot bot,
                                   @NotNull Chat chat,
                                   @NotNull User user,
-                                  @NotNull Conversation conversation) {
+                                  @NotNull Conversation conversation,
+                                  @Nullable Map<String, Object> properties) {
         this.bot = bot;
         this.chat = chat;
         this.user = user;
         this.conversation = conversation;
+
+        applyProperties(properties);
 
         // Add a listener to the bot's event manager to capture updates
         bot.getEventManager().addListener(UpdateReceivedEvent.class, event -> updateQueue.add(event.update()));
@@ -62,6 +74,44 @@ public class ConversationContext {
         // Schedule the conversation to run asynchronously
         conversationLifecycle.setName(String.format("Conversation-%s-%s", conversation.name(), user.id()));
         bot.getScheduler().buildTask(conversationLifecycle).schedule();
+    }
+
+    private void applyProperties(@Nullable Map<String, Object> properties) {
+        // Apply the properties registered with the conversation
+        conversation.properties().forEach((name, property) -> {
+            if (properties != null && properties.containsKey(name)) {
+                applyProperty(name, property.value());
+            } else if (property.required()) {
+                throw new IllegalArgumentException("The conversation " + conversation.name() + " requires a non-null value for the property " + property.name());
+            }
+        });
+
+        // Apply the properties provided by the user
+        if (properties != null) {
+            properties.forEach((name, value) -> {
+                if (!conversation.properties().containsKey(name)) {
+                    if (conversation.allowUnknownProperties()) {
+                        applyProperty(name, value);
+                    } else {
+                        throw new IllegalArgumentException("The conversation " + conversation.name() + " does not have a property named " + name);
+                    }
+                }
+            });
+        }
+    }
+
+    private void applyProperty(@NotNull String name, @NotNull Object value) {
+        appliedProperties.put(name, Property.of(name, value));
+    }
+
+    /**
+     * Gets a property by name.
+     *
+     * @param name The name of the property.
+     * @return The property, or null if the property does not exist.
+     */
+    public @Nullable Property<?> getProperty(@NotNull String name) {
+        return appliedProperties.get(name);
     }
 
     /**
@@ -83,6 +133,13 @@ public class ConversationContext {
      */
     public User user() {
         return user;
+    }
+
+    /**
+     * @return The conversation associated with this ConversationContext.
+     */
+    public Conversation conversation() {
+        return conversation;
     }
 
     /**
@@ -131,9 +188,14 @@ public class ConversationContext {
         @Override
         public void run() {
             // Start the conversation
-            conversation.execute(ConversationContext.this);
+            conversation.executor().execute(ConversationContext.this);
             // All work is done, leave the conversation
             bot.getConversationManager().leaveConversation(user);
+
+            // Clear the update queue
+            updateQueue.clear();
+            // Clear the applied properties
+            appliedProperties.clear();
         }
     }
 

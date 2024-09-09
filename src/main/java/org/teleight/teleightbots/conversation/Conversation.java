@@ -1,32 +1,57 @@
 package org.teleight.teleightbots.conversation;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.Builder;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * The {@code Conversation} interface represents a structured interaction between a bot and a user.
+ * A conversation represents a structured interaction between a bot and a user.
  * <p>
  * A conversation typically follows a sequence of exchanges (messages) where the bot prompts
  * the user for input, processes the response, and decides on the next step.
  * <p>
  * A unique name identifies each conversation.
  *
+ * @param name                   the name of the conversation, used to identify the conversation. Must be unique.
+ * @param executor               the executor of the conversation, see {@link ConversationExecutor}
+ * @param properties             the properties of the conversation
+ * @param instanceConstraints    the constraints of the conversation instance, see {@link ConversationInstanceConstraints}
+ * @param allowUnknownProperties whether unknown properties are allowed.
+ *                               By default, unknown properties are not allowed and will throw an exception.
  * @see ConversationManager#registerConversation(Conversation)
  */
-public interface Conversation {
+@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+public record Conversation(
+        String name,
+        ConversationExecutor executor,
+        Map<String, Property<?>> properties,
+        ConversationInstanceConstraints instanceConstraints,
+        boolean allowUnknownProperties
+) {
 
-    /**
-     * Executes the conversation logic within the provided context.
-     *
-     * @param context The context in which the conversation is executed.
-     */
-    void execute(@NotNull ConversationContext context);
+    public static Conversation.Builder ofBuilder(String name, ConversationExecutor executor) {
+        return new Builder().name(name).executor(executor);
+    }
 
-    /**
-     * Returns the unique name of the conversation.
-     * This name is used to identify the conversation and should be descriptive of its purpose or function.
-     *
-     * @return The name of the conversation.
-     */
-    @NotNull String name();
+    public static class Builder {
+        Builder() {
+            properties = new HashMap<>();
+            instanceConstraints = ConversationInstanceConstraints.ofBuilder().build();
+        }
+
+        @lombok.experimental.Tolerate
+        public Builder property(Property<?> property) {
+            properties.put(property.name(), property);
+            return this;
+        }
+
+        @lombok.experimental.Tolerate
+        public Builder properties(List<Property<?>> properties) {
+            properties.forEach(this::property);
+            return this;
+        }
+    }
 
 }
