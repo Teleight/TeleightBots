@@ -80,7 +80,7 @@ public class ConversationContext {
         // Apply the properties registered with the conversation
         conversation.properties().forEach((name, property) -> {
             if (properties != null && properties.containsKey(name)) {
-                applyProperty(name, property.value());
+                applyProperty(name, properties.get(name));
             } else if (property.required()) {
                 throw new IllegalArgumentException("The conversation " + conversation.name() + " requires a non-null value for the property " + property.name());
             }
