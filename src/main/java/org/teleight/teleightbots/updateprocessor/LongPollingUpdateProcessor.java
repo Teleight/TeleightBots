@@ -19,6 +19,7 @@ import org.teleight.teleightbots.api.objects.InputPaidMedia;
 import org.teleight.teleightbots.api.objects.InputPaidMediaPhoto;
 import org.teleight.teleightbots.api.objects.InputPaidMediaVideo;
 import org.teleight.teleightbots.api.objects.Update;
+import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
@@ -65,21 +66,19 @@ public class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     @Override
-    public void start() {
-        bot.execute(new GetMe())
-                .thenAcceptAsync(user -> {
-                    System.out.println("Bot authenticated: " + user.username());
-                    processorLatch.countDown();
-                })
-                .exceptionally(throwable -> {
-                    System.out.println("Failed to authenticate bot: " + throwable.getMessage());
-                    bot.shutdown();
-                    return null;
-                });
-
+    public CompletableFuture<User> start() {
         updateProcessorThread = new UpdateProcessorThread();
         updateProcessorThread.setName(bot.getBotUsername() + " Update Processor");
         updateProcessorThread.start();
+
+        return bot.execute(new GetMe())
+                .whenComplete((user, throwable) -> {
+                    if (throwable != null) {
+                        return;
+                    }
+                    System.out.println("Bot authenticated: " + user.username());
+                    processorLatch.countDown();
+                });
     }
 
     @Override
