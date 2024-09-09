@@ -3,6 +3,7 @@ package org.teleight.teleightbots.conversation;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
@@ -112,6 +113,13 @@ public class ConversationContext {
      */
     public @Nullable Property<?> getProperty(@NotNull String name) {
         return appliedProperties.get(name);
+    }
+
+    /**
+     * @return A map of all properties applied to the conversation.
+     */
+    public @Unmodifiable Map<String, Property<?>> getProperties() {
+        return appliedProperties;
     }
 
     /**
