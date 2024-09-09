@@ -1,6 +1,9 @@
 package org.teleight.teleightbots.demo.command;
 
 import org.teleight.teleightbots.commands.builder.Command;
+import org.teleight.teleightbots.conversation.ConversationManager;
+
+import java.util.Map;
 
 public class TestConversationCommand extends Command {
 
@@ -17,7 +20,19 @@ public class TestConversationCommand extends Command {
                 return;
             }
 
-            context.bot().getConversationManager().joinConversation(sender, context.message().chat(), conversationName);
+            Map<String, Object> properties = Map.of(
+                    "test", "John",
+                    "age", 25
+            );
+            ConversationManager.JoinResult result = context.bot().getConversationManager().joinConversation(
+                    sender, context.message().chat(), conversationName, properties);
+            if (result instanceof ConversationManager.JoinResult.AlreadyInConversation) {
+                System.out.println("User is already in conversation");
+            } else if (result instanceof ConversationManager.JoinResult.ConversationNotFound) {
+                System.out.println("Conversation not found");
+            } else {
+                System.out.println("Conversation started");
+            }
         });
     }
 
