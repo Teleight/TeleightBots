@@ -1,5 +1,7 @@
 package org.teleight.teleightbots.conversation;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Represents an executor for a conversation.
  *
@@ -13,6 +15,7 @@ package org.teleight.teleightbots.conversation;
  * }).build();
  * }</pre>
  */
+@FunctionalInterface
 public interface ConversationExecutor {
 
     /**
@@ -20,6 +23,6 @@ public interface ConversationExecutor {
      *
      * @param context the context of the currently running conversation
      */
-    void execute(ConversationContext context);
+    void execute(@NotNull ConversationContext context);
 
 }
