@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id("application")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 repositories {
@@ -15,4 +17,8 @@ dependencies {
 
 tasks.withType<Javadoc> {
     exclude("**")
+}
+
+application {
+    mainClass.set("org.teleight.teleightbots.demo.MainDemo")
 }
