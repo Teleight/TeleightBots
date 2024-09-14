@@ -33,16 +33,7 @@ public final class BotManagerImpl implements BotManager {
         final TelegramBot bot = botProvider.provide(token, username, updateProcessor, botSettings);
 
         updateProcessor.setBot(bot);
-        updateProcessor.start().whenComplete((user, throwable) -> {
-            if (throwable != null) {
-                System.out.println("Error while starting the bot: " + bot.getBotUsername());
-                if (botSettings.silentlyThrowMethodExecution()) {
-                    TeleightBots.getExceptionManager().handleException(throwable);
-                }
-                bot.shutdown();
-                return;
-            }
-
+        updateProcessor.start().thenRun(() -> {
             if (botSettings.extensionsEnabled()) {
                 bot.getExtensionManager().start();
             }
