@@ -47,7 +47,7 @@ public record BotSettings(
      *     <li>{@link #endpointUrl} is set to {@link #DEFAULT_BOT_API_URL}</li>
      *     <li>{@link #updatesLimit} is set to 50</li>
      *     <li>{@link #updatesTimeout} is set to 100</li>
-     *     <li>{@link #silentlyThrowMethodExecution} is set to {@code false}</li>
+     *     <li>{@link #silentlyThrowMethodExecution} is set to {@code true}</li>
      *     <li>{@link #extensionsEnabled} is set to {@code false}</li>
      * </ul>
      */
@@ -64,7 +64,7 @@ public record BotSettings(
                 .endpointUrl(DEFAULT_BOT_API_URL)
                 .updatesLimit(50)
                 .updatesTimeout(100)
-                .silentlyThrowMethodExecution(false)
+                .silentlyThrowMethodExecution(true)
                 .extensionsEnabled(false);
     }
 
