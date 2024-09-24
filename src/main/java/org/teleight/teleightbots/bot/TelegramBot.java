@@ -35,14 +35,6 @@ import java.util.concurrent.CompletableFuture;
 public sealed interface TelegramBot permits TelegramBotImpl {
 
     /**
-     * Connects the bot to the Telegram Bot API.
-     * <p>
-     * This method should be called after the bot has been initialized and configured.
-     * </p>
-     */
-    void connect();
-
-    /**
      * Closes the bot from the Telegram Bot API.
      * <p>
      * This method will also close all attached processors to the specified bot instance

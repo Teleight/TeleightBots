@@ -18,7 +18,11 @@ import org.teleight.teleightbots.extensions.ExtensionManager;
 import org.teleight.teleightbots.extensions.ExtensionManagerImpl;
 import org.teleight.teleightbots.files.FileDownloader;
 import org.teleight.teleightbots.files.FileDownloaderImpl;
-import org.teleight.teleightbots.menu.*;
+import org.teleight.teleightbots.menu.Menu;
+import org.teleight.teleightbots.menu.MenuBuilder;
+import org.teleight.teleightbots.menu.MenuImpl;
+import org.teleight.teleightbots.menu.MenuManager;
+import org.teleight.teleightbots.menu.MenuManagerImpl;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
@@ -135,14 +139,6 @@ public final class TelegramBotImpl implements TelegramBot {
     }
 
     @Override
-    public void connect() {
-        if (botSettings.extensionsEnabled()) {
-            extensionManager.start();
-        }
-        updateProcessor.start();
-    }
-
-    @Override
     public void shutdown() {
         eventManager.call(new BotShutdownEvent(this));
 
@@ -161,19 +157,17 @@ public final class TelegramBotImpl implements TelegramBot {
     @Override
     public <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
         final CompletableFuture<String> responseFuture = updateProcessor.executeMethod(method);
-        return responseFuture.thenApplyAsync(responseJson -> {
-            final R result;
+        return responseFuture.thenCompose(responseJson -> {
             try {
-                result = method.deserializeResponse(responseJson);
+                final R result = method.deserializeResponse(responseJson);
+                eventManager.call(new MethodSendEvent<>(TelegramBotImpl.this, method, result));
+                return CompletableFuture.completedFuture(result);
             } catch (TelegramRequestException e) {
                 if (!botSettings.silentlyThrowMethodExecution()) {
                     TeleightBots.getExceptionManager().handleException(e);
                 }
-                responseFuture.completeExceptionally(e);
-                return null;
+                return CompletableFuture.failedFuture(e);
             }
-            eventManager.call(new MethodSendEvent<>(TelegramBotImpl.this, method, result));
-            return result;
         });
     }
 

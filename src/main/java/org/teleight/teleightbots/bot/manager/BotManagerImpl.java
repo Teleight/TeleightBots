@@ -4,9 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.bot.BotProvider;
-import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.TelegramBotImpl;
+import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.updateprocessor.LongPollingUpdateProcessor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
@@ -33,14 +33,18 @@ public final class BotManagerImpl implements BotManager {
         final TelegramBot bot = botProvider.provide(token, username, updateProcessor, botSettings);
 
         updateProcessor.setBot(bot);
-        bot.connect();
+        updateProcessor.start().thenRun(() -> {
+            if (botSettings.extensionsEnabled()) {
+                bot.getExtensionManager().start();
+            }
 
-        registeredBots.add(bot);
-        try {
-            completeCallback.accept(bot);
-        } catch (Throwable t) {
-            TeleightBots.getExceptionManager().handleException(t);
-        }
+            registeredBots.add(bot);
+            try {
+                completeCallback.accept(bot);
+            } catch (Throwable t) {
+                TeleightBots.getExceptionManager().handleException(t);
+            }
+        });
     }
 
     @Override

@@ -18,9 +18,9 @@ import org.teleight.teleightbots.menu.Menu;
 public class MainDemo {
 
     public static void main(String[] args) {
-        final String botToken = System.getenv("bot.token") != null ? System.getenv("bot.token") : "--INSERT-TOKEN-HERE--";
-        final String botUsername = System.getenv("bot.username") != null ? System.getenv("bot.username") : "--INSERT-USERNAME--HERE";
-        final String chatId = System.getenv("bot.default_chatid") != null ? System.getenv("bot.default_chatid") : "--INSERT-CHATID--HERE";
+        final String botToken = System.getenv("bot_token") != null ? System.getenv("bot_token") : "--INSERT-TOKEN-HERE--";
+        final String botUsername = System.getenv("bot_username") != null ? System.getenv("bot_username") : "--INSERT-USERNAME--HERE";
+        final String chatId = System.getenv("bot_default_chatid") != null ? System.getenv("bot_default_chatid") : "--INSERT-CHATID--HERE";
 
         final EventListener<UpdateReceivedEvent> updateEvent = EventListener.ofBuilder(UpdateReceivedEvent.class)
                 .handler(event -> System.out.println("UpdateReceivedEvent: " + event.bot().getBotUsername() + " -> " + event))
