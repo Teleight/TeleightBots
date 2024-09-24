@@ -68,6 +68,10 @@ public record Update(
         @Nullable
         PreCheckoutQuery preCheckoutQuery,
 
+        @JsonProperty("purchased_paid_media")
+        @Nullable
+        PaidMediaPurchased purchasedPaidMedia,
+
         @JsonProperty("poll")
         @Nullable
         Poll poll,

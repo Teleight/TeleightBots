@@ -13,6 +13,9 @@ public record GiveawayCompleted(
 
         @JsonProperty(value = "giveaway_message")
         @Nullable
-        Message giveawayMessage
+        Message giveawayMessage,
+
+        @JsonProperty("is_star_giveaway")
+        boolean isStarGiveaway
 ) implements ApiResult {
 }

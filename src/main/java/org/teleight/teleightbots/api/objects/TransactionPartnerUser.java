@@ -15,7 +15,11 @@ public record TransactionPartnerUser(
 
         @JsonProperty("paid_media")
         @Nullable
-        PaidMedia[] paidMedia
+        PaidMedia[] paidMedia,
+
+        @JsonProperty("paid_media_payload")
+        @Nullable
+        String paidMediaPayload
 ) implements TransactionPartner {
 
     @Override

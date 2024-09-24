@@ -33,6 +33,10 @@ public record SendPaidMedia(
         @NotNull
         InputPaidMedia[] media,
 
+        @JsonProperty(value = "payload")
+        @Nullable
+        String payload,
+
         @JsonProperty(value = "caption")
         @Nullable
         String caption,
@@ -79,6 +83,7 @@ public record SendPaidMedia(
         parameters.put("chat_id", chatId);
         parameters.put("star_count", starCount);
         parameters.put("media", media);
+        parameters.put("payload", payload);
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
         parameters.put("caption_entities", captionEntities);
