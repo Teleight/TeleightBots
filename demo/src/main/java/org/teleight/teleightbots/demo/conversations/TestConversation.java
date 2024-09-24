@@ -5,12 +5,12 @@ import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.conversation.Conversation;
 import org.teleight.teleightbots.conversation.ConversationContext;
+import org.teleight.teleightbots.conversation.ConversationExecutor;
 
 import java.util.concurrent.TimeUnit;
 
-public class TestConversation implements Conversation {
+public class TestConversation implements ConversationExecutor {
 
     @Override
     public void execute(@NotNull ConversationContext context) {
@@ -47,18 +47,13 @@ public class TestConversation implements Conversation {
         System.out.println("Message: " + message.text());
 
         // Now, check if the text equals hello or not and act appropriately
+        SendMessage resultToUser;
         if (message.text() == null || !message.text().equals("hello")) {
-            SendMessage resultToUser = SendMessage.ofBuilder(chatId, "You didn't send \"hello\"!").build();
-            context.bot().execute(resultToUser);
+            resultToUser = SendMessage.ofBuilder(chatId, "You didn't send \"hello\"!").build();
         } else {
-            SendMessage resultToUser = SendMessage.ofBuilder(chatId, "Good job!").build();
-            context.bot().execute(resultToUser);
+            resultToUser = SendMessage.ofBuilder(chatId, "Good job!").build();
         }
-    }
-
-    @Override
-    public @NotNull String name() {
-        return "test";
+        context.bot().execute(resultToUser);
     }
 
 }

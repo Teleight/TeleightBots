@@ -8,6 +8,7 @@ import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * This is an interface for a ConversationManager. It provides methods to manage conversations.
@@ -42,10 +43,22 @@ public sealed interface ConversationManager permits ConversationManagerImpl {
      * @param chat             The Chat where the conversation is taking place.
      * @param conversationName The name of the Conversation the user wants to join.
      *                         This should match the name returned by {@link Conversation#name()}.
-     * @throws IllegalStateException    if the user is already in a conversation.
-     * @throws IllegalArgumentException if the conversation does not exist.
+     * @return A {@link JoinResult} indicating the result of the join operation.
      */
-    void joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName);
+    JoinResult joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName);
+
+    /**
+     * Allows a user to join a registered conversation in a specified chat with custom properties.
+     *
+     * @param user             The User who is joining the Conversation.
+     * @param chat             The Chat where the conversation is taking place.
+     * @param conversationName The name of the Conversation the user wants to join.
+     *                         This should match the name returned by {@link Conversation#name()}.
+     * @param properties       A list of custom properties to be passed to the conversation.
+     *                         This can be used to pass additional information to the conversation.
+     * @return A {@link JoinResult} indicating the result of the join operation.
+     */
+    JoinResult joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName, @Nullable Map<String, Object> properties);
 
     /**
      * Allows a user to forcefully leave an active conversation.
@@ -95,4 +108,37 @@ public sealed interface ConversationManager permits ConversationManagerImpl {
     @Unmodifiable
     Collection<ConversationContext> getRunningConversations();
 
+    /**
+     * Represents the result of a join operation.
+     */
+    sealed interface JoinResult permits
+            JoinResult.AlreadyInConversation,
+            JoinResult.ConversationNotFound,
+            JoinResult.InstanceConstraintReached,
+            JoinResult.Success {
+
+        /**
+         * Represents a successful join operation.
+         */
+        record Success() implements JoinResult {
+        }
+
+        /**
+         * Represents a failed join operation due to the user already being in a conversation.
+         */
+        record AlreadyInConversation() implements JoinResult {
+        }
+
+        /**
+         * Represents a failed join operation due to the conversation not being found.
+         */
+        record ConversationNotFound() implements JoinResult {
+        }
+
+        /**
+         * Represents a failed join operation due to the maximum instance constraint being reached.
+         */
+        record InstanceConstraintReached(String constraint) implements JoinResult {
+        }
+    }
 }

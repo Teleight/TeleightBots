@@ -1,15 +1,19 @@
 package org.teleight.teleightbots.conversation;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.TelegramBot;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public final class ConversationManagerImpl implements ConversationManager {
 
@@ -39,16 +43,65 @@ public final class ConversationManagerImpl implements ConversationManager {
     }
 
     @Override
-    public void joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName) {
+    public JoinResult joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName) {
+        return joinConversation(user, chat, conversationName, null);
+    }
+
+    @Override
+    public JoinResult joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName, @Nullable Map<String, Object> properties) {
         final long userId = user.id();
         final Conversation conversation = conversations.get(conversationName);
         if (usersInConversation.containsKey(userId)) {
-            throw new IllegalStateException("The user " + userId + " is already in a conversation");
+            return new JoinResult.AlreadyInConversation();
         }
         if (conversation == null) {
-            throw new IllegalArgumentException("The conversation " + conversationName + " has not been registered");
+            return new JoinResult.ConversationNotFound();
         }
-        usersInConversation.put(userId, new ConversationContext(bot, chat, user, conversation));
+
+        JoinResult instanceCheckResult = checkMaxInstances(conversation, conversationName, chat, user);
+        if (instanceCheckResult instanceof JoinResult.InstanceConstraintReached) {
+            return instanceCheckResult;
+        }
+
+        usersInConversation.put(userId, new ConversationContext(bot, chat, user, conversation, properties));
+        return new JoinResult.Success();
+    }
+
+    private JoinResult checkMaxInstances(Conversation conversation, String conversationName, Chat chat, User user) {
+        final long userId = user.id();
+        final String chatId = chat.id();
+
+        List<JoinResult> results = Arrays.asList(
+                checkInstanceLimit("instance", conversation.instanceConstraints().maxInstances(),
+                        (ctx) -> ctx.conversation().name().equals(conversationName)),
+
+                checkInstanceLimit("user", conversation.instanceConstraints().maxInstancesPerUser(),
+                        (ctx) -> ctx.conversation().name().equals(conversationName) && ctx.user().id() == userId),
+
+                checkInstanceLimit("chat", conversation.instanceConstraints().maxInstancesPerChat(),
+                        (ctx) -> ctx.conversation().name().equals(conversationName) && ctx.chat().id().equals(chatId)),
+
+                checkInstanceLimit("user in chat", conversation.instanceConstraints().maxInstancesPerUserPerChat(),
+                        (ctx) -> ctx.conversation().name().equals(conversationName) && ctx.user().id() == userId && ctx.chat().id().equals(chatId))
+        );
+
+        for (JoinResult result : results) {
+            if (result instanceof JoinResult.InstanceConstraintReached) {
+                return result;
+            }
+        }
+
+        return new JoinResult.Success();
+    }
+
+    private JoinResult checkInstanceLimit(String context, int limit, Predicate<ConversationContext> predicate) {
+        if (limit != -1) {
+            long instances = usersInConversation.values().stream().filter(predicate).count();
+            if (instances >= limit) {
+                return new JoinResult.InstanceConstraintReached(context);
+            }
+        }
+        return new JoinResult.Success();
     }
 
     @Override

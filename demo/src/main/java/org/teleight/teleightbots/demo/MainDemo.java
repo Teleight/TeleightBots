@@ -5,6 +5,9 @@ import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.bot.settings.BotSettings;
+import org.teleight.teleightbots.conversation.Conversation;
+import org.teleight.teleightbots.conversation.ConversationInstanceConstraints;
+import org.teleight.teleightbots.conversation.Property;
 import org.teleight.teleightbots.demo.command.TestCommand;
 import org.teleight.teleightbots.demo.command.TestConversationCommand;
 import org.teleight.teleightbots.demo.conversations.TestConversation;
@@ -64,7 +67,13 @@ public class MainDemo {
                     .build();
             bot.execute(sendMessage);
 
-            bot.getConversationManager().registerConversation(new TestConversation());
+            Conversation testConversation = Conversation.ofBuilder("test", new TestConversation())
+                    .property(Property.of("test"))
+                    .allowUnknownProperties(true)
+                    .instanceConstraints(ConversationInstanceConstraints.ofBuilder().maxInstances(1).build())
+                    .build();
+            bot.getConversationManager().registerConversation(testConversation);
+
             bot.getCommandManager().registerCommand(new TestConversationCommand());
         });
     }
