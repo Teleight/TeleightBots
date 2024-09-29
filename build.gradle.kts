@@ -1,80 +1,109 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
-    id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("maven-publish")
+    `java-library`
+    `maven-publish`
+    alias(libs.plugins.shadow)
 }
 
-group = "org.teleight"
-version = "1.0"
+val groupId = "org.teleight"
+val artifactId = "TeleightBots"
+val descriptionId = "Java library for Telegram Bots"
+val versionId = "1.0"
 
-repositories {
-    mavenCentral()
-    mavenLocal()
+allprojects {
+    apply(plugin = "java")
+
+    group = groupId
+    version = versionId
+    description = descriptionId
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    java {
+        withSourcesJar()
+        withJavadocJar()
+
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
+    }
+
+    tasks.withType<JavaCompile> {
+        options.encoding = "UTF-8"
+    }
 }
 
 dependencies {
-    //Tests
-    testImplementation(platform("org.junit:junit-bom:5.9.2"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    api(libs.bundles.jackson)
+    api(libs.bundles.checker)
+    api(libs.jetbrains.annotations)
 
-    //Json
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.17.2")
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
 
-    //Checker
-    implementation("org.checkerframework:checker:3.42.0")
-    implementation("org.checkerframework:checker-qual:3.42.0")
-
-    //Annotations
-    implementation("org.jetbrains:annotations:24.0.1")
-
-    //Lombok
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
+    testImplementation(libs.bundles.junit)
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<Javadoc> {
+tasks.javadoc {
     options {
-        (this as CoreJavadocOptions).addStringOption("Xdoclint:all,-missing", "-quiet")
+        require(this is StandardJavadocDocletOptions)
+        addStringOption("Xdoclint:all,-missing", "-quiet")
     }
-}
-
-val javadocJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("javadoc")
-    from(sourceSets.getByName("main").allSource)
-
-    archiveFileName.set("TeleightBots-javadoc.jar")
-}
-
-val sourcesJar by tasks.registering(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.getByName("main").allSource)
-
-    archiveFileName.set("TeleightBots-sources.jar")
 }
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            artifactId = "TeleightBots"
+            groupId = groupId
+            artifactId = artifactId
+            version = versionId
 
-            artifact(javadocJar)
-            artifact(sourcesJar)
+            from(project.components["java"])
 
-            project.shadow.component(this)
+            pom {
+                name.set(this@create.artifactId)
+                description.set(project.description)
+                url.set("https://github.com/Teleight/TeleightBots")
+
+                licenses {
+                    license {
+                        name.set("The GNU General Public License v3.0")
+                        url.set("https://www.gnu.org/licenses/gpl-3.0.en.html")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("Stredox02")
+                    }
+                    developer {
+                        id.set("literallyfiro")
+                    }
+                }
+
+                issueManagement {
+                    system.set("GitHub")
+                    url.set("https://github.com/Teleight/TeleightBots/issues")
+                }
+
+                scm {
+                    connection.set("scm:git:git://github.com/Teleight/TeleightBots.git")
+                    developerConnection.set("scm:git:git@github.com:Teleight/TeleightBots.git")
+                    url.set("https://github.com/Teleight/TeleightBots")
+                    tag.set("HEAD")
+                }
+
+                ciManagement {
+                    system.set("Github Actions")
+                    url.set("https://github.com/Teleight/TeleightBots/actions")
+                }
+            }
         }
     }
-}
-
-tasks.withType<ShadowJar> {
-    archiveClassifier.set("")
-    archiveVersion.set("")
-
-    archiveFileName.set("TeleightBots.jar")
 }
