@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.Update;
-import org.teleight.teleightbots.bot.settings.BotSettings;
+import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.util.List;
@@ -29,12 +29,6 @@ public record GetUpdates(
         List<String> allowedUpdates
 ) implements ApiMethod<Update[]> {
 
-    public static @NotNull Builder ofBuilder() {
-        return new Builder()
-                .limit(BotSettings.DEFAULT.updatesTimeout())
-                .timeout(BotSettings.DEFAULT.updatesTimeout());
-    }
-
     @Override
     public Update @NotNull [] deserializeResponse(@NotNull String answer) throws TelegramRequestException {
         return deserializeResponseArray(answer, Update.class);
@@ -43,6 +37,13 @@ public record GetUpdates(
     @Override
     public @NotNull String getEndpointURL() {
         return "getUpdates";
+    }
+
+    public static class Builder {
+        Builder() {
+            limit = LongPollingBotSettings.DEFAULT.updatesTimeout();
+            timeout = LongPollingBotSettings.DEFAULT.updatesTimeout();
+        }
     }
 
 }

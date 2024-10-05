@@ -29,16 +29,16 @@ import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 
-public final class TelegramBotImpl implements TelegramBot {
+public non-sealed class BaseTelegramBot<T extends BotSettings> implements TelegramBot {
 
     private final String token;
     private final String username;
 
     //Settings
-    private final BotSettings botSettings;
+    private final T botSettings;
 
     //Updates
-    private final UpdateProcessor updateProcessor;
+    private final UpdateProcessor<?> updateProcessor;
 
     //Scheduler
     private final Scheduler scheduler = Scheduler.newScheduler();
@@ -61,7 +61,7 @@ public final class TelegramBotImpl implements TelegramBot {
     //FileDownloader
     private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
 
-    public TelegramBotImpl(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @NotNull BotSettings botSettings) {
+    public BaseTelegramBot(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor<?> updateProcessor, @NotNull T botSettings) {
         this.token = token;
         this.username = username;
         this.botSettings = botSettings;
@@ -84,12 +84,7 @@ public final class TelegramBotImpl implements TelegramBot {
     }
 
     @Override
-    public @NotNull UpdateProcessor getUpdateProcessor() {
-        return updateProcessor;
-    }
-
-    @Override
-    public @NotNull BotSettings getBotSettings() {
+    public @NotNull T getBotSettings() {
         return botSettings;
     }
 
@@ -156,11 +151,11 @@ public final class TelegramBotImpl implements TelegramBot {
 
     @Override
     public <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
-        final CompletableFuture<String> responseFuture = updateProcessor.executeMethod(method);
+        final CompletableFuture<String> responseFuture = updateProcessor.executeMethod(method, this);
         return responseFuture.thenCompose(responseJson -> {
             try {
                 final R result = method.deserializeResponse(responseJson);
-                eventManager.call(new MethodSendEvent<>(TelegramBotImpl.this, method, result));
+                eventManager.call(new MethodSendEvent<>(BaseTelegramBot.this, method, result));
                 return CompletableFuture.completedFuture(result);
             } catch (TelegramRequestException e) {
                 if (!botSettings.silentlyThrowMethodExecution()) {

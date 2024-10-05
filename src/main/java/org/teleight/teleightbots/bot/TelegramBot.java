@@ -27,12 +27,12 @@ import java.util.concurrent.CompletableFuture;
  * This interface provides methods to interact with the bot and its components.
  * It also provides methods to send requests to the Telegram Bot API.
  * <br>
- * This interface is by default implemented by the {@link TelegramBotImpl} class.
+ * This interface is by default implemented by the {@link BaseTelegramBot} class.
  * </p>
  *
- * @see TelegramBotImpl
+ * @see BaseTelegramBot
  */
-public sealed interface TelegramBot permits TelegramBotImpl {
+public sealed interface TelegramBot permits BaseTelegramBot {
 
     /**
      * Closes the bot from the Telegram Bot API.
@@ -66,17 +66,6 @@ public sealed interface TelegramBot permits TelegramBotImpl {
      * @return the bot's scheduler
      */
     @NotNull Scheduler getScheduler();
-
-    /**
-     * Returns the bot's update processor.
-     * <p>
-     * The update processor is responsible for processing incoming updates from the Telegram Bot API.
-     * It is also responsible for sending requests to the Telegram Bot API.
-     * </p>
-     *
-     * @return the bot's update processor
-     */
-    @NotNull UpdateProcessor getUpdateProcessor();
 
     /**
      * Returns the bot's settings.
