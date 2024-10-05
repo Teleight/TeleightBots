@@ -6,34 +6,23 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.SetWebhook;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
-import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.updateprocessor.webhook.WebhookServer;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public final class WebhookUpdateProcessor implements UpdateProcessor {
 
-    private WebhookTelegramBot bot;
+    private final WebhookTelegramBot bot;
 
-    @Override
-    public void setBot(@NotNull TelegramBot bot) {
-        if (this.bot != null) {
-            throw new IllegalArgumentException("Bot instance was already assigned to this update processor");
-        }
-        if(!(bot instanceof WebhookTelegramBot webhookBot)){
-            throw new IllegalArgumentException("Bot instance is not an instance of WebhookTelegramBot");
-        }
-        this.bot = webhookBot;
+    public WebhookUpdateProcessor(@NotNull WebhookTelegramBot bot) {
+        this.bot = bot;
     }
 
     @Override
-    public CompletableFuture<User> start() {
-        WebhookBotSettings settings = bot.getBotSettings();
-
+    public @NotNull CompletableFuture<User> start() {
+        var settings = bot.getBotSettings();
         if (settings.path() == null) {
             settings = settings.toBuilder().path("/" + bot.getBotUsername()).build();
         }
@@ -72,8 +61,4 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
         return CompletableFuture.completedFuture(null);
     }
 
-    @Override
-    public void close() throws IOException {
-        // todo remove post route
-    }
 }

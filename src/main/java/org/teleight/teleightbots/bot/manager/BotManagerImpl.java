@@ -3,14 +3,12 @@ package org.teleight.teleightbots.bot.manager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.bot.LongPollingTelegramBot;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
+import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.bot.webhook.WebhookMessageHandler;
-import org.teleight.teleightbots.updateprocessor.LongPollingUpdateProcessor;
-import org.teleight.teleightbots.updateprocessor.WebhookUpdateProcessor;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -24,12 +22,10 @@ public final class BotManagerImpl implements BotManager {
 
     @Override
     public void registerLongPolling(@NotNull String token, @NotNull String username, @NotNull LongPollingBotSettings longPollingSettings, @NotNull Consumer<LongPollingTelegramBot> completeCallback) {
-        username = replaceUsername(username);
+        username = sanitizeUsername(username);
 
-        final LongPollingUpdateProcessor updateProcessor = new LongPollingUpdateProcessor();
-        final LongPollingTelegramBot bot = new LongPollingTelegramBot(token, username, updateProcessor, longPollingSettings);
-
-        updateProcessor.setBot(bot);
+        final var bot = new LongPollingTelegramBot(token, username, longPollingSettings);
+        final var updateProcessor = bot.getUpdateProcessor();
         updateProcessor.start().thenRun(() -> {
             if (longPollingSettings.extensionsEnabled()) {
                 bot.getExtensionManager().start();
@@ -46,22 +42,11 @@ public final class BotManagerImpl implements BotManager {
 
     @Override
     public void registerWebhook(@NotNull String token, @NotNull String username, WebhookBotSettings webhookSettings, @NotNull WebhookMessageHandler webhookHandler) {
-        username = replaceUsername(username);
+        username = sanitizeUsername(username);
 
-        final WebhookUpdateProcessor webhookUpdateProcessor = new WebhookUpdateProcessor();
-        final WebhookTelegramBot bot = new WebhookTelegramBot(token, username, webhookUpdateProcessor, webhookSettings, webhookHandler);
+        final var bot = new WebhookTelegramBot(token, username, webhookSettings, webhookHandler);
 
-        webhookUpdateProcessor.setBot(bot);
         registeredBots.add(bot);
-    }
-
-    private String replaceUsername(String username) {
-        // If the bot username starts with a @, then we trim it.
-        // Telegram bot usernames must not contain the at symbol
-        if (username.startsWith("@")) {
-            username = username.substring(1);
-        }
-        return username;
     }
 
     @Override
@@ -75,6 +60,15 @@ public final class BotManagerImpl implements BotManager {
             registeredBot.shutdown();
         }
         registeredBots.clear();
+    }
+
+    private String sanitizeUsername(String username) {
+        // If the bot username starts with a @, then we trim it.
+        // Telegram bot usernames must not contain the at symbol
+        if (username.startsWith("@")) {
+            username = username.substring(1);
+        }
+        return username;
     }
 
 }

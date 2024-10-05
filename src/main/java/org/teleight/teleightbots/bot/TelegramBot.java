@@ -2,6 +2,7 @@ package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.GetChatMember;
 import org.teleight.teleightbots.api.objects.Chat;
@@ -11,11 +12,16 @@ import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.conversation.ConversationManager;
 import org.teleight.teleightbots.event.EventManager;
+import org.teleight.teleightbots.event.bot.MethodSendEvent;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.extensions.ExtensionManager;
 import org.teleight.teleightbots.files.FileDownloader;
 import org.teleight.teleightbots.menu.Menu;
+import org.teleight.teleightbots.menu.MenuBuilder;
+import org.teleight.teleightbots.menu.MenuImpl;
 import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.scheduler.Scheduler;
+import org.teleight.teleightbots.updateprocessor.BotMethodExecutor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
 import java.io.Serializable;
@@ -27,12 +33,12 @@ import java.util.concurrent.CompletableFuture;
  * This interface provides methods to interact with the bot and its components.
  * It also provides methods to send requests to the Telegram Bot API.
  * <br>
- * This interface is by default implemented by the {@link BaseTelegramBot} class.
+ * This interface is by default implemented by the {@link LongPollingTelegramBot} class.
  * </p>
  *
- * @see BaseTelegramBot
+ * @see LongPollingTelegramBot
  */
-public sealed interface TelegramBot permits BaseTelegramBot {
+public sealed interface TelegramBot permits LongPollingTelegramBot, WebhookTelegramBot {
 
     /**
      * Closes the bot from the Telegram Bot API.
@@ -120,7 +126,19 @@ public sealed interface TelegramBot permits BaseTelegramBot {
      * @param builder the builder used to create the menu items and submenus
      * @return the created menu
      */
-    @NotNull Menu createMenu(@Nullable String name, @NotNull Menu.Builder builder);
+    default @NotNull Menu createMenu(@Nullable String name, @NotNull Menu.Builder builder){
+        final var menuBuilder = new MenuBuilder.MenuBuilderImpl();
+        final var rootMenu = menuBuilder.createMenu(name);
+        builder.create(menuBuilder, rootMenu);
+
+        for (final MenuImpl subMenu : menuBuilder.getAllMenus()) {
+            subMenu.createKeyboard();
+
+            getMenuManager().registerMenu(subMenu);
+        }
+
+        return rootMenu;
+    }
 
     /**
      * Returns the bot's command manager.
@@ -162,6 +180,10 @@ public sealed interface TelegramBot permits BaseTelegramBot {
      */
     @NotNull ConversationManager getConversationManager();
 
+    BotMethodExecutor getBotMethodExecutor();
+
+    UpdateProcessor getUpdateProcessor();
+
     /**
      * Sends a request to the Telegram Bot API using the given method.
      *
@@ -169,7 +191,21 @@ public sealed interface TelegramBot permits BaseTelegramBot {
      * @param <R>    the type of the expected response
      * @return a future representing the result of the request
      */
-    <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method);
+    default <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method){
+        final var responseFuture = getBotMethodExecutor().executeMethod(method);
+        return responseFuture.thenCompose(responseJson -> {
+            try {
+                final R result = method.deserializeResponse(responseJson);
+                getEventManager().call(new MethodSendEvent<>(this, method, result));
+                return CompletableFuture.completedFuture(result);
+            } catch (TelegramRequestException e) {
+                if (!getBotSettings().silentlyThrowMethodExecution()) {
+                    TeleightBots.getExceptionManager().handleException(e);
+                }
+                return CompletableFuture.failedFuture(e);
+            }
+        });
+    }
 
     /**
      * Returns the chat member with the given user id in the given chat.

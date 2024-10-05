@@ -1,17 +1,14 @@
 package org.teleight.teleightbots.updateprocessor;
 
+import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.User;
-import org.teleight.teleightbots.bot.TelegramBot;
 
-import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
 
-public sealed interface UpdateProcessor extends Closeable permits
+public sealed interface UpdateProcessor permits
         LongPollingUpdateProcessor,
         WebhookUpdateProcessor {
 
-    CompletableFuture<User> start();
-
-    void setBot(TelegramBot bot);
+    @NotNull CompletableFuture<User> start();
 
 }

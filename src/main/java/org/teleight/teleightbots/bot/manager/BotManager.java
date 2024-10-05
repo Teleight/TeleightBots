@@ -2,10 +2,10 @@ package org.teleight.teleightbots.bot.manager;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
-import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
-import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.bot.LongPollingTelegramBot;
 import org.teleight.teleightbots.bot.TelegramBot;
+import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
+import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.bot.webhook.WebhookMessageHandler;
 
 import java.io.Closeable;

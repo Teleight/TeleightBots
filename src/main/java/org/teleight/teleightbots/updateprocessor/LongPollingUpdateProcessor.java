@@ -8,39 +8,32 @@ import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.LongPollingTelegramBot;
-import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.updateprocessor.events.*;
 
+import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
-public final class LongPollingUpdateProcessor implements UpdateProcessor {
+public final class LongPollingUpdateProcessor implements UpdateProcessor, Closeable {
 
     private final CountDownLatch processorLatch = new CountDownLatch(1);
-    private BotMethodExecutor botMethodExecutor;
 
-    private LongPollingTelegramBot bot;
-    private LongPollingBotSettings settings;
+    private final LongPollingTelegramBot bot;
+    private final LongPollingBotSettings settings;
+
     private Thread updateProcessorThread;
     private int lastReceivedUpdate = 0;
 
-    @Override
-    public void setBot(@NotNull TelegramBot bot) {
-        if (this.bot != null) {
-            throw new IllegalArgumentException("Bot instance was already assigned to this update processor");
-        }
-        if(!(bot instanceof LongPollingTelegramBot longPollingBot)){
-            throw new IllegalArgumentException("Bot instance is not an instance of LongPollingTelegramBot");
-        }
-        this.settings = longPollingBot.getBotSettings();
-        this.botMethodExecutor = new BotMethodExecutor(bot);
+    public LongPollingUpdateProcessor(@NotNull LongPollingTelegramBot bot) {
+        this.bot = bot;
+        this.settings = bot.getBotSettings();
     }
 
     @Override
-    public CompletableFuture<User> start() {
+    public @NotNull CompletableFuture<User> start() {
         updateProcessorThread = new UpdateProcessorThread();
         updateProcessorThread.setName(bot.getBotUsername() + " Update Processor");
         updateProcessorThread.start();
@@ -66,13 +59,13 @@ public final class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     private void executeGetUpdates() {
-        final GetUpdates getUpdates = GetUpdates.ofBuilder()
+        final var getUpdates = GetUpdates.ofBuilder()
                 .timeout(settings.updatesTimeout())
                 .limit(settings.updatesLimit())
                 .offset(lastReceivedUpdate + 1)
                 .build();
 
-        final String responseJson = botMethodExecutor.executeMethod(getUpdates)
+        final String responseJson = bot.getBotMethodExecutor().executeMethod(getUpdates)
                 .exceptionally(throwable -> {
                     TeleightBots.getExceptionManager().handleException(throwable);
                     return null;

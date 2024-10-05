@@ -31,7 +31,8 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
-public class BotMethodExecutor {
+@ApiStatus.Internal
+public final class BotMethodExecutor {
 
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(Duration.of(75, ChronoUnit.SECONDS))
