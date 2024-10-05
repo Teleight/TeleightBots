@@ -1,44 +1,89 @@
-<h1>Teleight Bots 
-<sub><sub><sub><sub><sub>The most lightweight java telegram bot wrapper</sub></sub></sub></sub></sub>
-</h1>
+# 🤖 TeleightBots
 
-Teleight bots is a java telegram bot wrapper written with performance and ease of use at mind. It fully utilizes the modern java APIs in order to have a more flexible environment for developers
+![Java Version](https://img.shields.io/badge/Java_version-21-green)
+![License](https://img.shields.io/github/license/Teleight/TeleightBots)
+![API Version](https://img.shields.io/badge/Bot_API-7.10-blue?logo=telegram)
 
-**The project is still in an alpha phase, and most bot api methods are not yet available. Please see [how to contribute](CONTRIBUTING.md)**
+TeleightBots is a _lightweight, high-performance, easy to use_ Java Telegram Bot API wrapper.
+It uses modern Java 21 APIs to provide a flexible and easier development experience.
 
-## Features
-Teleight is written towards the latest Java 21 LTS, thus providing the latest features provided by this version.
+> [!CAUTION]
+>
+> Teleight is still in early development!
+> Some features are not currently implemented (such as Webhooks).
+> If you find any problems, feel free to create an issue on GitHub.
+> Contributions are welcome!
 
-- It provides a multi threaded design to deal with most computational tasks.
-- It mostly uses native calls to reduce overhead to the minimum
+## 📚 Documentation
+> [!IMPORTANT]
+>
+> If you're new to bot creation, start with the [Official Telegram Bots Documentation](https://core.telegram.org/bots) to
+understand the basics.
+>
+An example of how to use the TeleightBots library is available [here](/demo).
+Wiki and Javadocs are not yet available.
 
-## Installation
+## 💻 Local Installation
+To set up the library locally, follow these steps:
 
-Clone this repo, and run this command
-```bash
-./gradlew publishToMavenLocal
-```
+1. Clone the repository: `git clone https://github.com/Teleight/TeleightBots.git && cd TeleightBots`
+2. Publish to maven local: `./gradlew publishToMavenLocal`
+3. Add the dependency to your project
 
-Then, in your project, add the dependency
+#### Gradle (kotlin)
 ```kotlin
 repositories {
-    mavenLocal()
+    mavenLocal() // Include the local Maven repository
 }
 
 dependencies {
-    implementation("org.teleight:TeleightBots:1.0")
+    implementation("org.teleight:TeleightBots:VERSION") // Replace VERSION with the latest version
 }
 ```
-# Usage
+#### Gradle (groovy)
+```groovy
+repositories {
+    mavenLocal() // Include the local Maven repository
+}
 
-An example of how to use the TeleightBots library is available [here](/demo).
+dependencies {
+    implementation 'org.teleight:TeleightBots:VERSION' // Replace VERSION with the latest version
+}
+```
+#### Maven
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.teleight</groupId>
+        <artifactId>TeleightBots</artifactId>
+        <version>VERSION</version> <!-- Replace VERSION with the latest version -->
+    </dependency>
+</dependencies>
+```
 
-## Contributing
-We welcome all submissions to this project, but please follow the contributing guidelines situated in [CONTRIBUTING.md](CONTRIBUTING.md)
+Make sure to replace `VERSION` with the latest version of the library.
 
-# Credits
-* The [contributors](https://github.com/Teleight/TeleightBots/graphs/contributors) of the project.
-* [Minestom](https://github.com/Minestom/Minestom) for the amazing api design.
+## 📄 License
+```
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
 
-# License
-This project is licensed under the [GNU General Public License v3.0](LICENSE).
+ Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+```
+This project is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html). All
+contributions are accepted under the same license.
+
+## 🤝 Contributing
+
+Want to contribute?
+Feel free to fork this repository and create a pull request with your changes.
+Please ensure you follow
+the [Contribution Guidelines](https://github.com/Teleight/TeleightBots/blob/master/CONTRIBUTING.md) before creating a
+pull request.
+
+## ⭐️ Star History
+Give this repository a star to support the development!
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Teleight/TeleightBots&type=Date)](https://star-history.com/#Teleight/TeleightBots&Date)
