@@ -8,34 +8,34 @@ import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.LongPollingTelegramBot;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
-import org.teleight.teleightbots.updateprocessor.events.CallbackQueryEventProcessor;
-import org.teleight.teleightbots.updateprocessor.events.ChannelPostEventProcessor;
-import org.teleight.teleightbots.updateprocessor.events.ChatMemberStatusEventProcessor;
-import org.teleight.teleightbots.updateprocessor.events.EventProcessor;
-import org.teleight.teleightbots.updateprocessor.events.InlineQueryEventProcessor;
-import org.teleight.teleightbots.updateprocessor.events.MessageEventProcessor;
+import org.teleight.teleightbots.updateprocessor.events.*;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
-public final class LongPollingUpdateProcessor implements UpdateProcessor<LongPollingTelegramBot> {
+public final class LongPollingUpdateProcessor implements UpdateProcessor {
 
     private final CountDownLatch processorLatch = new CountDownLatch(1);
     private BotMethodExecutor botMethodExecutor;
 
     private LongPollingTelegramBot bot;
+    private LongPollingBotSettings settings;
     private Thread updateProcessorThread;
     private int lastReceivedUpdate = 0;
 
     @Override
-    public void setBot(@NotNull LongPollingTelegramBot bot) {
+    public void setBot(@NotNull TelegramBot bot) {
         if (this.bot != null) {
             throw new IllegalArgumentException("Bot instance was already assigned to this update processor");
         }
-        this.bot = bot;
+        if(!(bot instanceof LongPollingTelegramBot longPollingBot)){
+            throw new IllegalArgumentException("Bot instance is not an instance of LongPollingTelegramBot");
+        }
+        this.settings = longPollingBot.getBotSettings();
         this.botMethodExecutor = new BotMethodExecutor(bot);
     }
 
@@ -66,8 +66,6 @@ public final class LongPollingUpdateProcessor implements UpdateProcessor<LongPol
     }
 
     private void executeGetUpdates() {
-        final LongPollingBotSettings settings = bot.getBotSettings();
-
         final GetUpdates getUpdates = GetUpdates.ofBuilder()
                 .timeout(settings.updatesTimeout())
                 .limit(settings.updatesLimit())

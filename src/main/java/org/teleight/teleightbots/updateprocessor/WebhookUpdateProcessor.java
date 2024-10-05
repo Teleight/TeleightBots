@@ -6,6 +6,7 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.SetWebhook;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
+import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.updateprocessor.webhook.WebhookServer;
@@ -14,16 +15,19 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public final class WebhookUpdateProcessor implements UpdateProcessor<WebhookTelegramBot> {
+public final class WebhookUpdateProcessor implements UpdateProcessor {
 
     private WebhookTelegramBot bot;
 
     @Override
-    public void setBot(@NotNull WebhookTelegramBot bot) {
+    public void setBot(@NotNull TelegramBot bot) {
         if (this.bot != null) {
             throw new IllegalArgumentException("Bot instance was already assigned to this update processor");
         }
-        this.bot = bot;
+        if(!(bot instanceof WebhookTelegramBot webhookBot)){
+            throw new IllegalArgumentException("Bot instance is not an instance of WebhookTelegramBot");
+        }
+        this.bot = webhookBot;
     }
 
     @Override

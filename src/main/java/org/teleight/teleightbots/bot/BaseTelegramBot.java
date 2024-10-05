@@ -24,6 +24,7 @@ import org.teleight.teleightbots.menu.MenuImpl;
 import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.menu.MenuManagerImpl;
 import org.teleight.teleightbots.scheduler.Scheduler;
+import org.teleight.teleightbots.updateprocessor.BotMethodExecutor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
 import java.io.Serializable;
@@ -38,7 +39,8 @@ public non-sealed class BaseTelegramBot<T extends BotSettings> implements Telegr
     private final T botSettings;
 
     //Updates
-    private final UpdateProcessor<?> updateProcessor;
+    private final UpdateProcessor updateProcessor;
+    private final BotMethodExecutor botMethodExecutor;
 
     //Scheduler
     private final Scheduler scheduler = Scheduler.newScheduler();
@@ -61,11 +63,12 @@ public non-sealed class BaseTelegramBot<T extends BotSettings> implements Telegr
     //FileDownloader
     private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
 
-    public BaseTelegramBot(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor<?> updateProcessor, @NotNull T botSettings) {
+    public BaseTelegramBot(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @NotNull T botSettings) {
         this.token = token;
         this.username = username;
         this.botSettings = botSettings;
         this.updateProcessor = updateProcessor;
+        this.botMethodExecutor = new BotMethodExecutor(this);
     }
 
     @Override
@@ -151,7 +154,7 @@ public non-sealed class BaseTelegramBot<T extends BotSettings> implements Telegr
 
     @Override
     public <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
-        final CompletableFuture<String> responseFuture = updateProcessor.executeMethod(method, this);
+        final CompletableFuture<String> responseFuture = botMethodExecutor.executeMethod(method);
         return responseFuture.thenCompose(responseJson -> {
             try {
                 final R result = method.deserializeResponse(responseJson);

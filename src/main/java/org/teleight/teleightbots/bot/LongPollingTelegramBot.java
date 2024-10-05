@@ -8,7 +8,7 @@ public final class LongPollingTelegramBot extends BaseTelegramBot<LongPollingBot
 
     public LongPollingTelegramBot(@NotNull String token,
                                   @NotNull String username,
-                                  @NotNull UpdateProcessor<LongPollingTelegramBot> updateProcessor,
+                                  @NotNull UpdateProcessor updateProcessor,
                                   @NotNull LongPollingBotSettings botSettings) {
         super(token, username, updateProcessor, botSettings);
     }

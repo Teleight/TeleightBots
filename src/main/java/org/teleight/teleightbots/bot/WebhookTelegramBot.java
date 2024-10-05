@@ -11,7 +11,7 @@ public final class WebhookTelegramBot extends BaseTelegramBot<WebhookBotSettings
 
     public WebhookTelegramBot(@NotNull String token,
                               @NotNull String username,
-                              @NotNull UpdateProcessor<WebhookTelegramBot> updateProcessor,
+                              @NotNull UpdateProcessor updateProcessor,
                               @NotNull WebhookBotSettings botSettings,
                               @NotNull WebhookMessageHandler webhookHandler) {
         super(token, username, updateProcessor, botSettings);
