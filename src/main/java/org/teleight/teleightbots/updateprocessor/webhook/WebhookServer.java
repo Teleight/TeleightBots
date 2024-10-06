@@ -35,10 +35,12 @@ public class WebhookServer implements Closeable {
                 if (config.useHttps()) {
                     conf.keystoreFromPath(config.keystorePath().toString(), config.keystorePassword());
                     conf.secure = true;
+                    conf.insecure = false;
                     conf.securePort = config.port();
                     javalinConfig.bundledPlugins.enableSslRedirects();
                 } else {
                     conf.insecure = true;
+                    conf.secure = false;
                     conf.insecurePort = config.port();
                 }
             });

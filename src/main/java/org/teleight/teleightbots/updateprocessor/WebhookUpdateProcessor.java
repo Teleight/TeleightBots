@@ -32,7 +32,7 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
         WebhookServer.getInstance().addPostRoute(settings.path(), ctx -> {
             try {
                 Update update = ctx.bodyStreamAsClass(Update.class);
-                Optional<ApiMethod<?>> response = Optional.ofNullable(bot.getWebhookBotInfo().consumeUpdate(update));
+                Optional<? extends CompletableFuture<?>> response = Optional.of(bot.execute(bot.getWebhookBotInfo().consumeUpdate(update)));
                 response.ifPresentOrElse(
                         ctx::json,
                         () -> ctx.status(204) // No content

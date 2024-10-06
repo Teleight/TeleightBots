@@ -48,8 +48,13 @@ public final class BotManagerImpl implements BotManager {
 
         final var bot = new WebhookTelegramBot(token, username, webhookSettings, webhookHandler);
         WebhookServer.getInstance().start(serverConfig);
+        bot.getUpdateProcessor().start().thenRun(() -> {
+            if (webhookSettings.extensionsEnabled()) {
+                bot.getExtensionManager().start();
+            }
 
-        registeredBots.add(bot);
+            registeredBots.add(bot);
+        });
     }
 
     @Override
