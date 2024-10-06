@@ -21,6 +21,7 @@ import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.BotMethodExecutor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 import org.teleight.teleightbots.updateprocessor.WebhookUpdateProcessor;
+import org.teleight.teleightbots.updateprocessor.webhook.WebhookServer;
 
 public non-sealed class WebhookTelegramBot implements TelegramBot {
 
@@ -55,18 +56,18 @@ public non-sealed class WebhookTelegramBot implements TelegramBot {
     //FileDownloader
     private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
 
-
     // Webhook
     private final WebhookMessageHandler webhookHandler;
 
     public WebhookTelegramBot(@NotNull String token,
                               @NotNull String username,
                               @NotNull WebhookBotSettings botSettings,
+                              @NotNull WebhookServer webhookServer,
                               @NotNull WebhookMessageHandler webhookHandler) {
         this.token = token;
         this.username = username;
         this.botSettings = botSettings;
-        this.updateProcessor = new WebhookUpdateProcessor(this);
+        this.updateProcessor = new WebhookUpdateProcessor(this, webhookServer);
         this.botMethodExecutor = new BotMethodExecutor(this);
         this.webhookHandler = webhookHandler;
     }

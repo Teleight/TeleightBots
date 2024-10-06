@@ -10,17 +10,18 @@ import java.util.Map;
 
 public class WebhookServer implements Closeable {
 
-    private static WebhookServer instance;
-    private WebhookServerConfig config;
+    private final WebhookServerConfig config;
 
     private Javalin app;
     private boolean running = false;
 
     private final Map<String, io.javalin.http.Handler> postRoutes = new HashMap<>();
 
-    public synchronized void start(WebhookServerConfig config) {
+    public WebhookServer(WebhookServerConfig config) {
         this.config = config;
+    }
 
+    public synchronized void start() {
         if (running) {
             return;
         }
@@ -55,7 +56,7 @@ public class WebhookServer implements Closeable {
         if (running) {
             app.post(path, handler);
         } else {
-            start(config);
+            start();
         }
     }
 
@@ -75,7 +76,7 @@ public class WebhookServer implements Closeable {
         close();
 
         if (!postRoutes.isEmpty()) {
-            start(config);
+            start();
 
             for (Map.Entry<String, io.javalin.http.Handler> entry : postRoutes.entrySet()) {
                 app.post(entry.getKey(), entry.getValue());
@@ -91,13 +92,6 @@ public class WebhookServer implements Closeable {
         app.stop();
         app = null;
         running = false;
-    }
-
-    public static synchronized WebhookServer getInstance() {
-        if (instance == null) {
-            instance = new WebhookServer();
-        }
-        return instance;
     }
 
 

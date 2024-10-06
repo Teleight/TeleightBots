@@ -18,9 +18,11 @@ import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 public final class WebhookUpdateProcessor extends UpdateProcessor {
 
     private final WebhookTelegramBot bot;
+    private final WebhookServer webhookServer;
 
-    public WebhookUpdateProcessor(@NotNull WebhookTelegramBot bot) {
+    public WebhookUpdateProcessor(@NotNull WebhookTelegramBot bot, @NotNull WebhookServer webhookServer) {
         this.bot = bot;
+        this.webhookServer = webhookServer;
     }
 
     @Override
@@ -29,8 +31,7 @@ public final class WebhookUpdateProcessor extends UpdateProcessor {
         if (settings.path() == null) {
             settings = settings.toBuilder().path("/" + bot.getBotUsername()).build();
         }
-
-        WebhookServer.getInstance().addPostRoute(settings.path(), ctx -> {
+        webhookServer.addPostRoute(settings.path(), ctx -> {
             try {
                 Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
                 Optional<? extends CompletableFuture<?>> response = Optional.of(handleNewUpdate(bot, update, ctx.body()));
@@ -64,7 +65,7 @@ public final class WebhookUpdateProcessor extends UpdateProcessor {
                 if (bot.getBotSettings().silentlyThrowMethodExecution() && throwable != null) {
                     TeleightBots.getExceptionManager().handleException(throwable);
                 }
-                WebhookServer.getInstance().removePostRoute(settings.path());
+                webhookServer.removePostRoute(settings.path());
                 bot.shutdown();
             }
         });
@@ -72,6 +73,6 @@ public final class WebhookUpdateProcessor extends UpdateProcessor {
 
     @Override
     public void close() throws IOException {
-        WebhookServer.getInstance().removePostRoute(bot.getBotSettings().path());
+        webhookServer.removePostRoute(bot.getBotSettings().path());
     }
 }

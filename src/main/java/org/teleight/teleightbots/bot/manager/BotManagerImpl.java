@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 public final class BotManagerImpl implements BotManager {
 
     private final List<TelegramBot> registeredBots = new CopyOnWriteArrayList<>();
+    private WebhookServer webhookServer;
 
     @Override
     public void registerLongPolling(@NotNull String token, @NotNull String username, @NotNull LongPollingBotSettings longPollingSettings, @NotNull Consumer<LongPollingTelegramBot> completeCallback) {
@@ -40,8 +41,13 @@ public final class BotManagerImpl implements BotManager {
     public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull WebhookMessageHandler handler) {
         username = sanitizeUsername(username);
 
-        final var bot = new WebhookTelegramBot(token, username, webhookSettings, handler);
-        WebhookServer.getInstance().start(serverConfig);
+        if (webhookServer == null) {
+            webhookServer = new WebhookServer(serverConfig);
+        }
+        webhookServer.start();
+
+        final var bot = new WebhookTelegramBot(token, username, webhookSettings, webhookServer, handler);
+
         startProcessor(bot, telegramBot -> {
             try {
                 handler.onStartup(telegramBot);
