@@ -72,10 +72,6 @@ public non-sealed class WebhookTelegramBot implements TelegramBot {
         this.webhookHandler = webhookHandler;
     }
 
-    public @NotNull WebhookMessageHandler getWebhookBotInfo() {
-        return webhookHandler;
-    }
-
     @Override
     public @NotNull String getBotToken() {
         return token;
