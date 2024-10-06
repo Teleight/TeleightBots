@@ -2,7 +2,6 @@ package org.teleight.teleightbots.updateprocessor;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.SetWebhook;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
@@ -14,7 +13,9 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-public final class WebhookUpdateProcessor implements UpdateProcessor {
+import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
+
+public final class WebhookUpdateProcessor extends UpdateProcessor {
 
     private final WebhookTelegramBot bot;
 
@@ -31,8 +32,8 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
 
         WebhookServer.getInstance().addPostRoute(settings.path(), ctx -> {
             try {
-                Update update = ctx.bodyStreamAsClass(Update.class);
-                Optional<? extends CompletableFuture<?>> response = Optional.of(bot.execute(bot.getWebhookBotInfo().consumeUpdate(update)));
+                Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
+                Optional<? extends CompletableFuture<?>> response = Optional.of(handleNewUpdate(bot, update, ctx.body()));
                 response.ifPresentOrElse(
                         ctx::json,
                         () -> ctx.status(204) // No content
@@ -72,5 +73,6 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     @Override
     public void close() throws IOException {
         WebhookServer.getInstance().removePostRoute(bot.getBotSettings().path());
+        bot.shutdown();
     }
 }

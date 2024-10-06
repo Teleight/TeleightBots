@@ -1,12 +1,11 @@
 package org.teleight.teleightbots.bot.webhook;
 
-import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.DeleteWebhook;
-import org.teleight.teleightbots.api.objects.Update;
+import org.teleight.teleightbots.bot.WebhookTelegramBot;
 
 public interface WebhookMessageHandler {
 
-    ApiMethod<?> consumeUpdate(Update update);
+    void onStartup(WebhookTelegramBot bot);
 
     default DeleteWebhook createDeleteWebhook() {
         return DeleteWebhook.ofBuilder().build();

@@ -27,9 +27,33 @@ public final class BotManagerImpl implements BotManager {
         username = sanitizeUsername(username);
 
         final var bot = new LongPollingTelegramBot(token, username, longPollingSettings);
-        final var updateProcessor = bot.getUpdateProcessor();
-        updateProcessor.start().thenRun(() -> {
-            if (longPollingSettings.extensionsEnabled()) {
+        startProcessor(bot, telegramBot -> {
+            try {
+                completeCallback.accept(telegramBot);
+            } catch (Throwable t) {
+                TeleightBots.getExceptionManager().handleException(t);
+            }
+        });
+    }
+
+    @Override
+    public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull WebhookMessageHandler handler) {
+        username = sanitizeUsername(username);
+
+        final var bot = new WebhookTelegramBot(token, username, webhookSettings, handler);
+        WebhookServer.getInstance().start(serverConfig);
+        startProcessor(bot, telegramBot -> {
+            try {
+                handler.onStartup(telegramBot);
+            } catch (Throwable t) {
+                TeleightBots.getExceptionManager().handleException(t);
+            }
+        });
+    }
+
+    private <T extends TelegramBot> void startProcessor(@NotNull T bot, @NotNull Consumer<T> completeCallback) {
+        bot.getUpdateProcessor().start().thenRun(() -> {
+            if (bot.getBotSettings().extensionsEnabled()) {
                 bot.getExtensionManager().start();
             }
 
@@ -39,21 +63,6 @@ public final class BotManagerImpl implements BotManager {
             } catch (Throwable t) {
                 TeleightBots.getExceptionManager().handleException(t);
             }
-        });
-    }
-
-    @Override
-    public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull WebhookMessageHandler webhookHandler) {
-        username = sanitizeUsername(username);
-
-        final var bot = new WebhookTelegramBot(token, username, webhookSettings, webhookHandler);
-        WebhookServer.getInstance().start(serverConfig);
-        bot.getUpdateProcessor().start().thenRun(() -> {
-            if (webhookSettings.extensionsEnabled()) {
-                bot.getExtensionManager().start();
-            }
-
-            registeredBots.add(bot);
         });
     }
 

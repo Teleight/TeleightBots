@@ -1,6 +1,5 @@
 package org.teleight.teleightbots.updateprocessor;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.GetMe;
@@ -9,15 +8,12 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.LongPollingTelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
-import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
-import org.teleight.teleightbots.updateprocessor.events.*;
 
-import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
-public final class LongPollingUpdateProcessor implements UpdateProcessor, Closeable {
+public final class LongPollingUpdateProcessor extends UpdateProcessor {
 
     private final CountDownLatch processorLatch = new CountDownLatch(1);
 
@@ -110,33 +106,13 @@ public final class LongPollingUpdateProcessor implements UpdateProcessor, Closea
 
         // Process the updates
         for (final Update update : updates) {
-            handleNewUpdate(update, responseJson);
+            handleNewUpdate(bot, update, responseJson);
         }
 
         // Update lastReceivedUpdate
         if (updates.length > 0) {
             lastReceivedUpdate = updates[updates.length - 1].updateId();
         }
-    }
-
-    private final EventProcessor[] processorEvents = new EventProcessor[] {
-            new CallbackQueryEventProcessor(),
-            new ChannelPostEventProcessor(),
-            new InlineQueryEventProcessor(),
-            new MessageEventProcessor(),
-            new ChatMemberStatusEventProcessor()
-    };
-
-    @ApiStatus.Internal
-    private void handleNewUpdate(@NotNull Update update, String responseJson) {
-        bot.getEventManager()
-                .call(new UpdateReceivedEvent(bot, update, responseJson))
-                .thenAccept(updateReceivedEvent -> {
-                    final Update receivedUpdate = updateReceivedEvent.update();
-                    for (EventProcessor processorEvent : processorEvents) {
-                        processorEvent.processUpdate(bot, receivedUpdate);
-                    }
-                });
     }
 
     private class UpdateProcessorThread extends Thread {
