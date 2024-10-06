@@ -7,20 +7,18 @@ import io.javalin.http.ContentType;
 import java.io.Closeable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class WebhookServer implements Closeable {
 
     private static WebhookServer instance;
     private WebhookServerConfig config;
-    private final ReentrantLock lock = new ReentrantLock();
 
     private Javalin app;
     private boolean running = false;
 
     private final Map<String, io.javalin.http.Handler> postRoutes = new HashMap<>();
 
-    public void start(WebhookServerConfig config) {
+    public synchronized void start(WebhookServerConfig config) {
         this.config = config;
 
         if (running) {
@@ -49,69 +47,53 @@ public class WebhookServer implements Closeable {
             javalinConfig.http.defaultContentType = ContentType.JSON;
         }).start();
 
-        lock.lock();
-        try {
-            running = true;
-        } finally {
-            lock.unlock();
-        }
+        running = true;
     }
 
-    public void addPostRoute(String path, io.javalin.http.Handler handler) {
-        lock.lock();
-        try {
-            postRoutes.put(path, handler);
-            if (running) {
-                app.post(path, handler);
-            } else {
-                start(config);
-            }
-        } finally {
-            lock.unlock();
+    public synchronized void addPostRoute(String path, io.javalin.http.Handler handler) {
+        postRoutes.put(path, handler);
+        if (running) {
+            app.post(path, handler);
+        } else {
+            start(config);
         }
     }
 
     public void removePostRoute(String path) {
-        if (running) {
-            postRoutes.remove(path);
-            conditionedRestart();
+        if (!running) {
+            return;
         }
+        postRoutes.remove(path);
+        restart();
     }
 
-    public void conditionedRestart() {
-        lock.lock();
-        try {
-            if (running) {
-                close();
+    private synchronized void restart() {
+        if (!running) {
+            return;
+        }
 
-                if (!postRoutes.isEmpty()) {
-                    start(config);
+        close();
 
-                    for (Map.Entry<String, io.javalin.http.Handler> entry : postRoutes.entrySet()) {
-                        app.post(entry.getKey(), entry.getValue());
-                    }
-                }
+        if (!postRoutes.isEmpty()) {
+            start(config);
+
+            for (Map.Entry<String, io.javalin.http.Handler> entry : postRoutes.entrySet()) {
+                app.post(entry.getKey(), entry.getValue());
             }
-        } finally {
-            lock.unlock();
         }
     }
 
     @Override
-    public void close() {
-        lock.lock();
-        try {
-            if (running) {
-                app.stop();
-                app = null;
-                running = false;
-            }
-        } finally {
-            lock.unlock();
+    public synchronized void close() {
+        if (!running) {
+            return;
         }
+        app.stop();
+        app = null;
+        running = false;
     }
 
-    public static WebhookServer getInstance() {
+    public static synchronized WebhookServer getInstance() {
         if (instance == null) {
             instance = new WebhookServer();
         }
