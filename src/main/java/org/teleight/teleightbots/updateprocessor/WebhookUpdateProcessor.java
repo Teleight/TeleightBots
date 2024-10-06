@@ -19,18 +19,21 @@ public final class WebhookUpdateProcessor extends UpdateProcessor {
 
     private final WebhookTelegramBot bot;
     private final WebhookServer webhookServer;
+    private final WebhookBotSettings settings;
 
     public WebhookUpdateProcessor(@NotNull WebhookTelegramBot bot, @NotNull WebhookServer webhookServer) {
         this.bot = bot;
         this.webhookServer = webhookServer;
+
+        WebhookBotSettings webhookBotSettings = bot.getBotSettings();
+        if (webhookBotSettings.path() == null) {
+            webhookBotSettings = webhookBotSettings.toBuilder().path("/" + bot.getBotUsername()).build();
+        }
+        this.settings = webhookBotSettings;
     }
 
     @Override
     public @NotNull CompletableFuture<User> start() {
-        var settings = bot.getBotSettings();
-        if (settings.path() == null) {
-            settings = settings.toBuilder().path("/" + bot.getBotUsername()).build();
-        }
         webhookServer.addPostRoute(settings.path(), ctx -> {
             try {
                 Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
@@ -46,7 +49,7 @@ public final class WebhookUpdateProcessor extends UpdateProcessor {
 
         setWebhook(settings);
 
-        return CompletableFuture.completedFuture(null);
+        return tryAuthenticate(bot, throwable -> webhookServer.removePostRoute(settings.path()));
     }
 
     private void setWebhook(@NotNull WebhookBotSettings settings) {
@@ -68,6 +71,7 @@ public final class WebhookUpdateProcessor extends UpdateProcessor {
                 webhookServer.removePostRoute(settings.path());
                 bot.shutdown();
             }
+            System.out.println("Webhook authenticated: " + success);
         });
     }
 
