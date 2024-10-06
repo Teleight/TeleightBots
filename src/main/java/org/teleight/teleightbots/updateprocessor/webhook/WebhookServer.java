@@ -1,23 +1,44 @@
 package org.teleight.teleightbots.updateprocessor.webhook;
 
 import io.javalin.Javalin;
+import io.javalin.community.ssl.SslPlugin;
 import io.javalin.http.ContentType;
 
-import java.io.IOException;
+import java.io.Closeable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class WebhookServer {
+public class WebhookServer implements Closeable {
 
     private static WebhookServer instance;
+    private WebhookServerConfig config;
     private final ReentrantLock lock = new ReentrantLock();
 
     private Javalin app;
     private boolean running = false;
 
+    private final Map<String, io.javalin.http.Handler> postRoutes = new HashMap<>();
+
     public void start(WebhookServerConfig config) {
-        app = Javalin.create(javalinConfig -> {
+        this.config = config;
+        this.app = Javalin.create(javalinConfig -> {
             javalinConfig.useVirtualThreads = true;
-            // TODO Add SSL support
+
+            /* SSL Configuration */
+            SslPlugin sslPlugin = new SslPlugin(conf -> {
+                if (config.useHttps()) {
+                    conf.keystoreFromPath(config.keystorePath().toString(), config.keystorePassword());
+                    conf.secure = true;
+                    conf.securePort = config.port();
+                    javalinConfig.bundledPlugins.enableSslRedirects();
+                } else {
+                    conf.insecure = true;
+                    conf.insecurePort = config.port();
+                }
+            });
+            javalinConfig.registerPlugin(sslPlugin);
+
             javalinConfig.http.defaultContentType = ContentType.JSON;
         }).start();
 
@@ -29,7 +50,44 @@ public class WebhookServer {
         }
     }
 
-    public void close() throws IOException {
+    public void addPostRoute(String path, io.javalin.http.Handler handler) {
+        lock.lock();
+        try {
+            if (running) {
+                postRoutes.put(path, handler);
+                app.post(path, handler);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void removePostRoute(String path) {
+        if (running) {
+            postRoutes.remove(path);
+            restart();
+        }
+    }
+
+    public void restart() {
+        lock.lock();
+        try {
+            if (running) {
+                close();
+
+                for (Map.Entry<String, io.javalin.http.Handler> entry : postRoutes.entrySet()) {
+                    app.post(entry.getKey(), entry.getValue());
+                }
+
+                start(config);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    public void close() {
         lock.lock();
         try {
             if (running) {
@@ -40,10 +98,6 @@ public class WebhookServer {
         } finally {
             lock.unlock();
         }
-    }
-
-    public Javalin getApp() {
-        return app;
     }
 
     public static WebhookServer getInstance() {
