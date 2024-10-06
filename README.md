@@ -9,8 +9,7 @@ It uses modern Java 21 APIs to provide a flexible and easier development experie
 
 > [!CAUTION]
 >
-> Teleight is still in early development!
-> Some features are not currently implemented (such as Webhooks).
+> Teleight is still in early development! 
 > If you find any problems, feel free to create an issue on GitHub.
 > Contributions are welcome!
 
