@@ -73,6 +73,5 @@ public final class WebhookUpdateProcessor extends UpdateProcessor {
     @Override
     public void close() throws IOException {
         WebhookServer.getInstance().removePostRoute(bot.getBotSettings().path());
-        bot.shutdown();
     }
 }
