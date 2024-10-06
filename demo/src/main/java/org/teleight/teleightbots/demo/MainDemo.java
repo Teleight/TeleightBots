@@ -31,17 +31,6 @@ public class MainDemo {
                 .handler(event -> System.out.println("UpdateReceivedEvent: " + event.bot().getBotUsername() + " -> " + event))
                 .build();
 
-        WebhookBotSettings webhookSettings = WebhookBotSettings.of("https://example.com/webhook");
-        TeleightBots.getBotManager().registerWebhook(botToken, botUsername, webhookSettings, update -> {
-            System.out.println("WebhookMessageHandler: " + update);
-            if (update.message() != null) {
-                return SendMessage.ofBuilder(update.message().chatId(), "<b>Test message</b>")
-                        .parseMode(ParseMode.HTML)
-                        .build();
-            }
-            return null;
-        });
-
         TeleightBots.getBotManager().registerLongPolling(botToken, botUsername, LongPollingBotSettings.DEFAULT, bot -> {
             System.out.println("Bot registered: " + bot.getBotUsername());
 
