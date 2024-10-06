@@ -9,6 +9,8 @@ import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.bot.webhook.WebhookMessageHandler;
+import org.teleight.teleightbots.updateprocessor.webhook.WebhookServer;
+import org.teleight.teleightbots.updateprocessor.webhook.WebhookServerConfig;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -41,10 +43,11 @@ public final class BotManagerImpl implements BotManager {
     }
 
     @Override
-    public void registerWebhook(@NotNull String token, @NotNull String username, WebhookBotSettings webhookSettings, @NotNull WebhookMessageHandler webhookHandler) {
+    public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull WebhookMessageHandler webhookHandler) {
         username = sanitizeUsername(username);
 
         final var bot = new WebhookTelegramBot(token, username, webhookSettings, webhookHandler);
+        WebhookServer.getInstance().start(serverConfig);
 
         registeredBots.add(bot);
     }

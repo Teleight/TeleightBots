@@ -22,6 +22,11 @@ public class WebhookServer implements Closeable {
 
     public void start(WebhookServerConfig config) {
         this.config = config;
+
+        if (running) {
+            return;
+        }
+
         this.app = Javalin.create(javalinConfig -> {
             javalinConfig.useVirtualThreads = true;
 
@@ -53,9 +58,11 @@ public class WebhookServer implements Closeable {
     public void addPostRoute(String path, io.javalin.http.Handler handler) {
         lock.lock();
         try {
+            postRoutes.put(path, handler);
             if (running) {
-                postRoutes.put(path, handler);
                 app.post(path, handler);
+            } else {
+                start(config);
             }
         } finally {
             lock.unlock();
@@ -65,21 +72,23 @@ public class WebhookServer implements Closeable {
     public void removePostRoute(String path) {
         if (running) {
             postRoutes.remove(path);
-            restart();
+            conditionedRestart();
         }
     }
 
-    public void restart() {
+    public void conditionedRestart() {
         lock.lock();
         try {
             if (running) {
                 close();
 
-                for (Map.Entry<String, io.javalin.http.Handler> entry : postRoutes.entrySet()) {
-                    app.post(entry.getKey(), entry.getValue());
-                }
+                if (!postRoutes.isEmpty()) {
+                    start(config);
 
-                start(config);
+                    for (Map.Entry<String, io.javalin.http.Handler> entry : postRoutes.entrySet()) {
+                        app.post(entry.getKey(), entry.getValue());
+                    }
+                }
             }
         } finally {
             lock.unlock();

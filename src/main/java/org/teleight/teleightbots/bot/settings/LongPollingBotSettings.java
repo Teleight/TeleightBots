@@ -24,7 +24,7 @@ import lombok.Builder;
  * @param updatesTimeout               The timeout, in seconds, for fetching updates from the Telegram API.
  *                                     This is the maximum time the server will wait for a response before timing out.
  */
-@Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
+@Builder(builderClassName = "Builder", builderMethodName = "ofBuilder")
 public record LongPollingBotSettings(
         String endpointUrl,
         int updatesLimit,

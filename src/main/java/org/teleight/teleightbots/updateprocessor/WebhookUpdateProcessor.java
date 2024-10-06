@@ -10,6 +10,7 @@ import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.updateprocessor.webhook.WebhookServer;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -68,4 +69,8 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
         });
     }
 
+    @Override
+    public void close() throws IOException {
+        WebhookServer.getInstance().removePostRoute(bot.getBotSettings().path());
+    }
 }
