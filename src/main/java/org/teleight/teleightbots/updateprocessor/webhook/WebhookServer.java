@@ -5,8 +5,8 @@ import io.javalin.community.ssl.SslPlugin;
 import io.javalin.http.ContentType;
 
 import java.io.Closeable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class WebhookServer implements Closeable {
 
@@ -15,7 +15,7 @@ public class WebhookServer implements Closeable {
     private Javalin app;
     private boolean running = false;
 
-    private final Map<String, io.javalin.http.Handler> postRoutes = new HashMap<>();
+    private final Map<String, io.javalin.http.Handler> postRoutes = new ConcurrentHashMap<>();
 
     public WebhookServer(WebhookServerConfig config) {
         this.config = config;
@@ -51,7 +51,7 @@ public class WebhookServer implements Closeable {
         running = true;
     }
 
-    public synchronized void addPostRoute(String path, io.javalin.http.Handler handler) {
+    public void addPostRoute(String path, io.javalin.http.Handler handler) {
         postRoutes.put(path, handler);
         if (running) {
             app.post(path, handler);
