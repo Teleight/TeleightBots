@@ -2,8 +2,8 @@ package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
+import org.teleight.teleightbots.api.methods.DeleteWebhook;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
-import org.teleight.teleightbots.bot.webhook.WebhookMessageHandler;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.commands.CommandManagerImpl;
 import org.teleight.teleightbots.conversation.ConversationManager;
@@ -57,19 +57,17 @@ public non-sealed class WebhookTelegramBot implements TelegramBot {
     private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
 
     // Webhook
-    private final WebhookMessageHandler webhookHandler;
+    private DeleteWebhook deleteWebhook = DeleteWebhook.ofBuilder().build();
 
     public WebhookTelegramBot(@NotNull String token,
                               @NotNull String username,
                               @NotNull WebhookBotSettings botSettings,
-                              @NotNull WebhookServer webhookServer,
-                              @NotNull WebhookMessageHandler webhookHandler) {
+                              @NotNull WebhookServer webhookServer) {
         this.token = token;
         this.username = username;
         this.botSettings = botSettings;
         this.updateProcessor = new WebhookUpdateProcessor(this, webhookServer);
         this.botMethodExecutor = new BotMethodExecutor(this);
-        this.webhookHandler = webhookHandler;
     }
 
     @Override
@@ -132,11 +130,15 @@ public non-sealed class WebhookTelegramBot implements TelegramBot {
         return fileDownloader;
     }
 
+    public void setDeleteWebhook(@NotNull DeleteWebhook deleteWebhook) {
+        this.deleteWebhook = deleteWebhook;
+    }
+
     @Override
     public void shutdown() {
         eventManager.call(new BotShutdownEvent(this));
 
-        execute(this.webhookHandler.createDeleteWebhook());
+        execute(this.deleteWebhook);
 
         try {
             if (botSettings.extensionsEnabled()) {

@@ -4,9 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.bot.LongPollingTelegramBot;
 import org.teleight.teleightbots.bot.TelegramBot;
+import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
-import org.teleight.teleightbots.bot.webhook.WebhookMessageHandler;
 import org.teleight.teleightbots.updateprocessor.webhook.WebhookServerConfig;
 
 import java.io.Closeable;
@@ -47,11 +47,11 @@ public sealed interface BotManager extends Closeable permits BotManagerImpl {
      */
     void registerLongPolling(@NotNull String token, @NotNull String username, @NotNull LongPollingBotSettings longPollingSettings, @NotNull Consumer<LongPollingTelegramBot> completeCallback);
 
-    default void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookMessageHandler webhookHandler) {
-        registerWebhook(token, username, webhookSettings, WebhookServerConfig.DEFAULT, webhookHandler);
+    default void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull Consumer<WebhookTelegramBot> completeCallback) {
+        registerWebhook(token, username, webhookSettings, WebhookServerConfig.DEFAULT, completeCallback);
     }
 
-    void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull WebhookMessageHandler webhookHandler);
+    void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull Consumer<WebhookTelegramBot> completeCallback);
 
     /**
      * Returns an array of all the bots managed by the BotManager.

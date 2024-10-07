@@ -8,7 +8,6 @@ import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
-import org.teleight.teleightbots.bot.webhook.WebhookMessageHandler;
 import org.teleight.teleightbots.updateprocessor.webhook.WebhookServer;
 import org.teleight.teleightbots.updateprocessor.webhook.WebhookServerConfig;
 
@@ -28,17 +27,11 @@ public final class BotManagerImpl implements BotManager {
         username = sanitizeUsername(username);
 
         final var bot = new LongPollingTelegramBot(token, username, longPollingSettings);
-        startProcessor(bot, telegramBot -> {
-            try {
-                completeCallback.accept(telegramBot);
-            } catch (Throwable t) {
-                TeleightBots.getExceptionManager().handleException(t);
-            }
-        });
+        startProcessor(bot, completeCallback);
     }
 
     @Override
-    public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull WebhookMessageHandler handler) {
+    public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull Consumer<WebhookTelegramBot> completeCallback) {
         username = sanitizeUsername(username);
 
         if (webhookServer == null) {
@@ -46,26 +39,20 @@ public final class BotManagerImpl implements BotManager {
         }
         webhookServer.start();
 
-        final var bot = new WebhookTelegramBot(token, username, webhookSettings, webhookServer, handler);
+        final var bot = new WebhookTelegramBot(token, username, webhookSettings, webhookServer);
 
-        startProcessor(bot, telegramBot -> {
-            try {
-                handler.onStartup(telegramBot);
-            } catch (Throwable t) {
-                TeleightBots.getExceptionManager().handleException(t);
-            }
-        });
+        startProcessor(bot, completeCallback);
     }
 
-    private <T extends TelegramBot> void startProcessor(@NotNull T bot, @NotNull Consumer<T> completeCallback) {
-        bot.getUpdateProcessor().start().thenRun(() -> {
-            if (bot.getBotSettings().extensionsEnabled()) {
-                bot.getExtensionManager().start();
+    private <T extends TelegramBot> void startProcessor(@NotNull T telegramBot, @NotNull Consumer<T> completeCallback) {
+        telegramBot.getUpdateProcessor().start().thenRun(() -> {
+            if (telegramBot.getBotSettings().extensionsEnabled()) {
+                telegramBot.getExtensionManager().start();
             }
 
-            registeredBots.add(bot);
+            registeredBots.add(telegramBot);
             try {
-                completeCallback.accept(bot);
+                completeCallback.accept(telegramBot);
             } catch (Throwable t) {
                 TeleightBots.getExceptionManager().handleException(t);
             }
