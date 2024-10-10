@@ -2,7 +2,6 @@ package org.teleight.teleightbots.updateprocessor;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
@@ -13,7 +12,7 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
-public final class LongPollingUpdateProcessor extends UpdateProcessor {
+public final class LongPollingUpdateProcessor implements UpdateProcessor {
 
     private final CountDownLatch processorLatch = new CountDownLatch(1);
 
@@ -34,7 +33,7 @@ public final class LongPollingUpdateProcessor extends UpdateProcessor {
         updateProcessorThread.setName(bot.getBotUsername() + " Update Processor");
         updateProcessorThread.start();
 
-        return tryAuthenticate(bot);
+        return authenticate(bot);
     }
 
     @Override

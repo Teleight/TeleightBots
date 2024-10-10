@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
-public final class WebhookUpdateProcessor extends UpdateProcessor {
+public final class WebhookUpdateProcessor implements UpdateProcessor {
 
     private final WebhookTelegramBot bot;
     private final WebhookServer webhookServer;
@@ -49,7 +49,7 @@ public final class WebhookUpdateProcessor extends UpdateProcessor {
 
         setWebhook(settings);
 
-        return tryAuthenticate(bot, throwable -> webhookServer.removePostRoute(settings.path()));
+        return authenticate(bot, throwable -> webhookServer.removePostRoute(settings.path()));
     }
 
     private void setWebhook(@NotNull WebhookBotSettings settings) {

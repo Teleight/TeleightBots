@@ -20,13 +20,13 @@ import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public sealed abstract class UpdateProcessor implements Closeable permits
+public sealed interface UpdateProcessor extends Closeable permits
         LongPollingUpdateProcessor,
         WebhookUpdateProcessor {
 
-    public abstract @NotNull CompletableFuture<User> start();
+    @NotNull CompletableFuture<User> start();
 
-    private final EventProcessor[] processorEvents = new EventProcessor[] {
+    EventProcessor[] processorEvents = new EventProcessor[] {
             new CallbackQueryEventProcessor(),
             new ChannelPostEventProcessor(),
             new InlineQueryEventProcessor(),
@@ -35,12 +35,12 @@ public sealed abstract class UpdateProcessor implements Closeable permits
     };
 
     @ApiStatus.Internal
-    protected CompletableFuture<User> tryAuthenticate(TelegramBot bot) {
-        return tryAuthenticate(bot, null);
+    default CompletableFuture<User> authenticate(TelegramBot bot) {
+        return authenticate(bot, null);
     }
 
     @ApiStatus.Internal
-    protected CompletableFuture<User> tryAuthenticate(TelegramBot bot, @Nullable Consumer<Throwable> onFail) {
+    default CompletableFuture<User> authenticate(TelegramBot bot, @Nullable Consumer<Throwable> onFail) {
         return bot.execute(new GetMe())
                 .whenComplete((user, throwable) -> {
                     if (throwable != null) {
@@ -59,7 +59,7 @@ public sealed abstract class UpdateProcessor implements Closeable permits
     }
 
     @ApiStatus.Internal
-    protected CompletableFuture<UpdateReceivedEvent> handleNewUpdate(@NotNull TelegramBot bot, @NotNull Update update, @NotNull String responseJson) {
+    default CompletableFuture<UpdateReceivedEvent> handleNewUpdate(@NotNull TelegramBot bot, @NotNull Update update, @NotNull String responseJson) {
         final var eventFuture = bot.getEventManager().call(new UpdateReceivedEvent(bot, update, responseJson));
         eventFuture.thenAccept(event -> {
             final Update receivedUpdate = event.update();
