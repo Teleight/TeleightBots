@@ -50,7 +50,6 @@ public sealed interface BotManager extends Closeable permits BotManagerImpl {
      * will be invoked.
      * </p>
      *
-     * @see LongPollingBotSettings#ofBuilder()
      * @param token               the bot's token, required for authentication with Telegram
      * @param username            the bot's username, as it appears in Telegram
      * @param longPollingSettings the settings to configure the long polling bot

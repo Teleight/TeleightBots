@@ -18,7 +18,6 @@ import org.teleight.teleightbots.api.objects.InputFile;
  *           .secretToken("your_secret_token")
  *           .build();
  * }</pre>
- * </p>
  *
  * @param url                          The full webhook URL used for setting up the bot's webhook with Telegram.
  * @param path                         The URL path on your server where the webhook will be received.
