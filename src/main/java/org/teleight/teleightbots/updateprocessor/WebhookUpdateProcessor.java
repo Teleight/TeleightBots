@@ -37,8 +37,8 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     public @NotNull CompletableFuture<User> start() {
         webhookServer.addPostRoute(settings.path(), ctx -> {
             try {
-                Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
-                Optional<? extends CompletableFuture<?>> response = Optional.of(handleNewUpdate(bot, update, ctx.body()));
+                final Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
+                final Optional<? extends CompletableFuture<?>> response = Optional.of(handleNewUpdate(bot, update, ctx.body()));
                 response.ifPresentOrElse(
                         ctx::json,
                         () -> ctx.status(204) // No content
@@ -66,7 +66,7 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     }
 
     private void setWebhook(@NotNull WebhookBotSettings settings) {
-        final var webHookResult = bot.execute(SetWebhook.ofBuilder(settings.url())
+        final CompletableFuture<Boolean> webHookResult = bot.execute(SetWebhook.ofBuilder(settings.url())
                 .certificate(settings.certificate())
                 .ipAddress(settings.ipAddress())
                 .maxConnections(settings.maxConnections())
