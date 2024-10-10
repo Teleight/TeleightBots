@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.bot;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
@@ -49,67 +50,51 @@ public sealed interface TelegramBot permits LongPollingTelegramBot, WebhookTeleg
     void shutdown();
 
     /**
-     * Returns the bot's token. The token is used to authenticate the bot with the Telegram Bot API.
+     * Retrieves the bot's token used to authenticate with the Telegram Bot API.
      *
-     * @return the bot's token
+     * @return the authentication token of the bot
      */
     @NotNull String getBotToken();
 
     /**
-     * Returns the bot's username. The username is the unique identifier of the bot.
+     * Retrieves the username of the bot.
      *
-     * @return the bot's username
+     * @return the username of the bot
      */
     @NotNull String getBotUsername();
 
     /**
-     * Returns the bot's scheduler.
-     * <p>
-     * The scheduler is responsible for scheduling tasks to be executed at a later time.
-     * It is also responsible for executing tasks in a separate thread.
-     * </p>
+     * Provides access to the bot's task scheduler.
      *
-     * @return the bot's scheduler
+     * @return the task scheduler associated with the bot
      */
     @NotNull Scheduler getScheduler();
 
     /**
-     * Returns the bot's settings.
-     * <p>
-     * The bot's settings contain various configuration options for the bot.
-     * </p>
+     * Retrieves the bot's configuration settings.
      *
-     * @return the bot's settings
+     * @return the settings of the bot
      */
     @NotNull BotSettings getBotSettings();
 
     /**
-     * Returns the bot's event manager.
-     * <p>
-     * The event manager is responsible for managing events and event listeners.
-     * </p>
+     * Provides access to the bot's event manager.
      *
-     * @return the bot's event manager
+     * @return the event manager associated with the bot
      */
     @NotNull EventManager getEventManager();
 
     /**
-     * Returns the bot's menu manager.
-     * <p>
-     * The menu manager is responsible for managing menus and menu items.
-     * </p>
+     * Provides access to the bot's menu manager.
      *
-     * @return the bot's menu manager
+     * @return the menu manager associated with the bot
      */
     @NotNull MenuManager getMenuManager();
 
     /**
-     * Creates a new menu with the given name and builder.
-     * <p>
-     * The builder is used to create the menu items and sub-menus of the menu.
-     * </p>
+     * Creates a new menu using the provided builder.
      *
-     * @param builder the builder used to create the menu items and submenus
+     * @param builder the builder to construct the menu
      * @return the created menu
      */
     default @NotNull Menu createMenu(@NotNull Menu.Builder builder) {
@@ -117,13 +102,10 @@ public sealed interface TelegramBot permits LongPollingTelegramBot, WebhookTeleg
     }
 
     /**
-     * Creates a new menu with the given name and builder.
-     * <p>
-     * The builder is used to create the menu items and sub-menus of the menu.
-     * </p>
+     * Creates a new menu with a specified name using the provided builder.
      *
-     * @param name    the name of the menu
-     * @param builder the builder used to create the menu items and submenus
+     * @param name    the name of the menu (can be null)
+     * @param builder the builder used to create the menu
      * @return the created menu
      */
     default @NotNull Menu createMenu(@Nullable String name, @NotNull Menu.Builder builder){
@@ -141,47 +123,40 @@ public sealed interface TelegramBot permits LongPollingTelegramBot, WebhookTeleg
     }
 
     /**
-     * Returns the bot's command manager.
-     * <p>
-     * The command manager is responsible for managing commands and command handlers.
-     * </p>
+     * Provides access to the bot's command manager.
      *
-     * @return the bot's command manager
+     * @return the command manager associated with the bot
      */
     @NotNull CommandManager getCommandManager();
 
     /**
-     * Returns the bot's extension manager.
-     * <p>
-     * The extension manager is responsible for managing extensions and extension handlers.
-     * </p>
+     * Provides access to the bot's extension manager.
      *
-     * @return the bot's extension manager
+     * @return the extension manager associated with the bot
      */
     @NotNull ExtensionManager getExtensionManager();
 
     /**
-     * Returns the bot's file downloader.
-     * <p>
-     * The file downloader is responsible for downloading files from the Telegram Bot API.
-     * </p>
+     * Provides access to the bot's file downloader.
      *
-     * @return the bot's file downloader
+     * @return the file downloader associated with the bot
      */
     @NotNull FileDownloader getFileDownloader();
 
     /**
-     * Returns the bot's conversation manager.
+     * Provides access to the bot's conversation manager.
      * <p>
-     * The conversation manager is responsible for managing conversations and conversation handlers.
+     * The conversation manager handles interactions with users and conversation flows.
      * </p>
      *
-     * @return the bot's conversation manager
+     * @return the conversation manager associated with the bot
      */
     @NotNull ConversationManager getConversationManager();
 
+    @ApiStatus.Internal
     BotMethodExecutor getBotMethodExecutor();
 
+    @ApiStatus.Internal
     UpdateProcessor getUpdateProcessor();
 
     /**
@@ -191,7 +166,7 @@ public sealed interface TelegramBot permits LongPollingTelegramBot, WebhookTeleg
      * @param <R>    the type of the expected response
      * @return a future representing the result of the request
      */
-    default <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method){
+    default <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
         final var responseFuture = getBotMethodExecutor().executeMethod(method);
         return responseFuture.thenCompose(responseJson -> {
             try {

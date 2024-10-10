@@ -3,26 +3,27 @@ package org.teleight.teleightbots.bot.settings;
 import lombok.Builder;
 
 /**
- * Represents the settings for configuring a Telegram bot.
- * <p>
- * The builder method returns a new {@link Builder} preconfigured with default settings.
+ * Represents the settings for configuring a long polling Telegram bot.
  *
  * <p>
  * Example usage:
  * <pre>{@code
- * BotSettings settings = BotSettings.ofBuilder()
- *                                   .endpointUrl("https://custom.api.url/bot")
- *                                   .updatesLimit(100)
- *                                   .updatesTimeout(300)
- *                                   .silentlyThrowMethodExecution(true)
- *                                   .extensionsEnabled(true)
- *                                   .build();
+ * LongPollingBotSettings settings = LongPollingBotSettings.ofBuilder()
+ *         .endpointUrl("https://custom.api.url/bot")
+ *         .updatesLimit(100)
+ *         .updatesTimeout(300)
+ *         .silentlyThrowMethodExecution(true)
+ *         .extensionsEnabled(true)
+ *         .build();
  * }</pre>
+ * </p>
  *
  * @param endpointUrl                  The endpoint URL to be used for connecting with the Telegram Bot API.
  * @param updatesLimit                 The maximum number of updates that the bot will fetch in a single API call.
  * @param updatesTimeout               The timeout, in seconds, for fetching updates from the Telegram API.
  *                                     This is the maximum time the server will wait for a response before timing out.
+ * @param silentlyThrowMethodExecution Whether to silently throw method execution errors.
+ * @param extensionsEnabled            Whether bot extensions are enabled.
  */
 @Builder(builderClassName = "Builder", builderMethodName = "ofBuilder")
 public record LongPollingBotSettings(
