@@ -39,6 +39,7 @@ dependencies {
     api(libs.bundles.jackson)
     api(libs.bundles.checker)
     api(libs.jetbrains.annotations)
+    api(libs.bundles.javalin)
 
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)

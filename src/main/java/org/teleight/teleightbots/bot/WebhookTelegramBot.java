@@ -1,10 +1,9 @@
 package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.bot.settings.BotSettings;
+import org.teleight.teleightbots.api.methods.DeleteWebhook;
+import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.commands.CommandManagerImpl;
 import org.teleight.teleightbots.conversation.ConversationManager;
@@ -12,33 +11,29 @@ import org.teleight.teleightbots.conversation.ConversationManagerImpl;
 import org.teleight.teleightbots.event.EventManager;
 import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.bot.BotShutdownEvent;
-import org.teleight.teleightbots.event.bot.MethodSendEvent;
-import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.extensions.ExtensionManager;
 import org.teleight.teleightbots.extensions.ExtensionManagerImpl;
 import org.teleight.teleightbots.files.FileDownloader;
 import org.teleight.teleightbots.files.FileDownloaderImpl;
-import org.teleight.teleightbots.menu.Menu;
-import org.teleight.teleightbots.menu.MenuBuilder;
-import org.teleight.teleightbots.menu.MenuImpl;
 import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.menu.MenuManagerImpl;
 import org.teleight.teleightbots.scheduler.Scheduler;
+import org.teleight.teleightbots.updateprocessor.BotMethodExecutor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
+import org.teleight.teleightbots.updateprocessor.WebhookUpdateProcessor;
+import org.teleight.teleightbots.webhook.WebhookServer;
 
-import java.io.Serializable;
-import java.util.concurrent.CompletableFuture;
-
-public final class TelegramBotImpl implements TelegramBot {
+public non-sealed class WebhookTelegramBot implements TelegramBot {
 
     private final String token;
     private final String username;
 
     //Settings
-    private final BotSettings botSettings;
+    private final WebhookBotSettings botSettings;
 
     //Updates
     private final UpdateProcessor updateProcessor;
+    private final BotMethodExecutor botMethodExecutor;
 
     //Scheduler
     private final Scheduler scheduler = Scheduler.newScheduler();
@@ -61,11 +56,18 @@ public final class TelegramBotImpl implements TelegramBot {
     //FileDownloader
     private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
 
-    public TelegramBotImpl(@NotNull String token, @NotNull String username, @NotNull UpdateProcessor updateProcessor, @NotNull BotSettings botSettings) {
+    // Webhook
+    private DeleteWebhook deleteWebhook = DeleteWebhook.ofBuilder().build();
+
+    public WebhookTelegramBot(@NotNull String token,
+                              @NotNull String username,
+                              @NotNull WebhookBotSettings botSettings,
+                              @NotNull WebhookServer webhookServer) {
         this.token = token;
         this.username = username;
         this.botSettings = botSettings;
-        this.updateProcessor = updateProcessor;
+        this.updateProcessor = new WebhookUpdateProcessor(this, webhookServer);
+        this.botMethodExecutor = new BotMethodExecutor(this);
     }
 
     @Override
@@ -84,12 +86,7 @@ public final class TelegramBotImpl implements TelegramBot {
     }
 
     @Override
-    public @NotNull UpdateProcessor getUpdateProcessor() {
-        return updateProcessor;
-    }
-
-    @Override
-    public @NotNull BotSettings getBotSettings() {
+    public @NotNull WebhookBotSettings getBotSettings() {
         return botSettings;
     }
 
@@ -104,21 +101,6 @@ public final class TelegramBotImpl implements TelegramBot {
     }
 
     @Override
-    public @NotNull Menu createMenu(@Nullable String name, Menu.@NotNull Builder builder) {
-        final MenuBuilder.MenuBuilderImpl menuBuilder = new MenuBuilder.MenuBuilderImpl();
-        final Menu rootMenu = menuBuilder.createMenu(name);
-        builder.create(menuBuilder, rootMenu);
-
-        for (final MenuImpl subMenu : menuBuilder.getAllMenus()) {
-            subMenu.createKeyboard();
-
-            menuManager.registerMenu(subMenu);
-        }
-
-        return rootMenu;
-    }
-
-    @Override
     public @NotNull CommandManager getCommandManager() {
         return commandManager;
     }
@@ -126,6 +108,16 @@ public final class TelegramBotImpl implements TelegramBot {
     @Override
     public @NotNull ConversationManager getConversationManager() {
         return conversationManager;
+    }
+
+    @Override
+    public BotMethodExecutor getBotMethodExecutor() {
+        return botMethodExecutor;
+    }
+
+    @Override
+    public UpdateProcessor getUpdateProcessor() {
+        return updateProcessor;
     }
 
     @Override
@@ -138,9 +130,15 @@ public final class TelegramBotImpl implements TelegramBot {
         return fileDownloader;
     }
 
+    public void setDeleteWebhook(@NotNull DeleteWebhook deleteWebhook) {
+        this.deleteWebhook = deleteWebhook;
+    }
+
     @Override
     public void shutdown() {
         eventManager.call(new BotShutdownEvent(this));
+
+        execute(this.deleteWebhook);
 
         try {
             if (botSettings.extensionsEnabled()) {
@@ -152,23 +150,6 @@ public final class TelegramBotImpl implements TelegramBot {
         } catch (Exception e) {
             TeleightBots.getExceptionManager().handleException(e);
         }
-    }
-
-    @Override
-    public <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
-        final CompletableFuture<String> responseFuture = updateProcessor.executeMethod(method);
-        return responseFuture.thenCompose(responseJson -> {
-            try {
-                final R result = method.deserializeResponse(responseJson);
-                eventManager.call(new MethodSendEvent<>(TelegramBotImpl.this, method, result));
-                return CompletableFuture.completedFuture(result);
-            } catch (TelegramRequestException e) {
-                if (!botSettings.silentlyThrowMethodExecution()) {
-                    TeleightBots.getExceptionManager().handleException(e);
-                }
-                return CompletableFuture.failedFuture(e);
-            }
-        });
     }
 
 }
