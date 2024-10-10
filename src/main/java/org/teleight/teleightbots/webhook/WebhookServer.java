@@ -1,4 +1,4 @@
-package org.teleight.teleightbots.updateprocessor.webhook;
+package org.teleight.teleightbots.webhook;
 
 import io.javalin.Javalin;
 import io.javalin.community.ssl.SslPlugin;

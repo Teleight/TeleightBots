@@ -7,7 +7,7 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
-import org.teleight.teleightbots.updateprocessor.webhook.WebhookServer;
+import org.teleight.teleightbots.webhook.WebhookServer;
 
 import java.io.IOException;
 import java.util.Optional;

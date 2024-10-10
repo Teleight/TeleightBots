@@ -7,7 +7,7 @@ import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
-import org.teleight.teleightbots.updateprocessor.webhook.WebhookServerConfig;
+import org.teleight.teleightbots.webhook.WebhookServerConfig;
 
 import java.io.Closeable;
 import java.util.Collection;

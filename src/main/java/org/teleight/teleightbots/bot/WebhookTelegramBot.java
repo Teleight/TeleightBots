@@ -21,7 +21,7 @@ import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.BotMethodExecutor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 import org.teleight.teleightbots.updateprocessor.WebhookUpdateProcessor;
-import org.teleight.teleightbots.updateprocessor.webhook.WebhookServer;
+import org.teleight.teleightbots.webhook.WebhookServer;
 
 public non-sealed class WebhookTelegramBot implements TelegramBot {
 
