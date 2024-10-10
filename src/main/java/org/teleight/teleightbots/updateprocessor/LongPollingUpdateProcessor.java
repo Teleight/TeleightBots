@@ -2,6 +2,7 @@ package org.teleight.teleightbots.updateprocessor;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
+import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.GetUpdates;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
@@ -33,7 +34,19 @@ public final class LongPollingUpdateProcessor implements UpdateProcessor {
         updateProcessorThread.setName(bot.getBotUsername() + " Update Processor");
         updateProcessorThread.start();
 
-        return authenticate(bot);
+        return bot.execute(new GetMe())
+                .whenComplete((user, throwable) -> {
+                    if (throwable != null) {
+                        System.out.println("Error while authenticating the bot: " + bot.getBotUsername());
+                        if (bot.getBotSettings().silentlyThrowMethodExecution()) {
+                            TeleightBots.getExceptionManager().handleException(throwable);
+                        }
+                        bot.shutdown();
+                        return;
+                    }
+                    System.out.println("Bot authenticated: " + user.username());
+                    processorLatch.countDown();
+                });
     }
 
     @Override

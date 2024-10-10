@@ -41,7 +41,6 @@ public record WebhookBotSettings(
         String[] allowedUpdates,
         boolean dropPendingUpdates,
         String secretToken,
-
         boolean silentlyThrowMethodExecution,
         boolean extensionsEnabled
 ) implements BotSettings {

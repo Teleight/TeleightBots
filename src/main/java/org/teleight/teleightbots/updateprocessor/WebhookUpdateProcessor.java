@@ -2,6 +2,7 @@ package org.teleight.teleightbots.updateprocessor;
 
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
+import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.SetWebhook;
 import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
@@ -49,7 +50,19 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
 
         setWebhook(settings);
 
-        return authenticate(bot, throwable -> webhookServer.removePostRoute(settings.path()));
+        return bot.execute(new GetMe())
+                .whenComplete((user, throwable) -> {
+                    if (throwable != null) {
+                        System.out.println("Error while authenticating the bot: " + bot.getBotUsername());
+                        if (bot.getBotSettings().silentlyThrowMethodExecution()) {
+                            TeleightBots.getExceptionManager().handleException(throwable);
+                        }
+                        webhookServer.removePostRoute(settings.path());
+                        bot.shutdown();
+                        return;
+                    }
+                    System.out.println("Bot authenticated: " + user.username());
+                });
     }
 
     private void setWebhook(@NotNull WebhookBotSettings settings) {
