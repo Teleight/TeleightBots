@@ -85,7 +85,7 @@ public record SendPhoto(
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
         parameters.put("caption", caption);
-        parameters.put("parse_mode", parseMode);
+        parameters.put("parse_mode", parseMode != null ? parseMode.getFieldValue() : null);
         parameters.put("caption_entities", captionEntities);
         parameters.put("show_caption_above_media", showCaptionAboveMedia);
         parameters.put("photo", photo);

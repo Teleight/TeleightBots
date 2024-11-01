@@ -5,6 +5,8 @@ jetbrains-annotations = "22.0.0"
 lombok = "1.18.34"
 shadow = "8.1.1"
 junit-jupiter = "5.9.3"
+javalin = "6.3.0"
+javalin-ssl = "6.3.0"
 
 [libraries]
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
@@ -15,11 +17,14 @@ jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "j
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+javalin = { group = "io.javalin", name = "javalin", version.ref = "javalin"}
+javalin-ssl = { group = "io.javalin.community.ssl", name = "ssl-plugin", version.ref = "javalin-ssl"}
 
 [bundles]
 jackson = ["jackson-databind", "jackson-annotations"]
 checker = ["checker-qual", "checker"]
 junit = ["junit-api", "junit-engine"]
+javalin = ["javalin", "javalin-ssl"]
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }

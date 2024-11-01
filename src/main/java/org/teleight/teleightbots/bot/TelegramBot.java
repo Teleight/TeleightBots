@@ -1,7 +1,9 @@
 package org.teleight.teleightbots.bot;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.methods.GetChatMember;
 import org.teleight.teleightbots.api.objects.Chat;
@@ -11,11 +13,16 @@ import org.teleight.teleightbots.bot.settings.BotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
 import org.teleight.teleightbots.conversation.ConversationManager;
 import org.teleight.teleightbots.event.EventManager;
+import org.teleight.teleightbots.event.bot.MethodSendEvent;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import org.teleight.teleightbots.extensions.ExtensionManager;
 import org.teleight.teleightbots.files.FileDownloader;
 import org.teleight.teleightbots.menu.Menu;
+import org.teleight.teleightbots.menu.MenuBuilder;
+import org.teleight.teleightbots.menu.MenuImpl;
 import org.teleight.teleightbots.menu.MenuManager;
 import org.teleight.teleightbots.scheduler.Scheduler;
+import org.teleight.teleightbots.updateprocessor.BotMethodExecutor;
 import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
 
 import java.io.Serializable;
@@ -26,95 +33,58 @@ import java.util.concurrent.CompletableFuture;
  * <p>
  * This interface provides methods to interact with the bot and its components.
  * It also provides methods to send requests to the Telegram Bot API.
- * <br>
- * This interface is by default implemented by the {@link TelegramBotImpl} class.
- * </p>
  *
- * @see TelegramBotImpl
+ * @see LongPollingTelegramBot
+ * @see WebhookTelegramBot
  */
-public sealed interface TelegramBot permits TelegramBotImpl {
+public sealed interface TelegramBot permits WebhookTelegramBot, LongPollingTelegramBot {
 
     /**
-     * Closes the bot from the Telegram Bot API.
-     * <p>
-     * This method will also close all attached processors to the specified bot instance
-     * </p>
-     */
-    void shutdown();
-
-    /**
-     * Returns the bot's token. The token is used to authenticate the bot with the Telegram Bot API.
+     * Retrieves the bot's token used to authenticate with the Telegram Bot API.
      *
-     * @return the bot's token
+     * @return the authentication token of the bot
      */
     @NotNull String getBotToken();
 
     /**
-     * Returns the bot's username. The username is the unique identifier of the bot.
+     * Retrieves the username of the bot.
      *
-     * @return the bot's username
+     * @return the username of the bot
      */
     @NotNull String getBotUsername();
 
     /**
-     * Returns the bot's scheduler.
-     * <p>
-     * The scheduler is responsible for scheduling tasks to be executed at a later time.
-     * It is also responsible for executing tasks in a separate thread.
-     * </p>
+     * Provides access to the bot's task scheduler.
      *
-     * @return the bot's scheduler
+     * @return the task scheduler associated with the bot
      */
     @NotNull Scheduler getScheduler();
 
     /**
-     * Returns the bot's update processor.
-     * <p>
-     * The update processor is responsible for processing incoming updates from the Telegram Bot API.
-     * It is also responsible for sending requests to the Telegram Bot API.
-     * </p>
+     * Retrieves the bot's configuration settings.
      *
-     * @return the bot's update processor
-     */
-    @NotNull UpdateProcessor getUpdateProcessor();
-
-    /**
-     * Returns the bot's settings.
-     * <p>
-     * The bot's settings contain various configuration options for the bot.
-     * </p>
-     *
-     * @return the bot's settings
+     * @return the settings of the bot
      */
     @NotNull BotSettings getBotSettings();
 
     /**
-     * Returns the bot's event manager.
-     * <p>
-     * The event manager is responsible for managing events and event listeners.
-     * </p>
+     * Provides access to the bot's event manager.
      *
-     * @return the bot's event manager
+     * @return the event manager associated with the bot
      */
     @NotNull EventManager getEventManager();
 
     /**
-     * Returns the bot's menu manager.
-     * <p>
-     * The menu manager is responsible for managing menus and menu items.
-     * </p>
+     * Provides access to the bot's menu manager.
      *
-     * @return the bot's menu manager
+     * @return the menu manager associated with the bot
      */
     @NotNull MenuManager getMenuManager();
 
     /**
-     * Creates a new menu with the given name and builder.
-     * <p>
-     * The builder is used to create the menu items and sub-menus of the menu.
-     * </p>
+     * Creates a new menu using the provided builder.
      *
-     * @param builder the builder used to create the menu items and submenus
+     * @param builder the builder to construct the menu
      * @return the created menu
      */
     default @NotNull Menu createMenu(@NotNull Menu.Builder builder) {
@@ -122,54 +92,54 @@ public sealed interface TelegramBot permits TelegramBotImpl {
     }
 
     /**
-     * Creates a new menu with the given name and builder.
-     * <p>
-     * The builder is used to create the menu items and sub-menus of the menu.
-     * </p>
+     * Creates a new menu with a specified name using the provided builder.
      *
-     * @param name    the name of the menu
-     * @param builder the builder used to create the menu items and submenus
+     * @param name    the name of the menu (can be null)
+     * @param builder the builder used to create the menu
      * @return the created menu
      */
-    @NotNull Menu createMenu(@Nullable String name, @NotNull Menu.Builder builder);
+    default @NotNull Menu createMenu(@Nullable String name, @NotNull Menu.Builder builder){
+        final MenuBuilder.MenuBuilderImpl menuBuilder = new MenuBuilder.MenuBuilderImpl();
+        final Menu rootMenu = menuBuilder.createMenu(name);
+        builder.create(menuBuilder, rootMenu);
+
+        for (final MenuImpl subMenu : menuBuilder.getAllMenus()) {
+            subMenu.createKeyboard();
+
+            getMenuManager().registerMenu(subMenu);
+        }
+
+        return rootMenu;
+    }
 
     /**
-     * Returns the bot's command manager.
-     * <p>
-     * The command manager is responsible for managing commands and command handlers.
-     * </p>
+     * Provides access to the bot's command manager.
      *
-     * @return the bot's command manager
+     * @return the command manager associated with the bot
      */
     @NotNull CommandManager getCommandManager();
 
     /**
-     * Returns the bot's extension manager.
-     * <p>
-     * The extension manager is responsible for managing extensions and extension handlers.
-     * </p>
+     * Provides access to the bot's extension manager.
      *
-     * @return the bot's extension manager
+     * @return the extension manager associated with the bot
      */
     @NotNull ExtensionManager getExtensionManager();
 
     /**
-     * Returns the bot's file downloader.
-     * <p>
-     * The file downloader is responsible for downloading files from the Telegram Bot API.
-     * </p>
+     * Provides access to the bot's file downloader.
      *
-     * @return the bot's file downloader
+     * @return the file downloader associated with the bot
      */
     @NotNull FileDownloader getFileDownloader();
 
     /**
-     * Returns the bot's conversation manager.
+     * Provides access to the bot's conversation manager.
      * <p>
-     * The conversation manager is responsible for managing conversations and conversation handlers.
+     * The conversation manager handles interactions with users and conversation flows.
      * </p>
      *
-     * @return the bot's conversation manager
+     * @return the conversation manager associated with the bot
      */
     @NotNull ConversationManager getConversationManager();
 
@@ -180,7 +150,21 @@ public sealed interface TelegramBot permits TelegramBotImpl {
      * @param <R>    the type of the expected response
      * @return a future representing the result of the request
      */
-    <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method);
+    default <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
+        final CompletableFuture<String> responseFuture = getBotMethodExecutor().executeMethod(method);
+        return responseFuture.thenCompose(responseJson -> {
+            try {
+                final R result = method.deserializeResponse(responseJson);
+                getEventManager().call(new MethodSendEvent<>(this, method, result));
+                return CompletableFuture.completedFuture(result);
+            } catch (TelegramRequestException e) {
+                if (!getBotSettings().silentlyThrowMethodExecution()) {
+                    TeleightBots.getExceptionManager().handleException(e);
+                }
+                return CompletableFuture.failedFuture(e);
+            }
+        });
+    }
 
     /**
      * Returns the chat member with the given user id in the given chat.
@@ -226,5 +210,14 @@ public sealed interface TelegramBot permits TelegramBotImpl {
         final GetChatMember chatMember = GetChatMember.ofBuilder(chatId, userId).build();
         return execute(chatMember);
     }
+
+    @ApiStatus.Internal
+    BotMethodExecutor getBotMethodExecutor();
+
+    @ApiStatus.Internal
+    UpdateProcessor getUpdateProcessor();
+
+    @ApiStatus.Internal
+    void shutdown();
 
 }
