@@ -54,7 +54,7 @@ public final class BotMethodExecutor {
 
         final CompletableFuture<String> requestFuture = new CompletableFuture<>();
 
-        Thread.ofVirtual().name(bot.getBotUsername() + " LongPolling Request Dispatcher").start(() -> {
+        Thread.ofVirtual().name(bot.getBotUsername() + " Request Dispatcher").start(() -> {
             try {
                 final HttpRequest request;
                 try {
