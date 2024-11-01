@@ -33,21 +33,11 @@ import java.util.concurrent.CompletableFuture;
  * <p>
  * This interface provides methods to interact with the bot and its components.
  * It also provides methods to send requests to the Telegram Bot API.
- * <br>
- * This interface is by default implemented by the {@link LongPollingTelegramBot} class.
- * </p>
  *
  * @see LongPollingTelegramBot
+ * @see WebhookTelegramBot
  */
-public sealed interface TelegramBot permits LongPollingTelegramBot, WebhookTelegramBot {
-
-    /**
-     * Closes the bot from the Telegram Bot API.
-     * <p>
-     * This method will also close all attached processors to the specified bot instance
-     * </p>
-     */
-    void shutdown();
+public sealed interface TelegramBot permits WebhookTelegramBot, LongPollingTelegramBot {
 
     /**
      * Retrieves the bot's token used to authenticate with the Telegram Bot API.
@@ -153,12 +143,6 @@ public sealed interface TelegramBot permits LongPollingTelegramBot, WebhookTeleg
      */
     @NotNull ConversationManager getConversationManager();
 
-    @ApiStatus.Internal
-    BotMethodExecutor getBotMethodExecutor();
-
-    @ApiStatus.Internal
-    UpdateProcessor getUpdateProcessor();
-
     /**
      * Sends a request to the Telegram Bot API using the given method.
      *
@@ -226,5 +210,14 @@ public sealed interface TelegramBot permits LongPollingTelegramBot, WebhookTeleg
         final GetChatMember chatMember = GetChatMember.ofBuilder(chatId, userId).build();
         return execute(chatMember);
     }
+
+    @ApiStatus.Internal
+    BotMethodExecutor getBotMethodExecutor();
+
+    @ApiStatus.Internal
+    UpdateProcessor getUpdateProcessor();
+
+    @ApiStatus.Internal
+    void shutdown();
 
 }

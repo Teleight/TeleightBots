@@ -1,100 +1,44 @@
 package org.teleight.teleightbots.webhook;
 
-import io.javalin.Javalin;
-import io.javalin.community.ssl.SslPlugin;
-import io.javalin.config.JavalinConfig;
-import io.javalin.http.ContentType;
 import io.javalin.http.Handler;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Closeable;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class WebhookServer implements Closeable {
+/**
+ * Represents a webhook server.
+ * <p>
+ * The Webhook server is used to receive incoming updates from Telegram.
+ */
+public sealed interface WebhookServer extends Closeable permits WebhookServerImpl {
 
-    private final WebhookServerConfig config;
-
-    private Javalin app;
-
-    private final AtomicBoolean running = new AtomicBoolean(false);
-    private final Map<String, Handler> postRoutes = new ConcurrentHashMap<>();
-
-    public WebhookServer(WebhookServerConfig config) {
-        this.config = config;
+    static @NotNull WebhookServer create(@NotNull WebhookServerConfig config) {
+        return new WebhookServerImpl(config);
     }
 
-    public void start() {
-        if (running.getAndSet(true)) {
-            return;
-        }
+    /**
+     * Starts the webserver.
+     */
+    void start();
 
-        this.app = Javalin.create(javalinConfig -> {
-            javalinConfig.useVirtualThreads = true;
-            configureSsl(javalinConfig);
-            javalinConfig.http.defaultContentType = ContentType.JSON;
-        }).start(config.host(), config.port());
+    /**
+     * Adds a POST route to the server.
+     *
+     * @param path The path of the route. Can't be null.
+     * @param handler The handler of the route. Can't be null.
+     */
+    void addPostRoute(@NotNull String path, @NotNull Handler handler);
 
-        postRoutes.forEach(app::post);
-    }
+    /**
+     * Removes a POST route from the server.
+     *
+     * @param path The path of the route. Can't be null.
+     */
+    void removePostRoute(@NotNull String path);
 
-    private void configureSsl(JavalinConfig javalinConfig) {
-        SslPlugin sslPlugin = new SslPlugin(conf -> {
-            if (config.useHttps()) {
-
-                final var keystorePath = config.keystorePath();
-                if (keystorePath == null) {
-                    throw new IllegalArgumentException("Keystore path is required for HTTPS");
-                }
-
-                final var keystorePassword = config.keystorePassword();
-                if (keystorePassword == null) {
-                    throw new IllegalArgumentException("Keystore password is required for HTTPS");
-                }
-
-                conf.keystoreFromPath(config.keystorePath().toString(), config.keystorePassword());
-                conf.secure = true;
-                conf.insecure = false;
-                javalinConfig.bundledPlugins.enableSslRedirects();
-            } else {
-                conf.insecure = true;
-                conf.secure = false;
-            }
-        });
-        javalinConfig.registerPlugin(sslPlugin);
-    }
-
-    public void addPostRoute(String path, Handler handler) {
-        postRoutes.put(path, handler);
-        if (running.get()) {
-            app.post(path, handler);
-        } else {
-            start();
-        }
-    }
-
-    public void removePostRoute(String path) {
-        if (!running.get()) {
-            return;
-        }
-        postRoutes.remove(path);
-        restart();
-    }
-
-    private synchronized void restart() {
-        if (!running.get()) {
-            return;
-        }
-        close();
-    }
-
-    @Override
-    public void close() {
-        if (!running.getAndSet(false)) {
-            return;
-        }
-        app.stop();
-        app = null;
-    }
+    /**
+     * Restarts the server.
+     */
+    void restart();
 
 }

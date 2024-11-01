@@ -1,155 +1,62 @@
 package org.teleight.teleightbots.bot;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.DeleteWebhook;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
-import org.teleight.teleightbots.commands.CommandManager;
-import org.teleight.teleightbots.commands.CommandManagerImpl;
-import org.teleight.teleightbots.conversation.ConversationManager;
-import org.teleight.teleightbots.conversation.ConversationManagerImpl;
-import org.teleight.teleightbots.event.EventManager;
-import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.bot.BotShutdownEvent;
-import org.teleight.teleightbots.extensions.ExtensionManager;
-import org.teleight.teleightbots.extensions.ExtensionManagerImpl;
-import org.teleight.teleightbots.files.FileDownloader;
-import org.teleight.teleightbots.files.FileDownloaderImpl;
-import org.teleight.teleightbots.menu.MenuManager;
-import org.teleight.teleightbots.menu.MenuManagerImpl;
-import org.teleight.teleightbots.scheduler.Scheduler;
-import org.teleight.teleightbots.updateprocessor.BotMethodExecutor;
-import org.teleight.teleightbots.updateprocessor.UpdateProcessor;
-import org.teleight.teleightbots.updateprocessor.WebhookUpdateProcessor;
 import org.teleight.teleightbots.webhook.WebhookServer;
 
-public non-sealed class WebhookTelegramBot implements TelegramBot {
+/**
+ * Represents a Telegram bot that uses webhooks to receive updates.
+ */
+public sealed interface WebhookTelegramBot extends TelegramBot permits WebhookTelegramBotImpl {
 
-    private final String token;
-    private final String username;
-
-    //Settings
-    private final WebhookBotSettings botSettings;
-
-    //Updates
-    private final UpdateProcessor updateProcessor;
-    private final BotMethodExecutor botMethodExecutor;
-
-    //Scheduler
-    private final Scheduler scheduler = Scheduler.newScheduler();
-
-    //Events
-    private final EventManager eventManager = new EventManagerImpl();
-
-    //Menus
-    private final MenuManager menuManager = new MenuManagerImpl();
-
-    //Commands
-    private final CommandManager commandManager = new CommandManagerImpl(this);
-
-    //Conversations
-    private final ConversationManager conversationManager = new ConversationManagerImpl(this);
-
-    //Extensions
-    private final ExtensionManager extensionManager = new ExtensionManagerImpl(this);
-
-    //FileDownloader
-    private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
-
-    // Webhook
-    private DeleteWebhook deleteWebhook = DeleteWebhook.ofBuilder().build();
-
-    public WebhookTelegramBot(@NotNull String token,
-                              @NotNull String username,
-                              @NotNull WebhookBotSettings botSettings,
-                              @NotNull WebhookServer webhookServer) {
-        this.token = token;
-        this.username = username;
-        this.botSettings = botSettings;
-        this.updateProcessor = new WebhookUpdateProcessor(this, webhookServer);
-        this.botMethodExecutor = new BotMethodExecutor(this);
+    @ApiStatus.Internal
+    static @NotNull WebhookTelegramBot create(@NotNull String token,
+                                                  @NotNull String username,
+                                                  @NotNull WebhookBotSettings webhookSettings,
+                                                  @NotNull WebhookServer webhookServer) {
+        return new WebhookTelegramBotImpl(token, username, webhookSettings, webhookServer);
     }
 
-    @Override
-    public @NotNull String getBotToken() {
-        return token;
-    }
+    /**
+     * Gets the webhook bot settings.
+     *
+     * @return The webhook bot settings. Can't be null.
+     */
+    @NotNull WebhookBotSettings getBotSettings();
 
-    @Override
-    public @NotNull String getBotUsername() {
-        return username;
-    }
+    /**
+     * Gets the delete webhook for the bot.
+     *
+     * @return The delete webhook for the bot. Can't be null
+     */
+    @NotNull DeleteWebhook getDeleteWebhook();
 
-    @Override
-    public @NotNull Scheduler getScheduler() {
-        return scheduler;
-    }
+    /**
+     * Sets the webhook for the bot.
+     *
+     * @param deleteWebhook The webhook to set. Can't be null.
+     */
+    void setDeleteWebhook(@NotNull DeleteWebhook deleteWebhook);
 
-    @Override
-    public @NotNull WebhookBotSettings getBotSettings() {
-        return botSettings;
-    }
+    @ApiStatus.Internal
+    default void shutdown() {
+        getEventManager().call(new BotShutdownEvent(this));
 
-    @Override
-    public @NotNull EventManager getEventManager() {
-        return eventManager;
-    }
-
-    @Override
-    public @NotNull MenuManager getMenuManager() {
-        return menuManager;
-    }
-
-    @Override
-    public @NotNull CommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    @Override
-    public @NotNull ConversationManager getConversationManager() {
-        return conversationManager;
-    }
-
-    @Override
-    public BotMethodExecutor getBotMethodExecutor() {
-        return botMethodExecutor;
-    }
-
-    @Override
-    public UpdateProcessor getUpdateProcessor() {
-        return updateProcessor;
-    }
-
-    @Override
-    public @NotNull ExtensionManager getExtensionManager() {
-        return extensionManager;
-    }
-
-    @Override
-    public @NotNull FileDownloader getFileDownloader() {
-        return fileDownloader;
-    }
-
-    public void setDeleteWebhook(@NotNull DeleteWebhook deleteWebhook) {
-        this.deleteWebhook = deleteWebhook;
-    }
-
-    @Override
-    public void shutdown() {
-        eventManager.call(new BotShutdownEvent(this));
-
-        execute(this.deleteWebhook);
+        execute(this.getDeleteWebhook());
 
         try {
-            if (botSettings.extensionsEnabled()) {
-                extensionManager.close();
+            if (getBotSettings().extensionsEnabled()) {
+                getExtensionManager().close();
             }
-            scheduler.close();
-            updateProcessor.close();
-            fileDownloader.close();
+            getScheduler().close();
+            getUpdateProcessor().close();
+            getFileDownloader().close();
         } catch (Exception e) {
             TeleightBots.getExceptionManager().handleException(e);
         }
     }
-
 }
