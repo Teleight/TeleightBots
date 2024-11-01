@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.webhook;
 
 import lombok.Builder;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 
@@ -25,9 +26,10 @@ import java.nio.file.Path;
  */
 @Builder(builderClassName = "Builder", builderMethodName = "ofBuilder")
 public record WebhookServerConfig(
+        @Nullable String host,
         int port,
-        Path keystorePath,
-        String keystorePassword,
+        @Nullable Path keystorePath,
+        @Nullable String keystorePassword,
         boolean useHttps
 ) {
 
@@ -43,6 +45,7 @@ public record WebhookServerConfig(
 
     public static class Builder {
         Builder() {
+            host = null;
             port = 9090;
             useHttps = false;
         }

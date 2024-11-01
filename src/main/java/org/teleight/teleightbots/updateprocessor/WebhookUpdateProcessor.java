@@ -35,6 +35,8 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
 
     @Override
     public @NotNull CompletableFuture<User> start() {
+        webhookServer.start();
+
         webhookServer.addPostRoute(settings.path(), ctx -> {
             try {
                 final Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
@@ -66,16 +68,16 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     }
 
     private void setWebhook(@NotNull WebhookBotSettings settings) {
-        final CompletableFuture<Boolean> webHookResult = bot.execute(SetWebhook.ofBuilder(settings.url())
+        final SetWebhook setWebhook = SetWebhook.ofBuilder(settings.url())
                 .certificate(settings.certificate())
                 .ipAddress(settings.ipAddress())
                 .maxConnections(settings.maxConnections())
                 .allowedUpdates(settings.allowedUpdates())
                 .dropPendingUpdates(settings.dropPendingUpdates())
                 .secretToken(settings.secretToken())
-                .build());
+                .build();
 
-        webHookResult.whenComplete((success, throwable) -> {
+        bot.execute(setWebhook).whenComplete((success, throwable) -> {
             if (throwable != null || !success) {
                 System.out.println("Error while setting the webhook: " + bot.getBotUsername());
                 if (bot.getBotSettings().silentlyThrowMethodExecution() && throwable != null) {

@@ -14,13 +14,15 @@ import org.teleight.teleightbots.webhook.WebhookServerConfig;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 public final class BotManagerImpl implements BotManager {
 
     private final List<TelegramBot> registeredBots = new CopyOnWriteArrayList<>();
-    private WebhookServer webhookServer;
+    private final Map<WebhookServerConfig, WebhookServer> registeredWebhookServers = new ConcurrentHashMap<>();
 
     @Override
     public void registerLongPolling(@NotNull String token, @NotNull String username, @NotNull LongPollingBotSettings longPollingSettings, @NotNull Consumer<LongPollingTelegramBot> completeCallback) {
@@ -34,10 +36,10 @@ public final class BotManagerImpl implements BotManager {
     public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull Consumer<WebhookTelegramBot> completeCallback) {
         username = sanitizeUsername(username);
 
-        if (webhookServer == null) {
-            webhookServer = new WebhookServer(serverConfig);
-        }
-        webhookServer.start();
+        // If the server is already registered, we use the existing server.
+        // Otherwise, we create a new one.
+        // But we don't start the server here, we start it when the bot is started.
+        final var webhookServer = registeredWebhookServers.computeIfAbsent(serverConfig, WebhookServer::new);
 
         final var bot = new WebhookTelegramBot(token, username, webhookSettings, webhookServer);
 
