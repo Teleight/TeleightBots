@@ -34,19 +34,10 @@ public final class LongPollingUpdateProcessor implements UpdateProcessor {
         updateProcessorThread.setName(bot.getBotUsername() + " Update Processor");
         updateProcessorThread.start();
 
-        return bot.execute(new GetMe())
-                .whenComplete((user, throwable) -> {
-                    if (throwable != null) {
-                        System.out.println("Error while authenticating the bot: " + bot.getBotUsername());
-                        if (bot.getBotSettings().silentlyThrowMethodExecution()) {
-                            TeleightBots.getExceptionManager().handleException(throwable);
-                        }
-                        bot.shutdown();
-                        return;
-                    }
-                    System.out.println("Bot authenticated: " + user.username());
-                    processorLatch.countDown();
-                });
+        return bot.execute(new GetMe()).thenApply(user -> {
+            processorLatch.countDown();
+            return user;
+        });
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.teleight.teleightbots.updateprocessor;
 
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.SetWebhook;
 import org.teleight.teleightbots.api.objects.Update;
@@ -36,7 +35,16 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     @Override
     public @NotNull CompletableFuture<User> start() {
         webhookServer.start();
+        setupWebhookRoute();
 
+        return setWebhook(settings).whenComplete((success, throwable) -> {
+            if (throwable != null) {
+                System.out.println("Failed to set webhook: " + throwable.getMessage());
+            }
+        }).thenCompose(aBoolean -> bot.execute(new GetMe()));
+    }
+
+    private void setupWebhookRoute() {
         webhookServer.addPostRoute(settings.path(), ctx -> {
             try {
                 final Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
@@ -49,25 +57,9 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
                 ctx.status(500).json("Internal Server Error: " + e.getMessage());
             }
         });
-
-        setWebhook(settings);
-
-        return bot.execute(new GetMe())
-                .whenComplete((user, throwable) -> {
-                    if (throwable != null) {
-                        System.out.println("Error while authenticating the bot: " + bot.getBotUsername());
-                        if (bot.getBotSettings().silentlyThrowMethodExecution()) {
-                            TeleightBots.getExceptionManager().handleException(throwable);
-                        }
-                        webhookServer.removePostRoute(settings.path());
-                        bot.shutdown();
-                        return;
-                    }
-                    System.out.println("Bot authenticated: " + user.username());
-                });
     }
 
-    private void setWebhook(@NotNull WebhookBotSettings settings) {
+    private CompletableFuture<Boolean> setWebhook(@NotNull WebhookBotSettings settings) {
         final SetWebhook setWebhook = SetWebhook.ofBuilder(settings.url())
                 .certificate(settings.certificate())
                 .ipAddress(settings.ipAddress())
@@ -77,17 +69,7 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
                 .secretToken(settings.secretToken())
                 .build();
 
-        bot.execute(setWebhook).whenComplete((success, throwable) -> {
-            if (throwable != null || !success) {
-                System.out.println("Error while setting the webhook: " + bot.getBotUsername());
-                if (bot.getBotSettings().silentlyThrowMethodExecution() && throwable != null) {
-                    TeleightBots.getExceptionManager().handleException(throwable);
-                }
-                webhookServer.removePostRoute(settings.path());
-                bot.shutdown();
-            }
-            System.out.println("Webhook authenticated: " + success);
-        });
+        return bot.execute(setWebhook);
     }
 
     @Override

@@ -15,7 +15,6 @@ import org.teleight.teleightbots.updateprocessor.events.MessageEventProcessor;
 
 import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public sealed interface UpdateProcessor extends Closeable permits
         LongPollingUpdateProcessor,

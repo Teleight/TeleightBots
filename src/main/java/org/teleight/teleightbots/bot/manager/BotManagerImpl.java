@@ -47,17 +47,23 @@ public final class BotManagerImpl implements BotManager {
     }
 
     private <T extends TelegramBot> void startProcessor(@NotNull T telegramBot, @NotNull Consumer<T> completeCallback) {
-        telegramBot.getUpdateProcessor().start().thenRun(() -> {
+        System.out.println("Authenticating bot: " + telegramBot.getBotUsername());
+
+        telegramBot.getUpdateProcessor().start().whenComplete((user, throwable) -> {
+            if (throwable != null) {
+                System.out.println("Error while authenticating the bot " + telegramBot.getBotUsername() + ": " + throwable.getMessage());
+                if (!telegramBot.getBotSettings().silentlyThrowMethodExecution()) {
+                    TeleightBots.getExceptionManager().handleException(throwable);
+                }
+                telegramBot.shutdown();
+                return;
+            }
+
             if (telegramBot.getBotSettings().extensionsEnabled()) {
                 telegramBot.getExtensionManager().start();
             }
-
             registeredBots.add(telegramBot);
-            try {
-                completeCallback.accept(telegramBot);
-            } catch (Throwable t) {
-                TeleightBots.getExceptionManager().handleException(t);
-            }
+            completeCallback.accept(telegramBot);
         });
     }
 
