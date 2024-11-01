@@ -1,6 +1,7 @@
 package org.teleight.teleightbots.webhook;
 
 import io.javalin.http.Handler;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Closeable;
@@ -12,6 +13,7 @@ import java.io.Closeable;
  */
 public sealed interface WebhookServer extends Closeable permits WebhookServerImpl {
 
+    @ApiStatus.Internal
     static @NotNull WebhookServer create(@NotNull WebhookServerConfig config) {
         return new WebhookServerImpl(config);
     }
