@@ -36,7 +36,7 @@ public record WebhookServerConfig(
     /**
      * Default instance of BotSettings with standard configurations:
      * <ul>
-     *     <li>{@link #port} is set to 9090</li>
+     *     <li>{@link #port} is set to 8443</li>
      *     <li>{@link #useHttps} is set to {@code false} (i.e., HTTP is used by default)</li>
      *     <li>{@link #keystorePath} and {@link #keystorePassword} are not set</li>
      * </ul>
