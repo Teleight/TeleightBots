@@ -84,14 +84,38 @@ public sealed interface BotManager extends Closeable permits BotManagerImpl {
      * for a webhook-based bot. Once registered, the {@code completeCallback} will be invoked.
      * </p>
      *
-     * @param token               the bot's token, required for authentication with Telegram
-     * @param username            the bot's username, as it appears in Telegram
-     * @param webhookSettings     the settings to configure the webhook bot
-     * @param serverConfig        the server configuration for handling webhook requests
-     * @param completeCallback    the callback that will be invoked when the bot has been registered
+     * @param token            the bot's token, required for authentication with Telegram
+     * @param username         the bot's username, as it appears in Telegram
+     * @param webhookSettings  the settings to configure the webhook bot
+     * @param serverConfig     the server configuration for handling webhook requests
+     * @param completeCallback the callback that will be invoked when the bot has been registered
      * @throws NullPointerException if any of the arguments are {@code null}
      */
     void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull Consumer<WebhookTelegramBot> completeCallback);
+
+    /**
+     * Unregisters a bot from the manager.
+     * <p>
+     * This method removes the specified bot from the manager, effectively stopping
+     * the bot and cleaning up any resources associated with it.
+     * </p>
+     *
+     * @param botToken the bot (token) to unregister
+     * @throws NullPointerException if the bot is {@code null}
+     */
+    void unregisterBot(@NotNull String botToken);
+
+    /**
+     * Unregisters a bot from the manager.
+     * <p>
+     * This method removes the specified bot from the manager, effectively stopping
+     * the bot and cleaning up any resources associated with it.
+     * </p>
+     *
+     * @param telegramBot the bot to unregister
+     * @throws NullPointerException if the bot is {@code null}
+     */
+    void unregisterBot(@NotNull TelegramBot telegramBot);
 
     /**
      * Retrieves all the bots currently managed by the {@code BotManager}.
@@ -102,6 +126,8 @@ public sealed interface BotManager extends Closeable permits BotManagerImpl {
      *
      * @return an unmodifiable collection of all registered {@link TelegramBot} instances
      */
-    @NotNull @Unmodifiable Collection<TelegramBot> getRegisteredBots();
+    @NotNull
+    @Unmodifiable
+    Collection<TelegramBot> getRegisteredBots();
 
 }

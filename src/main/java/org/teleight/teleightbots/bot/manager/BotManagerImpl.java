@@ -79,19 +79,30 @@ public final class BotManagerImpl implements BotManager {
     }
 
     @Override
-    public void close() throws IOException {
-        for (final TelegramBot telegramBot : registeredBots) {
-            unregisterBot(telegramBot);
+    public void unregisterBot(@NotNull String botToken) {
+        for (final TelegramBot registeredBot : registeredBots) {
+            if (registeredBot.getBotToken().equals(botToken)) {
+                registeredBot.shutdown();
+                registeredBots.remove(registeredBot);
+                return;
+            }
         }
-        registeredBots.clear();
     }
 
-    // todo(bot_manager): We can maybe implement this unregister method to the public interface in the future.
+    @Override
     public void unregisterBot(@NotNull TelegramBot bot) {
         if (registeredBots.contains(bot)) {
             bot.shutdown();
             registeredBots.remove(bot);
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+        for (final TelegramBot telegramBot : registeredBots) {
+            unregisterBot(telegramBot);
+        }
+        registeredBots.clear();
     }
 
     private String sanitizeUsername(String username) {
