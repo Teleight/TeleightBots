@@ -55,7 +55,7 @@ public final class LongPollingUpdateProcessor implements UpdateProcessor {
     }
 
     private void executeGetUpdates() {
-        final var getUpdates = GetUpdates.ofBuilder()
+        final GetUpdates getUpdates = GetUpdates.ofBuilder()
                 .timeout(settings.updatesTimeout())
                 .limit(settings.updatesLimit())
                 .offset(lastReceivedUpdate + 1)

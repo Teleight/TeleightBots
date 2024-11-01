@@ -99,8 +99,8 @@ public sealed interface TelegramBot permits WebhookTelegramBot, LongPollingTeleg
      * @return the created menu
      */
     default @NotNull Menu createMenu(@Nullable String name, @NotNull Menu.Builder builder){
-        final var menuBuilder = new MenuBuilder.MenuBuilderImpl();
-        final var rootMenu = menuBuilder.createMenu(name);
+        final MenuBuilder.MenuBuilderImpl menuBuilder = new MenuBuilder.MenuBuilderImpl();
+        final Menu rootMenu = menuBuilder.createMenu(name);
         builder.create(menuBuilder, rootMenu);
 
         for (final MenuImpl subMenu : menuBuilder.getAllMenus()) {
@@ -151,7 +151,7 @@ public sealed interface TelegramBot permits WebhookTelegramBot, LongPollingTeleg
      * @return a future representing the result of the request
      */
     default <R extends Serializable> @NotNull CompletableFuture<R> execute(@NotNull ApiMethod<R> method) {
-        final var responseFuture = getBotMethodExecutor().executeMethod(method);
+        final CompletableFuture<String> responseFuture = getBotMethodExecutor().executeMethod(method);
         return responseFuture.thenCompose(responseJson -> {
             try {
                 final R result = method.deserializeResponse(responseJson);

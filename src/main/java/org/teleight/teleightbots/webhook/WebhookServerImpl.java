@@ -7,6 +7,7 @@ import io.javalin.http.ContentType;
 import io.javalin.http.Handler;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -43,12 +44,12 @@ final class WebhookServerImpl implements WebhookServer {
         SslPlugin sslPlugin = new SslPlugin(conf -> {
             if (config.useHttps()) {
 
-                final var keystorePath = config.keystorePath();
+                final Path keystorePath = config.keystorePath();
                 if (keystorePath == null) {
                     throw new IllegalArgumentException("Keystore path is required for HTTPS");
                 }
 
-                final var keystorePassword = config.keystorePassword();
+                final String keystorePassword = config.keystorePassword();
                 if (keystorePassword == null) {
                     throw new IllegalArgumentException("Keystore password is required for HTTPS");
                 }

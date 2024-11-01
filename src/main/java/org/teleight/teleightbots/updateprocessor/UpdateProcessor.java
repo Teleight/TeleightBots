@@ -33,7 +33,7 @@ public sealed interface UpdateProcessor extends Closeable permits
 
     @ApiStatus.Internal
     default CompletableFuture<UpdateReceivedEvent> handleNewUpdate(@NotNull TelegramBot bot, @NotNull Update update, @NotNull String responseJson) {
-        final var eventFuture = bot.getEventManager().call(new UpdateReceivedEvent(bot, update, responseJson));
+        final CompletableFuture<UpdateReceivedEvent> eventFuture = bot.getEventManager().call(new UpdateReceivedEvent(bot, update, responseJson));
         eventFuture.thenAccept(event -> {
             final Update receivedUpdate = event.update();
             for (EventProcessor processorEvent : processorEvents) {

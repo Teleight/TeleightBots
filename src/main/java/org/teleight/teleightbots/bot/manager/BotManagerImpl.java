@@ -28,7 +28,7 @@ public final class BotManagerImpl implements BotManager {
     public void registerLongPolling(@NotNull String token, @NotNull String username, @NotNull LongPollingBotSettings longPollingSettings, @NotNull Consumer<LongPollingTelegramBot> completeCallback) {
         username = sanitizeUsername(username);
 
-        final var bot = LongPollingTelegramBot.create(token, username, longPollingSettings);
+        final LongPollingTelegramBot bot = LongPollingTelegramBot.create(token, username, longPollingSettings);
         startProcessor(bot, completeCallback);
     }
 
@@ -39,9 +39,9 @@ public final class BotManagerImpl implements BotManager {
         // If the server is already registered, we use the existing server.
         // Otherwise, we create a new one.
         // But we don't start the server here, we start it when the bot is started.
-        final var webhookServer = registeredWebhookServers.computeIfAbsent(serverConfig, WebhookServer::create);
+        final WebhookServer webhookServer = registeredWebhookServers.computeIfAbsent(serverConfig, WebhookServer::create);
 
-        final var bot = WebhookTelegramBot.create(token, username, webhookSettings, webhookServer);
+        final WebhookTelegramBot bot = WebhookTelegramBot.create(token, username, webhookSettings, webhookServer);
 
         startProcessor(bot, completeCallback);
     }
