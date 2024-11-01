@@ -46,7 +46,7 @@ public record WebhookServerConfig(
     public static class Builder {
         Builder() {
             host = null;
-            port = 9090;
+            port = 8443;
             useHttps = false;
         }
     }
