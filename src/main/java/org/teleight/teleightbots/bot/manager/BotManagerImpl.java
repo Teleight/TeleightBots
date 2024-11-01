@@ -47,24 +47,30 @@ public final class BotManagerImpl implements BotManager {
     }
 
     private <T extends TelegramBot> void startProcessor(@NotNull T telegramBot, @NotNull Consumer<T> completeCallback) {
-        System.out.println("Authenticating bot: " + telegramBot.getBotUsername());
+        System.out.println("Authenticating bot " + telegramBot.getBotUsername());
 
-        telegramBot.getUpdateProcessor().start().whenComplete((user, throwable) -> {
-            if (throwable != null) {
-                System.out.println("Error while authenticating the bot " + telegramBot.getBotUsername() + ": " + throwable.getMessage());
-                if (!telegramBot.getBotSettings().silentlyThrowMethodExecution()) {
-                    TeleightBots.getExceptionManager().handleException(throwable);
-                }
-                telegramBot.shutdown();
-                return;
-            }
-
-            if (telegramBot.getBotSettings().extensionsEnabled()) {
-                telegramBot.getExtensionManager().start();
-            }
-            registeredBots.add(telegramBot);
-            completeCallback.accept(telegramBot);
-        });
+        telegramBot.getUpdateProcessor().start()
+                .thenRun(() -> {
+                    if (telegramBot.getBotSettings().extensionsEnabled()) {
+                        telegramBot.getExtensionManager().start();
+                    }
+                    registeredBots.add(telegramBot);
+                    completeCallback.accept(telegramBot);
+                })
+                .exceptionally(throwable -> {
+                    // If an error occurred while authenticating the bot, we log the error and shutdown the bot.
+                    // Happens when the bot token or the username is invalid.
+                    // It can also happen if the webhook was considered invalid by the bot API.
+                    if (throwable != null) {
+                        System.out.println("An error occurred while authenticating the bot " + telegramBot.getBotUsername() + ": " + throwable.getMessage());
+                        if (!telegramBot.getBotSettings().silentlyThrowMethodExecution()) {
+                            TeleightBots.getExceptionManager().handleException(throwable);
+                        }
+                        telegramBot.shutdown();
+                        return null;
+                    }
+                    return null;
+                });
     }
 
     @Override
@@ -74,10 +80,18 @@ public final class BotManagerImpl implements BotManager {
 
     @Override
     public void close() throws IOException {
-        for (final TelegramBot registeredBot : registeredBots) {
-            registeredBot.shutdown();
+        for (final TelegramBot telegramBot : registeredBots) {
+            unregisterBot(telegramBot);
         }
         registeredBots.clear();
+    }
+
+    // todo(bot_manager): We can maybe implement this unregister method to the public interface in the future.
+    public void unregisterBot(@NotNull TelegramBot bot) {
+        if (registeredBots.contains(bot)) {
+            bot.shutdown();
+            registeredBots.remove(bot);
+        }
     }
 
     private String sanitizeUsername(String username) {
