@@ -15,7 +15,7 @@ final class WebhookServerImpl implements WebhookServer {
     private final WebhookServerConfig config;
 
     private Javalin app;
-    private boolean running = false;
+    private volatile boolean running = false;
 
     private final Map<String, Handler> postRoutes = new ConcurrentHashMap<>();
 
@@ -101,7 +101,7 @@ final class WebhookServerImpl implements WebhookServer {
     }
 
     @Override
-    public synchronized void close() {
+    public void close() {
         if (!running) {
             return;
         }
