@@ -30,6 +30,7 @@ final class WebhookServerImpl implements WebhookServer {
 
         this.app = Javalin.create(javalinConfig -> {
             javalinConfig.useVirtualThreads = true;
+            javalinConfig.showJavalinBanner = false;
 
             /* SSL Configuration */
             SslPlugin sslPlugin = new SslPlugin(conf -> {
