@@ -60,16 +60,14 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     }
 
     private CompletableFuture<Boolean> setWebhook(@NotNull WebhookBotSettings settings) {
-        final SetWebhook setWebhook = SetWebhook.ofBuilder(settings.url())
+        return bot.execute(SetWebhook.ofBuilder(settings.url())
                 .certificate(settings.certificate())
                 .ipAddress(settings.ipAddress())
                 .maxConnections(settings.maxConnections())
                 .allowedUpdates(settings.allowedUpdates())
                 .dropPendingUpdates(settings.dropPendingUpdates())
                 .secretToken(settings.secretToken())
-                .build();
-
-        return bot.execute(setWebhook);
+                .build());
     }
 
     @Override

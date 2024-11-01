@@ -49,11 +49,13 @@ final class WebhookServerImpl implements WebhookServer {
                     conf.keystoreFromPath(keystorePath.toString(), keystorePassword);
                     conf.secure = true;
                     conf.insecure = false;
+                    conf.host = config.host();
                     conf.securePort = config.port();
                     javalinConfig.bundledPlugins.enableSslRedirects();
                 } else {
                     conf.insecure = true;
                     conf.secure = false;
+                    conf.host = config.host();
                     conf.insecurePort = config.port();
                 }
             });
