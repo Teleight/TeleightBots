@@ -12,12 +12,12 @@ import org.teleight.teleightbots.commands.builder.Command;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandManagerImpl implements CommandManager {
+final class CommandManagerImpl implements CommandManager {
 
     private final TelegramBot bot;
     private final Map<String, Command> commandMap = new HashMap<>();
 
-    public CommandManagerImpl(TelegramBot bot){
+    CommandManagerImpl(@NotNull TelegramBot bot){
         this.bot = bot;
     }
 
@@ -48,7 +48,7 @@ public class CommandManagerImpl implements CommandManager {
 
     @Override
     public void execute(@NotNull User sender, @NotNull String userInput, Message message) {
-        final CommandParser commandParser = CommandParser.parser(this);
+        final CommandParser commandParser = CommandParser.newCommandParser(this);
         try {
             final CommandParser.Result result = commandParser.parse(bot, sender, userInput, message);
             final ExecutableCommand executableCommand = result.executable();

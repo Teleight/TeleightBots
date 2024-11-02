@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.commands;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.objects.Message;
@@ -11,7 +12,12 @@ import org.teleight.teleightbots.commands.builder.Command;
  * Basic interface for a CommandManager. Provides methods to manage commands.
  * @see TelegramBot#getCommandManager()
  */
-public interface CommandManager {
+public sealed interface CommandManager permits CommandManagerImpl {
+
+    @ApiStatus.Internal
+    static @NotNull CommandManager newCommandManager(@NotNull TelegramBot bot) {
+        return new CommandManagerImpl(bot);
+    }
 
     /**
      * Registers a new command from a Command instance.

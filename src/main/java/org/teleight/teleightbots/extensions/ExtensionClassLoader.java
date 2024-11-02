@@ -3,7 +3,7 @@ package org.teleight.teleightbots.extensions;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public class ExtensionClassLoader extends URLClassLoader {
+class ExtensionClassLoader extends URLClassLoader {
 
     public ExtensionClassLoader(URL[] urls) {
         super(urls);

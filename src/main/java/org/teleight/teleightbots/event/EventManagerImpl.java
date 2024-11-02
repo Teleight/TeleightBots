@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 
-public final class EventManagerImpl implements EventManager {
+final class EventManagerImpl implements EventManager {
 
     private final Map<Class<? extends Event>, Queue<EventListener<? extends Event>>> listeners = new ConcurrentHashMap<>();
 

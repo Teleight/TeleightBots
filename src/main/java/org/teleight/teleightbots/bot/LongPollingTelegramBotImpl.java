@@ -3,17 +3,11 @@ package org.teleight.teleightbots.bot;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.commands.CommandManager;
-import org.teleight.teleightbots.commands.CommandManagerImpl;
 import org.teleight.teleightbots.conversation.ConversationManager;
-import org.teleight.teleightbots.conversation.ConversationManagerImpl;
 import org.teleight.teleightbots.event.EventManager;
-import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.extensions.ExtensionManager;
-import org.teleight.teleightbots.extensions.ExtensionManagerImpl;
 import org.teleight.teleightbots.files.FileDownloader;
-import org.teleight.teleightbots.files.FileDownloaderImpl;
 import org.teleight.teleightbots.menu.MenuManager;
-import org.teleight.teleightbots.menu.MenuManagerImpl;
 import org.teleight.teleightbots.scheduler.Scheduler;
 import org.teleight.teleightbots.updateprocessor.BotMethodExecutor;
 import org.teleight.teleightbots.updateprocessor.LongPollingUpdateProcessor;
@@ -35,22 +29,22 @@ final class LongPollingTelegramBotImpl implements LongPollingTelegramBot {
     private final Scheduler scheduler = Scheduler.newScheduler();
 
     //Events
-    private final EventManager eventManager = new EventManagerImpl();
+    private final EventManager eventManager = EventManager.newEventManager();
 
     //Menus
-    private final MenuManager menuManager = new MenuManagerImpl();
+    private final MenuManager menuManager = MenuManager.newMenuManager();
 
     //Commands
-    private final CommandManager commandManager = new CommandManagerImpl(this);
+    private final CommandManager commandManager = CommandManager.newCommandManager(this);
 
     //Conversations
-    private final ConversationManager conversationManager = new ConversationManagerImpl(this);
+    private final ConversationManager conversationManager = ConversationManager.newConversationManager(this);
 
     //Extensions
-    private final ExtensionManager extensionManager = new ExtensionManagerImpl(this);
+    private final ExtensionManager extensionManager = ExtensionManager.newExtensionManager(this);
 
     //FileDownloader
-    private final FileDownloader fileDownloader = new FileDownloaderImpl(this);
+    private final FileDownloader fileDownloader = FileDownloader.newFileDownloader(this);
 
     LongPollingTelegramBotImpl(@NotNull String token,
                                @NotNull String username,

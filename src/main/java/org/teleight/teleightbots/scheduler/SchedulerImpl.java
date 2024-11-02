@@ -10,7 +10,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class SchedulerImpl implements Scheduler {
+class SchedulerImpl implements Scheduler {
 
     private static final ExecutorService EXECUTOR = Executors.newVirtualThreadPerTaskExecutor();
     private static final ScheduledExecutorService SCHEDULED = Executors.newScheduledThreadPool(10, Thread.ofVirtual().factory());

@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.conversation;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -16,6 +17,11 @@ import java.util.Map;
  * @see TelegramBot#getConversationManager()
  */
 public sealed interface ConversationManager permits ConversationManagerImpl {
+
+    @ApiStatus.Internal
+    static @NotNull ConversationManager newConversationManager(@NotNull TelegramBot bot) {
+        return new ConversationManagerImpl(bot);
+    }
 
     /**
      * Registers a new conversation.

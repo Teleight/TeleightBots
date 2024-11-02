@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DiscoveredExtension {
+final class DiscoveredExtension {
 
     private final ExtensionInfoFile extensionInfo;
     final List<URL> files = new ArrayList<>();

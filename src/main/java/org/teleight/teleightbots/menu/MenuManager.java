@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.menu;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
@@ -11,6 +12,11 @@ import java.util.Collection;
  * Interface for a Menu Manager that provides methods for managing menus in the bot application.
  */
 public sealed interface MenuManager permits MenuManagerImpl {
+
+    @ApiStatus.Internal
+    static @NotNull MenuManager newMenuManager() {
+        return new MenuManagerImpl();
+    }
 
     /**
      * Gets the EventManager associated with this MenuManager.

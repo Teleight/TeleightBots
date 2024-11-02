@@ -12,7 +12,6 @@ import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.event.EventManager;
-import org.teleight.teleightbots.event.EventManagerImpl;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
 
 import java.util.Collection;
@@ -21,12 +20,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class MenuManagerImpl implements MenuManager {
+final class MenuManagerImpl implements MenuManager {
 
-    private final EventManager eventManager = new EventManagerImpl();
+    private final EventManager eventManager = EventManager.newEventManager();
     private final Map<Integer, Menu> menus = new ConcurrentHashMap<>();
 
-    public MenuManagerImpl() {
+    MenuManagerImpl() {
         eventManager.addListener(ButtonPressEvent.class, event -> {
             final Collection<Menu> menus = getMenus();
             for (final Menu menu : menus) {

@@ -18,7 +18,7 @@ import org.teleight.teleightbots.commands.builder.parser.CommandContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class CommandParserImpl implements CommandParser {
+final class CommandParserImpl implements CommandParser {
 
     private final CommandManager commandManager;
 

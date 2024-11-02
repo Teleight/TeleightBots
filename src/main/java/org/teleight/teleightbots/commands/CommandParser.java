@@ -16,7 +16,7 @@ public interface CommandParser {
      * @param commandManager the CommandManager to be used by the CommandParser
      * @return a new CommandParserImpl instance
      */
-    static CommandParser parser(@NotNull CommandManager commandManager) {
+    static @NotNull CommandParser newCommandParser(@NotNull CommandManager commandManager) {
         return new CommandParserImpl(commandManager);
     }
 

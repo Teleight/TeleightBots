@@ -1,14 +1,10 @@
 package org.teleight.teleightbots.demo;
 
 import org.teleight.teleightbots.TeleightBots;
-import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.methods.DeleteWebhook;
 import org.teleight.teleightbots.api.methods.SendMessage;
 import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.ParseMode;
-import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
-import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 import org.teleight.teleightbots.conversation.Conversation;
 import org.teleight.teleightbots.conversation.ConversationInstanceConstraints;
 import org.teleight.teleightbots.conversation.Property;

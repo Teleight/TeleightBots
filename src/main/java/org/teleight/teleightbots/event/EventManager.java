@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.event;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.event.trait.Event;
 
@@ -10,6 +11,11 @@ import java.util.function.Consumer;
  * The {@code EventManager} interface manages event listeners and event handling.
  */
 public sealed interface EventManager permits EventManagerImpl {
+
+    @ApiStatus.Internal
+    static @NotNull EventManager newEventManager() {
+        return new EventManagerImpl();
+    }
 
     /**
      * Registers an {@link EventListener} with the EventManager.
