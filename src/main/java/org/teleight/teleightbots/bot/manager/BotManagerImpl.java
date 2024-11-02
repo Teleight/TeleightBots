@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.bot.manager;
 
+import org.checkerframework.com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
@@ -19,10 +20,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
-public final class BotManagerImpl implements BotManager {
+final class BotManagerImpl implements BotManager {
+
+    private static boolean created = false;
 
     private final List<TelegramBot> registeredBots = new CopyOnWriteArrayList<>();
     private final Map<WebhookServerConfig, WebhookServer> registeredWebhookServers = new ConcurrentHashMap<>();
+
+    BotManagerImpl() {
+        Preconditions.checkState(!created, "There can only be one instance of BotManager");
+        created = true;
+    }
 
     @Override
     public void registerLongPolling(@NotNull String token, @NotNull String username, @NotNull LongPollingBotSettings longPollingSettings, @NotNull Consumer<LongPollingTelegramBot> completeCallback) {

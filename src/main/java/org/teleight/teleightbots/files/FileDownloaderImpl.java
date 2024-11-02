@@ -15,7 +15,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletableFuture;
 
-public final class FileDownloaderImpl implements FileDownloader {
+final class FileDownloaderImpl implements FileDownloader {
 
     private final TelegramBot bot;
 
@@ -24,7 +24,7 @@ public final class FileDownloaderImpl implements FileDownloader {
             .version(HttpClient.Version.HTTP_2)
             .build();
 
-    public FileDownloaderImpl(TelegramBot bot) {
+    FileDownloaderImpl(@NotNull TelegramBot bot) {
         this.bot = bot;
     }
 

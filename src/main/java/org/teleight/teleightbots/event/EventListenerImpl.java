@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public final class EventListenerImpl<T extends Event> implements EventListener<T> {
+final class EventListenerImpl<T extends Event> implements EventListener<T> {
 
     private final Class<T> eventType;
     private final List<Predicate<T>> filters;
@@ -19,7 +19,7 @@ public final class EventListenerImpl<T extends Event> implements EventListener<T
     private final Consumer<T> handler;
     private final AtomicInteger expireCount;
 
-    public EventListenerImpl(Class<T> eventType, List<Predicate<T>> filters, boolean ignoreCancelled, Consumer<T> handler, int expireCount) {
+    EventListenerImpl(Class<T> eventType, List<Predicate<T>> filters, boolean ignoreCancelled, Consumer<T> handler, int expireCount) {
         this.eventType = eventType;
         this.filters = filters;
         this.ignoreCancelled = ignoreCancelled;

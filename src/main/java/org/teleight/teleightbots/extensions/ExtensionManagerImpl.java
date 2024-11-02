@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -21,7 +22,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public final class ExtensionManagerImpl implements ExtensionManager {
+final class ExtensionManagerImpl implements ExtensionManager {
 
     private final TelegramBot bot;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -29,14 +30,18 @@ public final class ExtensionManagerImpl implements ExtensionManager {
 
     private final Set<Extension> loadedExtensions = new HashSet<>();
 
-    public ExtensionManagerImpl(TelegramBot bot) {
+    ExtensionManagerImpl(@NotNull TelegramBot bot) {
         this.bot = bot;
     }
 
     @Override
     public void start() {
         if(!extensionFolder.exists()) {
-            extensionFolder.mkdirs();
+            try {
+                Files.createDirectory(extensionFolder.toPath());
+            } catch (IOException e) {
+                TeleightBots.getExceptionManager().handleException(e);
+            }
         }
 
         final Set<DiscoveredExtension> extensions = discoverExtensions();

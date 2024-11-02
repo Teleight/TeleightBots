@@ -24,6 +24,7 @@ import java.nio.file.Path;
  * @param keystorePassword The password for the keystore, used to access the SSL certificates.
  * @param useHttps         Whether the server should use HTTPS for secure communication.
  */
+// todo(webhook): add support for pem files
 @Builder(builderClassName = "Builder", builderMethodName = "ofBuilder")
 public record WebhookServerConfig(
         @Nullable String host,

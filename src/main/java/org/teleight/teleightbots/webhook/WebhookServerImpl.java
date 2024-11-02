@@ -19,7 +19,7 @@ final class WebhookServerImpl implements WebhookServer {
 
     private final Map<String, Handler> postRoutes = new ConcurrentHashMap<>();
 
-    public WebhookServerImpl(WebhookServerConfig config) {
+    WebhookServerImpl(@NotNull WebhookServerConfig config) {
         this.config = config;
     }
 

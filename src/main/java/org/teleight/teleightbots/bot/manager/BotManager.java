@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.bot.manager;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.bot.LongPollingTelegramBot;
@@ -22,6 +23,11 @@ import java.util.function.Consumer;
  * </p>
  */
 public sealed interface BotManager extends Closeable permits BotManagerImpl {
+
+    @ApiStatus.Internal
+    static @NotNull BotManager newBotManager() {
+        return new BotManagerImpl();
+    }
 
     /**
      * Registers a new long polling bot with the default settings.

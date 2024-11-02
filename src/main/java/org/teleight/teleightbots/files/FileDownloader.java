@@ -1,7 +1,9 @@
 package org.teleight.teleightbots.files;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.File;
+import org.teleight.teleightbots.bot.TelegramBot;
 
 import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
@@ -10,6 +12,11 @@ import java.util.concurrent.CompletableFuture;
  * Interface for a File Downloader that provides methods for downloading files from a given path or a Telegram File object.
  */
 public sealed interface FileDownloader extends Closeable permits FileDownloaderImpl {
+
+    @ApiStatus.Internal
+    static @NotNull FileDownloader newFileDownloader(@NotNull TelegramBot bot) {
+        return new FileDownloaderImpl(bot);
+    }
 
     String FILE_DOWNLOAD_TEMPLATE = "https://api.telegram.org/file/bot%s/%s";
 

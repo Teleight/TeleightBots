@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public final class ConversationManagerImpl implements ConversationManager {
+final class ConversationManagerImpl implements ConversationManager {
 
     private final Map<String, Conversation> conversations = new HashMap<>();
     private final Map<Long, ConversationContext> usersInConversation = new HashMap<>();
 
     private final TelegramBot bot;
 
-    public ConversationManagerImpl(@NotNull TelegramBot bot) {
+    ConversationManagerImpl(@NotNull TelegramBot bot) {
         this.bot = bot;
     }
 
