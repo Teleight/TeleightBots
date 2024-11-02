@@ -29,20 +29,20 @@ final class FileDownloaderImpl implements FileDownloader {
     }
 
     @Override
-    public final @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull String filePath) throws DownloadFileException {
+    public @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull String filePath) throws DownloadFileException {
         final String tempFileName = Long.toString(System.currentTimeMillis());
         final java.io.File tempFile = createTempFile(tempFileName);
         return downloadFile(filePath, tempFile);
     }
 
     @Override
-    public final @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull File telegramFile) throws DownloadFileException {
+    public @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull File telegramFile) throws DownloadFileException {
         final java.io.File tempFile = createTempFile(telegramFile.fileId());
         return downloadFile(telegramFile, tempFile);
     }
 
     @Override
-    public final @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull File telegramFile, @NotNull java.io.File outputFile) throws DownloadFileException {
+    public @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull File telegramFile, @NotNull java.io.File outputFile) throws DownloadFileException {
         final String filePath = telegramFile.filePath();
         if (filePath == null) {
             throw new DownloadFileException("Unable to download file. File path is null");
@@ -52,7 +52,7 @@ final class FileDownloaderImpl implements FileDownloader {
     }
 
     @Override
-    public final @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull String filePath, java.io.File outputFile) {
+    public @NotNull CompletableFuture<java.io.File> downloadFile(@NotNull String filePath, java.io.File outputFile) {
         final String url = getFileUrl(filePath);
         return downloadToFile(url, outputFile);
     }
