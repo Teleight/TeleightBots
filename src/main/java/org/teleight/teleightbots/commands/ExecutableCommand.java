@@ -1,6 +1,6 @@
 package org.teleight.teleightbots.commands;
 
-import com.github.javaparser.quality.NotNull;
+import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.User;
 
 /**

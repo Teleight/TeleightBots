@@ -1,6 +1,5 @@
 package org.teleight.teleightbots.bot.manager;
 
-import org.checkerframework.com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
@@ -28,7 +27,9 @@ final class BotManagerImpl implements BotManager {
     private final Map<WebhookServerConfig, WebhookServer> registeredWebhookServers = new ConcurrentHashMap<>();
 
     BotManagerImpl() {
-        Preconditions.checkState(!created, "There can only be one instance of BotManager");
+        if (created) {
+            throw new IllegalStateException("There can only be one instance of BotManager");
+        }
         created = true;
     }
 
