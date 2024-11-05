@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.updateprocessor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.methods.GetMe;
 import org.teleight.teleightbots.api.methods.SetWebhook;
@@ -15,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
+@Slf4j
 public final class WebhookUpdateProcessor implements UpdateProcessor {
 
     private final WebhookTelegramBot bot;
@@ -39,7 +41,7 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
 
         return setWebhook(settings).whenComplete((success, throwable) -> {
             if (throwable != null) {
-                System.out.println("Failed to set webhook: " + throwable.getMessage());
+                log.error("Failed to set webhook: {}", throwable.getMessage());
             }
         }).thenCompose(aBoolean -> bot.execute(new GetMe()));
     }

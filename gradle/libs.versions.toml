@@ -7,6 +7,8 @@ shadow = "8.1.1"
 junit-jupiter = "5.9.3"
 javalin = "6.3.0"
 javalin-ssl = "6.3.0"
+slf4j = "2.0.16"
+logback = "1.5.12"
 
 [libraries]
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
@@ -18,6 +20,9 @@ junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.r
 junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
 javalin = { group = "io.javalin", name = "javalin", version.ref = "javalin"}
 javalin-ssl = { group = "io.javalin.community.ssl", name = "ssl-plugin", version.ref = "javalin-ssl"}
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 [bundles]
 jackson = ["jackson-databind", "jackson-annotations"]

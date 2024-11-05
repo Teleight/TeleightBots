@@ -40,6 +40,9 @@ dependencies {
     api(libs.bundles.checker)
     api(libs.jetbrains.annotations)
     api(libs.bundles.javalin)
+    api(libs.slf4j.api)
+
+    implementation(libs.slf4j.simple)
 
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
