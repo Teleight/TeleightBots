@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.bot.manager;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
+@Slf4j
 final class BotManagerImpl implements BotManager {
 
     private static boolean created = false;
@@ -56,7 +58,7 @@ final class BotManagerImpl implements BotManager {
     }
 
     private <T extends TelegramBot> void startProcessor(@NotNull T telegramBot, @NotNull Consumer<T> completeCallback) {
-        System.out.println("Authenticating bot " + telegramBot.getBotUsername());
+        log.info("Authenticating bot {}", telegramBot.getBotUsername());
 
         telegramBot.getUpdateProcessor().start()
                 .thenRun(() -> {
@@ -71,7 +73,7 @@ final class BotManagerImpl implements BotManager {
                     // Happens when the bot token or the username is invalid.
                     // It can also happen if the webhook was considered invalid by the bot API.
                     if (throwable != null) {
-                        System.out.println("An error occurred while authenticating the bot " + telegramBot.getBotUsername() + ": " + throwable.getMessage());
+                        log.error("An error occurred while authenticating the bot {}: {}", telegramBot.getBotUsername(), throwable.getMessage());
                         if (!telegramBot.getBotSettings().silentlyThrowMethodExecution()) {
                             TeleightBots.getExceptionManager().handleException(throwable);
                         }

@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.scheduler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.TeleightBots;
 
@@ -10,6 +11,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 class SchedulerImpl implements Scheduler {
 
     private static final ExecutorService EXECUTOR = Executors.newVirtualThreadPerTaskExecutor();
@@ -57,7 +59,7 @@ class SchedulerImpl implements Scheduler {
 
     @Override
     public void close() throws IOException {
-        System.out.println("Closing Scheduler");
+        log.info("Closing Scheduler");
 
         EXECUTOR.shutdown();
         SCHEDULED.shutdown();

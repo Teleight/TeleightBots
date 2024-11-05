@@ -1,5 +1,6 @@
 package org.teleight.teleightbots.files;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.File;
@@ -15,6 +16,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 final class FileDownloaderImpl implements FileDownloader {
 
     private final TelegramBot bot;
@@ -96,7 +98,7 @@ final class FileDownloaderImpl implements FileDownloader {
 
     @Override
     public void close() {
-        System.out.println("Shutting down FileDownloader");
+        log.info("Shutting down FileDownloader");
         client.close();
     }
 }

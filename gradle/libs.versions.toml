@@ -18,6 +18,7 @@ junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.r
 junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
 javalin = { group = "io.javalin", name = "javalin", version.ref = "javalin"}
 javalin-ssl = { group = "io.javalin.community.ssl", name = "ssl-plugin", version.ref = "javalin-ssl"}
+slf4j-api = { module = "org.slf4j:slf4j-api", version = "2.0.16" }
 
 [bundles]
 jackson = ["jackson-databind", "jackson-annotations"]

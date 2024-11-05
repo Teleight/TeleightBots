@@ -1,5 +1,6 @@
 package org.teleight.teleightbots;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.bot.manager.BotManager;
 import org.teleight.teleightbots.exception.ExceptionManager;
@@ -7,6 +8,7 @@ import org.teleight.teleightbots.scheduler.Scheduler;
 
 import java.io.IOException;
 
+@Slf4j
 final class TeleightBotsProcessImpl implements TeleightBotsProcess {
 
     private final Scheduler scheduler;
@@ -29,7 +31,7 @@ final class TeleightBotsProcessImpl implements TeleightBotsProcess {
 
     @Override
     public void close() throws IOException {
-        System.out.println("Shutting down Teleight");
+        log.info("Shutting down Teleight");
         botManager.close();
         scheduler.close();
     }
