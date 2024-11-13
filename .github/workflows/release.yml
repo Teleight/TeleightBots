@@ -6,6 +6,8 @@ on:
       - 'v*.*.*'
 
 jobs:
+  tests:
+    uses: ./.github/workflows/ci.yml
   release:
     runs-on: ubuntu-latest
     steps:
@@ -21,7 +23,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           draft: true
-          tag_name: ${{ env.LATEST_TAG }}
+          tag_name: ${{env.GITHUB_REF_NAME}}
           generate_release_notes: true
           files: |
-            build/libs/TeleightBots-${{ env.RELEASE_NUMBER }}-*.jar
+            build/libs/TeleightBots-${GITHUB_REF_NAME:1}-*.jar
