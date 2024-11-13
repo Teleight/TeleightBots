@@ -1,4 +1,4 @@
-name: "CI"
+name: "Continuous integration and deployment"
 
 on:
   push:
@@ -23,3 +23,27 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Gradle build
         run: ./gradlew build
+      - name: Attach build distribution from this build
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'teleight'
+          path:
+            build/libs/TeleightBots-*.jar
+  release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download build distribution from the build job
+        uses: actions/download-artifact@v4
+        with:
+          name: 'teleight'
+      #- name: Publish to Maven Repository
+      #  run: ./gradlew publishToMavenCentral
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          tag_name: ${{env.GITHUB_REF_NAME}}
+          generate_release_notes: true
+          files: |
+            build/libs/TeleightBots-${GITHUB_REF_NAME:1}-*.jar
