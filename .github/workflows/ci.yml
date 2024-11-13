@@ -3,6 +3,8 @@ name: "Continuous integration and deployment"
 on:
   push:
     branches: [ master ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ master ]
 
