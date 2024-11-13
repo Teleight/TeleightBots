@@ -11,12 +11,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Get release information
-        run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-
-          echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
-          echo "RELEASE_NUMBER=${LATEST_TAG:1}" >> $GITHUB_ENV
       #- name: Publish to Maven Repository
       #  run: ./gradlew publishToMavenCentral
       - name: Create draft release
