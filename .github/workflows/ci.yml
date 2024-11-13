@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: gradle/actions/wrapper-validation@v4
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
@@ -22,3 +23,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Gradle build
         run: ./gradlew build
+
+      - name: Upload build artifacts
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          tag_name: ${{env.GITHUB_REF_NAME}}
+          generate_release_notes: true
+          files: |
+            build/libs/TeleightBots-${GITHUB_REF_NAME:1}-*.jar
