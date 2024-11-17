@@ -3,7 +3,7 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ChatMemberLeft(
-        @JsonProperty("user")
+        @JsonProperty(value = "user")
         User user
 ) implements ChatMember {
 

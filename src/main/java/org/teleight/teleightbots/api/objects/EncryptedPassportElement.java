@@ -8,39 +8,39 @@ public record EncryptedPassportElement(
         @JsonProperty(value = "type", required = true)
         String type,
 
-        @JsonProperty("data")
+        @JsonProperty(value = "data")
         @Nullable
         String data,
 
-        @JsonProperty("phone_number")
+        @JsonProperty(value = "phone_number")
         @Nullable
         String phoneNumber,
 
-        @JsonProperty("email")
+        @JsonProperty(value = "email")
         @Nullable
         String email,
 
-        @JsonProperty("files")
+        @JsonProperty(value = "files")
         @Nullable
         PassportFile[] files,
 
-        @JsonProperty("front_side")
+        @JsonProperty(value = "front_side")
         @Nullable
         PassportFile frontSide,
 
-        @JsonProperty("reverse_side")
+        @JsonProperty(value = "reverse_side")
         @Nullable
         PassportFile reverseSide,
 
-        @JsonProperty("selfie")
+        @JsonProperty(value = "selfie")
         @Nullable
         PassportFile selfie,
 
-        @JsonProperty("translation")
+        @JsonProperty(value = "translation")
         @Nullable
         PassportFile[] translation,
 
-        @JsonProperty("hash")
+        @JsonProperty(value = "hash")
         @Nullable
         String hash
 ) implements ApiResult {

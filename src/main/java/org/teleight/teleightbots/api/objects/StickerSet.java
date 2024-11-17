@@ -22,7 +22,7 @@ public record StickerSet(
         @NotNull
         Sticker[] stickers,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         PhotoSize thumbnail
 ) implements ApiResult {

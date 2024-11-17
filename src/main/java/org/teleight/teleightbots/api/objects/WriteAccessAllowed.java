@@ -5,14 +5,14 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record WriteAccessAllowed(
-        @JsonProperty("from_request")
+        @JsonProperty(value = "from_request")
         boolean fromRequest,
 
-        @JsonProperty("web_app_name")
+        @JsonProperty(value = "web_app_name")
         @Nullable
         String webAppName,
 
-        @JsonProperty("from_attachment_menu")
+        @JsonProperty(value = "from_attachment_menu")
         boolean fromAttachmentMenu
 ) implements ApiResult {
 }

@@ -7,6 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
+import org.teleight.teleightbots.api.methods.CopyTextButton;
 import org.teleight.teleightbots.event.keyboard.ButtonPressEvent;
 import org.teleight.teleightbots.menu.Menu;
 
@@ -20,7 +21,7 @@ public record InlineKeyboardButton(
         @NotNull
         String text,
 
-        @JsonProperty("url")
+        @JsonProperty(value = "url")
         @Nullable
         String url,
 
@@ -47,6 +48,10 @@ public record InlineKeyboardButton(
         @JsonProperty(value = "switch_inline_query_chosen_chat")
         @Nullable
         SwitchInlineQueryChosenChat switchInlineQueryChosenChat,
+
+        @JsonProperty(value = "copy_text")
+        @Nullable
+        CopyTextButton copyText,
 
         @JsonProperty(value = "callback_game")
         @Nullable

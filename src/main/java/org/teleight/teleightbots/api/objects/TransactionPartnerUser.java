@@ -9,15 +9,15 @@ public record TransactionPartnerUser(
         @NotNull
         User user,
 
-        @JsonProperty("invoice_payload")
+        @JsonProperty(value = "invoice_payload")
         @Nullable
         String invoicePayload,
 
-        @JsonProperty("paid_media")
+        @JsonProperty(value = "paid_media")
         @Nullable
         PaidMedia[] paidMedia,
 
-        @JsonProperty("paid_media_payload")
+        @JsonProperty(value = "paid_media_payload")
         @Nullable
         String paidMediaPayload
 ) implements TransactionPartner {

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 
 public record TransactionPartnerFragment(
-        @JsonProperty("withdrawal_state")
+        @JsonProperty(value = "withdrawal_state")
         @Nullable
         RevenueWithdrawalState withdrawalState
 ) implements TransactionPartner {

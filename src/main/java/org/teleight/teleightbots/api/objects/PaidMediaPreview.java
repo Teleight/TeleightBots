@@ -3,13 +3,13 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record PaidMediaPreview(
-        @JsonProperty("width")
+        @JsonProperty(value = "width")
         int width,
 
-        @JsonProperty("height")
+        @JsonProperty(value = "height")
         int height,
 
-        @JsonProperty("duration")
+        @JsonProperty(value = "duration")
         int duration
 ) implements PaidMedia {
 

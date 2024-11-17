@@ -14,15 +14,15 @@ public record Game(
         @JsonProperty(value = "photo", required = true)
         PhotoSize[] photo,
 
-        @JsonProperty("text")
+        @JsonProperty(value = "text")
         @Nullable
         String text,
 
-        @JsonProperty("text_entities")
+        @JsonProperty(value = "text_entities")
         @Nullable
         MessageEntity[] textEntities,
 
-        @JsonProperty("animation")
+        @JsonProperty(value = "animation")
         @Nullable
         Animation animation
 ) implements ApiResult {

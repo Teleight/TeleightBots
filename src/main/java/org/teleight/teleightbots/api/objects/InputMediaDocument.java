@@ -13,23 +13,23 @@ public record InputMediaDocument(
         @NotNull
         InputFile media,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         InputFile thumbnail,
 
-        @JsonProperty("caption")
+        @JsonProperty(value = "caption")
         @Nullable
         String caption,
 
-        @JsonProperty("parse_mode")
+        @JsonProperty(value = "parse_mode")
         @Nullable
         ParseMode parseMode,
 
-        @JsonProperty("caption_entities")
+        @JsonProperty(value = "caption_entities")
         @Nullable
         MessageEntity[] captionEntities,
 
-        @JsonProperty("disable_content_type_detection")
+        @JsonProperty(value = "disable_content_type_detection")
         boolean disableContentTypeDetection
 ) implements InputMedia {
 

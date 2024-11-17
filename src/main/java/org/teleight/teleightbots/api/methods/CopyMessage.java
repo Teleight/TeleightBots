@@ -42,7 +42,7 @@ public record CopyMessage(
         @Nullable
         MessageEntity[] captionEntities,
 
-        @JsonProperty("show_caption_above_media")
+        @JsonProperty(value = "show_caption_above_media")
         boolean showCaptionAboveMedia,
 
         @JsonProperty(value = "disable_notification")
@@ -50,6 +50,9 @@ public record CopyMessage(
 
         @JsonProperty(value = "protect_content")
         boolean protectContent,
+
+        @JsonProperty(value = "allow_paid_broadcast")
+        boolean allowPaidBroadcast,
 
         @JsonProperty(value = "reply_parameters")
         @Nullable

@@ -22,7 +22,7 @@ public record SetStickerSetThumbnail(
         @JsonProperty(value = "user_id", required = true)
         long userId,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         InputFile thumbnail,
 

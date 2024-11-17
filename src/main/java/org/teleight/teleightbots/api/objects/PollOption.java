@@ -8,7 +8,7 @@ public record PollOption(
         @JsonProperty(value = "text", required = true)
         String text,
 
-        @JsonProperty("text_entities")
+        @JsonProperty(value = "text_entities")
         @Nullable
         MessageEntity[] textEntities,
 

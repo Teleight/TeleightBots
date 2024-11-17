@@ -23,25 +23,25 @@ public record ChatInviteLink(
         @JsonProperty(value = "is_revoked", required = true)
         boolean isRevoked,
 
-        @JsonProperty("name")
+        @JsonProperty(value = "name")
         @Nullable
         String name,
 
-        @JsonProperty("expire_date")
+        @JsonProperty(value = "expire_date")
         @Nullable
         Date expireDate,
 
-        @JsonProperty("member_limit")
+        @JsonProperty(value = "member_limit")
         @Range(from = 1, to = 99_999)
         int memberLimit,
 
-        @JsonProperty("pending_join_request_count")
+        @JsonProperty(value = "pending_join_request_count")
         int pendingJoinRequestCount,
 
-        @JsonProperty("subscription_period")
+        @JsonProperty(value = "subscription_period")
         int subscriptionPeriod,
 
-        @JsonProperty("subscription_price")
+        @JsonProperty(value = "subscription_price")
         int subscriptionPrice
 ) implements ApiResult {
 }

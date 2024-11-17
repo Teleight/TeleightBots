@@ -23,7 +23,7 @@ public record CreateInvoiceLink(
         @NotNull
         String payload,
 
-        @JsonProperty("provider_token")
+        @JsonProperty(value = "provider_token")
         @NotNull
         String providerToken,
 
@@ -35,48 +35,48 @@ public record CreateInvoiceLink(
         @NotNull
         LabeledPrice[] prices,
 
-        @JsonProperty("max_tip_amount")
+        @JsonProperty(value = "max_tip_amount")
         int maxTipAmount,
 
-        @JsonProperty("suggested_tip_amounts")
+        @JsonProperty(value = "suggested_tip_amounts")
         int[] suggestedTipAmounts,
 
-        @JsonProperty("provider_data")
+        @JsonProperty(value = "provider_data")
         @Nullable
         String providerData,
 
-        @JsonProperty("photo_url")
+        @JsonProperty(value = "photo_url")
         @Nullable
         String photoUrl,
 
-        @JsonProperty("photo_size")
+        @JsonProperty(value = "photo_size")
         int photoSize,
 
-        @JsonProperty("photo_width")
+        @JsonProperty(value = "photo_width")
         int photoWidth,
 
-        @JsonProperty("photo_height")
+        @JsonProperty(value = "photo_height")
         int photoHeight,
 
-        @JsonProperty("need_name")
+        @JsonProperty(value = "need_name")
         boolean needName,
 
-        @JsonProperty("need_phone_number")
+        @JsonProperty(value = "need_phone_number")
         boolean needPhoneNumber,
 
-        @JsonProperty("need_email")
+        @JsonProperty(value = "need_email")
         boolean needEmail,
 
-        @JsonProperty("need_shipping_address")
+        @JsonProperty(value = "need_shipping_address")
         boolean needShippingAddress,
 
-        @JsonProperty("send_phone_number_to_provider")
+        @JsonProperty(value = "send_phone_number_to_provider")
         boolean sendPhoneNumberToProvider,
 
-        @JsonProperty("send_email_to_provider")
+        @JsonProperty(value = "send_email_to_provider")
         boolean sendEmailToProvider,
 
-        @JsonProperty("is_flexible")
+        @JsonProperty(value = "is_flexible")
         boolean isFlexible
 ) implements ApiMethodBoolean {
 

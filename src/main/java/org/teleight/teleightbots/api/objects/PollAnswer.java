@@ -8,11 +8,11 @@ public record PollAnswer(
         @JsonProperty(value = "poll_id", required = true)
         String pollId,
 
-        @JsonProperty("chat")
+        @JsonProperty(value = "chat")
         @Nullable
         Chat chat,
 
-        @JsonProperty("user")
+        @JsonProperty(value = "user")
         @Nullable
         User user,
 

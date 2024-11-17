@@ -13,20 +13,20 @@ public record InputPaidMediaVideo(
         @NotNull
         InputFile media,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         InputFile thumbnail,
 
-        @JsonProperty("width")
+        @JsonProperty(value = "width")
         int width,
 
-        @JsonProperty("height")
+        @JsonProperty(value = "height")
         int height,
 
-        @JsonProperty("duration")
+        @JsonProperty(value = "duration")
         int duration,
 
-        @JsonProperty("supports_streaming")
+        @JsonProperty(value = "supports_streaming")
         boolean supportsStreaming
 ) implements InputPaidMedia {
 

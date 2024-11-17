@@ -17,7 +17,7 @@ public record AnswerPreCheckoutQuery(
         @JsonProperty(value = "ok", required = true)
         boolean ok,
 
-        @JsonProperty("error_message")
+        @JsonProperty(value = "error_message")
         @Nullable
         String errorMessage
 ) implements ApiMethodBoolean {

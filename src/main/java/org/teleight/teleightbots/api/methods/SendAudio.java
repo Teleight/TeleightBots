@@ -66,6 +66,9 @@ public record SendAudio(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "allow_paid_broadcast")
+        boolean allowPaidBroadcast,
+
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,
 
@@ -103,6 +106,7 @@ public record SendAudio(
         parameters.put("title", title);
         parameters.put("disable_notification", disableNotification);
         parameters.put("protect_content", protectContent);
+        parameters.put("allow_paid_broadcast", allowPaidBroadcast);
         parameters.put("message_effect_id", messageEffectId);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);

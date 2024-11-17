@@ -14,19 +14,19 @@ public record Venue(
         @JsonProperty(value = "address", required = true)
         String address,
 
-        @JsonProperty("foursquare_id")
+        @JsonProperty(value = "foursquare_id")
         @Nullable
         String foursquareId,
 
-        @JsonProperty("foursquare_type")
+        @JsonProperty(value = "foursquare_type")
         @Nullable
         String foursquareType,
 
-        @JsonProperty("google_place_id")
+        @JsonProperty(value = "google_place_id")
         @Nullable
         String googlePlaceId,
 
-        @JsonProperty("google_place_type")
+        @JsonProperty(value = "google_place_type")
         @Nullable
         String googlePlaceType
 ) implements ApiResult {

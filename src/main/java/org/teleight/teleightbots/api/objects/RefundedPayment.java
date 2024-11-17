@@ -21,7 +21,7 @@ public record RefundedPayment(
         @NotNull
         String telegramPaymentChargeId,
 
-        @JsonProperty("provider_payment_charge_id")
+        @JsonProperty(value = "provider_payment_charge_id")
         @Nullable
         String providerPaymentChargeId
 ) implements ApiResult {

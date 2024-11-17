@@ -22,20 +22,20 @@ public record SetGameScore(
         @IntRange(from = 0)
         int score,
 
-        @JsonProperty("force")
+        @JsonProperty(value = "force")
         boolean force,
 
-        @JsonProperty("disable_edit_message")
+        @JsonProperty(value = "disable_edit_message")
         boolean disableEditMessage,
 
-        @JsonProperty("chat_id")
+        @JsonProperty(value = "chat_id")
         @Nullable
         String chatId,
 
-        @JsonProperty("message_id")
+        @JsonProperty(value = "message_id")
         int messageId,
 
-        @JsonProperty("inline_message_id")
+        @JsonProperty(value = "inline_message_id")
         @Nullable
         String inlineMessageId
 ) implements ApiMethodMultiResponse {

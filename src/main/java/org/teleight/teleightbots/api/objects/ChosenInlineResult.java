@@ -13,11 +13,11 @@ public record ChosenInlineResult(
         @JsonProperty(value = "from", required = true)
         User from,
 
-        @JsonProperty("location")
+        @JsonProperty(value = "location")
         @Nullable
         Location location,
 
-        @JsonProperty("inline_message_id")
+        @JsonProperty(value = "inline_message_id")
         @Nullable
         String inlineMessageId,
 

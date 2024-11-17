@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record SentWebAppMessage(
-        @JsonProperty("inline_message_id")
+        @JsonProperty(value = "inline_message_id")
         @Nullable
         String inlineMessageId
 ) implements ApiResult {

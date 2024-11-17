@@ -15,16 +15,16 @@ import java.util.List;
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record GetUpdates(
-        @JsonProperty("offset")
+        @JsonProperty(value = "offset")
         int offset,
 
-        @JsonProperty("limit")
+        @JsonProperty(value = "limit")
         int limit,
 
-        @JsonProperty("timeout")
+        @JsonProperty(value = "timeout")
         int timeout,
 
-        @JsonProperty("allowed_updates")
+        @JsonProperty(value = "allowed_updates")
         @Nullable
         List<String> allowedUpdates
 ) implements ApiMethod<Update[]> {

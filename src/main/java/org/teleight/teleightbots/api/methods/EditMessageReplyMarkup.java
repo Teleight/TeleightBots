@@ -19,18 +19,18 @@ public record EditMessageReplyMarkup(
         @Nullable
         String businessConnectionId,
 
-        @JsonProperty("chat_id")
+        @JsonProperty(value = "chat_id")
         @Nullable
         String chatId,
 
-        @JsonProperty("message_id")
+        @JsonProperty(value = "message_id")
         int messageId,
 
-        @JsonProperty("inline_message_id")
+        @JsonProperty(value = "inline_message_id")
         @Nullable
         String inlineMessageId,
 
-        @JsonProperty("reply_markup")
+        @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
 ) implements ApiMethodMultiResponse {

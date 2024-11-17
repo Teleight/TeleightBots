@@ -10,15 +10,15 @@ public record LoginUrl(
         @NotNull
         String url,
 
-        @JsonProperty("forward_text")
+        @JsonProperty(value = "forward_text")
         @Nullable
         String forwardText,
 
-        @JsonProperty("bot_username")
+        @JsonProperty(value = "bot_username")
         @Nullable
         String botUsername,
 
-        @JsonProperty("request_write_access")
+        @JsonProperty(value = "request_write_access")
         boolean requestWriteAccess
 ) implements ApiResult {
 }
