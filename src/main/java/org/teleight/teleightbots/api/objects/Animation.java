@@ -20,19 +20,19 @@ public record Animation(
         @JsonProperty(value = "duration", required = true)
         int duration,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         PhotoSize thumbnail,
 
-        @JsonProperty("file_name")
+        @JsonProperty(value = "file_name")
         @Nullable
         String fileName,
 
-        @JsonProperty("mime_type")
+        @JsonProperty(value = "mime_type")
         @Nullable
         String mimeType,
 
-        @JsonProperty("file_size")
+        @JsonProperty(value = "file_size")
         @Nullable
         Long fileSize
 ) implements ApiResult {

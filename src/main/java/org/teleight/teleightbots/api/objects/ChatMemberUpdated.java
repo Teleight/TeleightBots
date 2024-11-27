@@ -28,14 +28,14 @@ public record ChatMemberUpdated(
         @NotNull
         ChatMember newChatMember,
 
-        @JsonProperty("invite_link")
+        @JsonProperty(value = "invite_link")
         @Nullable
         ChatInviteLink inviteLink,
 
-        @JsonProperty("via_join_request")
+        @JsonProperty(value = "via_join_request")
         boolean viaJoinRequest,
 
-        @JsonProperty("via_chat_folder_invite_link")
+        @JsonProperty(value = "via_chat_folder_invite_link")
         boolean viaChatFolderInviteLink
 ) implements ApiResult {
 }

@@ -3,10 +3,10 @@ package org.teleight.teleightbots.api.objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ChatMemberBanned(
-        @JsonProperty("user")
+        @JsonProperty(value = "user")
         User user,
 
-        @JsonProperty("until_date")
+        @JsonProperty(value = "until_date")
         int untilDate
 ) implements ChatMember {
 

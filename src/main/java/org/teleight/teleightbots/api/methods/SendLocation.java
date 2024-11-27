@@ -49,6 +49,9 @@ public record SendLocation(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "allow_paid_broadcast")
+        boolean allowPaidBroadcast,
+
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,
 

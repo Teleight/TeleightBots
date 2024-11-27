@@ -6,16 +6,16 @@ import org.jetbrains.annotations.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ExtensionInfoFile(
-        @JsonProperty("name")
+        @JsonProperty(value = "name")
         String name,
 
-        @JsonProperty("version")
+        @JsonProperty(value = "version")
         String version,
 
-        @JsonProperty("parentBot")
+        @JsonProperty(value = "parentBot")
         String parentBot,
 
-        @JsonProperty("mainClass")
+        @JsonProperty(value = "mainClass")
         String mainClass
 ) {
 

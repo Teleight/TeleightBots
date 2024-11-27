@@ -15,7 +15,7 @@ public record BatchForwardMessages(
         @NotNull
         String chatId,
 
-        @JsonProperty("message_thread_id")
+        @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
         @JsonProperty(value = "from_chat_id", required = true)

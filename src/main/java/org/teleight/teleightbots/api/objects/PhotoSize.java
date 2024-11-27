@@ -16,7 +16,7 @@ public record PhotoSize(
         @JsonProperty(value = "height", required = true)
         int height,
 
-        @JsonProperty("file_size")
+        @JsonProperty(value = "file_size")
         long fileSize
 ) implements ApiResult {
 }

@@ -11,14 +11,14 @@ public record Contact(
         @JsonProperty(value = "first_name", required = true)
         String firstName,
 
-        @JsonProperty("last_name")
+        @JsonProperty(value = "last_name")
         @Nullable
         String lastName,
 
-        @JsonProperty("user_id")
+        @JsonProperty(value = "user_id")
         long userId,
 
-        @JsonProperty("vcard")
+        @JsonProperty(value = "vcard")
         @Nullable
         String vcard
 ) implements ApiResult {

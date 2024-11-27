@@ -47,6 +47,9 @@ public record SendVideoNote(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "allow_paid_broadcast")
+        boolean allowPaidBroadcast,
+
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,
 
@@ -80,6 +83,7 @@ public record SendVideoNote(
         parameters.put("video_note", videoNote);
         parameters.put("thumbnail", thumbnail);
         parameters.put("protect_content", protectContent);
+        parameters.put("allow_paid_broadcast", allowPaidBroadcast);
         parameters.put("message_effect_id", messageEffectId);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);

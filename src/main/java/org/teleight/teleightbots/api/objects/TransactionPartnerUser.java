@@ -9,17 +9,24 @@ public record TransactionPartnerUser(
         @NotNull
         User user,
 
-        @JsonProperty("invoice_payload")
+        @JsonProperty(value = "invoice_payload")
         @Nullable
         String invoicePayload,
 
-        @JsonProperty("paid_media")
+        @JsonProperty(value = "subscription_period")
+        int subscriptionPeriod,
+
+        @JsonProperty(value = "paid_media")
         @Nullable
         PaidMedia[] paidMedia,
 
-        @JsonProperty("paid_media_payload")
+        @JsonProperty(value = "paid_media_payload")
         @Nullable
-        String paidMediaPayload
+        String paidMediaPayload,
+
+        @JsonProperty(value = "gift")
+        @Nullable
+        Gift gift
 ) implements TransactionPartner {
 
     @Override

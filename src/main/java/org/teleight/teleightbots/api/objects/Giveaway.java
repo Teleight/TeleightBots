@@ -33,7 +33,7 @@ public record Giveaway(
         @Nullable
         String[] countryCodes,
 
-        @JsonProperty("prize_star_count")
+        @JsonProperty(value = "prize_star_count")
         int prizeStarCount,
 
         @JsonProperty(value = "premium_subscription_month_count")

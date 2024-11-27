@@ -11,7 +11,7 @@ public record ChatBoostSourceGiveaway(
         @Nullable
         User user,
 
-        @JsonProperty("prize_star_count")
+        @JsonProperty(value = "prize_star_count")
         int prizeStarCount,
 
         @JsonProperty(value = "is_unclaimed")

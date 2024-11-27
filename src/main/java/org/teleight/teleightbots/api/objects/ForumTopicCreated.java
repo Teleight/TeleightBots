@@ -11,7 +11,7 @@ public record ForumTopicCreated(
         @JsonProperty(value = "icon_color", required = true)
         int description,
 
-        @JsonProperty("icon_custom_emoji_id")
+        @JsonProperty(value = "icon_custom_emoji_id")
         @Nullable
         String iconCustomEmojiId
 ) implements ApiResult {

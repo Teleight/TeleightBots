@@ -20,7 +20,7 @@ public record EditChatSubscriptionInviteLink(
         @NotNull
         String inviteLink,
 
-        @JsonProperty("name")
+        @JsonProperty(value = "name")
         @Nullable
         String name
 ) implements ApiMethod<ChatInviteLink> {

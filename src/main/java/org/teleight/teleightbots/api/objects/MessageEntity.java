@@ -19,19 +19,19 @@ public record MessageEntity(
         @JsonProperty(value = "length", required = true)
         int length,
 
-        @JsonProperty("url")
+        @JsonProperty(value = "url")
         @Nullable
         String url,
 
-        @JsonProperty("user")
+        @JsonProperty(value = "user")
         @Nullable
         User user,
 
-        @JsonProperty("language")
+        @JsonProperty(value = "language")
         @Nullable
         String language,
 
-        @JsonProperty("custom_emoji_id")
+        @JsonProperty(value = "custom_emoji_id")
         @Nullable
         String customEmojiId
 ) implements ApiResult {

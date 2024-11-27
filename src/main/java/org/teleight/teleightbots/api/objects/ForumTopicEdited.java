@@ -5,11 +5,11 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record ForumTopicEdited(
-        @JsonProperty("name")
+        @JsonProperty(value = "name")
         @Nullable
         String name,
 
-        @JsonProperty("icon_custom_emoji_id")
+        @JsonProperty(value = "icon_custom_emoji_id")
         @Nullable
         String iconCustomEmojiId
 ) implements ApiResult {

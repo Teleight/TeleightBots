@@ -19,11 +19,11 @@ public record StarTransaction(
         @NotNull
         Date date,
 
-        @JsonProperty("source")
+        @JsonProperty(value = "source")
         @Nullable
         TransactionPartner source,
 
-        @JsonProperty("receiver")
+        @JsonProperty(value = "receiver")
         @Nullable
         TransactionPartner receiver
 ) implements ApiResult {

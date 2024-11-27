@@ -26,34 +26,34 @@ public record Sticker(
         @JsonProperty(value = "is_video", required = true)
         boolean isVideo,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         PhotoSize thumbnail,
 
-        @JsonProperty("emoji")
+        @JsonProperty(value = "emoji")
         @Nullable
         String emoji,
 
-        @JsonProperty("set_name")
+        @JsonProperty(value = "set_name")
         @Nullable
         String setName,
 
-        @JsonProperty("premium_annotation")
+        @JsonProperty(value = "premium_annotation")
         @Nullable
         File premiumAnnotation,
 
-        @JsonProperty("mask_position")
+        @JsonProperty(value = "mask_position")
         @Nullable
         MaskPosition maskPosition,
 
-        @JsonProperty("custom_emoji_id")
+        @JsonProperty(value = "custom_emoji_id")
         @Nullable
         String customEmojiId,
 
-        @JsonProperty("needs_repainting")
+        @JsonProperty(value = "needs_repainting")
         boolean needsRepainting,
 
-        @JsonProperty("file_size")
+        @JsonProperty(value = "file_size")
         @Nullable
         Long fileSize
 ) implements ApiResult {

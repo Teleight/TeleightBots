@@ -20,11 +20,11 @@ public record PreCheckoutQuery(
         @JsonProperty(value = "invoice_payload", required = true)
         String invoicePayload,
 
-        @JsonProperty("shipping_option_id")
+        @JsonProperty(value = "shipping_option_id")
         @Nullable
         String shippingOptionId,
 
-        @JsonProperty("order_info")
+        @JsonProperty(value = "order_info")
         @Nullable
         OrderInfo orderInfo
 ) implements ApiResult {

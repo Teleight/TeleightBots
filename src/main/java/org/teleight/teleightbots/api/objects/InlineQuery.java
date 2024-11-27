@@ -17,11 +17,11 @@ public record InlineQuery(
         @JsonProperty(value = "offset", required = true)
         String offset,
 
-        @JsonProperty("chat_type")
+        @JsonProperty(value = "chat_type")
         @Nullable
         String chatType,
 
-        @JsonProperty("location")
+        @JsonProperty(value = "location")
         @Nullable
         Location location
 ) implements ApiResult {

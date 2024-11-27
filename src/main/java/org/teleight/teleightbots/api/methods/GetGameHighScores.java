@@ -15,14 +15,14 @@ public record GetGameHighScores(
         @JsonProperty(value = "user_id", required = true)
         long userId,
 
-        @JsonProperty("chat_id")
+        @JsonProperty(value = "chat_id")
         @Nullable
         String chatId,
 
-        @JsonProperty("message_id")
+        @JsonProperty(value = "message_id")
         int messageId,
 
-        @JsonProperty("inline_message_id")
+        @JsonProperty(value = "inline_message_id")
         @Nullable
         String inlineMessageId
 ) implements ApiMethod<GameHighScore[]> {

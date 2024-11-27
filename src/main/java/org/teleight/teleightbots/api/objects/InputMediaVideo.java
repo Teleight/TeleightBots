@@ -13,38 +13,38 @@ public record InputMediaVideo(
         @NotNull
         InputFile media,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         InputFile thumbnail,
 
-        @JsonProperty("caption")
+        @JsonProperty(value = "caption")
         @Nullable
         String caption,
 
-        @JsonProperty("parse_mode")
+        @JsonProperty(value = "parse_mode")
         @Nullable
         ParseMode parseMode,
 
-        @JsonProperty("caption_entities")
+        @JsonProperty(value = "caption_entities")
         @Nullable
         MessageEntity[] captionEntities,
 
-        @JsonProperty("show_caption_above_media")
+        @JsonProperty(value = "show_caption_above_media")
         boolean showCaptionAboveMedia,
 
-        @JsonProperty("width")
+        @JsonProperty(value = "width")
         int width,
 
-        @JsonProperty("height")
+        @JsonProperty(value = "height")
         int height,
 
-        @JsonProperty("duration")
+        @JsonProperty(value = "duration")
         int duration,
 
-        @JsonProperty("supports_streaming")
+        @JsonProperty(value = "supports_streaming")
         boolean supportStreaming,
 
-        @JsonProperty("has_spoiler")
+        @JsonProperty(value = "has_spoiler")
         boolean hasSpoiler
 ) implements InputMedia {
 

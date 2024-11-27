@@ -29,10 +29,10 @@ public record CreateNewStickerSet(
         @NotNull
         InputSticker[] stickers,
 
-        @JsonProperty("sticker_type")
+        @JsonProperty(value = "sticker_type")
         StickerType stickerType,
 
-        @JsonProperty("needs_repainting")
+        @JsonProperty(value = "needs_repainting")
         boolean needsRepainting
 ) implements MultiPartApiMethodBoolean {
 

@@ -13,154 +13,154 @@ public record ChatFullInfo(
         @JsonProperty(value = "type", required = true)
         String type,
 
-        @JsonProperty("title")
+        @JsonProperty(value = "title")
         @Nullable
         String title,
 
-        @JsonProperty("username")
+        @JsonProperty(value = "username")
         @Nullable
         String username,
 
-        @JsonProperty("first_name")
+        @JsonProperty(value = "first_name")
         @Nullable
         String firstName,
 
-        @JsonProperty("last_name")
+        @JsonProperty(value = "last_name")
         @Nullable
         String lastName,
 
-        @JsonProperty("is_forum")
+        @JsonProperty(value = "is_forum")
         boolean isForum,
 
-        @JsonProperty("accent_color_id")
+        @JsonProperty(value = "accent_color_id")
         int accentColorId,
 
-        @JsonProperty("max_reaction_count")
+        @JsonProperty(value = "max_reaction_count")
         int maxReactionCount,
 
-        @JsonProperty("photo")
+        @JsonProperty(value = "photo")
         @Nullable
         ChatPhoto photo,
 
-        @JsonProperty("active_usernames")
+        @JsonProperty(value = "active_usernames")
         @Nullable
         String[] activeUsernames,
 
-        @JsonProperty("birthdate")
+        @JsonProperty(value = "birthdate")
         @Nullable
         Birthdate birthdate,
 
-        @JsonProperty("business_intro")
+        @JsonProperty(value = "business_intro")
         @Nullable
         String businessIntro,
 
-        @JsonProperty("business_location")
+        @JsonProperty(value = "business_location")
         @Nullable
         BusinessLocation businessLocation,
 
-        @JsonProperty("business_opening_hours")
+        @JsonProperty(value = "business_opening_hours")
         @Nullable
         BusinessOpeningHours businessOpeningHours,
 
-        @JsonProperty("personal_chat")
+        @JsonProperty(value = "personal_chat")
         @Nullable
         Chat personalChat,
 
-        @JsonProperty("available_reactions")
+        @JsonProperty(value = "available_reactions")
         @Nullable
         ReactionType[] availableReactions,
 
-        @JsonProperty("background_custom_emoji_id")
+        @JsonProperty(value = "background_custom_emoji_id")
         @Nullable
         String backgroundCustomEmojiId,
 
-        @JsonProperty("profile_accent_color_id")
+        @JsonProperty(value = "profile_accent_color_id")
         int profileAccentColorId,
 
-        @JsonProperty("profile_background_custom_emoji_id")
+        @JsonProperty(value = "profile_background_custom_emoji_id")
         @Nullable
         String profileBackgroundCustomEmojiId,
 
-        @JsonProperty("emoji_status_custom_emoji_id")
+        @JsonProperty(value = "emoji_status_custom_emoji_id")
         @Nullable
         String emojiStatusCustomEmojiId,
 
-        @JsonProperty("emoji_status_expiration_date")
+        @JsonProperty(value = "emoji_status_expiration_date")
         @Nullable
         Date emojiStatusExpirationDate,
 
-        @JsonProperty("bio")
+        @JsonProperty(value = "bio")
         @Nullable
         String bio,
 
-        @JsonProperty("has_private_forwards")
+        @JsonProperty(value = "has_private_forwards")
         boolean hasPrivateForwards,
 
-        @JsonProperty("has_restricted_voice_and_video_messages")
+        @JsonProperty(value = "has_restricted_voice_and_video_messages")
         boolean hasRestrictedVoiceAndVideoMessages,
 
-        @JsonProperty("join_to_send_messages")
+        @JsonProperty(value = "join_to_send_messages")
         boolean joinToSendMessages,
 
-        @JsonProperty("join_by_request")
+        @JsonProperty(value = "join_by_request")
         boolean joinByRequest,
 
-        @JsonProperty("description")
+        @JsonProperty(value = "description")
         @Nullable
         String description,
 
-        @JsonProperty("invite_link")
+        @JsonProperty(value = "invite_link")
         @Nullable
         String inviteLink,
 
-        @JsonProperty("pinned_message")
+        @JsonProperty(value = "pinned_message")
         @Nullable
         Message pinnedMessage,
 
-        @JsonProperty("permissions")
+        @JsonProperty(value = "permissions")
         @Nullable
         ChatPermissions permissions,
 
-        @JsonProperty("can_send_paid_media")
+        @JsonProperty(value = "can_send_paid_media")
         boolean canSendPaidMedia,
 
-        @JsonProperty("slow_mode_delay")
+        @JsonProperty(value = "slow_mode_delay")
         int slowModeDelay,
 
-        @JsonProperty("unrestrict_boost_count")
+        @JsonProperty(value = "unrestrict_boost_count")
         int unrestrictBoostCount,
 
-        @JsonProperty("message_auto_delete_time")
+        @JsonProperty(value = "message_auto_delete_time")
         int messageAutoDeleteTime,
 
-        @JsonProperty("has_aggressive_anti_spam_enabled")
+        @JsonProperty(value = "has_aggressive_anti_spam_enabled")
         boolean hasAggressiveAntiSpamEnabled,
 
-        @JsonProperty("has_hidden_members")
+        @JsonProperty(value = "has_hidden_members")
         boolean hasHiddenMembers,
 
-        @JsonProperty("has_protected_content")
+        @JsonProperty(value = "has_protected_content")
         boolean hasProtectedContent,
 
-        @JsonProperty("has_visible_history")
+        @JsonProperty(value = "has_visible_history")
         boolean hasVisibleHistory,
 
-        @JsonProperty("sticker_set_name")
+        @JsonProperty(value = "sticker_set_name")
         @Nullable
         String stickerSetName,
 
-        @JsonProperty("can_set_sticker_set")
+        @JsonProperty(value = "can_set_sticker_set")
         boolean canSetStickerSet,
 
-        @JsonProperty("custom_emoji_sticker_set_name")
+        @JsonProperty(value = "custom_emoji_sticker_set_name")
         @Nullable
         String customEmojiStickerSetName,
 
-        @JsonProperty("linked_chat_id")
+        @JsonProperty(value = "linked_chat_id")
         @Nullable
         Long linkedChatId,
 
-        @JsonProperty("location")
+        @JsonProperty(value = "location")
         @Nullable
         ChatLocation location
 ) implements ApiResult {

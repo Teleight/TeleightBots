@@ -29,7 +29,7 @@ public record GiveawayWinners(
         @JsonProperty(value = "additional_chat_count")
         int additionalChatCount,
 
-        @JsonProperty("prize_star_count")
+        @JsonProperty(value = "prize_star_count")
         int prizeStarCount,
 
         @JsonProperty(value = "premium_subscription_month_count")

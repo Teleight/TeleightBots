@@ -13,10 +13,10 @@ public record BackgroundTypeWallpaper(
         @IntRange(from = 0, to = 100)
         int darkThemeDimming,
 
-        @JsonProperty("is_blurred")
+        @JsonProperty(value = "is_blurred")
         boolean isBlurred,
 
-        @JsonProperty("is_moving")
+        @JsonProperty(value = "is_moving")
         boolean isMoving
 ) implements BackgroundType {
 

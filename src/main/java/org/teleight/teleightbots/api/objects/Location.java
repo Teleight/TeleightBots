@@ -11,17 +11,17 @@ public record Location(
         @JsonProperty(value = "latitude", required = true)
         Float latitude,
 
-        @JsonProperty("horizontal_accuracy")
+        @JsonProperty(value = "horizontal_accuracy")
         @Nullable
         Float horizontalAccuracy,
 
-        @JsonProperty("live_period")
+        @JsonProperty(value = "live_period")
         int livePeriod,
 
-        @JsonProperty("heading")
+        @JsonProperty(value = "heading")
         int heading,
 
-        @JsonProperty("proximity_alert_radius")
+        @JsonProperty(value = "proximity_alert_radius")
         int proximityAlertRadius
 ) implements ApiResult {
 }

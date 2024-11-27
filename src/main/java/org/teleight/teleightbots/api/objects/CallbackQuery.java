@@ -16,18 +16,18 @@ public record CallbackQuery(
         @JsonProperty(value = "from", required = true)
         User from,
 
-        @JsonProperty("message")
+        @JsonProperty(value = "message")
         @Nullable
         MaybeInaccessibleMessage message,
 
-        @JsonProperty("inline_message_id")
+        @JsonProperty(value = "inline_message_id")
         @Nullable
         String inlineMessageId,
 
         @JsonProperty(value = "chat_instance", required = true)
         String chatInstance,
 
-        @JsonProperty("data")
+        @JsonProperty(value = "data")
         @Nullable
         String data
 ) implements ApiResult {

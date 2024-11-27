@@ -4,19 +4,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record ApiResponse<T>(
-        @JsonProperty("ok")
+        @JsonProperty(value = "ok")
         boolean ok,
 
-        @JsonProperty("error_code")
+        @JsonProperty(value = "error_code")
         int errorCode,
 
-        @JsonProperty("description")
+        @JsonProperty(value = "description")
         String errorDescription,
 
-        @JsonProperty("parameters")
+        @JsonProperty(value = "parameters")
         ResponseParameters parameters,
 
-        @JsonProperty("result")
+        @JsonProperty(value = "result")
         T result
 ) implements ApiResult {
 

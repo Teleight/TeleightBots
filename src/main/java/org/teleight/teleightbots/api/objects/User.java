@@ -14,37 +14,37 @@ public record User(
         @JsonProperty(value = "first_name", required = true)
         String firstName,
 
-        @JsonProperty("last_name")
+        @JsonProperty(value = "last_name")
         @Nullable
         String lastName,
 
-        @JsonProperty("username")
+        @JsonProperty(value = "username")
         @Nullable
         String username,
 
-        @JsonProperty("language_code")
+        @JsonProperty(value = "language_code")
         @Nullable
         String language_code,
 
-        @JsonProperty("is_premium")
+        @JsonProperty(value = "is_premium")
         boolean isPremium,
 
-        @JsonProperty("added_to_attachment_menu")
+        @JsonProperty(value = "added_to_attachment_menu")
         boolean addedToAttachmentMenu,
 
-        @JsonProperty("can_join_groups")
+        @JsonProperty(value = "can_join_groups")
         boolean canJoinGroups,
 
-        @JsonProperty("can_read_all_group_messages")
+        @JsonProperty(value = "can_read_all_group_messages")
         boolean canReadAllGroupMessages,
 
-        @JsonProperty("supports_inline_queries")
+        @JsonProperty(value = "supports_inline_queries")
         boolean supportsInlineQueries,
 
-        @JsonProperty("can_connect_to_business")
+        @JsonProperty(value = "can_connect_to_business")
         boolean canConnectToBusiness,
 
-        @JsonProperty("has_main_web_app")
+        @JsonProperty(value = "has_main_web_app")
         boolean hasMainWebApp
 ) implements ApiResult {
 

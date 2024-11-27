@@ -17,10 +17,10 @@ public record BackgroundTypePattern(
         @IntRange(from = 0, to = 100)
         int intensity,
 
-        @JsonProperty("is_inverted")
+        @JsonProperty(value = "is_inverted")
         boolean isInverted,
 
-        @JsonProperty("is_moving")
+        @JsonProperty(value = "is_moving")
         boolean isMoving
 ) implements BackgroundType {
 

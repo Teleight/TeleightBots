@@ -12,7 +12,7 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record GetStarTransactions(
-        @JsonProperty("offset")
+        @JsonProperty(value = "offset")
         int offset,
 
         @JsonProperty(value = "limit", defaultValue = "100")

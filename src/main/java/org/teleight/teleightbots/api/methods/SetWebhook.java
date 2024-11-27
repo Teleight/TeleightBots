@@ -21,11 +21,11 @@ public record SetWebhook(
         @NotNull
         String url,
 
-        @JsonProperty("certificate")
+        @JsonProperty(value = "certificate")
         @Nullable
         InputFile certificate,
 
-        @JsonProperty("ip_address")
+        @JsonProperty(value = "ip_address")
         @Nullable
         String ipAddress,
 
@@ -33,14 +33,14 @@ public record SetWebhook(
         @IntRange(from = 1, to = 100)
         int maxConnections,
 
-        @JsonProperty("allowed_updates")
+        @JsonProperty(value = "allowed_updates")
         @Nullable
         String[] allowedUpdates,
 
-        @JsonProperty("drop_pending_updates")
+        @JsonProperty(value = "drop_pending_updates")
         boolean dropPendingUpdates,
 
-        @JsonProperty("secret_token")
+        @JsonProperty(value = "secret_token")
         @MatchesRegex("^[A-Za-z0-9_-]{1,256}$")
         @Nullable
         String secretToken

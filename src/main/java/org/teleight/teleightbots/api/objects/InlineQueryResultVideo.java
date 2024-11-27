@@ -41,7 +41,7 @@ public record InlineQueryResultVideo(
         @Nullable
         MessageEntity[] captionEntities,
 
-        @JsonProperty("show_caption_above_media")
+        @JsonProperty(value = "show_caption_above_media")
         boolean showCaptionAboveMedia,
 
         @JsonProperty(value = "video_width")
