@@ -11,6 +11,10 @@ import org.teleight.teleightbots.api.objects.LabeledPrice;
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record CreateInvoiceLink(
+        @JsonProperty(value = "business_connection_id")
+        @Nullable
+        String businessConnectionId,
+
         @JsonProperty(value = "title", required = true)
         @NotNull
         String title,
@@ -34,6 +38,9 @@ public record CreateInvoiceLink(
         @JsonProperty(value = "prices", required = true)
         @NotNull
         LabeledPrice[] prices,
+
+        @JsonProperty(value = "subscription_period")
+        int subscriptionPeriod,
 
         @JsonProperty(value = "max_tip_amount")
         int maxTipAmount,

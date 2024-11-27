@@ -13,13 +13,20 @@ public record TransactionPartnerUser(
         @Nullable
         String invoicePayload,
 
+        @JsonProperty(value = "subscription_period")
+        int subscriptionPeriod,
+
         @JsonProperty(value = "paid_media")
         @Nullable
         PaidMedia[] paidMedia,
 
         @JsonProperty(value = "paid_media_payload")
         @Nullable
-        String paidMediaPayload
+        String paidMediaPayload,
+
+        @JsonProperty(value = "gift")
+        @Nullable
+        Gift gift
 ) implements TransactionPartner {
 
     @Override
