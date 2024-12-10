@@ -9,6 +9,10 @@ public record TransactionPartnerUser(
         @NotNull
         User user,
 
+        @JsonProperty(value = "affiliate")
+        @Nullable
+        AffiliateInfo affiliate,
+
         @JsonProperty(value = "invoice_payload")
         @Nullable
         String invoicePayload,
