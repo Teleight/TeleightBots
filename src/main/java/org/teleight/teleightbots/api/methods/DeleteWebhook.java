@@ -10,7 +10,7 @@ import org.teleight.teleightbots.api.ApiMethodBoolean;
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record DeleteWebhook(
-        @JsonProperty("drop_pending_updates")
+        @JsonProperty(value = "drop_pending_updates")
         boolean dropPendingUpdates
 ) implements ApiMethodBoolean {
 

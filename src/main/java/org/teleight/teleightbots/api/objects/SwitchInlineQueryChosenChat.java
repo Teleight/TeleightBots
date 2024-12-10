@@ -5,20 +5,20 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record SwitchInlineQueryChosenChat(
-        @JsonProperty("query")
+        @JsonProperty(value = "query")
         @Nullable
         String query,
 
-        @JsonProperty("allow_user_chats")
+        @JsonProperty(value = "allow_user_chats")
         boolean allowUserChats,
 
-        @JsonProperty("allow_bot_chats")
+        @JsonProperty(value = "allow_bot_chats")
         boolean allowBotChats,
 
-        @JsonProperty("allow_group_chats")
+        @JsonProperty(value = "allow_group_chats")
         boolean allowGroupChats,
 
-        @JsonProperty("allow_channel_chats")
+        @JsonProperty(value = "allow_channel_chats")
         boolean allowChannelChats
 ) implements ApiResult {
 }

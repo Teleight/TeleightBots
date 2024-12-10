@@ -14,27 +14,27 @@ public record Audio(
         @JsonProperty(value = "duration", required = true)
         int duration,
 
-        @JsonProperty("performer")
+        @JsonProperty(value = "performer")
         @Nullable
         String performer,
 
-        @JsonProperty("title")
+        @JsonProperty(value = "title")
         @Nullable
         String title,
 
-        @JsonProperty("file_name")
+        @JsonProperty(value = "file_name")
         @Nullable
         String fileName,
 
-        @JsonProperty("mime_type")
+        @JsonProperty(value = "mime_type")
         @Nullable
         String mimeType,
 
-        @JsonProperty("file_size")
+        @JsonProperty(value = "file_size")
         @Nullable
         Long fileSize,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         PhotoSize thumbnail
 ) implements ApiResult {

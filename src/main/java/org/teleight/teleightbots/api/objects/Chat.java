@@ -12,23 +12,23 @@ public record Chat(
         @JsonProperty(value = "type", required = true)
         String type,
 
-        @JsonProperty("title")
+        @JsonProperty(value = "title")
         @Nullable
         String title,
 
-        @JsonProperty("username")
+        @JsonProperty(value = "username")
         @Nullable
         String username,
 
-        @JsonProperty("first_name")
+        @JsonProperty(value = "first_name")
         @Nullable
         String firstName,
 
-        @JsonProperty("last_name")
+        @JsonProperty(value = "last_name")
         @Nullable
         String lastName,
 
-        @JsonProperty("is_forum")
+        @JsonProperty(value = "is_forum")
         boolean isForum
 ) implements ApiResult {
 

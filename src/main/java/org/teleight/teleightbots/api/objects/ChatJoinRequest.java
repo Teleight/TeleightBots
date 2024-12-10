@@ -20,11 +20,11 @@ public record ChatJoinRequest(
         @JsonProperty(value = "date", required = true)
         Date date,
 
-        @JsonProperty("bio")
+        @JsonProperty(value = "bio")
         @Nullable
         String bio,
 
-        @JsonProperty("invite_link")
+        @JsonProperty(value = "invite_link")
         @Nullable
         ChatInviteLink inviteLink
 ) implements ApiResult {

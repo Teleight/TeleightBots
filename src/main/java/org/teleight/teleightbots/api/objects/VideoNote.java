@@ -17,11 +17,11 @@ public record VideoNote(
         @JsonProperty(value = "duration", required = true)
         int duration,
 
-        @JsonProperty("thumbnail")
+        @JsonProperty(value = "thumbnail")
         @Nullable
         PhotoSize thumbnail,
 
-        @JsonProperty("file_size")
+        @JsonProperty(value = "file_size")
         @Nullable
         Long fileSize
 ) implements ApiResult {

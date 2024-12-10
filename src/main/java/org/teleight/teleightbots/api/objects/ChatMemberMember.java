@@ -10,7 +10,7 @@ public record ChatMemberMember(
         @NotNull
         User user,
 
-        @JsonProperty("until_date")
+        @JsonProperty(value = "until_date")
         @NotNull
         Date untilDate
 ) implements ChatMember {

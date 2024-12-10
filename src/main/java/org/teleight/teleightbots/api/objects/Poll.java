@@ -13,7 +13,7 @@ public record Poll(
         @JsonProperty(value = "question", required = true)
         String question,
 
-        @JsonProperty("question_entities")
+        @JsonProperty(value = "question_entities")
         @Nullable
         MessageEntity[] questionEntities,
 
@@ -36,21 +36,21 @@ public record Poll(
         @JsonProperty(value = "allows_multiple_answers", required = true)
         boolean allowsMultipleAnswers,
 
-        @JsonProperty("correct_option_id")
+        @JsonProperty(value = "correct_option_id")
         int correctOptionId,
 
-        @JsonProperty("explanation")
+        @JsonProperty(value = "explanation")
         @Nullable
         String explanation,
 
-        @JsonProperty("explanation_entities")
+        @JsonProperty(value = "explanation_entities")
         @Nullable
         MessageEntity[] explanationEntities,
 
-        @JsonProperty("open_period")
+        @JsonProperty(value = "open_period")
         int openPeriod,
 
-        @JsonProperty("close_date")
+        @JsonProperty(value = "close_date")
         @Nullable
         Date closeDate
 ) implements ApiResult {

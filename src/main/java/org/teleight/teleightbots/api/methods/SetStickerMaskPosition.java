@@ -15,7 +15,7 @@ public record SetStickerMaskPosition(
         @NotNull
         String sticker,
 
-        @JsonProperty("mask_position")
+        @JsonProperty(value = "mask_position")
         @Nullable
         MaskPosition maskPosition
 ) implements ApiMethodBoolean {

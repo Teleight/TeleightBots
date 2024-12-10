@@ -12,91 +12,91 @@ public record Update(
         @Nullable
         Message message,
 
-        @JsonProperty("edited_message")
+        @JsonProperty(value = "edited_message")
         @Nullable
         Message editedMessage,
 
-        @JsonProperty("channel_post")
+        @JsonProperty(value = "channel_post")
         @Nullable
         Message channelPost,
 
-        @JsonProperty("edited_channel_post")
+        @JsonProperty(value = "edited_channel_post")
         @Nullable
         Message editedChannelPost,
 
-        @JsonProperty("business_connection")
+        @JsonProperty(value = "business_connection")
         @Nullable
         BusinessConnection businessConnection,
 
-        @JsonProperty("business_message")
+        @JsonProperty(value = "business_message")
         @Nullable
         Message businessMessage,
 
-        @JsonProperty("edited_business_message")
+        @JsonProperty(value = "edited_business_message")
         @Nullable
         Message editedBusinessMessage,
 
-        @JsonProperty("deleted_business_messages")
+        @JsonProperty(value = "deleted_business_messages")
         @Nullable
         BusinessMessagesDeleted deletedBusinessMessages,
 
-        @JsonProperty("message_reaction")
+        @JsonProperty(value = "message_reaction")
         @Nullable
         MessageReactionUpdated messageReaction,
 
-        @JsonProperty("message_reaction_count")
+        @JsonProperty(value = "message_reaction_count")
         @Nullable
         MessageReactionCountUpdated messageReactionCount,
 
-        @JsonProperty("inline_query")
+        @JsonProperty(value = "inline_query")
         @Nullable
         InlineQuery inlineQuery,
 
-        @JsonProperty("chosen_inline_result")
+        @JsonProperty(value = "chosen_inline_result")
         @Nullable
         ChosenInlineResult chosenInlineResult,
 
-        @JsonProperty("callback_query")
+        @JsonProperty(value = "callback_query")
         @Nullable
         CallbackQuery callbackQuery,
 
-        @JsonProperty("shipping_query")
+        @JsonProperty(value = "shipping_query")
         @Nullable
         ShippingQuery shippingQuery,
 
-        @JsonProperty("pre_checkout_query")
+        @JsonProperty(value = "pre_checkout_query")
         @Nullable
         PreCheckoutQuery preCheckoutQuery,
 
-        @JsonProperty("purchased_paid_media")
+        @JsonProperty(value = "purchased_paid_media")
         @Nullable
         PaidMediaPurchased purchasedPaidMedia,
 
-        @JsonProperty("poll")
+        @JsonProperty(value = "poll")
         @Nullable
         Poll poll,
 
-        @JsonProperty("poll_answer")
+        @JsonProperty(value = "poll_answer")
         @Nullable
         PollAnswer pollAnswer,
 
-        @JsonProperty("my_chat_member")
+        @JsonProperty(value = "my_chat_member")
         @Nullable
         ChatMemberUpdated myChatMember,
 
-        @JsonProperty("chat_member")
+        @JsonProperty(value = "chat_member")
         @Nullable
         ChatMemberUpdated chatMember,
 
-        @JsonProperty("chat_join_request")
+        @JsonProperty(value = "chat_join_request")
         @Nullable
         ChatJoinRequest chatJoinRequest,
 
-        @JsonProperty("chat_boost")
+        @JsonProperty(value = "chat_boost")
         @Nullable
         ChatBoostUpdated chatBoost,
 
-        @JsonProperty("removed_chat_boost")
+        @JsonProperty(value = "removed_chat_boost")
         @Nullable
         ChatBoostRemoved removedChatBoost
 ) implements ApiResult {

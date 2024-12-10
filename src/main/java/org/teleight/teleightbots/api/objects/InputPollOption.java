@@ -14,11 +14,11 @@ public record InputPollOption(
         @NotNull
         String text,
 
-        @JsonProperty("text_parse_mode")
+        @JsonProperty(value = "text_parse_mode")
         @Nullable
         ParseMode textParseMode,
 
-        @JsonProperty("text_entities")
+        @JsonProperty(value = "text_entities")
         @Nullable
         MessageEntity[] textEntities
 ) implements ApiResult {

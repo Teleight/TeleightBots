@@ -33,7 +33,7 @@ public record InlineQueryResultCachedVideo(
         @Nullable
         MessageEntity[] captionEntities,
 
-        @JsonProperty("show_caption_above_media")
+        @JsonProperty(value = "show_caption_above_media")
         boolean showCaptionAboveMedia,
 
         @JsonProperty(value = "reply_markup")

@@ -14,11 +14,11 @@ public record AnswerCallbackQuery(
         @NotNull
         String callbackQueryId,
 
-        @JsonProperty("text")
+        @JsonProperty(value = "text")
         @Nullable
         String text,
 
-        @JsonProperty("show_alert")
+        @JsonProperty(value = "show_alert")
         boolean showAlert
 ) implements ApiMethodBoolean {
 

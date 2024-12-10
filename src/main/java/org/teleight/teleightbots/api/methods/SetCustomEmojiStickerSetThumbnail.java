@@ -14,7 +14,7 @@ public record SetCustomEmojiStickerSetThumbnail(
         @NotNull
         String name,
 
-        @JsonProperty("custom_emoji_id")
+        @JsonProperty(value = "custom_emoji_id")
         @Nullable
         String custom_emoji_id
 ) implements ApiMethodBoolean {

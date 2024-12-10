@@ -32,11 +32,11 @@ public record SendPoll(
         @NotNull
         String question,
 
-        @JsonProperty("question_parse_mode")
+        @JsonProperty(value = "question_parse_mode")
         @Nullable
         ParseMode questionParseMode,
 
-        @JsonProperty("question_entities")
+        @JsonProperty(value = "question_entities")
         @Nullable
         MessageEntity[] questionEntities,
 
@@ -83,6 +83,9 @@ public record SendPoll(
 
         @JsonProperty(value = "protect_content")
         boolean protectContent,
+
+        @JsonProperty(value = "allow_paid_broadcast")
+        boolean allowPaidBroadcast,
 
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,

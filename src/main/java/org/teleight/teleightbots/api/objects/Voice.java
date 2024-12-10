@@ -14,11 +14,11 @@ public record Voice(
         @JsonProperty(value = "duration", required = true)
         int duration,
 
-        @JsonProperty("mime_type")
+        @JsonProperty(value = "mime_type")
         @Nullable
         String mimeType,
 
-        @JsonProperty("file_size")
+        @JsonProperty(value = "file_size")
         @Nullable
         Long fileSize
 ) implements ApiResult {

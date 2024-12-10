@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
+import java.util.Date;
+
 public record SuccessfulPayment(
         @JsonProperty(value = "currency", required = true)
         String currency,
@@ -14,11 +16,21 @@ public record SuccessfulPayment(
         @JsonProperty(value = "invoice_payload", required = true)
         String invoicePayload,
 
-        @JsonProperty("shipping_option_id")
+        @JsonProperty(value = "subscription_expiration_date")
+        @Nullable
+        Date subscriptionExpirationDate,
+
+        @JsonProperty(value = "is_recurring")
+        boolean isRecurring,
+
+        @JsonProperty(value = "is_first_recurring")
+        boolean isFirstRecurring,
+
+        @JsonProperty(value = "shipping_option_id")
         @Nullable
         String shippingOptionId,
 
-        @JsonProperty("order_info")
+        @JsonProperty(value = "order_info")
         @Nullable
         OrderInfo orderInfo,
 

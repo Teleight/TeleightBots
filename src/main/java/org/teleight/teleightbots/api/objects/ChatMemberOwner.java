@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.Nullable;
 
 public record ChatMemberOwner(
-        @JsonProperty("user")
+        @JsonProperty(value = "user")
         User user,
 
-        @JsonProperty("is_anonymous")
+        @JsonProperty(value = "is_anonymous")
         boolean isAnonymous,
 
-        @JsonProperty("custom_title")
+        @JsonProperty(value = "custom_title")
         @Nullable
         String customTitle
 ) implements ChatMember {

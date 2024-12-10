@@ -11,12 +11,12 @@ public record File(
         @JsonProperty(value = "file_unique_id", required = true)
         String fileUniqueId,
 
-        @JsonProperty("file_size")
+        @JsonProperty(value = "file_size")
         @Nullable
         Long fileSize,
 
         /// Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
-        @JsonProperty("file_path")
+        @JsonProperty(value = "file_path")
         @Nullable
         String filePath
 ) implements ApiResult {

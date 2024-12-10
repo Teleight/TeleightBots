@@ -58,7 +58,7 @@ public record SendVideo(
         @Nullable
         MessageEntity[] captionEntities,
 
-        @JsonProperty("show_caption_above_media")
+        @JsonProperty(value = "show_caption_above_media")
         boolean showCaptionAboveMedia,
 
         @JsonProperty(value = "has_spoiler")
@@ -72,6 +72,9 @@ public record SendVideo(
 
         @JsonProperty(value = "protect_content")
         boolean protectContent,
+
+        @JsonProperty(value = "allow_paid_broadcast")
+        boolean allowPaidBroadcast,
 
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,
@@ -113,6 +116,7 @@ public record SendVideo(
         parameters.put("supports_streaming", supportsStreaming);
         parameters.put("disable_notification", disableNotification);
         parameters.put("protect_content", protectContent);
+        parameters.put("allow_paid_broadcast", allowPaidBroadcast);
         parameters.put("message_effect_id", messageEffectId);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);

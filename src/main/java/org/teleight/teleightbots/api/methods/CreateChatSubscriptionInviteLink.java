@@ -19,7 +19,7 @@ public record CreateChatSubscriptionInviteLink(
         @NotNull
         String chatId,
 
-        @JsonProperty("name")
+        @JsonProperty(value = "name")
         @Nullable
         String name,
 

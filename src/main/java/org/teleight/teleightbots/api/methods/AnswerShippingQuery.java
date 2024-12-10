@@ -18,11 +18,11 @@ public record AnswerShippingQuery(
         @JsonProperty(value = "ok", required = true)
         boolean ok,
 
-        @JsonProperty("shipping_options")
+        @JsonProperty(value = "shipping_options")
         @Nullable
         ShippingOption[] shippingOptions,
 
-        @JsonProperty("error_message")
+        @JsonProperty(value = "error_message")
         @Nullable
         String errorMessage
 ) implements ApiMethodBoolean {
