@@ -39,7 +39,8 @@ dependencies {
     api(libs.bundles.jackson)
     api(libs.bundles.checker)
     api(libs.jetbrains.annotations)
-    api(libs.bundles.javalin)
+    api("io.jooby:jooby:3.5.5")
+    api("io.jooby:jooby-jackson:3.5.5")
     api(libs.slf4j.api)
 
     implementation(libs.slf4j.simple)

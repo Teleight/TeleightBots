@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
-
 @Slf4j
 public final class WebhookUpdateProcessor implements UpdateProcessor {
 
@@ -49,14 +47,18 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     private void setupWebhookRoute() {
         webhookServer.addPostRoute(settings.path(), ctx -> {
             try {
-                final Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
-                final Optional<? extends CompletableFuture<?>> response = Optional.of(handleNewUpdate(bot, update, ctx.body()));
-                response.ifPresentOrElse(
-                        ctx::json,
-                        () -> ctx.status(204) // No content
-                );
+                final String updateJson = ctx.body().value();
+                final Update update = ctx.body(Update.class);
+                final Optional<? extends CompletableFuture<?>> response = Optional.ofNullable(handleNewUpdate(bot, update, updateJson));
+                if (response.isPresent()) {
+                    return updateJson;
+                } else {
+                    ctx.setResponseCode(204); // No content
+                    return "";
+                }
             } catch (Exception e) {
-                ctx.status(500).json("Internal Server Error: " + e.getMessage());
+                ctx.setResponseCode(500);
+                return "Internal Server Error: " + e.getMessage();
             }
         });
     }

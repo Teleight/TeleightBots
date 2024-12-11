@@ -1,6 +1,6 @@
 package org.teleight.teleightbots.webhook;
 
-import io.javalin.http.Handler;
+import io.jooby.Route;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +29,7 @@ public sealed interface WebhookServer extends Closeable permits WebhookServerImp
      * @param path The path of the route. Can't be null.
      * @param handler The handler of the route. Can't be null.
      */
-    void addPostRoute(@NotNull String path, @NotNull Handler handler);
+    void addPostRoute(@NotNull String path, @NotNull Route.Handler handler);
 
     /**
      * Removes a POST route from the server.
