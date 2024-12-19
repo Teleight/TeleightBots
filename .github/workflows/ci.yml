@@ -1,10 +1,10 @@
-name: "Continuous integration and deployment"
+name: CI and Release Job
 
 on:
   push:
     branches: [ master ]
     tags:
-      - 'v*'
+      - "[0-9]+\.[0-9]+\.[0-9]+"
   pull_request:
     branches: [ master ]
 
@@ -13,40 +13,82 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: gradle/actions/wrapper-validation@v4
+
       - name: Setup JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: 21
           distribution: 'oracle'
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+
       - name: Gradle build
-        run: ./gradlew build
-      - name: Attach build distribution from this build
+        run: ./gradlew shadowJar
+
+      - name: Upload to artifacts
+        if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
-          name: 'teleight'
-          path:
-            build/libs/TeleightBots-*.jar
-  deploy:
-    runs-on: ubuntu-latest
+          name: lib
+          path: |
+            build/libs/TeleightBots-*-all.jar
+
+  after-build:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
     steps:
-      - name: Download build distribution from the build job
+      - uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: 'oracle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: 'teleight'
-      #- name: Publish to Maven Repository
-      #  run: ./gradlew publishToMavenCentral
-      - name: Create draft release
+          name: lib
+
+      - name: Release
         uses: softprops/action-gh-release@v2
         with:
+          files: |
+            build/libs/TeleightBots-*.jar
           draft: true
           tag_name: ${{env.GITHUB_REF_NAME}}
           generate_release_notes: true
-          files: |
-            TeleightBots*.jar
+
+      - name: Deploy javadoc to its assigned branch
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: javadoc
+          FOLDER: build/docs/javadoc
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLEAR_GLOBS_FILE: ".github/javadoc-publish-clear"
+
+      - name: Decode GPG Key
+        run: echo "${{ secrets.GPG_PRIVATE_KEY_B64 }}" | base64 -d > private.key
+
+      - name: Upload to Maven Central
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          GPG_PRIVATE_KEY: private.key
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          ./gradlew publishToMavenCentral -Psigning.keyId=${{ secrets.GPG_KEY_ID }} \
+                                          -Psigning.secretKeyRingFile=private.key \
+                                          -Psigning.password=${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Clean Up GPG Key
+        run: rm -f private.key
