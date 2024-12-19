@@ -31,14 +31,21 @@ jobs:
           ./gradlew shadowJar
           ./gradlew javadoc
 
-      - name: Upload to artifacts
+      - name: Upload build to artifacts
         if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
-          name: lib
+          name: build
+          path: |
+            build/libs/TeleightBots-*.jar
+
+      - name: Upload javadoc to artifacts
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: javadoc
           path: |
             build/docs/javadoc/
-            build/libs/TeleightBots-*.jar
 
   after-build:
     needs: build
@@ -59,7 +66,14 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          name: lib
+          name: build
+          path: build/libs/
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: javadoc
+          path: build/docs/
 
       - name: Release
         uses: softprops/action-gh-release@v2
