@@ -8,7 +8,7 @@ junit-jupiter = "5.11.4"
 javalin = "6.3.0"
 javalin-ssl = "6.3.0"
 slf4j = "2.0.16"
-logback = "1.5.12"
+logback = "1.5.15"
 
 [libraries]
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
