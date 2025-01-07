@@ -105,7 +105,7 @@ public record Update(
         ChatBoostRemoved removedChatBoost
 ) implements ApiResult {
 
-    public static Update parseUpdate(@NotNull String responseJson) throws JsonProcessingException {
+    public static Update parseResponse(@NotNull String responseJson) throws JsonProcessingException {
         return OBJECT_MAPPER.readValue(responseJson, Update.class);
     }
 
