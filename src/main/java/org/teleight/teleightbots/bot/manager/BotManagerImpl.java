@@ -9,6 +9,7 @@ import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
+import org.teleight.teleightbots.event.bot.BotShutdownEvent;
 import org.teleight.teleightbots.webhook.WebhookServer;
 import org.teleight.teleightbots.webhook.WebhookServerConfig;
 
@@ -53,7 +54,6 @@ final class BotManagerImpl implements BotManager {
         final WebhookServer webhookServer = registeredWebhookServers.computeIfAbsent(serverConfig, WebhookServer::create);
 
         final WebhookTelegramBot bot = WebhookTelegramBot.create(token, username, webhookSettings, webhookServer);
-
         startProcessor(bot, completeCallback);
     }
 
@@ -77,8 +77,7 @@ final class BotManagerImpl implements BotManager {
                         if (!telegramBot.getBotSettings().silentlyThrowMethodExecution()) {
                             TeleightBots.getExceptionManager().handleException(throwable);
                         }
-                        telegramBot.shutdown();
-                        return null;
+                        shutdownBot(telegramBot);
                     }
                     return null;
                 });
@@ -93,7 +92,7 @@ final class BotManagerImpl implements BotManager {
     public void unregisterBot(@NotNull String botToken) {
         for (final TelegramBot registeredBot : registeredBots) {
             if (registeredBot.getBotToken().equals(botToken)) {
-                registeredBot.shutdown();
+                shutdownBot(registeredBot);
                 registeredBots.remove(registeredBot);
                 return;
             }
@@ -103,8 +102,22 @@ final class BotManagerImpl implements BotManager {
     @Override
     public void unregisterBot(@NotNull TelegramBot bot) {
         if (registeredBots.contains(bot)) {
-            bot.shutdown();
+            shutdownBot(bot);
             registeredBots.remove(bot);
+        }
+    }
+
+    private void shutdownBot(@NotNull TelegramBot bot) {
+        bot.getEventManager().call(new BotShutdownEvent(bot));
+        try {
+            if (bot.getBotSettings().extensionsEnabled()) {
+                bot.getExtensionManager().close();
+            }
+            bot.getScheduler().close();
+            bot.getUpdateProcessor().close();
+            bot.getFileDownloader().close();
+        } catch (Exception e) {
+            TeleightBots.getExceptionManager().handleException(e);
         }
     }
 

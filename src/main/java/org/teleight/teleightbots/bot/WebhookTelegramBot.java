@@ -2,10 +2,8 @@ package org.teleight.teleightbots.bot;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
-import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.api.methods.DeleteWebhook;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
-import org.teleight.teleightbots.event.bot.BotShutdownEvent;
 import org.teleight.teleightbots.webhook.WebhookServer;
 
 /**
@@ -15,9 +13,9 @@ public sealed interface WebhookTelegramBot extends TelegramBot permits WebhookTe
 
     @ApiStatus.Internal
     static @NotNull WebhookTelegramBot create(@NotNull String token,
-                                                  @NotNull String username,
-                                                  @NotNull WebhookBotSettings webhookSettings,
-                                                  @NotNull WebhookServer webhookServer) {
+                                              @NotNull String username,
+                                              @NotNull WebhookBotSettings webhookSettings,
+                                              @NotNull WebhookServer webhookServer) {
         return new WebhookTelegramBotImpl(token, username, webhookSettings, webhookServer);
     }
 
@@ -42,21 +40,4 @@ public sealed interface WebhookTelegramBot extends TelegramBot permits WebhookTe
      */
     void setDeleteWebhook(@NotNull DeleteWebhook deleteWebhook);
 
-    @ApiStatus.Internal
-    default void shutdown() {
-        getEventManager().call(new BotShutdownEvent(this));
-
-        execute(this.getDeleteWebhook());
-
-        try {
-            if (getBotSettings().extensionsEnabled()) {
-                getExtensionManager().close();
-            }
-            getScheduler().close();
-            getUpdateProcessor().close();
-            getFileDownloader().close();
-        } catch (Exception e) {
-            TeleightBots.getExceptionManager().handleException(e);
-        }
-    }
 }

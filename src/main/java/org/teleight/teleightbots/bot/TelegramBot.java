@@ -217,7 +217,4 @@ public sealed interface TelegramBot permits WebhookTelegramBot, LongPollingTeleg
     @ApiStatus.Internal
     UpdateProcessor getUpdateProcessor();
 
-    @ApiStatus.Internal
-    void shutdown();
-
 }
