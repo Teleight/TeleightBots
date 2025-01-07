@@ -39,11 +39,12 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
         webhookServer.start();
         setupWebhookRoute();
 
-        return setWebhook(settings).whenComplete((success, throwable) -> {
-            if (throwable != null) {
-                log.error("Failed to set webhook: {}", throwable.getMessage());
-            }
-        }).thenCompose(aBoolean -> bot.execute(new GetMe()));
+        return setWebhook(settings)
+                .thenCompose(v -> bot.execute(new GetMe()))
+                .exceptionally(throwable -> {
+                    log.error("Failed to set webhook: {}", throwable.getMessage());
+                    return null;
+                });
     }
 
     private void setupWebhookRoute() {
