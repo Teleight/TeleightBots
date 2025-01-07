@@ -57,7 +57,7 @@ public interface WebhookServer extends Closeable {
      * @param path     The path of the route to add. Cannot be null or empty.
      * @param response The asynchronous handler for the POST request. Cannot be null.
      */
-    void addPostRoute(@NotNull String path, @NotNull AsyncConsumer<HttpHandler> response);
+    void addPostRoute(@NotNull String path, @NotNull AsyncConsumer<HttpResponseHandler> response);
 
     /**
      * Removes a previously added POST route from the server.

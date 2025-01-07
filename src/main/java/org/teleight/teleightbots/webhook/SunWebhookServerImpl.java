@@ -105,7 +105,7 @@ final class SunWebhookServerImpl implements WebhookServer {
     }
 
     @Override
-    public void addPostRoute(@NotNull String path, @NotNull AsyncConsumer<HttpHandler> response) {
+    public void addPostRoute(@NotNull String path, @NotNull AsyncConsumer<HttpResponseHandler> response) {
         server.createContext(path, exchange -> {
             if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
                 exchange.sendResponseHeaders(405, 0);
@@ -113,12 +113,12 @@ final class SunWebhookServerImpl implements WebhookServer {
                 return;
             }
             final String body = new String(exchange.getRequestBody().readAllBytes());
-            HttpHandler httpHandler = HttpHandler.create(body);
+            final HttpResponseHandler httpResponseHandler = HttpResponseHandler.fromBody(body);
 
-            response.accept(httpHandler);
+            response.accept(httpResponseHandler);
 
-            byte[] bodyBytes = httpHandler.getBody().getBytes();
-            exchange.sendResponseHeaders(httpHandler.getStatusCode().getCode(), bodyBytes.length);
+            byte[] bodyBytes = httpResponseHandler.getBody().getBytes();
+            exchange.sendResponseHeaders(httpResponseHandler.getStatusCode().getCode(), bodyBytes.length);
             exchange.getResponseBody().write(bodyBytes);
             exchange.getResponseBody().flush();
             exchange.close();
