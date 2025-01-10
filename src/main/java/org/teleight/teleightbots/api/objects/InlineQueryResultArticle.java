@@ -29,9 +29,6 @@ public record InlineQueryResultArticle(
         @Nullable
         String url,
 
-        @JsonProperty(value = "hide_url")
-        boolean hideUrl,
-
         @JsonProperty(value = "description")
         @Nullable
         String description,

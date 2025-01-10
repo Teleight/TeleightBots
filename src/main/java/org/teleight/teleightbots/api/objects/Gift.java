@@ -16,6 +16,9 @@ public record Gift(
         @JsonProperty(value = "star_count", required = true)
         int starCount,
 
+        @JsonProperty(value = "upgrade_star_count")
+        int upgradeStarCount,
+
         @JsonProperty(value = "total_count")
         int totalCount,
 

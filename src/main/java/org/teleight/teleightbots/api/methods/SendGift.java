@@ -19,6 +19,9 @@ public record SendGift(
         @NotNull
         String giftId,
 
+        @JsonProperty(value = "pay_for_upgrade")
+        boolean payForUpgrade,
+
         @JsonProperty(value = "text")
         @Nullable
         String text,
