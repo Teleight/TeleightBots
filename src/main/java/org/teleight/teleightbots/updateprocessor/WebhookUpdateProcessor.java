@@ -8,7 +8,7 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
-import org.teleight.teleightbots.webhook.HttpResponseHandler;
+import org.teleight.teleightbots.webhook.HttpResponse;
 import org.teleight.teleightbots.webhook.WebhookServer;
 
 import java.io.IOException;
@@ -40,25 +40,18 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
                 });
     }
 
-    private void handleRequest(HttpResponseHandler httpResponse) {
+    private HttpResponse handleRequest(String body) {
         try {
-            final Update update = Update.parseResponse(httpResponse.getBody());
+            final Update update = Update.parseResponse(body);
             if (update == null) {
                 // there is no update in the request. set a response code empty response
-                httpResponse.setStatusCode(HttpResponseHandler.StatusCode.NO_CONTENT);
-                httpResponse.setBody("");
-                return;
+                return HttpResponse.noContent();
             }
-
-            handleNewUpdate(bot, update, httpResponse.getBody());
-
-            httpResponse.setStatusCode(HttpResponseHandler.StatusCode.OK);
-            httpResponse.setBody(httpResponse.getBody());
+            handleNewUpdate(bot, update, body);
+            return HttpResponse.ok(body);
         } catch (Exception e) {
             log.error("Failed to handle request: {}", e.getMessage());
-
-            httpResponse.setStatusCode(HttpResponseHandler.StatusCode.INTERNAL_SERVER_ERROR);
-            httpResponse.setBody("Internal Server Error: " + e.getMessage());
+            return HttpResponse.error("Internal Server Error: " + e.getMessage());
         }
     }
 

@@ -19,6 +19,7 @@ import java.net.InetSocketAddress;
 import java.nio.file.Path;
 import java.security.KeyStore;
 import java.util.concurrent.Executors;
+import java.util.function.Function;
 
 @Slf4j
 final class SunWebhookServerImpl implements WebhookServer {
@@ -105,7 +106,7 @@ final class SunWebhookServerImpl implements WebhookServer {
     }
 
     @Override
-    public void addPostRoute(@NotNull String path, @NotNull AsyncConsumer<HttpResponseHandler> response) {
+    public void addPostRoute(@NotNull String path, @NotNull Function<String, HttpResponse> response) {
         server.createContext(path, exchange -> {
             if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
                 exchange.sendResponseHeaders(405, 0);
@@ -113,12 +114,10 @@ final class SunWebhookServerImpl implements WebhookServer {
                 return;
             }
             final String body = new String(exchange.getRequestBody().readAllBytes());
-            final HttpResponseHandler httpResponseHandler = HttpResponseHandler.fromBody(body);
+            final HttpResponse httpResponse = response.apply(body);
 
-            response.accept(httpResponseHandler);
-
-            byte[] bodyBytes = httpResponseHandler.getBody().getBytes();
-            exchange.sendResponseHeaders(httpResponseHandler.getStatusCode().getCode(), bodyBytes.length);
+            byte[] bodyBytes = httpResponse.body().getBytes();
+            exchange.sendResponseHeaders(httpResponse.statusCode().getCode(), bodyBytes.length);
             exchange.getResponseBody().write(bodyBytes);
             exchange.getResponseBody().flush();
             exchange.close();

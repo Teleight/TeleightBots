@@ -4,6 +4,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Closeable;
+import java.util.function.Function;
 
 /**
  * Represents a server that handles webhook requests via POST routes.
@@ -55,9 +56,11 @@ public interface WebhookServer extends Closeable {
      * </p>
      *
      * @param path     The path of the route to add. Cannot be null or empty.
-     * @param response The asynchronous handler for the POST request. Cannot be null.
+     * @param response The handler function to invoke when a POST request is received.
+     *                 The function takes the body of the POST request as input and returns an HTTP response.
+     *                 Cannot be null.
      */
-    void addPostRoute(@NotNull String path, @NotNull AsyncConsumer<HttpResponseHandler> response);
+    void addPostRoute(@NotNull String path, @NotNull Function<String, HttpResponse> response);
 
     /**
      * Removes a previously added POST route from the server.
