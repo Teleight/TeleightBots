@@ -74,10 +74,15 @@ final class BotManagerImpl implements BotManager {
                     // Happens when the bot token or the username is invalid.
                     // It can also happen if the webhook was considered invalid by the bot API.
                     if (throwable != null) {
-                        log.error("An error occurred while authenticating the bot {}: {}", telegramBot.getBotUsername(), throwable.getMessage());
+                        log.error("An error occurred while authenticating the bot {}: {}", telegramBot.getBotUsername(), throwable.getMessage(), throwable);
                         if (!telegramBot.getBotSettings().silentlyThrowMethodExecution()) {
                             TeleightBots.getExceptionManager().handleException(throwable);
                         }
+                        shutdownBot(telegramBot);
+                        return;
+                    }
+                    if (botUser == null) {
+                        log.error("Failed to authenticate bot {}", telegramBot.getBotUsername());
                         shutdownBot(telegramBot);
                         return;
                     }
