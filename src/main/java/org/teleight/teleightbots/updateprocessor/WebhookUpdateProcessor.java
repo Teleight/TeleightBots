@@ -29,8 +29,12 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
 
     @Override
     public @NotNull CompletableFuture<User> start() {
-        webhookServer.start();
-        webhookServer.addPostRoute(settings.path(), this::handleRequest);
+        try {
+            webhookServer.start();
+            webhookServer.addPostRoute(settings.path(), this::handleRequest);
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
 
         return setWebhook(settings)
                 .thenCompose(v -> bot.execute(new GetMe()))
@@ -69,7 +73,13 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     @Override
     public void close() throws IOException {
         bot.execute(bot.getDeleteWebhook()).join();
-        webhookServer.removePostRoute(bot.getBotSettings().path());
-        webhookServer.close();
+        if (webhookServer.isRunning()) {
+            try {
+                webhookServer.removePostRoute(settings.path());
+                webhookServer.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

@@ -41,9 +41,10 @@ public interface WebhookServer extends Closeable {
      * It will initiate the necessary network connections and begin listening
      * for incoming HTTP requests.
      * After calling this method, the server will be ready to handle requests.
-     * </p>
+     *
+     * @throws Exception If an error occurs while starting the server.
      */
-    void start();
+    void start() throws Exception;
 
     /**
      * Adds a POST route to the server with a specific path and an associated handler.
@@ -59,19 +60,28 @@ public interface WebhookServer extends Closeable {
      * @param response The handler function to invoke when a POST request is received.
      *                 The function takes the body of the POST request as input and returns an HTTP response.
      *                 Cannot be null.
+     * @throws Exception If an error occurs while adding the route.
      */
-    void addPostRoute(@NotNull String path, @NotNull Function<String, HttpResponse> response);
+    void addPostRoute(@NotNull String path, @NotNull Function<String, HttpResponse> response) throws Exception;
 
     /**
      * Removes a previously added POST route from the server.
      *
      * <p>
-     * This method deregisters the POST route at the specified path, so that
+     * This method removes the POST route at the specified path, so that
      * the server will no longer respond to POST requests at that path.
      * </p>
      *
      * @param path The path of the route to remove. Cannot be null or empty.
+     * @throws Exception If an error occurs while removing the route.
      */
-    void removePostRoute(@NotNull String path);
+    void removePostRoute(@NotNull String path) throws Exception;
+
+    /**
+     * Checks if the server is running.
+     *
+     * @return {@code true} if the server is running, {@code false} otherwise.
+     */
+    boolean isRunning();
 
 }
