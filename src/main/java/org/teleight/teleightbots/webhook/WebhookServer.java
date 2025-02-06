@@ -2,6 +2,7 @@ package org.teleight.teleightbots.webhook;
 
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 
 import java.io.Closeable;
 import java.util.function.Function;
@@ -29,8 +30,8 @@ public interface WebhookServer extends Closeable {
      * @return A new instance of {@code SunWebhookServerImpl}.
      */
     @ApiStatus.Internal
-    static @NotNull WebhookServer internal(@NotNull WebhookServerConfig config) {
-        return new SunWebhookServerImpl(config);
+    static @NotNull WebhookServer internal(@NotNull WebhookServerConfig config, @NotNull WebhookBotSettings botSettings) {
+        return new SunWebhookServerImpl(config, botSettings);
     }
 
     /**

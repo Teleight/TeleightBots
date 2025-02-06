@@ -6,6 +6,7 @@ import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -23,11 +24,15 @@ import java.util.function.Function;
 final class SunWebhookServerImpl implements WebhookServer {
 
     private HttpServer server;
+
     private final WebhookServerConfig config;
+    private final WebhookBotSettings botSettings;
+
     private volatile boolean isRunning = false;
 
-    SunWebhookServerImpl(@NotNull WebhookServerConfig config) {
+    SunWebhookServerImpl(@NotNull WebhookServerConfig config, @NotNull WebhookBotSettings botSettings) {
         this.config = config;
+        this.botSettings = botSettings;
     }
 
     @Override
@@ -125,6 +130,21 @@ final class SunWebhookServerImpl implements WebhookServer {
                 exchange.close();
                 return;
             }
+
+            // "If you'd like to make sure that the webhook was set by you, you can specify secret data in the parameter secret_token."
+            // "If specified, the request will contain a header “X-Telegram-Bot-Api-Secret-Token” with the secret token as content."
+            // https://core.telegram.org/bots/api#setwebhook
+            final String secretHeader = exchange.getRequestHeaders().getFirst("X-Telegram-Bot-Api-Secret-Token");
+            final String botSecret = botSettings.secretToken();
+            if (secretHeader != null) { // secret token is optional
+                if (!secretHeader.equals(botSecret)) { // secret token mismatch
+                    log.warn("Secret token mismatch: {} != {}", secretHeader, botSecret);
+                    exchange.sendResponseHeaders(200, 0);
+                    exchange.close();
+                    return;
+                }
+            }
+
             final String body = new String(exchange.getRequestBody().readAllBytes());
             final HttpResponse httpResponse = response.apply(body);
 

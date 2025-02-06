@@ -59,7 +59,8 @@ final class BotManagerImpl implements BotManager {
         // If the server is already registered, we use the existing server.
         // Otherwise, we create a new one.
         // But we don't start the server here, we start it when the bot is started.
-        final WebhookServer webhookServer = registeredInternalWebhookServers.computeIfAbsent(serverConfig, WebhookServer::internal);
+        final WebhookServer webhookServer = registeredInternalWebhookServers.computeIfAbsent(serverConfig,
+                webhookServerConfig -> WebhookServer.internal(webhookServerConfig, webhookSettings));
 
         final WebhookTelegramBot bot = WebhookTelegramBot.create(token, username, webhookSettings, webhookServer);
         startProcessor(bot, completeCallback);
