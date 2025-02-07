@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
 
 /**
- * Settings for configuring a local webhook server.
+ * Settings for configuring an internal webhook server.
  *
  * <p>
  * Example usage:
@@ -24,7 +24,6 @@ import java.nio.file.Path;
  * @param keystorePassword The password for the keystore, used to access the SSL certificates.
  * @param useHttps         Whether the server should use HTTPS for secure communication.
  */
-// todo(webhook): add support for pem files
 @Builder(builderClassName = "Builder", builderMethodName = "ofBuilder")
 public record WebhookServerConfig(
         @Nullable String host,
@@ -35,10 +34,11 @@ public record WebhookServerConfig(
 ) {
 
     /**
-     * Default instance of BotSettings with standard configurations:
+     * Default instance of WebhookServerConfig with standard configurations:
      * <ul>
+     *     <li>{@link #host} is set to {@code null}, localhost</li>
      *     <li>{@link #port} is set to 8443</li>
-     *     <li>{@link #useHttps} is set to {@code false} (i.e., HTTP is used by default)</li>
+     *     <li>{@link #useHttps} is set to {@code false} (HTTP is used by default)</li>
      *     <li>{@link #keystorePath} and {@link #keystorePassword} are not set</li>
      * </ul>
      */

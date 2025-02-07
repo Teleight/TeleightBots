@@ -1,8 +1,12 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
+
+import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
 public record Update(
         @JsonProperty(value = "update_id", required = true)
@@ -100,5 +104,9 @@ public record Update(
         @Nullable
         ChatBoostRemoved removedChatBoost
 ) implements ApiResult {
+
+    public static Update parseResponse(@NotNull String responseJson) throws JsonProcessingException {
+        return OBJECT_MAPPER.readValue(responseJson, Update.class);
+    }
 
 }

@@ -8,13 +8,11 @@ import org.teleight.teleightbots.api.objects.Update;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
+import org.teleight.teleightbots.webhook.HttpResponse;
 import org.teleight.teleightbots.webhook.WebhookServer;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
-import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
 @Slf4j
 public final class WebhookUpdateProcessor implements UpdateProcessor {
@@ -26,18 +24,17 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
     public WebhookUpdateProcessor(@NotNull WebhookTelegramBot bot, @NotNull WebhookServer webhookServer) {
         this.bot = bot;
         this.webhookServer = webhookServer;
-
-        WebhookBotSettings webhookBotSettings = bot.getBotSettings();
-        if (webhookBotSettings.path() == null) {
-            webhookBotSettings = webhookBotSettings.toBuilder().path("/" + bot.getBotUsername()).build();
-        }
-        this.settings = webhookBotSettings;
+        this.settings = bot.getBotSettings();
     }
 
     @Override
     public @NotNull CompletableFuture<User> start() {
-        webhookServer.start();
-        setupWebhookRoute();
+        try {
+            webhookServer.start();
+            webhookServer.addPostRoute(settings.path(), this::handleRequest);
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
 
         return setWebhook(settings)
                 .thenCompose(v -> bot.execute(new GetMe()))
@@ -47,23 +44,23 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
                 });
     }
 
-    private void setupWebhookRoute() {
-        webhookServer.addPostRoute(settings.path(), ctx -> {
-            try {
-                final Update update = OBJECT_MAPPER.readValue(ctx.body(), Update.class);
-                final Optional<? extends CompletableFuture<?>> response = Optional.of(handleNewUpdate(bot, update, ctx.body()));
-                response.ifPresentOrElse(
-                        ctx::json,
-                        () -> ctx.status(204) // No content
-                );
-            } catch (Exception e) {
-                ctx.status(500).json("Internal Server Error: " + e.getMessage());
+    private HttpResponse handleRequest(String body) {
+        try {
+            final Update update = Update.parseResponse(body);
+            if (update == null) {
+                // there is no update in the request. set a response code empty response
+                return HttpResponse.noContent();
             }
-        });
+            handleNewUpdate(bot, update, body);
+            return HttpResponse.ok(body);
+        } catch (Exception e) {
+            log.error("Failed to handle request: {}", e.getMessage());
+            return HttpResponse.error("Internal Server Error: " + e.getMessage());
+        }
     }
 
     private CompletableFuture<Boolean> setWebhook(@NotNull WebhookBotSettings settings) {
-        return bot.execute(SetWebhook.ofBuilder(settings.url())
+        return bot.execute(SetWebhook.ofBuilder(settings.url() + settings.path())
                 .certificate(settings.certificate())
                 .ipAddress(settings.ipAddress())
                 .maxConnections(settings.maxConnections())
@@ -75,7 +72,14 @@ public final class WebhookUpdateProcessor implements UpdateProcessor {
 
     @Override
     public void close() throws IOException {
-        bot.execute(bot.getDeleteWebhook());
-        webhookServer.removePostRoute(bot.getBotSettings().path());
+        bot.execute(bot.getDeleteWebhook()).join();
+        if (webhookServer.isRunning()) {
+            try {
+                webhookServer.removePostRoute(settings.path());
+                webhookServer.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

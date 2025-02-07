@@ -27,7 +27,7 @@ final class BotManagerImpl implements BotManager {
     private static boolean created = false;
 
     private final List<TelegramBot> registeredBots = new CopyOnWriteArrayList<>();
-    private final Map<WebhookServerConfig, WebhookServer> registeredWebhookServers = new ConcurrentHashMap<>();
+    private final Map<WebhookServerConfig, WebhookServer> registeredInternalWebhookServers = new ConcurrentHashMap<>();
 
     BotManagerImpl() {
         if (created) {
@@ -45,13 +45,22 @@ final class BotManagerImpl implements BotManager {
     }
 
     @Override
+    public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServer webhookServer, @NotNull Consumer<WebhookTelegramBot> completeCallback) {
+        username = sanitizeUsername(username);
+
+        final WebhookTelegramBot bot = WebhookTelegramBot.create(token, username, webhookSettings, webhookServer);
+        startProcessor(bot, completeCallback);
+    }
+
+    @Override
     public void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServerConfig serverConfig, @NotNull Consumer<WebhookTelegramBot> completeCallback) {
         username = sanitizeUsername(username);
 
         // If the server is already registered, we use the existing server.
         // Otherwise, we create a new one.
         // But we don't start the server here, we start it when the bot is started.
-        final WebhookServer webhookServer = registeredWebhookServers.computeIfAbsent(serverConfig, WebhookServer::create);
+        final WebhookServer webhookServer = registeredInternalWebhookServers.computeIfAbsent(serverConfig,
+                webhookServerConfig -> WebhookServer.internal(webhookServerConfig, webhookSettings));
 
         final WebhookTelegramBot bot = WebhookTelegramBot.create(token, username, webhookSettings, webhookServer);
         startProcessor(bot, completeCallback);
@@ -66,10 +75,15 @@ final class BotManagerImpl implements BotManager {
                     // Happens when the bot token or the username is invalid.
                     // It can also happen if the webhook was considered invalid by the bot API.
                     if (throwable != null) {
-                        log.error("An error occurred while authenticating the bot {}: {}", telegramBot.getBotUsername(), throwable.getMessage());
+                        log.error("An error occurred while authenticating the bot {}: {}", telegramBot.getBotUsername(), throwable.getMessage(), throwable);
                         if (!telegramBot.getBotSettings().silentlyThrowMethodExecution()) {
                             TeleightBots.getExceptionManager().handleException(throwable);
                         }
+                        shutdownBot(telegramBot);
+                        return;
+                    }
+                    if (botUser == null) {
+                        log.error("Failed to authenticate bot {}", telegramBot.getBotUsername());
                         shutdownBot(telegramBot);
                         return;
                     }
