@@ -139,7 +139,7 @@ final class SunWebhookServerImpl implements WebhookServer {
             if (secretHeader != null) { // secret token is optional
                 if (!secretHeader.equals(botSecret)) { // secret token mismatch
                     log.warn("Secret token mismatch: {} != {}", secretHeader, botSecret);
-                    exchange.sendResponseHeaders(200, 0);
+                    exchange.sendResponseHeaders(403, 0);
                     exchange.close();
                     return;
                 }
