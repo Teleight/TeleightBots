@@ -39,7 +39,6 @@ dependencies {
     api(libs.bundles.jackson)
     api(libs.bundles.checker)
     api(libs.jetbrains.annotations)
-    api(libs.bundles.javalin)
     api(libs.slf4j.api)
 
     implementation(libs.slf4j.simple)

@@ -8,6 +8,7 @@ import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.WebhookTelegramBot;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.bot.settings.WebhookBotSettings;
+import org.teleight.teleightbots.webhook.WebhookServer;
 import org.teleight.teleightbots.webhook.WebhookServerConfig;
 
 import java.io.Closeable;
@@ -65,35 +66,35 @@ public sealed interface BotManager extends Closeable permits BotManagerImpl {
     void registerLongPolling(@NotNull String token, @NotNull String username, @NotNull LongPollingBotSettings longPollingSettings, @NotNull Consumer<LongPollingTelegramBot> completeCallback);
 
     /**
-     * Registers a new webhook-based bot with the default server configuration.
+     * Registers a new webhook-based bot with no internal server configuration.
      * <p>
      * This method registers a bot that communicates with Telegram using webhooks.
-     * It uses default server configuration provided by {@link WebhookServerConfig#DEFAULT}.
+     * It uses no internal server for handling requests, so the bot will not receive
+     * updates until a server is set up externally.
      * Once the bot is registered, the provided {@code completeCallback} will be invoked.
      * </p>
      *
      * @param token            the bot's token, required for authentication with Telegram
      * @param username         the bot's username, as it appears in Telegram
      * @param webhookSettings  the settings to configure the webhook bot
+     * @param webhookServer    the server to handle incoming webhook requests.
      * @param completeCallback the callback that will be invoked when the bot has been registered
      * @throws NullPointerException if any of the arguments are {@code null}
      * @see #registerWebhook(String, String, WebhookBotSettings, WebhookServerConfig, Consumer)
      */
-    default void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull Consumer<WebhookTelegramBot> completeCallback) {
-        registerWebhook(token, username, webhookSettings, WebhookServerConfig.DEFAULT, completeCallback);
-    }
+    void registerWebhook(@NotNull String token, @NotNull String username, @NotNull WebhookBotSettings webhookSettings, @NotNull WebhookServer webhookServer, @NotNull Consumer<WebhookTelegramBot> completeCallback);
 
     /**
-     * Registers a new webhook-based bot with custom server configuration.
+     * Registers a new webhook-based bot with an internal server configuration.
      * <p>
-     * This method allows configuring both the bot settings and the server configuration
+     * This method allows configuring both the bot settings and the internal server configuration
      * for a webhook-based bot. Once registered, the {@code completeCallback} will be invoked.
      * </p>
      *
      * @param token            the bot's token, required for authentication with Telegram
      * @param username         the bot's username, as it appears in Telegram
      * @param webhookSettings  the settings to configure the webhook bot
-     * @param serverConfig     the server configuration for handling webhook requests
+     * @param serverConfig     the server configuration for handling webhook requests.
      * @param completeCallback the callback that will be invoked when the bot has been registered
      * @throws NullPointerException if any of the arguments are {@code null}
      */
