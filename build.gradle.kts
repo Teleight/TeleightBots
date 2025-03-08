@@ -1,7 +1,9 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     `java-library`
-    `maven-publish`
     alias(libs.plugins.shadow)
+    alias(libs.plugins.publisher)
 }
 
 val groupId = "org.teleight"
@@ -22,9 +24,6 @@ allprojects {
     }
 
     java {
-        withSourcesJar()
-        withJavadocJar()
-
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(21))
         }
@@ -60,53 +59,52 @@ tasks.javadoc {
     }
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = groupId
-            artifactId = artifactId
-            version = versionId
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-            from(project.components["java"])
+    coordinates(groupId, artifactId, versionId)
 
-            pom {
-                name.set(this@create.artifactId)
-                description.set(project.description)
-                url.set("https://github.com/Teleight/TeleightBots")
+    signAllPublications()
 
-                licenses {
-                    license {
-                        name.set("The GNU General Public License v3.0")
-                        url.set("https://www.gnu.org/licenses/gpl-3.0.en.html")
-                    }
-                }
+    pom {
+        name.set("TeleightBots")
+        description.set(project.description)
+        url.set("https://github.com/Teleight/TeleightBots")
+        inceptionYear.set("2024")
 
-                developers {
-                    developer {
-                        id.set("Stredox02")
-                    }
-                    developer {
-                        id.set("literallyfiro")
-                    }
-                }
-
-                issueManagement {
-                    system.set("GitHub")
-                    url.set("https://github.com/Teleight/TeleightBots/issues")
-                }
-
-                scm {
-                    connection.set("scm:git:git://github.com/Teleight/TeleightBots.git")
-                    developerConnection.set("scm:git:git@github.com:Teleight/TeleightBots.git")
-                    url.set("https://github.com/Teleight/TeleightBots")
-                    tag.set("HEAD")
-                }
-
-                ciManagement {
-                    system.set("Github Actions")
-                    url.set("https://github.com/Teleight/TeleightBots/actions")
-                }
+        licenses {
+            license {
+                name.set("The GNU General Public License v3.0")
+                url.set("https://www.gnu.org/licenses/gpl-3.0.en.html")
             }
+        }
+
+        developers {
+            developer {
+                id.set("Stredox02")
+                url.set("https://github.com/Stredox02")
+            }
+            developer {
+                id.set("literallyfiro")
+                url.set("https://github.com/literallyfiro")
+            }
+        }
+
+        issueManagement {
+            system.set("GitHub")
+            url.set("https://github.com/Teleight/TeleightBots/issues")
+        }
+
+        scm {
+            connection.set("scm:git:git://github.com/Teleight/TeleightBots.git")
+            developerConnection.set("scm:git:git@github.com:Teleight/TeleightBots.git")
+            url.set("https://github.com/Teleight/TeleightBots")
+            tag.set("HEAD")
+        }
+
+        ciManagement {
+            system.set("Github Actions")
+            url.set("https://github.com/Teleight/TeleightBots/actions")
         }
     }
 }
