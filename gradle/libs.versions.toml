@@ -3,7 +3,7 @@ jackson = "2.18.2"
 checker = "3.49.1"
 jetbrains-annotations = "26.0.2"
 lombok = "1.18.36"
-shadow = "8.1.1"
+shadow = "9.0.0-beta10"
 junit-jupiter = "5.11.4"
 slf4j = "2.0.16"
 logback = "1.5.17"
@@ -26,4 +26,4 @@ checker = ["checker-qual"]
 junit = ["junit-api", "junit-engine"]
 
 [plugins]
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
