@@ -1,22 +1,28 @@
+name: Pull Request CI Job
+permissions:
+  contents: write
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
-
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup JDK
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: 21
           distribution: 'oracle'
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-      - name: Gradle build
-        run: ./gradlew build
+
+      - name: Build
+        run: |
+          ./gradlew shadowJar --parallel --no-daemon

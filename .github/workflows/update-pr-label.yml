@@ -1,5 +1,9 @@
 name: PR Conventional Commit Validation
 
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
