@@ -5,7 +5,7 @@ jetbrains-annotations = "26.0.2"
 lombok = "1.18.36"
 shadow = "9.0.0-beta10"
 junit-jupiter = "5.11.4"
-slf4j = "2.0.16"
+slf4j = "2.0.17"
 logback = "1.5.17"
 publisher = "0.31.0"
 
