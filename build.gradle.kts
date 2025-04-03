@@ -37,9 +37,9 @@ allprojects {
 dependencies {
     api(libs.bundles.jackson)
     api(libs.bundles.checker)
-    api(libs.jetbrains.annotations)
     api(libs.slf4j.api)
 
+    implementation(libs.jetbrains.annotations)
     implementation(libs.slf4j.simple)
 
     compileOnly(libs.lombok)
