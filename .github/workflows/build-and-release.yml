@@ -59,4 +59,4 @@ jobs:
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_KEY_PASSPHRASE }}
         run: |
-          ./gradlew publishMavenPublicationToMavenCentralRepository --no-daemon
+          ./gradlew publishMavenPublicationToMavenCentralRepository --no-daemon -PRELEASE_SIGNING_ENABLED=true

@@ -64,8 +64,6 @@ mavenPublishing {
 
     coordinates(groupId, artifactId, versionId)
 
-    signAllPublications()
-
     pom {
         name.set("TeleightBots")
         description.set(project.description)
