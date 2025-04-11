@@ -121,6 +121,10 @@ public record ChatFullInfo(
         @Nullable
         ChatPermissions permissions,
 
+        @JsonProperty(value = "accepted_gift_types")
+        @Nullable
+        AcceptedGiftTypes acceptedGiftTypes,
+
         @JsonProperty(value = "can_send_paid_media")
         boolean canSendPaidMedia,
 

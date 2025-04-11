@@ -89,6 +89,9 @@ public record Message(
         @Nullable
         String authorSignature,
 
+        @JsonProperty(value = "paid_star_count")
+        int paidStarCount,
+
         @JsonProperty(value = "text")
         @Nullable
         String text,
@@ -247,6 +250,14 @@ public record Message(
         @Nullable
         ChatShared chatShared,
 
+        @JsonProperty(value = "gift")
+        @Nullable
+        GiftInfo gift,
+
+        @JsonProperty(value = "unique_gift")
+        @Nullable
+        UniqueGiftInfo uniqueGift,
+
         @JsonProperty(value = "connected_website")
         @Nullable
         String connectedWebsite,
@@ -310,6 +321,10 @@ public record Message(
         @JsonProperty(value = "giveaway_completed")
         @Nullable
         GiveawayCompleted giveawayCompleted,
+
+        @JsonProperty(value = "paid_message_price_changed")
+        @Nullable
+        PaidMessagePriceChanged paidMessagePriceChanged,
 
         @JsonProperty(value = "video_chat_scheduled")
         @Nullable

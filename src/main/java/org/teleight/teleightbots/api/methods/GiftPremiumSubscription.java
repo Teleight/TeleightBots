@@ -11,20 +11,15 @@ import org.teleight.teleightbots.api.objects.ParseMode;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
-public record SendGift(
+public record GiftPremiumSubscription(
         @JsonProperty(value = "user_id", required = true)
-        int userId,
+        long userId,
 
-        @JsonProperty(value = "chat_id")
-        @Nullable
-        String chatId,
+        @JsonProperty(value = "month_count", required = true)
+        int monthCount,
 
-        @JsonProperty(value = "gift_id", required = true)
-        @NotNull
-        String giftId,
-
-        @JsonProperty(value = "pay_for_upgrade")
-        boolean payForUpgrade,
+        @JsonProperty(value = "star_count", required = true)
+        int starCount,
 
         @JsonProperty(value = "text")
         @Nullable
@@ -39,15 +34,15 @@ public record SendGift(
         MessageEntity[] textEntities
 ) implements ApiMethodBoolean {
 
-    public static @NotNull Builder ofBuilder(int userId, String giftId) {
-        return new SendGift.Builder()
+    public static @NotNull Builder ofBuilder(long userId, int monthCount, int starCount) {
+        return new GiftPremiumSubscription.Builder()
                 .userId(userId)
-                .giftId(giftId);
+                .monthCount(monthCount)
+                .starCount(starCount);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "sendGift";
+        return "giftPremiumSubscription";
     }
-
 }

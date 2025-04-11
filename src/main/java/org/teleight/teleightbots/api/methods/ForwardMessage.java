@@ -20,6 +20,9 @@ public record ForwardMessage(
         @NotNull
         String fromChatId,
 
+        @JsonProperty(value = "video_start_timestamp")
+        int videoStartTimestamp,
+
         @JsonProperty(value = "disable_notification")
         boolean disableNotification,
 
