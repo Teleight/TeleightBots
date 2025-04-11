@@ -24,7 +24,7 @@ public record Video(
         @Nullable
         PhotoSize thumbnail,
 
-        @JsonProperty("cover")
+        @JsonProperty(value = "cover")
         @Nullable
         PhotoSize[] cover,
 
