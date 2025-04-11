@@ -30,6 +30,9 @@ public record CopyMessage(
         @JsonProperty(value = "message_id", required = true)
         int messageId,
 
+        @JsonProperty(value = "video_start_timestamp")
+        int videoStartTimestamp,
+
         @JsonProperty(value = "caption")
         @Nullable
         String caption,

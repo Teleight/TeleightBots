@@ -9,6 +9,7 @@ import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
 import org.teleight.teleightbots.api.objects.InputFile;
 import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
+import org.teleight.teleightbots.api.objects.PhotoSize;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 
@@ -45,6 +46,13 @@ public record SendVideo(
         @JsonProperty(value = "thumbnail")
         @Nullable
         InputFile thumbnail,
+
+        @JsonProperty(value = "cover")
+        @Nullable
+        PhotoSize cover,
+
+        @JsonProperty(value = "start_timestamp")
+        int startTimestamp,
 
         @JsonProperty(value = "caption")
         @Nullable
@@ -107,6 +115,8 @@ public record SendVideo(
         parameters.put("width", width);
         parameters.put("video", video);
         parameters.put("thumbnail", thumbnail);
+        parameters.put("cover", cover);
+        parameters.put("start_timestamp", startTimestamp);
         parameters.put("height", height);
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);
