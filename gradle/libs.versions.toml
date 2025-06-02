@@ -1,6 +1,6 @@
 [versions]
 jackson = "2.19.0"
-checker = "3.49.3"
+checker = "3.49.4"
 jetbrains-annotations = "26.0.2"
 lombok = "1.18.38"
 shadow = "9.0.0-beta13"
