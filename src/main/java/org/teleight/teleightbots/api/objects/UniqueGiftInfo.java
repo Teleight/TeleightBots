@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
+import java.util.Date;
+
 public record UniqueGiftInfo(
         @JsonProperty(value = "gift", required = true)
         @NotNull
@@ -14,12 +16,19 @@ public record UniqueGiftInfo(
         @NotNull
         UniqueGiftOrigin origin,
 
+        @JsonProperty(value = "last_resale_star_count")
+        int lastResaleStarCount,
+
         @JsonProperty(value = "owned_gift_id")
         @Nullable
         String ownedGiftId,
 
         @JsonProperty(value = "transfer_star_count")
         @Nullable
-        Integer transferStarCount
+        Integer transferStarCount,
+
+        @JsonProperty(value = "next_transfer_date")
+        @Nullable
+        Date nextTransferDate
 ) implements ApiResult {
 }

@@ -2,7 +2,7 @@
 
 ![Java Version](https://img.shields.io/badge/Java_version-21-green)
 ![License](https://img.shields.io/github/license/Teleight/TeleightBots)
-![API Version](https://img.shields.io/badge/Bot_API-9.0-blue?logo=telegram)
+![API Version](https://img.shields.io/badge/Bot_API-9.1-blue?logo=telegram)
 
 TeleightBots is a _lightweight, high-performance, easy to use_ Java Telegram Bot API wrapper.
 It uses modern Java 21 APIs to provide a flexible and easier development experience.

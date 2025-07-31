@@ -162,6 +162,10 @@ public record Message(
         @JsonProperty(value = "has_media_spoiler")
         boolean hasMediaSpoiler,
 
+        @JsonProperty(value = "checklist")
+        @Nullable
+        Checklist checklist,
+
         @JsonProperty(value = "contact")
         @Nullable
         Contact contact,
@@ -281,6 +285,18 @@ public record Message(
         @JsonProperty(value = "chat_background_set")
         @Nullable
         ChatBackground chatBackgroundSet,
+
+        @JsonProperty(value = "checklist_tasks_done")
+        @Nullable
+        ChecklistTasksDone checklistTasksDone,
+
+        @JsonProperty(value = "checklist_tasks_added")
+        @Nullable
+        ChecklistTasksAdded checklistTasksAdded,
+
+        @JsonProperty(value = "direct_message_price_changed")
+        @Nullable
+        DirectMessagePriceChanged directMessagePriceChanged,
 
         @JsonProperty(value = "forum_topic_created")
         @Nullable
