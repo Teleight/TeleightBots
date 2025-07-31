@@ -1,5 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
-
 plugins {
     `java-library`
     alias(libs.plugins.shadow)
@@ -60,8 +58,7 @@ tasks.javadoc {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-
+    publishToMavenCentral()
     coordinates(groupId, artifactId, versionId)
 
     pom {
