@@ -31,7 +31,11 @@ public record OwnedGiftUnique(
 
         @JsonProperty(value = "transfer_star_count")
         @Nullable
-        Integer transferStarCount
+        Integer transferStarCount,
+
+        @JsonProperty(value = "next_transfer_date")
+        @Nullable
+        Date nextTransferDate
 ) implements OwnedGift {
 
     @Override
