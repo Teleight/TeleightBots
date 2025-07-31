@@ -31,8 +31,8 @@ public record EditMessageChecklist(
         ReplyKeyboard replyMarkup
 ) implements ApiMethod<Message> {
 
-    public static @NotNull Builder ofBuilder(String businessConnectionId, String chatId, InputChecklist checklist) {
-        return new Builder().businessConnectionId(businessConnectionId).chatId(chatId).checklist(checklist);
+    public static @NotNull Builder ofBuilder(String businessConnectionId, String chatId, int messageId, InputChecklist checklist) {
+        return new Builder().businessConnectionId(businessConnectionId).chatId(chatId).messageId(messageId).checklist(checklist);
     }
 
     @Override
