@@ -25,7 +25,7 @@ public record InputChecklistTask(
         MessageEntity[] textEntities
 ) implements ApiResult {
 
-    public static @NotNull InputChecklistTask.Builder ofBuilder(int id, String text) {
+    public static @NotNull Builder ofBuilder(int id, String text) {
         return new InputChecklistTask.Builder().id(id).text(text);
     }
 

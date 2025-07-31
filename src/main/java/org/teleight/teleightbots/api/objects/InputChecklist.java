@@ -31,7 +31,7 @@ public record InputChecklist(
         boolean othersCanMarkTasksAsDone
 ) implements ApiResult {
 
-    public static @NotNull InputChecklist.Builder ofBuilder(String title, InputChecklistTask[] tasks) {
+    public static @NotNull Builder ofBuilder(String title, InputChecklistTask[] tasks) {
         return new InputChecklist.Builder().title(title).tasks(tasks);
     }
 
