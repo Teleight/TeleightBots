@@ -1,5 +1,5 @@
 [versions]
-jackson = "2.19.2"
+jackson = "2.20"
 checker = "3.49.5"
 jetbrains-annotations = "26.0.2"
 lombok = "1.18.38"
