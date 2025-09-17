@@ -67,6 +67,9 @@ public record Message(
         @Nullable
         Story replyToStory,
 
+        @JsonProperty(value = "reply_to_checklist_task_id")
+        int replyToChecklistTaskId,
+
         @JsonProperty(value = "via_bot")
         @Nullable
         User viaBot,

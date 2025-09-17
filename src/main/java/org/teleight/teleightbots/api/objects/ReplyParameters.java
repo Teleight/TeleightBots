@@ -33,7 +33,10 @@ public record ReplyParameters(
         MessageEntity[] quoteEntities,
 
         @JsonProperty(value = "quote_position")
-        int quotePosition
+        int quotePosition,
+
+        @JsonProperty(value = "checklist_task_id")
+        int checklistTaskId
 ) implements ApiResult {
 
     public static @NotNull Builder ofBuilder(int messageId) {
