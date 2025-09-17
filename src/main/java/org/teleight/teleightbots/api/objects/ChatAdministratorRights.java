@@ -47,7 +47,10 @@ public record ChatAdministratorRights(
         boolean canDeleteStories,
 
         @JsonProperty(value = "can_manage_topics")
-        boolean canManageTopics
+        boolean canManageTopics,
+
+        @JsonProperty(value = "can_manage_direct_messages")
+        boolean canManageDirectMessages
 ) implements ApiResult {
 
 }

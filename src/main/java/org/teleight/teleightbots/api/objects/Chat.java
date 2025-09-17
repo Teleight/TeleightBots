@@ -29,7 +29,10 @@ public record Chat(
         String lastName,
 
         @JsonProperty(value = "is_forum")
-        boolean isForum
+        boolean isForum,
+
+        @JsonProperty(value = "is_direct_messages")
+        boolean isDirectMessages
 ) implements ApiResult {
 
     @JsonIgnore

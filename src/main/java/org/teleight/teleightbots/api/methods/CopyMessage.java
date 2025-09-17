@@ -11,6 +11,7 @@ import org.teleight.teleightbots.api.objects.MessageId;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.api.objects.SuggestedPostParameters;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
@@ -22,6 +23,9 @@ public record CopyMessage(
 
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
+
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
 
         @JsonProperty(value = "from_chat_id", required = true)
         @NotNull
@@ -56,6 +60,10 @@ public record CopyMessage(
 
         @JsonProperty(value = "allow_paid_broadcast")
         boolean allowPaidBroadcast,
+
+        @JsonProperty(value = "suggested_post_parameters")
+        @Nullable
+        SuggestedPostParameters suggestedPostParameters,
 
         @JsonProperty(value = "reply_parameters")
         @Nullable

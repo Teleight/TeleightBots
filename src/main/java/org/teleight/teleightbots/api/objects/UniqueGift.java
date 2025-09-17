@@ -2,6 +2,7 @@ package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record UniqueGift(
@@ -26,6 +27,10 @@ public record UniqueGift(
         
         @JsonProperty(value = "backdrop", required = true)
         @NotNull
-        UniqueGiftBackdrop backdrop
+        UniqueGiftBackdrop backdrop,
+
+        @JsonProperty(value = "publisher_chat")
+        @Nullable
+        Chat publisherChat
 ) implements ApiResult {
 }

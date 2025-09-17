@@ -14,6 +14,10 @@ public record Message(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic")
+        @Nullable
+        DirectMessagesTopic directMessagesTopic,
+
         @JsonProperty(value = "from")
         @Nullable
         User from,
@@ -67,6 +71,9 @@ public record Message(
         @Nullable
         Story replyToStory,
 
+        @JsonProperty(value = "reply_to_checklist_task_id")
+        int replyToChecklistTaskId,
+
         @JsonProperty(value = "via_bot")
         @Nullable
         User viaBot,
@@ -80,6 +87,9 @@ public record Message(
 
         @JsonProperty(value = "is_from_offline")
         boolean isFromOffline,
+
+        @JsonProperty(value = "is_paid_post")
+        boolean isPaidPost,
 
         @JsonProperty(value = "media_group_id")
         @Nullable
@@ -341,6 +351,26 @@ public record Message(
         @JsonProperty(value = "paid_message_price_changed")
         @Nullable
         PaidMessagePriceChanged paidMessagePriceChanged,
+
+        @JsonProperty(value = "suggested_post_approved")
+        @Nullable
+        SuggestedPostApproved suggestedPostApproved,
+
+        @JsonProperty(value = "suggested_post_approval_failed")
+        @Nullable
+        SuggestedPostApprovalFailed suggestedPostApprovalFailed,
+
+        @JsonProperty(value = "suggested_post_declined")
+        @Nullable
+        SuggestedPostDeclined suggestedPostDeclined,
+
+        @JsonProperty(value = "suggested_post_paid")
+        @Nullable
+        SuggestedPostPaid suggestedPostPaid,
+
+        @JsonProperty(value = "suggested_post_refunded")
+        @Nullable
+        SuggestedPostRefunded suggestedPostRefunded,
 
         @JsonProperty(value = "video_chat_scheduled")
         @Nullable

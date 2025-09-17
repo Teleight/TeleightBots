@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
 import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.LabeledPrice;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.api.objects.SuggestedPostParameters;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
@@ -18,6 +20,9 @@ public record SendInvoice(
 
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
+
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
 
         @JsonProperty(value = "title", required = true)
         @NotNull
@@ -98,6 +103,10 @@ public record SendInvoice(
 
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,
+
+        @JsonProperty(value = "suggested_post_parameters")
+        @Nullable
+        SuggestedPostParameters suggestedPostParameters,
 
         @JsonProperty(value = "reply_parameters")
         ReplyParameters replyParameters,

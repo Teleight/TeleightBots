@@ -32,6 +32,9 @@ public record ChatFullInfo(
         @JsonProperty(value = "is_forum")
         boolean isForum,
 
+        @JsonProperty(value = "is_direct_messages")
+        boolean isDirectMessages,
+
         @JsonProperty(value = "accent_color_id")
         int accentColorId,
 
@@ -65,6 +68,10 @@ public record ChatFullInfo(
         @JsonProperty(value = "personal_chat")
         @Nullable
         Chat personalChat,
+
+        @JsonProperty(value = "parent_chat")
+        @Nullable
+        Chat parentChat,
 
         @JsonProperty(value = "available_reactions")
         @Nullable

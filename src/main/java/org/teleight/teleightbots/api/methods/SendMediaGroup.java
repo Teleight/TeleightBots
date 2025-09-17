@@ -7,9 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
 import org.teleight.teleightbots.api.objects.InputFile;
-import org.teleight.teleightbots.api.objects.MessageEntity;
-import org.teleight.teleightbots.api.objects.ParseMode;
-import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 
 import java.util.HashMap;
@@ -28,6 +25,9 @@ public record SendMediaGroup(
 
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
+
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
 
         @JsonProperty(value = "media", required = true)
         @NotNull
@@ -65,6 +65,7 @@ public record SendMediaGroup(
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
+        parameters.put("direct_messages_topic_id", directMessagesTopicId);
         parameters.put("media", media);
         parameters.put("disable_notification", disableNotification);
         parameters.put("protect_content", protectContent);

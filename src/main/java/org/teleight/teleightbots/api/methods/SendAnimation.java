@@ -11,6 +11,7 @@ import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.api.objects.SuggestedPostParameters;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,9 @@ public record SendAnimation(
 
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
+
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
 
         @JsonProperty(value = "animation", required = true)
         @NotNull
@@ -76,6 +80,10 @@ public record SendAnimation(
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,
 
+        @JsonProperty(value = "suggested_post_parameters")
+        @Nullable
+        SuggestedPostParameters suggestedPostParameters,
+
         @JsonProperty(value = "reply_parameters")
         @Nullable
         ReplyParameters replyParameters,
@@ -100,6 +108,7 @@ public record SendAnimation(
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
+        parameters.put("direct_messages_topic_id", directMessagesTopicId);
         parameters.put("duration", duration);
         parameters.put("width", width);
         parameters.put("height", height);
@@ -114,6 +123,7 @@ public record SendAnimation(
         parameters.put("protect_content", protectContent);
         parameters.put("allow_paid_broadcast", allowPaidBroadcast);
         parameters.put("message_effect_id", messageEffectId);
+        parameters.put("suggested_post_parameters", suggestedPostParameters);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;
