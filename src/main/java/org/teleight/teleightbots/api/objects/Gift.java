@@ -2,6 +2,7 @@ package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record Gift(
@@ -23,6 +24,10 @@ public record Gift(
         int totalCount,
 
         @JsonProperty(value = "remaining_count")
-        int remainingCount
+        int remainingCount,
+
+        @JsonProperty(value = "publisher_chat")
+        @Nullable
+        Chat publisherChat
 ) implements ApiResult {
 }
