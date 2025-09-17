@@ -27,6 +27,9 @@ public record SendSticker(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
+
         @JsonProperty(value = "sticker", required = true)
         @NotNull
         InputFile sticker,
@@ -71,6 +74,7 @@ public record SendSticker(
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
+        parameters.put("direct_messages_topic_id", directMessagesTopicId);
         parameters.put("emoji", emoji);
         parameters.put("sticker", sticker);
         parameters.put("disable_notification", disableNotification);

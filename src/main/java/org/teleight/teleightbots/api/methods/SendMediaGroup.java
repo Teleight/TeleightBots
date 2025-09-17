@@ -29,6 +29,9 @@ public record SendMediaGroup(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
+
         @JsonProperty(value = "media", required = true)
         @NotNull
         InputFile media,
@@ -65,6 +68,7 @@ public record SendMediaGroup(
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
+        parameters.put("direct_messages_topic_id", directMessagesTopicId);
         parameters.put("media", media);
         parameters.put("disable_notification", disableNotification);
         parameters.put("protect_content", protectContent);

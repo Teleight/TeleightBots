@@ -14,6 +14,10 @@ public record Message(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic")
+        @Nullable
+        DirectMessagesTopic directMessagesTopic,
+
         @JsonProperty(value = "from")
         @Nullable
         User from,

@@ -16,6 +16,9 @@ public record ForwardMessage(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
+
         @JsonProperty(value = "from_chat_id", required = true)
         @NotNull
         String fromChatId,

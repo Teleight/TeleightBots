@@ -26,6 +26,12 @@ public record SendPaidMedia(
         @NotNull
         String chatId,
 
+        @JsonProperty(value = "message_thread_id")
+        int messageThreadId,
+
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
+
         @JsonProperty(value = "star_count", required = true)
         int starCount,
 
@@ -84,6 +90,8 @@ public record SendPaidMedia(
         final Map<String, Object> parameters = new HashMap<>();
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
+        parameters.put("message_thread_id", messageThreadId);
+        parameters.put("direct_messages_topic_id", directMessagesTopicId);
         parameters.put("star_count", starCount);
         parameters.put("media", media);
         parameters.put("payload", payload);

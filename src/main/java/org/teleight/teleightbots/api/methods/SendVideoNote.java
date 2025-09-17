@@ -27,6 +27,9 @@ public record SendVideoNote(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
+
         @JsonProperty(value = "video_note", required = true)
         @NotNull
         InputFile videoNote,
@@ -77,6 +80,7 @@ public record SendVideoNote(
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
+        parameters.put("direct_messages_topic_id", directMessagesTopicId);
         parameters.put("duration", duration);
         parameters.put("length", length);
         parameters.put("disable_notification", disableNotification);

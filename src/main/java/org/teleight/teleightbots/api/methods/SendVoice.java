@@ -29,6 +29,9 @@ public record SendVoice(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
+
         @JsonProperty(value = "voice", required = true)
         @NotNull
         InputFile voice,
@@ -84,6 +87,7 @@ public record SendVoice(
         parameters.put("business_connection_id", businessConnectionId);
         parameters.put("chat_id", chatId);
         parameters.put("message_thread_id", messageThreadId);
+        parameters.put("direct_messages_topic_id", directMessagesTopicId);
         parameters.put("voice", voice);
         parameters.put("caption", caption);
         parameters.put("parse_mode", parseMode);

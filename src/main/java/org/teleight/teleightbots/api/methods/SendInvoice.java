@@ -19,6 +19,9 @@ public record SendInvoice(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic_id")
+        long directMessagesTopicId,
+
         @JsonProperty(value = "title", required = true)
         @NotNull
         String title,
