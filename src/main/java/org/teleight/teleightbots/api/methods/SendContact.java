@@ -9,6 +9,7 @@ import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.Dice;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.api.objects.SuggestedPostParameters;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
@@ -54,6 +55,10 @@ public record SendContact(
         @JsonProperty(value = "message_effect_id")
         @Nullable
         String messageEffectId,
+
+        @JsonProperty(value = "suggested_post_parameters")
+        @Nullable
+        SuggestedPostParameters suggestedPostParameters,
 
         @JsonProperty(value = "reply_parameters")
         @Nullable

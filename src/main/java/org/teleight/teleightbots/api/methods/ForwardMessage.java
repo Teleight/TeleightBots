@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodMessage;
+import org.teleight.teleightbots.api.objects.SuggestedPostParameters;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
@@ -31,6 +33,10 @@ public record ForwardMessage(
 
         @JsonProperty(value = "protect_content")
         boolean protectContent,
+
+        @JsonProperty(value = "suggested_post_parameters")
+        @Nullable
+        SuggestedPostParameters suggestedPostParameters,
 
         @JsonProperty(value = "message_id", required = true)
         int messageId

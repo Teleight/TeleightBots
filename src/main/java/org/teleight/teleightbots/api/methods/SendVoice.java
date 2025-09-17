@@ -11,6 +11,7 @@ import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.api.objects.SuggestedPostParameters;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +64,10 @@ public record SendVoice(
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,
 
+        @JsonProperty(value = "suggested_post_parameters")
+        @Nullable
+        SuggestedPostParameters suggestedPostParameters,
+
         @JsonProperty(value = "reply_parameters")
         @Nullable
         ReplyParameters replyParameters,
@@ -97,6 +102,7 @@ public record SendVoice(
         parameters.put("protect_content", protectContent);
         parameters.put("allow_paid_broadcast", allowPaidBroadcast);
         parameters.put("message_effect_id", messageEffectId);
+        parameters.put("suggested_post_parameters", suggestedPostParameters);
         parameters.put("reply_parameters", replyParameters);
         parameters.put("reply_markup", replyMarkup);
         return parameters;

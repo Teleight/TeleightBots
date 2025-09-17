@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.api.objects.SuggestedPostParameters;
 import org.teleight.teleightbots.api.objects.Venue;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
@@ -69,6 +70,10 @@ public record SendVenue(
 
         @JsonProperty(value = "message_effect_id")
         String messageEffectId,
+
+        @JsonProperty(value = "suggested_post_parameters")
+        @Nullable
+        SuggestedPostParameters suggestedPostParameters,
 
         @JsonProperty(value = "reply_parameters")
         @Nullable

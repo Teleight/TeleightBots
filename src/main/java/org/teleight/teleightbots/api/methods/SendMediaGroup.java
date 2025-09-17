@@ -7,9 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
 import org.teleight.teleightbots.api.objects.InputFile;
-import org.teleight.teleightbots.api.objects.MessageEntity;
-import org.teleight.teleightbots.api.objects.ParseMode;
-import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 
 import java.util.HashMap;
