@@ -1,10 +1,10 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
+import tools.jackson.core.JacksonException;
 
 import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
@@ -105,7 +105,7 @@ public record Update(
         ChatBoostRemoved removedChatBoost
 ) implements ApiResult {
 
-    public static Update parseResponse(@NotNull String responseJson) throws JsonProcessingException {
+    public static Update parseResponse(@NotNull String responseJson) throws JacksonException {
         return OBJECT_MAPPER.readValue(responseJson, Update.class);
     }
 

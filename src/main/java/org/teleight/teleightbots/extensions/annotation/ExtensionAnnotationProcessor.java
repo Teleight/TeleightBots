@@ -1,8 +1,8 @@
 package org.teleight.teleightbots.extensions.annotation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.extensions.ExtensionManager;
+import tools.jackson.databind.ObjectMapper;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;

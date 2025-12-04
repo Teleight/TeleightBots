@@ -1,6 +1,5 @@
 package org.teleight.teleightbots.updateprocessor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -61,7 +60,7 @@ public final class BotMethodExecutor {
                 final HttpRequest request;
                 try {
                     request = createRequest(method, url);
-                } catch (JsonProcessingException e) {
+                } catch (Exception e) {
                     requestFuture.completeExceptionally(e);
                     return;
                 }
@@ -87,7 +86,7 @@ public final class BotMethodExecutor {
     }
 
     @ApiStatus.Internal
-    private HttpRequest createRequest(ApiMethod<?> method, String url) throws JsonProcessingException {
+    private HttpRequest createRequest(ApiMethod<?> method, String url) {
         final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder(URI.create(url))
                 .timeout(Duration.of(75, ChronoUnit.SECONDS));
         final HttpRequest.BodyPublisher body;
@@ -111,8 +110,7 @@ public final class BotMethodExecutor {
 
     @ApiStatus.Internal
     private void handleInputFields(@NotNull MultiPartBodyPublisher publisher,
-                                   @NotNull Map<String, Object> params)
-            throws JsonProcessingException {
+                                   @NotNull Map<String, Object> params) {
         for (Map.Entry<String, Object> stringObjectEntry : params.entrySet()) {
             final String key = stringObjectEntry.getKey();
             final Object value = stringObjectEntry.getValue();

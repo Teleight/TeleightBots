@@ -1,17 +1,16 @@
 package org.teleight.teleightbots.api.serialization.serializers;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import org.teleight.teleightbots.api.objects.LivePeriod;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
-
-public class LivePeriodSerializer extends JsonSerializer<LivePeriod> {
+public class LivePeriodSerializer extends ValueSerializer<LivePeriod> {
 
     @Override
-    public void serialize(LivePeriod color, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeNumber(color.getSeconds());
+    public void serialize(LivePeriod value, JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
+        gen.writeNumber(value.getSeconds());
     }
 
 }
