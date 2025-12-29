@@ -6,7 +6,7 @@ lombok = "1.18.42"
 shadow = "9.2.2"
 junit-jupiter = "6.0.1"
 slf4j = "2.0.17"
-logback = "1.5.21"
+logback = "1.5.23"
 publisher = "0.34.0"
 
 [libraries]
