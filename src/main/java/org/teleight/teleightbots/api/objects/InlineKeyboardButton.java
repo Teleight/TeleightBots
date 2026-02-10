@@ -21,6 +21,14 @@ public record InlineKeyboardButton(
         @NotNull
         String text,
 
+        @JsonProperty(value = "icon_custom_emoji_id")
+        @Nullable
+        String iconCustomEmojiId,
+
+        @JsonProperty(value = "style")
+        @Nullable
+        KeyboardButtonStyle style,
+
         @JsonProperty(value = "url")
         @Nullable
         String url,

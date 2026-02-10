@@ -179,6 +179,10 @@ public record ChatFullInfo(
         @Nullable
         UserRating rating,
 
+        @JsonProperty(value = "first_profile_audio")
+        @Nullable
+        Audio firstProfileAudio,
+
         @JsonProperty(value = "unique_gift_colors")
         @Nullable
         UniqueGiftColors uniqueGiftColors,

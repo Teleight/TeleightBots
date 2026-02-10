@@ -6,7 +6,6 @@ import lombok.extern.jackson.Jacksonized;
 import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiMethod;
-import org.teleight.teleightbots.api.objects.ChatMember;
 import org.teleight.teleightbots.api.objects.OwnedGifts;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 

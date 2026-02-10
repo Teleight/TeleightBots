@@ -208,6 +208,14 @@ public record Message(
         @Nullable
         User leftChatMember,
 
+        @JsonProperty(value = "chat_owner_left")
+        @Nullable
+        ChatOwnerLeft chatOwnerLeft,
+
+        @JsonProperty(value = "chat_owner_changed")
+        @Nullable
+        ChatOwnerChanged chatOwnerChanged,
+
         @JsonProperty(value = "new_chat_title")
         @Nullable
         String newChatTitle,

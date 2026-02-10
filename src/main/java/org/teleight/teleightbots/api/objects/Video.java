@@ -32,6 +32,10 @@ public record Video(
         @Nullable
         Integer startTimestamp,
 
+        @JsonProperty(value = "qualities")
+        @Nullable
+        VideoQuality[] qualities,
+
         @JsonProperty(value = "file_name")
         @Nullable
         String fileName,

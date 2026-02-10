@@ -36,6 +36,9 @@ public record UniqueGift(
         @JsonProperty(value = "is_premium")
         boolean isPremium,
 
+        @JsonProperty(value = "is_burned")
+        boolean isBurned,
+
         @JsonProperty(value = "is_from_blockchain")
         boolean isFromBlockchain,
 

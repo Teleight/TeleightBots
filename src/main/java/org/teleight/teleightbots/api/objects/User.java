@@ -48,7 +48,10 @@ public record User(
         boolean hasMainWebApp,
 
         @JsonProperty(value = "has_topics_enabled")
-        boolean hasTopicsEnabled
+        boolean hasTopicsEnabled,
+
+        @JsonProperty(value = "allows_users_to_create_topics")
+        boolean allowsUsersToCreateTopics
 ) implements ApiResult {
 
 }

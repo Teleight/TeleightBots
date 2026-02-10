@@ -2,6 +2,7 @@ package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record UniqueGiftModel(
@@ -14,6 +15,10 @@ public record UniqueGiftModel(
         Sticker sticker,
         
         @JsonProperty(value = "rarity_per_mille", required = true)
-        int rarityPerMille
+        int rarityPerMille,
+
+        @JsonProperty(value = "rarity")
+        @Nullable
+        String rarity
 ) implements ApiResult {
 }
