@@ -4,14 +4,7 @@
 ![License](https://img.shields.io/github/license/Teleight/TeleightBots)
 ![API Version](https://img.shields.io/badge/Bot_API-9.4-blue?logo=telegram)
 
-TeleightBots is a _lightweight, high-performance, easy to use_ Java Telegram Bot API wrapper.
-It uses modern Java 21 APIs to provide a flexible and easier development experience.
-
-> [!CAUTION]
->
-> Teleight is still in early development! 
-> If you find any problems, feel free to create an issue on GitHub.
-> Contributions are welcome!
+TeleightBots is a _lightweight, high-performance, easy to use_ Java Telegram Bot API wrapper. 
 
 ## 📚 Documentation
 > [!IMPORTANT]
@@ -20,31 +13,18 @@ It uses modern Java 21 APIs to provide a flexible and easier development experie
 understand the basics.
 >
 An example of how to use the TeleightBots library is available [here](/demo).
-Wiki and Javadocs are not yet available.
+* Wiki: https://github.com/Teleight/TeleightBots/wiki/
+* Javadocs: https://teleight.org/
 
-## 💻 Local Installation
-To set up the library locally, follow these steps:
-
-1. Clone the repository: `git clone https://github.com/Teleight/TeleightBots.git && cd TeleightBots`
-2. Publish to maven local: `./gradlew publishToMavenLocal`
-3. Add the dependency to your project
-
+## 💻 Quick start
 #### Gradle (kotlin)
 ```kotlin
-repositories {
-    mavenLocal() // Include the local Maven repository
-}
-
 dependencies {
     implementation("org.teleight:TeleightBots:VERSION") // Replace VERSION with the latest version
 }
 ```
 #### Gradle (groovy)
 ```groovy
-repositories {
-    mavenLocal() // Include the local Maven repository
-}
-
 dependencies {
     implementation 'org.teleight:TeleightBots:VERSION' // Replace VERSION with the latest version
 }
