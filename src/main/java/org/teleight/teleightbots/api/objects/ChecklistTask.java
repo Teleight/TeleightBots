@@ -21,6 +21,10 @@ public record ChecklistTask(
         @Nullable
         User completedByUser,
 
+        @JsonProperty(value = "completed_by_chat")
+        @Nullable
+        Chat completedByChat,
+
         @JsonProperty(value = "completion_date")
         @Nullable
         Date completionDate

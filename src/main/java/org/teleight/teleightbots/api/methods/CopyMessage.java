@@ -58,6 +58,10 @@ public record CopyMessage(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "message_effect_id")
+        @Nullable
+        String messageEffectId,
+
         @JsonProperty(value = "allow_paid_broadcast")
         boolean allowPaidBroadcast,
 

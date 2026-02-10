@@ -1,15 +1,20 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
-public record ForumTopicCreated(
+public record ForumTopic(
+        @JsonProperty(value = "message_thread_id", required = true)
+        int messageThreadId,
+
         @JsonProperty(value = "name", required = true)
+        @NotNull
         String name,
 
         @JsonProperty(value = "icon_color", required = true)
-        int description,
+        int iconColor,
 
         @JsonProperty(value = "icon_custom_emoji_id")
         @Nullable

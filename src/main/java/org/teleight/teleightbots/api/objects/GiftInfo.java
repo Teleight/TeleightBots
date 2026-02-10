@@ -22,6 +22,9 @@ public record GiftInfo(
         @Nullable
         Integer prepaidUpgradeStarCount,
 
+        @JsonProperty(value = "is_upgrade_separate")
+        boolean isUpgradeSeparate,
+
         @JsonProperty(value = "can_be_upgraded")
         boolean canBeUpgraded,
 
@@ -34,6 +37,9 @@ public record GiftInfo(
         MessageEntity[] entities,
 
         @JsonProperty(value = "is_private")
-        boolean isPrivate
+        boolean isPrivate,
+
+        @JsonProperty(value = "unique_gift_number")
+        int uniqueGiftNumber
 ) implements ApiResult {
 }

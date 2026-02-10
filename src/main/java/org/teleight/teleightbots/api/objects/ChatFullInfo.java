@@ -173,6 +173,17 @@ public record ChatFullInfo(
 
         @JsonProperty(value = "location")
         @Nullable
-        ChatLocation location
+        ChatLocation location,
+
+        @JsonProperty(value = "rating")
+        @Nullable
+        UserRating rating,
+
+        @JsonProperty(value = "unique_gift_colors")
+        @Nullable
+        UniqueGiftColors uniqueGiftColors,
+
+        @JsonProperty(value = "paid_message_star_count")
+        int paidMessageStarCount
 ) implements ApiResult {
 }

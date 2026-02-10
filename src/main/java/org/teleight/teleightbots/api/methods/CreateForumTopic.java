@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
+import org.teleight.teleightbots.api.objects.ForumTopic;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.awt.Color;
 
@@ -27,7 +30,7 @@ public record CreateForumTopic(
         @JsonProperty(value = "icon_custom_emoji_id")
         @Nullable
         String iconCustomEmojiId
-) implements ApiMethodBoolean {
+) implements ApiMethod<ForumTopic> {
 
     public static @NotNull Builder ofBuilder(String chatId, String name) {
         return new CreateForumTopic.Builder().chatId(chatId).name(name);
@@ -36,6 +39,11 @@ public record CreateForumTopic(
     @Override
     public @NotNull String getEndpointURL() {
         return "createForumTopic";
+    }
+
+    @Override
+    public @NotNull ForumTopic deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, ForumTopic.class);
     }
 
 }

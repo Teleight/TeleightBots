@@ -34,6 +34,10 @@ public record ForwardMessage(
         @JsonProperty(value = "protect_content")
         boolean protectContent,
 
+        @JsonProperty(value = "message_effect_id")
+        @Nullable
+        String messageEffectId,
+
         @JsonProperty(value = "suggested_post_parameters")
         @Nullable
         SuggestedPostParameters suggestedPostParameters,

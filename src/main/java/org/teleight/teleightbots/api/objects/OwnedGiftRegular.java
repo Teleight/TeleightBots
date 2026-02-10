@@ -49,7 +49,13 @@ public record OwnedGiftRegular(
 
         @JsonProperty(value = "prepaid_upgrade_star_count")
         @Nullable
-        Integer prepaidUpgradeStarCount
+        Integer prepaidUpgradeStarCount,
+
+        @JsonProperty(value = "is_upgrade_separate")
+        boolean isUpgradeSeparate,
+
+        @JsonProperty(value = "unique_gift_number")
+        int uniqueGiftNumber
 ) implements OwnedGift {
 
     @Override

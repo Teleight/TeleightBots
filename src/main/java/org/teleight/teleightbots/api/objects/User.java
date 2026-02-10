@@ -45,7 +45,10 @@ public record User(
         boolean canConnectToBusiness,
 
         @JsonProperty(value = "has_main_web_app")
-        boolean hasMainWebApp
+        boolean hasMainWebApp,
+
+        @JsonProperty(value = "has_topics_enabled")
+        boolean hasTopicsEnabled
 ) implements ApiResult {
 
 }

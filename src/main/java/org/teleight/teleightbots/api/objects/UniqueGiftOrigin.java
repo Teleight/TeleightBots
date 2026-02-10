@@ -6,7 +6,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum UniqueGiftOrigin {
 
     UPGRADE("upgrade"),
-    TRANSFER("transfer");
+    TRANSFER("transfer"),
+    RESALE("resale"),
+    GIFTED_UPGRADE("gifted_upgrade"),
+    OFFER("offer");
 
     private final String fieldValue;
 

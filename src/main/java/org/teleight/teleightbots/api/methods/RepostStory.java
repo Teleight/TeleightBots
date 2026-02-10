@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.MultiPartApiMethod;
 import org.teleight.teleightbots.api.objects.InputStoryContent;
 import org.teleight.teleightbots.api.objects.MessageEntity;
@@ -18,45 +19,32 @@ import java.util.Map;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
-public record PostStory(
+public record RepostStory(
         @JsonProperty(value = "business_connection_id", required = true)
         @NotNull
         String businessConnectionId,
 
-        @JsonProperty(value = "content", required = true)
-        @NotNull
-        InputStoryContent content,
+        @JsonProperty(value = "from_chat_id", required = true)
+        long fromChatId,
+
+        @JsonProperty(value = "from_story_id", required = true)
+        int fromStoryId,
 
         @JsonProperty(value = "active_period", required = true)
         StoryActivePeriod activePeriod,
-
-        @JsonProperty(value = "caption")
-        @Nullable
-        String caption,
-
-        @JsonProperty(value = "parse_mode")
-        @Nullable
-        ParseMode parseMode,
-
-        @JsonProperty(value = "caption_entities")
-        @Nullable
-        MessageEntity[] captionEntities,
-
-        @JsonProperty(value = "areas")
-        @Nullable
-        StoryArea[] areas,
 
         @JsonProperty(value = "post_to_chat_page")
         boolean postToChatPage,
 
         @JsonProperty(value = "protect_content")
         boolean protectContent
-) implements MultiPartApiMethod<Story> {
+) implements ApiMethod<Story> {
 
-    public static @NotNull Builder ofBuilder(String businessConnectionId, InputStoryContent content, StoryActivePeriod activePeriod) {
-        return new PostStory.Builder()
+    public static @NotNull Builder ofBuilder(String businessConnectionId, long fromChatId, int fromStoryId, StoryActivePeriod activePeriod) {
+        return new RepostStory.Builder()
                 .businessConnectionId(businessConnectionId)
-                .content(content)
+                .fromChatId(fromChatId)
+                .fromStoryId(fromStoryId)
                 .activePeriod(activePeriod);
     }
 
@@ -67,21 +55,7 @@ public record PostStory(
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "postStory";
+        return "repostStory";
     }
 
-    @Override
-    public @NotNull Map<String, Object> getParameters() {
-        final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("business_connection_id", businessConnectionId);
-        parameters.put("content", content);
-        parameters.put("active_period", activePeriod);
-        parameters.put("caption", caption);
-        parameters.put("parse_mode", parseMode);
-        parameters.put("caption_entities", captionEntities);
-        parameters.put("areas", areas);
-        parameters.put("post_to_chat_page", postToChatPage);
-        parameters.put("protect_content", protectContent);
-        return parameters;
-    }
 }

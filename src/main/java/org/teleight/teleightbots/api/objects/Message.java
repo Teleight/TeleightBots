@@ -272,6 +272,10 @@ public record Message(
         @Nullable
         UniqueGiftInfo uniqueGift,
 
+        @JsonProperty(value = "gift_upgrade_sent")
+        @Nullable
+        GiftInfo giftUpgradeSent,
+
         @JsonProperty(value = "connected_website")
         @Nullable
         String connectedWebsite,

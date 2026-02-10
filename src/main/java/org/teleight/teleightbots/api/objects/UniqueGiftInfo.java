@@ -16,8 +16,11 @@ public record UniqueGiftInfo(
         @NotNull
         UniqueGiftOrigin origin,
 
-        @JsonProperty(value = "last_resale_star_count")
-        int lastResaleStarCount,
+        @JsonProperty(value = "last_resale_currency")
+        TelegramCurrency lastResaleCurrency,
+
+        @JsonProperty(value = "last_resale_amount")
+        int lastResaleAmount,
 
         @JsonProperty(value = "owned_gift_id")
         @Nullable

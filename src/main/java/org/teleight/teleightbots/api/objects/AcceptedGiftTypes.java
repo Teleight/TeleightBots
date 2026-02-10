@@ -18,7 +18,10 @@ public record AcceptedGiftTypes(
         boolean uniqueGifts,
 
         @JsonProperty(value = "premium_subscription", required = true)
-        boolean premiumSubscription
+        boolean premiumSubscription,
+
+        @JsonProperty(value = "gifts_from_channels", required = true)
+        boolean giftsFromChannels
 ) implements ApiResult {
 
 }
