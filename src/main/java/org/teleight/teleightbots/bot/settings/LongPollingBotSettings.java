@@ -2,6 +2,8 @@ package org.teleight.teleightbots.bot.settings;
 
 import lombok.Builder;
 
+import java.util.List;
+
 /**
  * Represents the settings for configuring a long polling Telegram bot.
  *
@@ -30,7 +32,8 @@ public record LongPollingBotSettings(
         int updatesLimit,
         int updatesTimeout,
         boolean silentlyThrowMethodExecution,
-        boolean extensionsEnabled
+        boolean extensionsEnabled,
+        List<String> allowedUpdates
 ) implements BotSettings {
 
     /**
@@ -41,6 +44,7 @@ public record LongPollingBotSettings(
      *     <li>{@link #updatesTimeout} is set to 100</li>
      *     <li>{@link #silentlyThrowMethodExecution} is set to {@code true}</li>
      *     <li>{@link #extensionsEnabled} is set to {@code false}</li>
+     *     <li>{@link #allowedUpdates} is set to {@code null} (all updates allowed except chat_member, message_reaction, and message_reaction_count) </li>
      * </ul>
      */
     public static final LongPollingBotSettings DEFAULT = ofBuilder().build();
