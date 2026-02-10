@@ -50,6 +50,7 @@ jobs:
           BRANCH: javadoc
           FOLDER: build/docs/javadoc
           CLEAR_GLOBS_FILE: ".github/javadoc-publish-clear"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to Maven Central
         if: startsWith(github.ref, 'refs/tags/')
