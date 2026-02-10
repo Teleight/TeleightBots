@@ -25,8 +25,11 @@ import java.util.List;
  *                                     This is the maximum time the server will wait for a response before timing out.
  * @param silentlyThrowMethodExecution Whether to silently throw method execution errors.
  * @param extensionsEnabled            Whether bot extensions are enabled.
+ * @param allowedUpdates               A list of update types that the bot is allowed to receive.
+ *                                     If null or empty, the bot will receive all update types except
+ *                                     "chat_member", "message_reaction", and "message_reaction_count"
  */
-@Builder(builderClassName = "Builder", builderMethodName = "ofBuilder")
+@Builder(builderClassName = "Builder", builderMethodName = "ofBuilder", toBuilder = true)
 public record LongPollingBotSettings(
         String endpointUrl,
         int updatesLimit,
@@ -37,26 +40,15 @@ public record LongPollingBotSettings(
 ) implements BotSettings {
 
     /**
-     * Default instance of BotSettings with standard configurations:
-     * <ul>
-     *     <li>{@link #endpointUrl} is set to {@link #DEFAULT_BOT_API_URL}</li>
-     *     <li>{@link #updatesLimit} is set to 50</li>
-     *     <li>{@link #updatesTimeout} is set to 100</li>
-     *     <li>{@link #silentlyThrowMethodExecution} is set to {@code true}</li>
-     *     <li>{@link #extensionsEnabled} is set to {@code false}</li>
-     *     <li>{@link #allowedUpdates} is set to {@code null} (all updates allowed except chat_member, message_reaction, and message_reaction_count) </li>
-     * </ul>
+     * Default instance of BotSettings with standard configurations
      */
-    public static final LongPollingBotSettings DEFAULT = ofBuilder().build();
-
-    public static class Builder {
-        Builder() {
-            endpointUrl = DEFAULT_BOT_API_URL;
-            updatesLimit = 50;
-            updatesTimeout = 100;
-            silentlyThrowMethodExecution = true;
-            extensionsEnabled = false;
-        }
-    }
+    public static final LongPollingBotSettings DEFAULT = ofBuilder()
+            .endpointUrl(DEFAULT_BOT_API_URL)
+            .updatesLimit(50)
+            .updatesTimeout(100)
+            .silentlyThrowMethodExecution(true)
+            .extensionsEnabled(false)
+            .allowedUpdates(null)
+            .build();
 
 }
