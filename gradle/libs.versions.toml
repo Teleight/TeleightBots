@@ -7,7 +7,7 @@ shadow = "9.3.0"
 junit-jupiter = "6.0.2"
 slf4j = "2.0.17"
 logback = "1.5.25"
-publisher = "0.35.0"
+publisher = "0.36.0"
 
 [libraries]
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
