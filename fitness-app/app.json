@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "FitnessCoach",
+    "slug": "fitness-coaching-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#1A1A2E"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fitnesscoach.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Necessario per i test posturali",
+        "NSPhotoLibraryUsageDescription": "Per caricare foto per i test posturali"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#1A1A2E"
+      },
+      "package": "com.fitnesscoach.app",
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
+    },
+    "plugins": [
+      "expo-image-picker",
+      "expo-notifications"
+    ]
+  }
+}
