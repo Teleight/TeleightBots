@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
+import java.util.Date;
+
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record MessageEntity(
@@ -33,7 +35,15 @@ public record MessageEntity(
 
         @JsonProperty(value = "custom_emoji_id")
         @Nullable
-        String customEmojiId
+        String customEmojiId,
+
+        @JsonProperty(value = "unix_time")
+        @Nullable
+        Date unixTime,
+
+        @JsonProperty(value = "date_time_format")
+        @Nullable
+        String dateTimeFormat
 ) implements ApiResult {
 
     public static @NotNull Builder ofBuilder(String type, int offset, int length) {

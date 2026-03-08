@@ -29,6 +29,10 @@ public record Message(
         @JsonProperty(value = "sender_boost_count")
         int senderBoostCount,
 
+        @JsonProperty(value = "sender_tag")
+        @Nullable
+        String senderTag,
+
         @JsonProperty(value = "sender_business_bot")
         @Nullable
         User senderBusinessBot,
