@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
+import java.util.Date;
+
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
 public record MessageEntity(
@@ -37,7 +39,7 @@ public record MessageEntity(
 
         @JsonProperty(value = "unix_time")
         @Nullable
-        Integer unixTime,
+        Date unixTime,
 
         @JsonProperty(value = "date_time_format")
         @Nullable
