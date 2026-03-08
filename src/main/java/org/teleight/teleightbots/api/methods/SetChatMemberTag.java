@@ -8,7 +8,7 @@ import org.teleight.teleightbots.api.ApiMethodBoolean;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
-public record setChatMemberTag(
+public record SetChatMemberTag(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
@@ -21,7 +21,7 @@ public record setChatMemberTag(
 ) implements ApiMethodBoolean {
 
     public static @NotNull Builder ofBuilder(String chatId, long userId) {
-        return new setChatMemberTag.Builder().chatId(chatId).userId(userId);
+        return new SetChatMemberTag.Builder().chatId(chatId).userId(userId);
     }
 
     @Override
