@@ -33,7 +33,15 @@ public record MessageEntity(
 
         @JsonProperty(value = "custom_emoji_id")
         @Nullable
-        String customEmojiId
+        String customEmojiId,
+
+        @JsonProperty(value = "unix_time")
+        @Nullable
+        Integer unixTime,
+
+        @JsonProperty(value = "date_time_format")
+        @Nullable
+        String dateTimeFormat
 ) implements ApiResult {
 
     public static @NotNull Builder ofBuilder(String type, int offset, int length) {

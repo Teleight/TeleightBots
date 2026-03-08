@@ -58,6 +58,9 @@ public record ChatMemberAdministrator(
         @JsonProperty(value = "can_manage_direct_messages")
         boolean canManageDirectMessages,
 
+        @JsonProperty(value = "can_manage_tags")
+        boolean canManageTags,
+
         @JsonProperty(value = "custom_title")
         @Nullable
         String customTitle

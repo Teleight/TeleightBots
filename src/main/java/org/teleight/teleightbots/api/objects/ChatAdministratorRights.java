@@ -50,7 +50,10 @@ public record ChatAdministratorRights(
         boolean canManageTopics,
 
         @JsonProperty(value = "can_manage_direct_messages")
-        boolean canManageDirectMessages
+        boolean canManageDirectMessages,
+
+        @JsonProperty(value = "can_manage_tags")
+        boolean canManageTags
 ) implements ApiResult {
 
 }
