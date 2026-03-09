@@ -1,4 +1,9 @@
-// Configurazione Firebase - Sostituire con le proprie credenziali
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
+
+// Configurazione Firebase
 const firebaseConfig = {
   apiKey: 'AIzaSyDAuKlToc-_GRILEcMzwoD4ysuBYRtPzxE',
   authDomain: 'essere-3fe6f.firebaseapp.com',
@@ -9,34 +14,10 @@ const firebaseConfig = {
   measurementId: 'G-QLVE494VJR',
 };
 
-let app: any = null;
-let auth: any = null;
-let db: any = null;
-let storage: any = null;
-
-// Solo se le credenziali sono state configurate
-const isConfigured = firebaseConfig.apiKey !== 'YOUR_API_KEY';
-
-if (isConfigured) {
-  try {
-    const { initializeApp } = require('firebase/app');
-    const { initializeAuth, getReactNativePersistence } = require('firebase/auth');
-    const { getFirestore } = require('firebase/firestore');
-    const { getStorage } = require('firebase/storage');
-    const AsyncStorage = require('@react-native-async-storage/async-storage').default;
-
-    app = initializeApp(firebaseConfig);
-    auth = initializeAuth(app, {
-      persistence: getReactNativePersistence(AsyncStorage),
-    });
-    db = getFirestore(app);
-    storage = getStorage(app);
-  } catch (e) {
-    console.warn('Firebase initialization failed:', e);
-  }
-} else {
-  console.log('Firebase: credenziali non configurate, modalità offline');
-}
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 export { auth, db, storage };
 export default app;
