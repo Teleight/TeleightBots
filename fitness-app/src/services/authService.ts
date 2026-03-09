@@ -118,14 +118,14 @@ export const registerCollaborator = async (
 
     // Esci dall'app secondaria e cancellala
     await secondaryAuth.signOut();
-    await secondaryApp.delete();
+    await (secondaryApp as any).delete();
 
     return { id: uid, ...collaboratorData };
   } catch (error) {
     // Cleanup in caso di errore
     try {
       await secondaryAuth.signOut();
-      await secondaryApp.delete();
+      await (secondaryApp as any).delete();
     } catch { /* ignore cleanup errors */ }
     throw error;
   }
@@ -181,13 +181,13 @@ export const registerStudent = async (
     }
 
     await secondaryAuth.signOut();
-    await secondaryApp.delete();
+    await (secondaryApp as any).delete();
 
     return { id: uid, ...studentData };
   } catch (error) {
     try {
       await secondaryAuth.signOut();
-      await secondaryApp.delete();
+      await (secondaryApp as any).delete();
     } catch { /* ignore cleanup errors */ }
     throw error;
   }
