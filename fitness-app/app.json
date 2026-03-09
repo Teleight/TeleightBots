@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "FitnessCoach",
-    "slug": "fitness-coaching-app",
+    "name": "ESSĒRE",
+    "slug": "essere-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "backgroundColor": "#1A1A2E"
+      "backgroundColor": "#0D0D0D"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.fitnesscoach.app",
+      "bundleIdentifier": "com.essere.app",
       "infoPlist": {
         "NSCameraUsageDescription": "Necessario per i test posturali",
         "NSPhotoLibraryUsageDescription": "Per caricare foto per i test posturali"
@@ -19,9 +19,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#1A1A2E"
+        "backgroundColor": "#0D0D0D"
       },
-      "package": "com.fitnesscoach.app",
+      "package": "com.essere.app",
       "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
     },
     "plugins": [

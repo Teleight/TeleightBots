@@ -1,26 +1,37 @@
+// ============================================================
+// ESSĒRE - THEME CONFIGURATION
+// Palette: Nero, Rosso, Bianco/Crema
+// ============================================================
+
 export const colors = {
-  primary: '#1A1A2E',
-  primaryLight: '#16213E',
-  accent: '#E94560',
-  accentLight: '#FF6B6B',
+  // --- Brand ---
+  primary: '#0D0D0D',
+  primaryLight: '#1A1A1A',
+  accent: '#CC0000',
+  accentLight: '#E63333',
+
+  // --- Status ---
   success: '#4CAF50',
   warning: '#FF9800',
   error: '#F44336',
   info: '#2196F3',
 
-  background: '#F5F5F5',
-  surface: '#FFFFFF',
-  surfaceLight: '#FAFAFA',
-  border: '#E0E0E0',
-  divider: '#EEEEEE',
+  // --- Superfici (Dark Mode) ---
+  background: '#0D0D0D',
+  surface: '#1A1A1A',
+  surfaceLight: '#242424',
+  border: '#3A3A3A',
+  divider: '#2A2A2A',
 
-  text: '#212121',
-  textSecondary: '#757575',
-  textLight: '#BDBDBD',
-  textOnPrimary: '#FFFFFF',
+  // --- Testo ---
+  text: '#F5F0E8',
+  textSecondary: '#A0A0A0',
+  textLight: '#666666',
+  textOnPrimary: '#F5F0E8',
   textOnAccent: '#FFFFFF',
 
-  ownerBadge: '#6C63FF',
+  // --- Badge ruoli ---
+  ownerBadge: '#CC0000',
   collaboratorBadge: '#00BCD4',
   studentBadge: '#FF9800',
 };
@@ -57,21 +68,21 @@ export const shadows = {
   small: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 2,
     elevation: 2,
   },
   medium: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.4,
     shadowRadius: 4,
     elevation: 4,
   },
   large: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.5,
     shadowRadius: 8,
     elevation: 8,
   },

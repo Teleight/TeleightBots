@@ -43,7 +43,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {loading ? (
         <ActivityIndicator
-          color={variant === 'outline' ? colors.primary : colors.textOnPrimary}
+          color={variant === 'outline' ? colors.text : colors.textOnPrimary}
         />
       ) : (
         <>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   outlineText: {
-    color: colors.primary,
+    color: colors.text,
   },
   disabled: {
     opacity: 0.5,
@@ -98,6 +98,6 @@ const variantStyles = StyleSheet.create({
   outline: {
     backgroundColor: 'transparent',
     borderWidth: 2,
-    borderColor: colors.primary,
+    borderColor: colors.accent,
   },
 });

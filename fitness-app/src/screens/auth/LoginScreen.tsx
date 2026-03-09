@@ -40,9 +40,13 @@ export const LoginScreen: React.FC = () => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
-          <Text style={styles.logo}>FC</Text>
-          <Text style={styles.title}>Fitness Coach</Text>
-          <Text style={styles.subtitle}>Gestione allenamenti professionale</Text>
+          {/* Cerchio Enso stilizzato */}
+          <View style={styles.ensoContainer}>
+            <View style={styles.enso} />
+            <View style={styles.ensoWave} />
+          </View>
+          <Text style={styles.title}>ESSĒRE</Text>
+          <Text style={styles.subtitle}>Il tuo percorso di benessere</Text>
         </View>
 
         <View style={styles.form}>
@@ -95,26 +99,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: spacing.xxl,
   },
-  logo: {
-    fontSize: 64,
-    fontWeight: '900',
-    color: colors.accent,
-    marginBottom: spacing.sm,
+  ensoContainer: {
+    width: 120,
+    height: 120,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: spacing.lg,
+  },
+  enso: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 5,
+    borderColor: colors.accent,
+    backgroundColor: 'transparent',
+  },
+  ensoWave: {
+    position: 'absolute',
+    width: 40,
+    height: 3,
+    backgroundColor: colors.text,
+    borderRadius: 2,
   },
   title: {
-    fontSize: fontSize.title,
-    fontWeight: '700',
+    fontSize: fontSize.hero,
+    fontWeight: '300',
     color: colors.textOnPrimary,
+    letterSpacing: 8,
   },
   subtitle: {
     fontSize: fontSize.md,
-    color: colors.textLight,
-    marginTop: spacing.xs,
+    color: colors.textSecondary,
+    marginTop: spacing.sm,
+    letterSpacing: 2,
   },
   form: {
     backgroundColor: colors.surface,
     borderRadius: borderRadius.xl,
     padding: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   loginButton: {
     marginTop: spacing.md,
