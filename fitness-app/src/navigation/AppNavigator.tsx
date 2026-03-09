@@ -21,6 +21,7 @@ import { ContentScreen } from '../screens/student/ContentScreen';
 import { PosturalAssessmentScreen } from '../screens/shared/PosturalAssessmentScreen';
 import { WorkoutPlanScreen } from '../screens/shared/WorkoutPlanScreen';
 import { ManageUsersScreen } from '../screens/owner/ManageUsersScreen';
+import { ChatListScreen } from '../screens/shared/ChatListScreen';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const OwnerTab = createBottomTabNavigator<OwnerTabParamList>();
@@ -90,7 +91,7 @@ const OwnerTabs = () => (
     />
     <OwnerTab.Screen
       name="Chat"
-      component={ChatPlaceholder}
+      component={ChatListScreen}
       options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => <TabIcon label="Chat" focused={focused} />,
@@ -148,7 +149,7 @@ const CollaboratorTabs = () => (
     />
     <CollaboratorTab.Screen
       name="Chat"
-      component={ChatPlaceholder}
+      component={ChatListScreen}
       options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => <TabIcon label="Chat" focused={focused} />,
@@ -215,7 +216,7 @@ const StudentTabs = () => (
     />
     <StudentTab.Screen
       name="Chat"
-      component={ChatPlaceholder}
+      component={ChatListScreen}
       options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => <TabIcon label="Chat" focused={focused} />,

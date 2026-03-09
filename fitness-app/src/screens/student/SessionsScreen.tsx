@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -12,12 +12,28 @@ import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
 import { TrainingSession } from '../../types';
-import { cancelSession } from '../../services/sessionService';
+import { cancelSession, getStudentSessions } from '../../services/sessionService';
+import { useAuth } from '../../hooks/useAuth';
 
 const CANCELLATION_HOURS = 10;
 
 export const SessionsScreen: React.FC = () => {
+  const { user } = useAuth();
   const [sessions, setSessions] = useState<TrainingSession[]>([]);
+
+  const loadSessions = useCallback(async () => {
+    if (!user) return;
+    try {
+      const data = await getStudentSessions(user.id);
+      setSessions(data);
+    } catch {
+      // Silently handle
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadSessions();
+  }, [loadSessions]);
 
   const canCancel = (sessionDate: Date): boolean => {
     const now = new Date();

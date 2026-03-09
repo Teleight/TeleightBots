@@ -12,7 +12,9 @@ import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/t
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
-import { WorkoutPlan, Exercise, ExerciseCategory } from '../../types';
+import { WorkoutPlan, Exercise, ExerciseCategory, WeeklyDay } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
+import { createWorkoutPlan } from '../../services/programService';
 
 const DAYS = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica'];
 
@@ -27,6 +29,7 @@ const CATEGORIES: { value: ExerciseCategory; label: string }[] = [
 ];
 
 export const WorkoutPlanScreen: React.FC = () => {
+  const { user } = useAuth();
   const [planTitle, setPlanTitle] = useState('');
   const [selectedDay, setSelectedDay] = useState(0);
   const [exercises, setExercises] = useState<Record<number, Exercise[]>>({});
@@ -83,12 +86,40 @@ export const WorkoutPlanScreen: React.FC = () => {
     }));
   };
 
-  const savePlan = () => {
-    if (!planTitle) {
+  const savePlan = async () => {
+    if (!planTitle || !user) {
       Alert.alert('Errore', 'Inserisci un titolo per la programmazione');
       return;
     }
-    Alert.alert('Successo', 'Programmazione salvata e inviata all\'allievo!');
+
+    try {
+      const weeklySchedule: WeeklyDay[] = Array.from({ length: 7 }, (_, i) => ({
+        dayOfWeek: i,
+        exercises: exercises[i] || [],
+        notes: '',
+      }));
+
+      const startDate = new Date();
+      const endDate = new Date();
+      endDate.setDate(endDate.getDate() + 28); // 4 settimane
+
+      await createWorkoutPlan({
+        studentId: '', // Da selezionare
+        collaboratorId: user.id,
+        title: planTitle,
+        startDate,
+        endDate,
+        weeklySchedule,
+        createdAt: new Date(),
+        isActive: true,
+      });
+
+      Alert.alert('Successo', 'Programmazione salvata e inviata all\'allievo!');
+      setPlanTitle('');
+      setExercises({});
+    } catch {
+      Alert.alert('Errore', 'Impossibile salvare la programmazione');
+    }
   };
 
   return (

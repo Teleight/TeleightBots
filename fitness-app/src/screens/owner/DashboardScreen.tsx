@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,9 @@ import { Card } from '../../components/common/Card';
 import { StatCard } from '../../components/common/StatCard';
 import { Badge } from '../../components/common/Badge';
 import { Collaborator, TrainingSession, CollaboratorEarning } from '../../types';
+import { getCollaborators, getStudents } from '../../services/authService';
+import { getAllSessions } from '../../services/sessionService';
+import { getFinancialSummary } from '../../services/financialService';
 
 export const DashboardScreen: React.FC = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -22,9 +25,39 @@ export const DashboardScreen: React.FC = () => {
   const [totalStudents, setTotalStudents] = useState(0);
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('month');
 
+  const loadData = useCallback(async () => {
+    try {
+      const [collabs, studs, allSessions, summary] = await Promise.all([
+        getCollaborators(),
+        getStudents(),
+        getAllSessions(),
+        getFinancialSummary(),
+      ]);
+      setCollaborators(collabs);
+      setTotalStudents(studs.length);
+      setTotalRevenue(summary.totalIncome);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const todayOnly = allSessions.filter((s) => {
+        const d = new Date(s.date as unknown as string);
+        return d >= today && d < tomorrow;
+      });
+      setTodaySessions(todayOnly);
+    } catch {
+      // Silently handle
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
   const onRefresh = async () => {
     setRefreshing(true);
-    // Ricarica dati dal server
+    await loadData();
     setRefreshing(false);
   };
 

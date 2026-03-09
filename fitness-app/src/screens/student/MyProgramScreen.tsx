@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -9,15 +9,41 @@ import {
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { StatCard } from '../../components/common/StatCard';
-import { WorkoutPlan, Exercise, WeeklyDay } from '../../types';
+import { WorkoutPlan, Exercise, WeeklyDay, Student } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
+import { getActiveWorkoutPlan } from '../../services/programService';
+import { getCompletedSessionsCount } from '../../services/sessionService';
+import { getStudentNutritionalConsultations } from '../../services/contentService';
 
 const DAYS = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica'];
 
 export const MyProgramScreen: React.FC = () => {
+  const { user } = useAuth();
+  const student = user as Student | null;
   const [activePlan, setActivePlan] = useState<WorkoutPlan | null>(null);
   const [selectedDay, setSelectedDay] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1);
   const [completedSessions, setCompletedSessions] = useState(0);
   const [nutritionalConsultations, setNutritionalConsultations] = useState(0);
+
+  const loadData = useCallback(async () => {
+    if (!user) return;
+    try {
+      const [plan, sessionsCount, consultations] = await Promise.all([
+        getActiveWorkoutPlan(user.id),
+        getCompletedSessionsCount(user.id),
+        getStudentNutritionalConsultations(user.id),
+      ]);
+      setActivePlan(plan);
+      setCompletedSessions(sessionsCount);
+      setNutritionalConsultations(student?.nutritionalConsultations ?? consultations.length);
+    } catch {
+      // Silently handle
+    }
+  }, [user, student]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const renderExercise = (exercise: Exercise, index: number) => (
     <Card key={exercise.id} variant="outlined">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,17 +10,48 @@ import { colors, spacing, fontSize, borderRadius } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { StatCard } from '../../components/common/StatCard';
 import { Badge } from '../../components/common/Badge';
-import { PaymentPlan, Installment, CollaboratorEarning } from '../../types';
-import { calculateCollaboratorEarnings } from '../../services/paymentService';
+import { PaymentPlan, Installment, CollaboratorEarning, Collaborator } from '../../types';
+import { calculateCollaboratorEarnings, getUpcomingInstallments, getCollaboratorEarnings } from '../../services/paymentService';
+import { useAuth } from '../../hooks/useAuth';
 
 export const EarningsScreen: React.FC = () => {
-  const [commissionPercentage] = useState(60); // Dal profilo collaboratore
+  const { user } = useAuth();
+  const collaborator = user as Collaborator | null;
+  const [commissionPercentage, setCommissionPercentage] = useState(60);
   const [totalEarned, setTotalEarned] = useState(0);
   const [toPayOwner, setToPayOwner] = useState(0);
   const [paymentPlans, setPaymentPlans] = useState<PaymentPlan[]>([]);
   const [upcomingInstallments, setUpcomingInstallments] = useState<
     { plan: PaymentPlan; installment: Installment }[]
   >([]);
+
+  const loadData = useCallback(async () => {
+    if (!user) return;
+    try {
+      if (collaborator?.commissionPercentage) {
+        setCommissionPercentage(collaborator.commissionPercentage);
+      }
+
+      const now = new Date();
+      const period = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      const [earnings, upcoming] = await Promise.all([
+        getCollaboratorEarnings(user.id, period),
+        getUpcomingInstallments(user.id, 'collaborator'),
+      ]);
+
+      const totalCollabShare = earnings.reduce((sum, e) => sum + e.collaboratorShare, 0);
+      const totalOwnerShare = earnings.reduce((sum, e) => sum + e.ownerShare, 0);
+      setTotalEarned(totalCollabShare);
+      setToPayOwner(totalOwnerShare);
+      setUpcomingInstallments(upcoming);
+    } catch {
+      // Silently handle
+    }
+  }, [user, collaborator]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   // Esempio calcolo automatico
   const exampleCalc = calculateCollaboratorEarnings(1000, commissionPercentage);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,8 @@ import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
 import { DiaryEntry } from '../../types';
-import { addDiaryEntry } from '../../services/contentService';
+import { addDiaryEntry, getStudentDiary } from '../../services/contentService';
+import { useAuth } from '../../hooks/useAuth';
 
 const MOODS = [
   { value: 'great' as const, emoji: 'Ottimo', color: '#4CAF50' },
@@ -24,21 +25,36 @@ const MOODS = [
 ];
 
 export const DiaryScreen: React.FC = () => {
+  const { user } = useAuth();
   const [entries, setEntries] = useState<DiaryEntry[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [newContent, setNewContent] = useState('');
   const [newMood, setNewMood] = useState<DiaryEntry['mood']>('good');
   const [newPainLevel, setNewPainLevel] = useState(0);
 
+  const loadEntries = useCallback(async () => {
+    if (!user) return;
+    try {
+      const data = await getStudentDiary(user.id);
+      setEntries(data);
+    } catch {
+      // Silently handle
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadEntries();
+  }, [loadEntries]);
+
   const handleAddEntry = async () => {
-    if (!newContent.trim()) {
+    if (!newContent.trim() || !user) {
       Alert.alert('Errore', 'Scrivi qualcosa nel diario');
       return;
     }
 
     try {
       await addDiaryEntry({
-        studentId: '', // dall'auth context
+        studentId: user.id,
         date: new Date(),
         content: newContent,
         mood: newMood,
@@ -50,6 +66,7 @@ export const DiaryScreen: React.FC = () => {
       setNewContent('');
       setNewMood('good');
       setNewPainLevel(0);
+      await loadEntries();
       Alert.alert('Fatto', 'Nota aggiunta al diario');
     } catch {
       Alert.alert('Errore', 'Impossibile salvare la nota');

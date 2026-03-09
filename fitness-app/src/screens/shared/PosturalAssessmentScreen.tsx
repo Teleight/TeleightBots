@@ -18,7 +18,8 @@ import {
   PosturalFinding,
   PosturalArea,
 } from '../../types';
-import { uploadPosturalImage, analyzePosture } from '../../services/posturalService';
+import { uploadPosturalImage, analyzePosture, createAssessment } from '../../services/posturalService';
+import { useAuth } from '../../hooks/useAuth';
 
 const POSTURAL_AREAS: { value: PosturalArea; label: string }[] = [
   { value: 'head_neck', label: 'Testa/Collo' },
@@ -39,6 +40,7 @@ const SEVERITY_OPTIONS = [
 ];
 
 export const PosturalAssessmentScreen: React.FC = () => {
+  const { user } = useAuth();
   const [frontImage, setFrontImage] = useState<string | null>(null);
   const [sideImage, setSideImage] = useState<string | null>(null);
   const [backImage, setBackImage] = useState<string | null>(null);
@@ -293,7 +295,28 @@ export const PosturalAssessmentScreen: React.FC = () => {
         />
         <Button
           title="Salva Valutazione"
-          onPress={() => Alert.alert('Successo', 'Valutazione salvata')}
+          onPress={async () => {
+            if (!user || findings.length === 0) {
+              Alert.alert('Errore', 'Aggiungi almeno un\'osservazione');
+              return;
+            }
+            try {
+              await createAssessment({
+                studentId: '', // Da selezionare in futuro
+                assessorId: user.id,
+                date: new Date(),
+                frontImageUrl: frontImage || '',
+                sideImageUrl: sideImage || '',
+                backImageUrl: backImage || '',
+                findings,
+                overallNotes,
+                recommendations: analyzePosture(findings).recommendations.join('\n'),
+              });
+              Alert.alert('Successo', 'Valutazione salvata');
+            } catch {
+              Alert.alert('Errore', 'Impossibile salvare la valutazione');
+            }
+          }}
           variant="secondary"
           style={styles.actionButton}
         />

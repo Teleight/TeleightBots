@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { SpecialContent, ContentType } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
+import { getContentForStudent } from '../../services/contentService';
 
 const CONTENT_ICONS: Record<ContentType, string> = {
   podcast: 'Podcast',
@@ -26,8 +28,23 @@ const CONTENT_COLORS: Record<ContentType, string> = {
 };
 
 export const ContentScreen: React.FC = () => {
+  const { user } = useAuth();
   const [content, setContent] = useState<SpecialContent[]>([]);
   const [selectedType, setSelectedType] = useState<ContentType | 'all'>('all');
+
+  const loadContent = useCallback(async () => {
+    if (!user) return;
+    try {
+      const data = await getContentForStudent(user.id);
+      setContent(data);
+    } catch {
+      // Silently handle
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadContent();
+  }, [loadContent]);
 
   const filtered =
     selectedType === 'all'

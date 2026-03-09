@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -15,8 +15,12 @@ import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
 import { Badge } from '../../components/common/Badge';
 import { Student, TrainingProgram, Exercise } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
+import { getStudents } from '../../services/authService';
+import { createProgram } from '../../services/programService';
 
 export const MyStudentsScreen: React.FC = () => {
+  const { user } = useAuth();
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [showProgramModal, setShowProgramModal] = useState(false);
@@ -28,23 +32,69 @@ export const MyStudentsScreen: React.FC = () => {
   const [sessionNotes, setSessionNotes] = useState('');
   const [progressNotes, setProgressNotes] = useState('');
 
+  const loadStudents = useCallback(async () => {
+    if (!user) return;
+    try {
+      const allStudents = await getStudents();
+      // Filtra solo gli allievi assegnati a questo collaboratore
+      const myStudents = allStudents.filter(
+        (s) => s.assignedCollaboratorId === user.id
+      );
+      setStudents(myStudents);
+    } catch {
+      // Silently handle
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadStudents();
+  }, [loadStudents]);
+
   const handleCreateProgram = async () => {
-    if (!selectedStudent || !programTitle) {
+    if (!selectedStudent || !programTitle || !user) {
       Alert.alert('Errore', 'Seleziona un allievo e inserisci il titolo');
       return;
     }
-    // Salva programma
-    Alert.alert('Successo', 'Programma creato con successo');
-    setShowProgramModal(false);
-    setProgramTitle('');
-    setProgramDescription('');
+    try {
+      await createProgram({
+        studentId: selectedStudent.id,
+        collaboratorId: user.id,
+        title: programTitle,
+        description: programDescription,
+        exercises: [],
+        sessionNumber: 1,
+        progressNotes: sessionNotes,
+        createdAt: new Date(),
+      });
+      Alert.alert('Successo', 'Programma creato con successo');
+      setShowProgramModal(false);
+      setProgramTitle('');
+      setProgramDescription('');
+      setSessionNotes('');
+    } catch {
+      Alert.alert('Errore', 'Impossibile creare il programma');
+    }
   };
 
   const handleSaveNotes = async () => {
-    if (!selectedStudent || !progressNotes) return;
-    Alert.alert('Successo', 'Note salvate');
-    setShowNotesModal(false);
-    setProgressNotes('');
+    if (!selectedStudent || !progressNotes || !user) return;
+    try {
+      await createProgram({
+        studentId: selectedStudent.id,
+        collaboratorId: user.id,
+        title: 'Note progresso',
+        description: '',
+        exercises: [],
+        sessionNumber: 0,
+        progressNotes,
+        createdAt: new Date(),
+      });
+      Alert.alert('Successo', 'Note salvate');
+      setShowNotesModal(false);
+      setProgressNotes('');
+    } catch {
+      Alert.alert('Errore', 'Impossibile salvare le note');
+    }
   };
 
   const renderStudent = ({ item }: { item: Student }) => (

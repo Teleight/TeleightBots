@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,9 +10,26 @@ import { Card } from '../../components/common/Card';
 import { StatCard } from '../../components/common/StatCard';
 import { Badge } from '../../components/common/Badge';
 import { PaymentPlan, Installment } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
+import { getStudentPaymentPlans } from '../../services/paymentService';
 
 export const PaymentsScreen: React.FC = () => {
+  const { user } = useAuth();
   const [paymentPlans, setPaymentPlans] = useState<PaymentPlan[]>([]);
+
+  const loadPayments = useCallback(async () => {
+    if (!user) return;
+    try {
+      const plans = await getStudentPaymentPlans(user.id);
+      setPaymentPlans(plans);
+    } catch {
+      // Silently handle
+    }
+  }, [user]);
+
+  useEffect(() => {
+    loadPayments();
+  }, [loadPayments]);
 
   const getNextDueInstallment = (
     plan: PaymentPlan

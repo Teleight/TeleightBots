@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ import {
   TransactionType,
   TransactionCategory,
 } from '../../types';
-import { addTransaction } from '../../services/financialService';
+import { addTransaction, getTransactions, getFinancialSummary } from '../../services/financialService';
 
 const CATEGORIES: { value: TransactionCategory; label: string }[] = [
   { value: 'student_payment', label: 'Pagamento allievi' },
@@ -40,6 +40,24 @@ export const FinancialScreen: React.FC = () => {
   const [newCategory, setNewCategory] = useState<TransactionCategory>('other');
   const [totalIncome, setTotalIncome] = useState(0);
   const [totalExpenses, setTotalExpenses] = useState(0);
+
+  const loadData = useCallback(async () => {
+    try {
+      const [txs, summary] = await Promise.all([
+        getTransactions(),
+        getFinancialSummary(),
+      ]);
+      setTransactions(txs);
+      setTotalIncome(summary.totalIncome);
+      setTotalExpenses(summary.totalExpenses);
+    } catch {
+      // Silently handle
+    }
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleAddTransaction = async () => {
     if (!newAmount || !newDescription) {
@@ -65,6 +83,7 @@ export const FinancialScreen: React.FC = () => {
       setShowAddModal(false);
       setNewAmount('');
       setNewDescription('');
+      await loadData();
       Alert.alert('Successo', 'Transazione aggiunta');
     } catch {
       Alert.alert('Errore', 'Impossibile salvare la transazione');
