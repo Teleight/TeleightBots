@@ -1,11 +1,12 @@
 // Configurazione Firebase - Sostituire con le proprie credenziali
 const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_PROJECT.firebaseapp.com',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_PROJECT.appspot.com',
-  messagingSenderId: 'YOUR_SENDER_ID',
-  appId: 'YOUR_APP_ID',
+  apiKey: 'AIzaSyDAuKlToc-_GRILEcMzwoD4ysuBYRtPzxE',
+  authDomain: 'essere-3fe6f.firebaseapp.com',
+  projectId: 'essere-3fe6f',
+  storageBucket: 'essere-3fe6f.firebasestorage.app',
+  messagingSenderId: '9504654070',
+  appId: '1:9504654070:web:7b8c7d09645b113b0ea2d7',
+  measurementId: 'G-QLVE494VJR',
 };
 
 let app: any = null;
