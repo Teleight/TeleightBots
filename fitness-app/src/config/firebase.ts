@@ -1,8 +1,3 @@
-import { FirebaseApp } from 'firebase/app';
-import { Auth } from 'firebase/auth';
-import { Firestore } from 'firebase/firestore';
-import { FirebaseStorage } from 'firebase/storage';
-
 // Configurazione Firebase - Sostituire con le proprie credenziali
 const firebaseConfig = {
   apiKey: 'YOUR_API_KEY',
@@ -13,10 +8,10 @@ const firebaseConfig = {
   appId: 'YOUR_APP_ID',
 };
 
-let app: FirebaseApp | null = null;
-let auth: Auth | null = null;
-let db: Firestore | null = null;
-let storage: FirebaseStorage | null = null;
+let app: any = null;
+let auth: any = null;
+let db: any = null;
+let storage: any = null;
 
 // Solo se le credenziali sono state configurate
 const isConfigured = firebaseConfig.apiKey !== 'YOUR_API_KEY';
