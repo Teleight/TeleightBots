@@ -20,6 +20,7 @@ import { PaymentsScreen } from '../screens/student/PaymentsScreen';
 import { ContentScreen } from '../screens/student/ContentScreen';
 import { PosturalAssessmentScreen } from '../screens/shared/PosturalAssessmentScreen';
 import { WorkoutPlanScreen } from '../screens/shared/WorkoutPlanScreen';
+import { ManageUsersScreen } from '../screens/owner/ManageUsersScreen';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const OwnerTab = createBottomTabNavigator<OwnerTabParamList>();
@@ -60,9 +61,9 @@ const OwnerTabs = () => (
     />
     <OwnerTab.Screen
       name="Collaborators"
-      component={MyStudentsScreen}
+      component={ManageUsersScreen}
       options={{
-        title: 'Collaboratori',
+        title: 'Gestione Utenti',
         headerShown: false,
         tabBarLabel: 'Team',
         tabBarIcon: ({ focused }) => <TabIcon label="Team" focused={focused} />,

@@ -5,9 +5,9 @@ import {
   onAuthStateChanged,
   User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc, collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs, query, where, Timestamp, updateDoc, arrayUnion } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
-import { User, UserRole } from '../types';
+import { User, UserRole, Collaborator, Student } from '../types';
 
 export const signIn = async (email: string, password: string): Promise<User> => {
   const credential = await signInWithEmailAndPassword(auth, email, password);
@@ -73,4 +73,134 @@ export const getUserProfile = async (uid: string): Promise<User | null> => {
 export const getUserRole = async (uid: string): Promise<UserRole | null> => {
   const user = await getUserProfile(uid);
   return user?.role ?? null;
+};
+
+export const registerCollaborator = async (
+  email: string,
+  password: string,
+  name: string,
+  surname: string,
+  phone: string,
+  commissionPercentage: number,
+  specializations: string[]
+): Promise<Collaborator> => {
+  // Crea l'utente in Firebase Auth usando la Firebase Admin REST API secondaria
+  // Per evitare il logout dell'owner, usiamo un approccio con seconda istanza auth
+  const { createUserWithEmailAndPassword: createUser } = await import('firebase/auth');
+  const { initializeApp } = await import('firebase/app');
+  const { getAuth } = await import('firebase/auth');
+
+  // Crea un'app secondaria temporanea per non interferire con la sessione corrente
+  const secondaryApp = initializeApp(auth.app.options, 'secondary-' + Date.now());
+  const secondaryAuth = getAuth(secondaryApp);
+
+  try {
+    const credential = await createUser(secondaryAuth, email, password);
+    const uid = credential.user.uid;
+
+    const collaboratorData: Omit<Collaborator, 'id'> = {
+      email,
+      name,
+      surname,
+      phone,
+      role: 'collaborator',
+      commissionPercentage,
+      specializations,
+      assignedStudents: [],
+      createdAt: new Date(),
+      isActive: true,
+    };
+
+    await setDoc(doc(db, 'users', uid), {
+      ...collaboratorData,
+      createdAt: Timestamp.now(),
+    });
+
+    // Esci dall'app secondaria e cancellala
+    await secondaryAuth.signOut();
+    await secondaryApp.delete();
+
+    return { id: uid, ...collaboratorData };
+  } catch (error) {
+    // Cleanup in caso di errore
+    try {
+      await secondaryAuth.signOut();
+      await secondaryApp.delete();
+    } catch { /* ignore cleanup errors */ }
+    throw error;
+  }
+};
+
+export const registerStudent = async (
+  email: string,
+  password: string,
+  name: string,
+  surname: string,
+  phone: string,
+  assignedCollaboratorId: string,
+  goals: string,
+  medicalNotes?: string
+): Promise<Student> => {
+  const { createUserWithEmailAndPassword: createUser } = await import('firebase/auth');
+  const { initializeApp } = await import('firebase/app');
+  const { getAuth } = await import('firebase/auth');
+
+  const secondaryApp = initializeApp(auth.app.options, 'secondary-' + Date.now());
+  const secondaryAuth = getAuth(secondaryApp);
+
+  try {
+    const credential = await createUser(secondaryAuth, email, password);
+    const uid = credential.user.uid;
+
+    const studentData: Omit<Student, 'id'> = {
+      email,
+      name,
+      surname,
+      phone,
+      role: 'student',
+      assignedCollaboratorId,
+      startDate: new Date(),
+      goals,
+      medicalNotes: medicalNotes || '',
+      nutritionalConsultations: 0,
+      createdAt: new Date(),
+      isActive: true,
+    };
+
+    await setDoc(doc(db, 'users', uid), {
+      ...studentData,
+      createdAt: Timestamp.now(),
+      startDate: Timestamp.now(),
+    });
+
+    // Aggiorna la lista allievi del collaboratore
+    if (assignedCollaboratorId) {
+      await updateDoc(doc(db, 'users', assignedCollaboratorId), {
+        assignedStudents: arrayUnion(uid),
+      });
+    }
+
+    await secondaryAuth.signOut();
+    await secondaryApp.delete();
+
+    return { id: uid, ...studentData };
+  } catch (error) {
+    try {
+      await secondaryAuth.signOut();
+      await secondaryApp.delete();
+    } catch { /* ignore cleanup errors */ }
+    throw error;
+  }
+};
+
+export const getCollaborators = async (): Promise<Collaborator[]> => {
+  const q = query(collection(db, 'users'), where('role', '==', 'collaborator'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Collaborator));
+};
+
+export const getStudents = async (): Promise<Student[]> => {
+  const q = query(collection(db, 'users'), where('role', '==', 'student'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Student));
 };
