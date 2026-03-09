@@ -7,15 +7,22 @@ import {
   Platform,
   ScrollView,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import { colors, spacing, fontSize, borderRadius } from '../../config/theme';
 import { InputField } from '../../components/common/InputField';
 import { Button } from '../../components/common/Button';
 import { useAuth } from '../../hooks/useAuth';
+import { registerOwner } from '../../services/authService';
 
 export const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [phone, setPhone] = useState('');
+  const [regLoading, setRegLoading] = useState(false);
   const { login, loading, error } = useAuth();
 
   const handleLogin = async () => {
@@ -27,6 +34,28 @@ export const LoginScreen: React.FC = () => {
       await login(email.trim(), password);
     } catch {
       Alert.alert('Errore di accesso', 'Credenziali non valide. Riprova.');
+    }
+  };
+
+  const handleRegisterOwner = async () => {
+    if (!email.trim() || !password.trim() || !name.trim() || !surname.trim()) {
+      Alert.alert('Errore', 'Compila tutti i campi obbligatori');
+      return;
+    }
+    if (password.length < 6) {
+      Alert.alert('Errore', 'La password deve essere di almeno 6 caratteri');
+      return;
+    }
+    setRegLoading(true);
+    try {
+      await registerOwner(email.trim(), password, name.trim(), surname.trim(), phone.trim());
+      Alert.alert('Successo', 'Account amministratore creato! Effettua il login.');
+      setIsRegistering(false);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Errore durante la registrazione';
+      Alert.alert('Errore', message);
+    } finally {
+      setRegLoading(false);
     }
   };
 
@@ -50,6 +79,30 @@ export const LoginScreen: React.FC = () => {
         </View>
 
         <View style={styles.form}>
+          {isRegistering && (
+            <>
+              <InputField
+                label="Nome"
+                value={name}
+                onChangeText={setName}
+                placeholder="Il tuo nome"
+              />
+              <InputField
+                label="Cognome"
+                value={surname}
+                onChangeText={setSurname}
+                placeholder="Il tuo cognome"
+              />
+              <InputField
+                label="Telefono"
+                value={phone}
+                onChangeText={setPhone}
+                keyboardType="phone-pad"
+                placeholder="Numero di telefono"
+              />
+            </>
+          )}
+
           <InputField
             label="Email"
             value={email}
@@ -64,21 +117,42 @@ export const LoginScreen: React.FC = () => {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
-            placeholder="La tua password"
+            placeholder={isRegistering ? 'Minimo 6 caratteri' : 'La tua password'}
           />
 
           {error && <Text style={styles.error}>{error}</Text>}
 
-          <Button
-            title="Accedi"
-            onPress={handleLogin}
-            loading={loading}
-            style={styles.loginButton}
-          />
+          {isRegistering ? (
+            <>
+              <Button
+                title="Registra Amministratore"
+                onPress={handleRegisterOwner}
+                loading={regLoading}
+                style={styles.loginButton}
+              />
+              <TouchableOpacity onPress={() => setIsRegistering(false)} style={styles.switchButton}>
+                <Text style={styles.switchText}>Torna al login</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <Button
+                title="Accedi"
+                onPress={handleLogin}
+                loading={loading}
+                style={styles.loginButton}
+              />
+              <TouchableOpacity onPress={() => setIsRegistering(true)} style={styles.switchButton}>
+                <Text style={styles.switchText}>Registra primo amministratore</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
 
         <Text style={styles.footer}>
-          Contatta l'amministratore per ottenere le credenziali
+          {isRegistering
+            ? 'Crea il tuo account amministratore per iniziare'
+            : 'Contatta l\'amministratore per ottenere le credenziali'}
         </Text>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -142,6 +216,15 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: spacing.md,
+  },
+  switchButton: {
+    marginTop: spacing.md,
+    alignItems: 'center',
+  },
+  switchText: {
+    color: colors.accent,
+    fontSize: fontSize.sm,
+    fontWeight: '600',
   },
   error: {
     color: colors.error,

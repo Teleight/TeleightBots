@@ -1,10 +1,11 @@
 import {
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs, query, where, Timestamp } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { User, UserRole } from '../types';
 
@@ -15,6 +16,39 @@ export const signIn = async (email: string, password: string): Promise<User> => 
     throw new Error('Utente non trovato nel database');
   }
   return { id: userDoc.id, ...userDoc.data() } as User;
+};
+
+export const registerOwner = async (
+  email: string,
+  password: string,
+  name: string,
+  surname: string,
+  phone: string
+): Promise<User> => {
+  // Controlla se esiste gia' un owner
+  const q = query(collection(db, 'users'), where('role', '==', 'owner'));
+  const existing = await getDocs(q);
+  if (!existing.empty) {
+    throw new Error('Esiste già un amministratore registrato');
+  }
+
+  const credential = await createUserWithEmailAndPassword(auth, email, password);
+  const userData: Omit<User, 'id'> = {
+    email,
+    name,
+    surname,
+    phone,
+    role: 'owner',
+    createdAt: new Date(),
+    isActive: true,
+  };
+
+  await setDoc(doc(db, 'users', credential.user.uid), {
+    ...userData,
+    createdAt: Timestamp.now(),
+  });
+
+  return { id: credential.user.uid, ...userData };
 };
 
 export const signOut = async (): Promise<void> => {
