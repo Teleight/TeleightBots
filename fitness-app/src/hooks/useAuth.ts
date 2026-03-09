@@ -20,6 +20,10 @@ export const useAuth = () => {
   });
 
   useEffect(() => {
+    if (!auth) {
+      setState((prev) => ({ ...prev, loading: false }));
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
       if (fbUser) {
         const profile = await getUserProfile(fbUser.uid);
