@@ -13,6 +13,7 @@ import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/t
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
+import { ModalHeader } from '../../components/common/ModalHeader';
 import { Badge } from '../../components/common/Badge';
 import { Student, TrainingProgram, Exercise } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
@@ -171,9 +172,7 @@ export const MyStudentsScreen: React.FC = () => {
       <Modal visible={showProgramModal} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <ScrollView style={styles.modalContent}>
-            <Text style={styles.modalTitle}>
-              Nuovo Programma - {selectedStudent?.name} {selectedStudent?.surname}
-            </Text>
+            <ModalHeader title={`Nuovo Programma - ${selectedStudent?.name} ${selectedStudent?.surname}`} onClose={() => setShowProgramModal(false)} />
 
             <InputField
               label="Titolo Sessione"
@@ -226,9 +225,7 @@ export const MyStudentsScreen: React.FC = () => {
       <Modal visible={showNotesModal} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>
-              Note Avanzamento - {selectedStudent?.name}
-            </Text>
+            <ModalHeader title={`Note Avanzamento - ${selectedStudent?.name}`} onClose={() => setShowNotesModal(false)} />
 
             <InputField
               label="Note sul progresso"

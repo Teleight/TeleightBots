@@ -12,6 +12,7 @@ import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/t
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
+import { ModalHeader } from '../../components/common/ModalHeader';
 import { Exercise, ExerciseCategory, WeeklyDay, Student } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 import { createWorkoutPlan } from '../../services/programService';
@@ -307,7 +308,7 @@ export const WorkoutPlanScreen: React.FC = () => {
       <Modal visible={showExerciseModal} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <ScrollView style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Nuovo Esercizio</Text>
+            <ModalHeader title="Nuovo Esercizio" onClose={() => setShowExerciseModal(false)} />
 
             <InputField
               label="Nome esercizio"

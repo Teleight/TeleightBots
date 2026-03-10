@@ -14,6 +14,7 @@ import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/t
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
+import { ModalHeader } from '../../components/common/ModalHeader';
 import { SpecialContent, ContentType, Student } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 import { addContent, getAllContent, deleteContent } from '../../services/contentService';
@@ -209,7 +210,7 @@ export const ContentManagementScreen: React.FC = () => {
       <Modal visible={showModal} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <ScrollView style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Nuovo Contenuto</Text>
+            <ModalHeader title="Nuovo Contenuto" onClose={() => { setShowModal(false); resetForm(); }} />
 
             {/* Tipo */}
             <Text style={styles.fieldLabel}>Tipo</Text>

@@ -12,6 +12,7 @@ import {
 import { colors, spacing, fontSize, borderRadius } from '../../config/theme';
 import { InputField } from '../../components/common/InputField';
 import { Button } from '../../components/common/Button';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { registerStudent, getCollaborators } from '../../services/authService';
 import { Collaborator } from '../../types';
 
@@ -89,16 +90,12 @@ export const AddStudentScreen: React.FC<Props> = ({ onBack }) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <ScreenHeader
+        title="Nuovo Allievo"
+        subtitle="Crea le credenziali di accesso per l'allievo"
+        onBack={onBack}
+      />
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-        <View style={styles.header}>
-          <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Text style={styles.backText}>← Indietro</Text>
-          </TouchableOpacity>
-          <Text style={styles.title}>Nuovo Allievo</Text>
-          <Text style={styles.subtitle}>
-            Crea le credenziali di accesso per l'allievo
-          </Text>
-        </View>
 
         <View style={styles.form}>
           <InputField

@@ -14,6 +14,7 @@ import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/t
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
+import { ModalHeader } from '../../components/common/ModalHeader';
 import { Badge } from '../../components/common/Badge';
 import { TrainingSession, Student, Collaborator } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
@@ -263,7 +264,7 @@ export const ScheduleSessionScreen: React.FC = () => {
       <Modal visible={showModal} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <ScrollView style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Nuova Sessione</Text>
+            <ModalHeader title="Nuova Sessione" onClose={() => { setShowModal(false); resetForm(); }} />
 
             {/* Allievo */}
             <Text style={styles.fieldLabel}>Allievo</Text>

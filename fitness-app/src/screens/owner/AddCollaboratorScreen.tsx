@@ -12,6 +12,7 @@ import {
 import { colors, spacing, fontSize, borderRadius } from '../../config/theme';
 import { InputField } from '../../components/common/InputField';
 import { Button } from '../../components/common/Button';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { registerCollaborator } from '../../services/authService';
 
 interface Props {
@@ -75,16 +76,12 @@ export const AddCollaboratorScreen: React.FC<Props> = ({ onBack }) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <ScreenHeader
+        title="Nuovo Collaboratore"
+        subtitle="Crea le credenziali di accesso per il collaboratore"
+        onBack={onBack}
+      />
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-        <View style={styles.header}>
-          <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Text style={styles.backText}>← Indietro</Text>
-          </TouchableOpacity>
-          <Text style={styles.title}>Nuovo Collaboratore</Text>
-          <Text style={styles.subtitle}>
-            Crea le credenziali di accesso per il collaboratore
-          </Text>
-        </View>
 
         <View style={styles.form}>
           <InputField

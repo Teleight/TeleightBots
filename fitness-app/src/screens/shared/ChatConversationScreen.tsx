@@ -10,6 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 import { colors, spacing, fontSize, borderRadius } from '../../config/theme';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { ChatRoom, ChatMessage, User } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 import {
@@ -123,19 +124,11 @@ export const ChatConversationScreen: React.FC<Props> = ({
       keyboardVerticalOffset={90}
     >
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Text style={styles.backText}>← Indietro</Text>
-        </TouchableOpacity>
-        <View style={styles.headerInfo}>
-          <Text style={styles.headerTitle} numberOfLines={1}>
-            {getTitle()}
-          </Text>
-          {isAnonymous && (
-            <Text style={styles.anonLabel}>Modalita anonima - solo lettura</Text>
-          )}
-        </View>
-      </View>
+      <ScreenHeader
+        title={getTitle()}
+        subtitle={isAnonymous ? 'Modalita anonima - solo lettura' : undefined}
+        onBack={onBack}
+      />
 
       {/* Messaggi */}
       <FlatList

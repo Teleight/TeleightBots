@@ -12,6 +12,7 @@ import { colors, spacing, fontSize, borderRadius } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
+import { ModalHeader } from '../../components/common/ModalHeader';
 import { DiaryEntry } from '../../types';
 import { addDiaryEntry, getStudentDiary } from '../../services/contentService';
 import { useAuth } from '../../hooks/useAuth';
@@ -155,7 +156,7 @@ export const DiaryScreen: React.FC = () => {
       <Modal visible={showAddModal} animationType="slide" transparent>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Nuova Nota</Text>
+            <ModalHeader title="Nuova Nota" onClose={() => setShowAddModal(false)} />
 
             {/* Selezione umore */}
             <Text style={styles.fieldLabel}>Come ti senti?</Text>
