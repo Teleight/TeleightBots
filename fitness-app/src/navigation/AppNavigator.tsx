@@ -223,6 +223,15 @@ const StudentTabs = () => (
       }}
     />
     <StudentTab.Screen
+      name="Postura"
+      component={PosturalAssessmentScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Postura',
+        tabBarIcon: ({ focused }) => <TabIcon label="Test" focused={focused} />,
+      }}
+    />
+    <StudentTab.Screen
       name="Content"
       component={ContentScreen}
       options={{

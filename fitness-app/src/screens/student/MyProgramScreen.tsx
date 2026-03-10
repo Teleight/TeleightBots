@@ -20,7 +20,7 @@ import { getStudentNutritionalConsultations } from '../../services/contentServic
 const DAYS = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica'];
 
 export const MyProgramScreen: React.FC = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const student = user as Student | null;
   const [activePlan, setActivePlan] = useState<WorkoutPlan | null>(null);
   const [selectedDay, setSelectedDay] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1);
@@ -88,7 +88,12 @@ export const MyProgramScreen: React.FC = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Il Mio Programma</Text>
+        <View style={styles.headerTop}>
+          <Text style={styles.title}>Il Mio Programma</Text>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Text style={styles.logoutText}>Esci</Text>
+          </TouchableOpacity>
+        </View>
         {activePlan && (
           <Text style={styles.planTitle}>{activePlan.title}</Text>
         )}
@@ -176,6 +181,24 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     padding: spacing.lg,
     paddingTop: spacing.xxl,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  logoutButton: {
+    backgroundColor: colors.surfaceLight,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  logoutText: {
+    color: colors.accent,
+    fontSize: fontSize.sm,
+    fontWeight: '600',
   },
   title: {
     fontSize: fontSize.xxl,
