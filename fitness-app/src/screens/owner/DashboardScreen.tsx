@@ -16,8 +16,10 @@ import { Collaborator, TrainingSession, CollaboratorEarning } from '../../types'
 import { getCollaborators, getStudents } from '../../services/authService';
 import { getAllSessions } from '../../services/sessionService';
 import { getFinancialSummary } from '../../services/financialService';
+import { useAuth } from '../../hooks/useAuth';
 
 export const DashboardScreen: React.FC = () => {
+  const { logout, user } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
   const [todaySessions, setTodaySessions] = useState<TrainingSession[]>([]);
@@ -75,14 +77,22 @@ export const DashboardScreen: React.FC = () => {
       }
     >
       <View style={styles.header}>
-        <Text style={styles.greeting}>Buongiorno!</Text>
-        <Text style={styles.date}>
-          {new Date().toLocaleDateString('it-IT', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-          })}
-        </Text>
+        <View style={styles.headerTop}>
+          <View>
+            <Text style={styles.greeting}>Buongiorno{user?.name ? `, ${user.name}` : ''}!</Text>
+            <Text style={styles.date}>
+              {new Date().toLocaleDateString('it-IT', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+              })}
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Text style={styles.logoutText}>Esci</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.roleBadge}>Ruolo: {user?.role?.toUpperCase()}</Text>
       </View>
 
       {/* Filtro periodo */}
@@ -211,6 +221,29 @@ const styles = StyleSheet.create({
     fontSize: fontSize.title,
     fontWeight: '700',
     color: colors.textOnPrimary,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  logoutButton: {
+    backgroundColor: colors.surfaceLight,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  logoutText: {
+    color: colors.accent,
+    fontSize: fontSize.sm,
+    fontWeight: '600',
+  },
+  roleBadge: {
+    color: colors.textLight,
+    fontSize: fontSize.xs,
+    marginTop: spacing.xs,
   },
   date: {
     fontSize: fontSize.md,

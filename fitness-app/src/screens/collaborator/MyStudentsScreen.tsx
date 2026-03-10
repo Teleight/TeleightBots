@@ -20,7 +20,7 @@ import { getStudents } from '../../services/authService';
 import { createProgram } from '../../services/programService';
 
 export const MyStudentsScreen: React.FC = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [showProgramModal, setShowProgramModal] = useState(false);
@@ -142,8 +142,15 @@ export const MyStudentsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>I Miei Allievi</Text>
-        <Text style={styles.subtitle}>{students.length} allievi assegnati</Text>
+        <View style={styles.headerTop}>
+          <View>
+            <Text style={styles.title}>I Miei Allievi</Text>
+            <Text style={styles.subtitle}>{students.length} allievi assegnati</Text>
+          </View>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Text style={styles.logoutText}>Esci</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
@@ -266,6 +273,24 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xxl,
     fontWeight: '700',
     color: colors.textOnPrimary,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  logoutButton: {
+    backgroundColor: colors.surfaceLight,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  logoutText: {
+    color: colors.accent,
+    fontSize: fontSize.sm,
+    fontWeight: '600',
   },
   subtitle: {
     fontSize: fontSize.md,
