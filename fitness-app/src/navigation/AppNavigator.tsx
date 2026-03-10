@@ -49,6 +49,7 @@ const OwnerTabs = () => (
       tabBarActiveTintColor: colors.accent,
       tabBarInactiveTintColor: colors.textLight,
       tabBarStyle: styles.tabBar,
+      tabBarLabelStyle: styles.tabLabel,
       headerStyle: { backgroundColor: colors.primary },
       headerTintColor: colors.textOnPrimary,
     }}
@@ -115,6 +116,7 @@ const CollaboratorTabs = () => (
       tabBarActiveTintColor: colors.accent,
       tabBarInactiveTintColor: colors.textLight,
       tabBarStyle: styles.tabBar,
+      tabBarLabelStyle: styles.tabLabel,
       headerStyle: { backgroundColor: colors.primary },
       headerTintColor: colors.textOnPrimary,
     }}
@@ -182,6 +184,7 @@ const StudentTabs = () => (
       tabBarActiveTintColor: colors.accent,
       tabBarInactiveTintColor: colors.textLight,
       tabBarStyle: styles.tabBar,
+      tabBarLabelStyle: styles.tabLabel,
       headerStyle: { backgroundColor: colors.primary },
       headerTintColor: colors.textOnPrimary,
     }}
@@ -191,8 +194,8 @@ const StudentTabs = () => (
       component={MyProgramScreen}
       options={{
         headerShown: false,
-        tabBarLabel: 'Programma',
-        tabBarIcon: ({ focused }) => <TabIcon label="Allenamento" focused={focused} />,
+        tabBarLabel: 'Scheda',
+        tabBarIcon: ({ focused }) => <TabIcon label="Scheda" focused={focused} />,
       }}
     />
     <StudentTab.Screen
@@ -201,7 +204,7 @@ const StudentTabs = () => (
       options={{
         headerShown: false,
         tabBarLabel: 'Sessioni',
-        tabBarIcon: ({ focused }) => <TabIcon label="Sessioni" focused={focused} />,
+        tabBarIcon: ({ focused }) => <TabIcon label="Sess." focused={focused} />,
       }}
     />
     <StudentTab.Screen
@@ -218,7 +221,7 @@ const StudentTabs = () => (
       component={PaymentsScreen}
       options={{
         headerShown: false,
-        tabBarLabel: 'Pagamenti',
+        tabBarLabel: 'Paga',
         tabBarIcon: ({ focused }) => <TabIcon label="€" focused={focused} />,
       }}
     />
@@ -228,7 +231,7 @@ const StudentTabs = () => (
       options={{
         headerShown: false,
         tabBarLabel: 'Postura',
-        tabBarIcon: ({ focused }) => <TabIcon label="Test" focused={focused} />,
+        tabBarIcon: ({ focused }) => <TabIcon label="Post." focused={focused} />,
       }}
     />
     <StudentTab.Screen
@@ -236,7 +239,7 @@ const StudentTabs = () => (
       component={ContentScreen}
       options={{
         headerShown: false,
-        tabBarLabel: 'Contenuti',
+        tabBarLabel: 'Extra',
         tabBarIcon: ({ focused }) => <TabIcon label="Extra" focused={focused} />,
       }}
     />
@@ -245,6 +248,7 @@ const StudentTabs = () => (
       component={ChatListScreen}
       options={{
         headerShown: false,
+        tabBarLabel: 'Chat',
         tabBarIcon: ({ focused }) => <TabIcon label="Chat" focused={focused} />,
       }}
     />
@@ -293,11 +297,17 @@ const styles = StyleSheet.create({
     borderTopColor: colors.divider,
     borderTopWidth: 1,
     paddingTop: 4,
-    height: 60,
+    paddingBottom: 6,
+    height: 70,
   },
   tabIcon: {
-    fontSize: fontSize.xs,
+    fontSize: fontSize.sm,
     fontWeight: '700',
+  },
+  tabLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    marginTop: 2,
   },
   loading: {
     flex: 1,
