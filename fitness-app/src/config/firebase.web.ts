@@ -1,9 +1,7 @@
 import { initializeApp, getApps } from 'firebase/app';
-// @ts-ignore - getReactNativePersistence is available at runtime in RN
-import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import { initializeAuth, browserLocalPersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Configurazione Firebase
 const firebaseConfig = {
@@ -19,7 +17,7 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 
 const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
+  persistence: browserLocalPersistence,
 });
 
 const db = getFirestore(app);
