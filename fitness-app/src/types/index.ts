@@ -300,17 +300,18 @@ export type RootStackParamList = {
 
 export type OwnerTabParamList = {
   Dashboard: undefined;
-  Collaborators: undefined;
-  Students: undefined;
+  Team: undefined;
+  Sessions: undefined;
   Financial: undefined;
+  Content: undefined;
   Chat: undefined;
-  Settings: undefined;
 };
 
 export type CollaboratorTabParamList = {
   MyStudents: undefined;
   Schedule: undefined;
   Programs: undefined;
+  Postura: undefined;
   Earnings: undefined;
   Chat: undefined;
 };

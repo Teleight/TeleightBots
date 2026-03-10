@@ -5,6 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Linking,
+  Alert,
 } from 'react-native';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
@@ -65,7 +67,14 @@ export const MyProgramScreen: React.FC = () => {
       )}
 
       {exercise.videoUrl && (
-        <TouchableOpacity style={styles.videoButton}>
+        <TouchableOpacity
+          style={styles.videoButton}
+          onPress={() => {
+            Linking.openURL(exercise.videoUrl!).catch(() =>
+              Alert.alert('Errore', 'Impossibile aprire il video')
+            );
+          }}
+        >
           <Text style={styles.videoButtonText}>Guarda Video</Text>
         </TouchableOpacity>
       )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -12,9 +12,10 @@ import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/t
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
-import { WorkoutPlan, Exercise, ExerciseCategory, WeeklyDay } from '../../types';
+import { Exercise, ExerciseCategory, WeeklyDay, Student } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 import { createWorkoutPlan } from '../../services/programService';
+import { getStudents } from '../../services/authService';
 
 const DAYS = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica'];
 
@@ -29,11 +30,14 @@ const CATEGORIES: { value: ExerciseCategory; label: string }[] = [
 ];
 
 export const WorkoutPlanScreen: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isOwner, isCollaborator } = useAuth();
+  const [students, setStudents] = useState<Student[]>([]);
+  const [selectedStudentId, setSelectedStudentId] = useState('');
   const [planTitle, setPlanTitle] = useState('');
   const [selectedDay, setSelectedDay] = useState(0);
   const [exercises, setExercises] = useState<Record<number, Exercise[]>>({});
   const [showExerciseModal, setShowExerciseModal] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   // Form esercizio
   const [exName, setExName] = useState('');
@@ -44,6 +48,24 @@ export const WorkoutPlanScreen: React.FC = () => {
   const [exCategory, setExCategory] = useState<ExerciseCategory>('forza');
   const [exVideoUrl, setExVideoUrl] = useState('');
   const [exNotes, setExNotes] = useState('');
+
+  const loadStudents = useCallback(async () => {
+    if (!user) return;
+    try {
+      const allStudents = await getStudents();
+      if (isOwner) {
+        setStudents(allStudents);
+      } else if (isCollaborator) {
+        setStudents(allStudents.filter((s) => s.assignedCollaboratorId === user.id));
+      }
+    } catch {
+      // Silently handle
+    }
+  }, [user, isOwner, isCollaborator]);
+
+  useEffect(() => {
+    loadStudents();
+  }, [loadStudents]);
 
   const addExercise = () => {
     if (!exName || !exSets || !exReps) {
@@ -68,7 +90,6 @@ export const WorkoutPlanScreen: React.FC = () => {
       [selectedDay]: [...(prev[selectedDay] || []), newExercise],
     }));
 
-    // Reset form
     setExName('');
     setExDescription('');
     setExSets('');
@@ -91,7 +112,18 @@ export const WorkoutPlanScreen: React.FC = () => {
       Alert.alert('Errore', 'Inserisci un titolo per la programmazione');
       return;
     }
+    if (!selectedStudentId) {
+      Alert.alert('Errore', 'Seleziona un allievo');
+      return;
+    }
 
+    const totalExercises = Object.values(exercises).reduce((sum, exs) => sum + exs.length, 0);
+    if (totalExercises === 0) {
+      Alert.alert('Errore', 'Aggiungi almeno un esercizio');
+      return;
+    }
+
+    setSaving(true);
     try {
       const weeklySchedule: WeeklyDay[] = Array.from({ length: 7 }, (_, i) => ({
         dayOfWeek: i,
@@ -101,10 +133,10 @@ export const WorkoutPlanScreen: React.FC = () => {
 
       const startDate = new Date();
       const endDate = new Date();
-      endDate.setDate(endDate.getDate() + 28); // 4 settimane
+      endDate.setDate(endDate.getDate() + 28);
 
       await createWorkoutPlan({
-        studentId: '', // Da selezionare
+        studentId: selectedStudentId,
         collaboratorId: user.id,
         title: planTitle,
         startDate,
@@ -117,8 +149,11 @@ export const WorkoutPlanScreen: React.FC = () => {
       Alert.alert('Successo', 'Programmazione salvata e inviata all\'allievo!');
       setPlanTitle('');
       setExercises({});
+      setSelectedStudentId('');
     } catch {
       Alert.alert('Errore', 'Impossibile salvare la programmazione');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -132,6 +167,36 @@ export const WorkoutPlanScreen: React.FC = () => {
       </View>
 
       <View style={styles.content}>
+        {/* Selezione allievo */}
+        <Text style={styles.sectionTitle}>Seleziona Allievo</Text>
+        {students.length === 0 ? (
+          <Card>
+            <Text style={styles.emptyText}>Nessun allievo disponibile</Text>
+          </Card>
+        ) : (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.studentScroll}>
+            {students.map((s) => (
+              <TouchableOpacity
+                key={s.id}
+                style={[
+                  styles.studentChip,
+                  selectedStudentId === s.id && styles.studentChipActive,
+                ]}
+                onPress={() => setSelectedStudentId(s.id)}
+              >
+                <Text
+                  style={[
+                    styles.studentChipText,
+                    selectedStudentId === s.id && styles.studentChipTextActive,
+                  ]}
+                >
+                  {s.name} {s.surname}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+
         <InputField
           label="Titolo Programmazione"
           value={planTitle}
@@ -231,9 +296,10 @@ export const WorkoutPlanScreen: React.FC = () => {
         </View>
 
         <Button
-          title="Salva e Invia Programmazione"
+          title={saving ? 'Salvataggio...' : 'Salva e Invia Programmazione'}
           onPress={savePlan}
           style={styles.saveButton}
+          loading={saving}
         />
       </View>
 
@@ -287,7 +353,6 @@ export const WorkoutPlanScreen: React.FC = () => {
               placeholder="90"
             />
 
-            {/* Categoria */}
             <Text style={styles.fieldLabel}>Categoria</Text>
             <View style={styles.categoryRow}>
               {CATEGORIES.map((cat) => (
@@ -379,6 +444,31 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.text,
     marginBottom: spacing.sm,
+  },
+  studentScroll: {
+    marginBottom: spacing.md,
+  },
+  studentChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.round,
+    backgroundColor: colors.surface,
+    marginRight: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    ...shadows.small,
+  },
+  studentChipActive: {
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
+  },
+  studentChipText: {
+    fontSize: fontSize.md,
+    fontWeight: '600',
+    color: colors.textSecondary,
+  },
+  studentChipTextActive: {
+    color: colors.textOnAccent,
   },
   dayScroll: {
     marginBottom: spacing.md,

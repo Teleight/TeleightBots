@@ -5,12 +5,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { colors, fontSize } from '../config/theme';
 import { useAuth } from '../hooks/useAuth';
-import { RootStackParamList, OwnerTabParamList, CollaboratorTabParamList, StudentTabParamList } from '../types';
 
 // Screens
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { DashboardScreen } from '../screens/owner/DashboardScreen';
 import { FinancialScreen } from '../screens/owner/FinancialScreen';
+import { ManageUsersScreen } from '../screens/owner/ManageUsersScreen';
+import { ContentManagementScreen } from '../screens/owner/ContentManagementScreen';
 import { MyStudentsScreen } from '../screens/collaborator/MyStudentsScreen';
 import { EarningsScreen } from '../screens/collaborator/EarningsScreen';
 import { MyProgramScreen } from '../screens/student/MyProgramScreen';
@@ -20,13 +21,13 @@ import { PaymentsScreen } from '../screens/student/PaymentsScreen';
 import { ContentScreen } from '../screens/student/ContentScreen';
 import { PosturalAssessmentScreen } from '../screens/shared/PosturalAssessmentScreen';
 import { WorkoutPlanScreen } from '../screens/shared/WorkoutPlanScreen';
-import { ManageUsersScreen } from '../screens/owner/ManageUsersScreen';
+import { ScheduleSessionScreen } from '../screens/shared/ScheduleSessionScreen';
 import { ChatListScreen } from '../screens/shared/ChatListScreen';
 
-const RootStack = createNativeStackNavigator<RootStackParamList>();
-const OwnerTab = createBottomTabNavigator<OwnerTabParamList>();
-const CollaboratorTab = createBottomTabNavigator<CollaboratorTabParamList>();
-const StudentTab = createBottomTabNavigator<StudentTabParamList>();
+const RootStack = createNativeStackNavigator();
+const OwnerTab = createBottomTabNavigator();
+const CollaboratorTab = createBottomTabNavigator();
+const StudentTab = createBottomTabNavigator();
 
 // --- Tab icon semplice (testo) ---
 const TabIcon = ({ label, focused }: { label: string; focused: boolean }) => (
@@ -61,23 +62,21 @@ const OwnerTabs = () => (
       }}
     />
     <OwnerTab.Screen
-      name="Collaborators"
+      name="Team"
       component={ManageUsersScreen}
       options={{
-        title: 'Gestione Utenti',
         headerShown: false,
         tabBarLabel: 'Team',
         tabBarIcon: ({ focused }) => <TabIcon label="Team" focused={focused} />,
       }}
     />
     <OwnerTab.Screen
-      name="Students"
-      component={PosturalAssessmentScreen}
+      name="Sessions"
+      component={ScheduleSessionScreen}
       options={{
-        title: 'Test Posturale',
         headerShown: false,
-        tabBarLabel: 'Postura',
-        tabBarIcon: ({ focused }) => <TabIcon label="Test" focused={focused} />,
+        tabBarLabel: 'Sessioni',
+        tabBarIcon: ({ focused }) => <TabIcon label="Cal" focused={focused} />,
       }}
     />
     <OwnerTab.Screen
@@ -87,6 +86,15 @@ const OwnerTabs = () => (
         headerShown: false,
         tabBarLabel: 'Economia',
         tabBarIcon: ({ focused }) => <TabIcon label="€" focused={focused} />,
+      }}
+    />
+    <OwnerTab.Screen
+      name="Content"
+      component={ContentManagementScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Contenuti',
+        tabBarIcon: ({ focused }) => <TabIcon label="Media" focused={focused} />,
       }}
     />
     <OwnerTab.Screen
@@ -122,6 +130,15 @@ const CollaboratorTabs = () => (
     />
     <CollaboratorTab.Screen
       name="Schedule"
+      component={ScheduleSessionScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Sessioni',
+        tabBarIcon: ({ focused }) => <TabIcon label="Cal" focused={focused} />,
+      }}
+    />
+    <CollaboratorTab.Screen
+      name="Programs"
       component={WorkoutPlanScreen}
       options={{
         headerShown: false,
@@ -130,7 +147,7 @@ const CollaboratorTabs = () => (
       }}
     />
     <CollaboratorTab.Screen
-      name="Programs"
+      name="Postura"
       component={PosturalAssessmentScreen}
       options={{
         headerShown: false,
@@ -225,18 +242,6 @@ const StudentTabs = () => (
   </StudentTab.Navigator>
 );
 
-// Placeholder per la chat (integra ChatListScreen)
-function ChatPlaceholder() {
-  return (
-    <View style={styles.placeholder}>
-      <Text style={styles.placeholderText}>Chat</Text>
-      <Text style={styles.placeholderSubtext}>
-        La sezione chat si connette in tempo reale via Firebase
-      </Text>
-    </View>
-  );
-}
-
 // --- Loading screen ---
 const LoadingScreen = () => (
   <View style={styles.loading}>
@@ -284,24 +289,6 @@ const styles = StyleSheet.create({
   tabIcon: {
     fontSize: fontSize.xs,
     fontWeight: '700',
-  },
-  placeholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.background,
-    padding: 40,
-  },
-  placeholderText: {
-    fontSize: fontSize.xxl,
-    fontWeight: '700',
-    color: colors.text,
-    marginBottom: 8,
-  },
-  placeholderSubtext: {
-    fontSize: fontSize.md,
-    color: colors.textSecondary,
-    textAlign: 'center',
   },
   loading: {
     flex: 1,

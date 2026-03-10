@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -7,8 +7,9 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  Platform,
+  ActivityIndicator,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
@@ -17,9 +18,11 @@ import {
   PosturalAssessment,
   PosturalFinding,
   PosturalArea,
+  Student,
 } from '../../types';
 import { uploadPosturalImage, analyzePosture, createAssessment } from '../../services/posturalService';
 import { useAuth } from '../../hooks/useAuth';
+import { getStudents } from '../../services/authService';
 
 const POSTURAL_AREAS: { value: PosturalArea; label: string }[] = [
   { value: 'head_neck', label: 'Testa/Collo' },
@@ -40,7 +43,9 @@ const SEVERITY_OPTIONS = [
 ];
 
 export const PosturalAssessmentScreen: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isOwner, isCollaborator } = useAuth();
+  const [students, setStudents] = useState<Student[]>([]);
+  const [selectedStudentId, setSelectedStudentId] = useState<string>('');
   const [frontImage, setFrontImage] = useState<string | null>(null);
   const [sideImage, setSideImage] = useState<string | null>(null);
   const [backImage, setBackImage] = useState<string | null>(null);
@@ -50,20 +55,79 @@ export const PosturalAssessmentScreen: React.FC = () => {
   const [currentObservation, setCurrentObservation] = useState('');
   const [currentSeverity, setCurrentSeverity] =
     useState<PosturalFinding['severity']>('normal');
+  const [saving, setSaving] = useState(false);
 
-  const pickImage = async (
-    view: 'front' | 'side' | 'back'
-  ) => {
-    // In produzione userebbe expo-image-picker
+  const loadStudents = useCallback(async () => {
+    if (!user) return;
+    try {
+      const allStudents = await getStudents();
+      if (isOwner) {
+        setStudents(allStudents);
+      } else if (isCollaborator) {
+        setStudents(allStudents.filter((s) => s.assignedCollaboratorId === user.id));
+      }
+    } catch {
+      // Silently handle
+    }
+  }, [user, isOwner, isCollaborator]);
+
+  useEffect(() => {
+    loadStudents();
+  }, [loadStudents]);
+
+  const pickImage = async (view: 'front' | 'side' | 'back') => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permesso negato', 'Serve il permesso per accedere alla galleria');
+      return;
+    }
+
     Alert.alert(
       'Seleziona immagine',
       'Scegli da dove caricare l\'immagine',
       [
-        { text: 'Fotocamera', onPress: () => {} },
-        { text: 'Galleria', onPress: () => {} },
+        {
+          text: 'Fotocamera',
+          onPress: async () => {
+            const camStatus = await ImagePicker.requestCameraPermissionsAsync();
+            if (camStatus.status !== 'granted') {
+              Alert.alert('Permesso negato', 'Serve il permesso per usare la fotocamera');
+              return;
+            }
+            const result = await ImagePicker.launchCameraAsync({
+              mediaTypes: ['images'],
+              allowsEditing: true,
+              quality: 0.8,
+            });
+            if (!result.canceled && result.assets[0]) {
+              setImageForView(view, result.assets[0].uri);
+            }
+          },
+        },
+        {
+          text: 'Galleria',
+          onPress: async () => {
+            const result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ['images'],
+              allowsEditing: true,
+              quality: 0.8,
+            });
+            if (!result.canceled && result.assets[0]) {
+              setImageForView(view, result.assets[0].uri);
+            }
+          },
+        },
         { text: 'Annulla', style: 'cancel' },
       ]
     );
+  };
+
+  const setImageForView = (view: 'front' | 'side' | 'back', uri: string) => {
+    switch (view) {
+      case 'front': setFrontImage(uri); break;
+      case 'side': setSideImage(uri); break;
+      case 'back': setBackImage(uri); break;
+    }
   };
 
   const addFinding = () => {
@@ -97,10 +161,66 @@ export const PosturalAssessmentScreen: React.FC = () => {
     const analysis = analyzePosture(findings);
     Alert.alert(
       'Analisi Posturale',
-      `${analysis.summary}\n\nRaccomandazioni:\n${analysis.recommendations.join('\n- ')}`,
+      `${analysis.summary}\n\nRaccomandazioni:\n- ${analysis.recommendations.join('\n- ')}`,
       [{ text: 'OK' }]
     );
   };
+
+  const handleSave = async () => {
+    if (!user || findings.length === 0) {
+      Alert.alert('Errore', 'Aggiungi almeno un\'osservazione');
+      return;
+    }
+    if (!selectedStudentId) {
+      Alert.alert('Errore', 'Seleziona un allievo');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      let frontUrl = frontImage || '';
+      let sideUrl = sideImage || '';
+      let backUrl = backImage || '';
+
+      // Upload images if they are local URIs
+      if (frontImage && frontImage.startsWith('file://')) {
+        frontUrl = await uploadPosturalImage(frontImage, selectedStudentId, 'front');
+      }
+      if (sideImage && sideImage.startsWith('file://')) {
+        sideUrl = await uploadPosturalImage(sideImage, selectedStudentId, 'side');
+      }
+      if (backImage && backImage.startsWith('file://')) {
+        backUrl = await uploadPosturalImage(backImage, selectedStudentId, 'back');
+      }
+
+      await createAssessment({
+        studentId: selectedStudentId,
+        assessorId: user.id,
+        date: new Date(),
+        frontImageUrl: frontUrl,
+        sideImageUrl: sideUrl,
+        backImageUrl: backUrl,
+        findings,
+        overallNotes,
+        recommendations: analyzePosture(findings).recommendations.join('\n'),
+      });
+
+      Alert.alert('Successo', 'Valutazione posturale salvata!');
+      // Reset form
+      setSelectedStudentId('');
+      setFrontImage(null);
+      setSideImage(null);
+      setBackImage(null);
+      setFindings([]);
+      setOverallNotes('');
+    } catch {
+      Alert.alert('Errore', 'Impossibile salvare la valutazione');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const selectedStudent = students.find((s) => s.id === selectedStudentId);
 
   return (
     <ScrollView style={styles.container}>
@@ -109,50 +229,62 @@ export const PosturalAssessmentScreen: React.FC = () => {
         <Text style={styles.subtitle}>Analisi posturale con immagini</Text>
       </View>
 
+      {/* Selezione allievo */}
+      <Text style={styles.sectionTitle}>Allievo</Text>
+      {students.length === 0 ? (
+        <Card>
+          <Text style={styles.emptyText}>Nessun allievo disponibile</Text>
+        </Card>
+      ) : (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={styles.studentRow}>
+            {students.map((s) => (
+              <TouchableOpacity
+                key={s.id}
+                style={[
+                  styles.studentChip,
+                  selectedStudentId === s.id && styles.studentChipActive,
+                ]}
+                onPress={() => setSelectedStudentId(s.id)}
+              >
+                <Text
+                  style={[
+                    styles.studentChipText,
+                    selectedStudentId === s.id && styles.studentChipTextActive,
+                  ]}
+                >
+                  {s.name} {s.surname}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      )}
+
       {/* Sezione foto */}
       <Text style={styles.sectionTitle}>Fotografie</Text>
       <View style={styles.imageRow}>
-        <TouchableOpacity
-          style={styles.imageBox}
-          onPress={() => pickImage('front')}
-        >
-          {frontImage ? (
-            <Image source={{ uri: frontImage }} style={styles.image} />
-          ) : (
-            <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Frontale</Text>
-              <Text style={styles.imagePlaceholderHint}>Tocca per caricare</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.imageBox}
-          onPress={() => pickImage('side')}
-        >
-          {sideImage ? (
-            <Image source={{ uri: sideImage }} style={styles.image} />
-          ) : (
-            <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Laterale</Text>
-              <Text style={styles.imagePlaceholderHint}>Tocca per caricare</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.imageBox}
-          onPress={() => pickImage('back')}
-        >
-          {backImage ? (
-            <Image source={{ uri: backImage }} style={styles.image} />
-          ) : (
-            <View style={styles.imagePlaceholder}>
-              <Text style={styles.imagePlaceholderText}>Posteriore</Text>
-              <Text style={styles.imagePlaceholderHint}>Tocca per caricare</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+        {(['front', 'side', 'back'] as const).map((view) => {
+          const labels = { front: 'Frontale', side: 'Laterale', back: 'Posteriore' };
+          const images = { front: frontImage, side: sideImage, back: backImage };
+          return (
+            <TouchableOpacity
+              key={view}
+              style={styles.imageBox}
+              onPress={() => pickImage(view)}
+            >
+              {images[view] ? (
+                <Image source={{ uri: images[view]! }} style={styles.image} />
+              ) : (
+                <View style={styles.imagePlaceholder}>
+                  <Text style={styles.imagePlaceholderIcon}>+</Text>
+                  <Text style={styles.imagePlaceholderText}>{labels[view]}</Text>
+                  <Text style={styles.imagePlaceholderHint}>Tocca per caricare</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          );
+        })}
       </View>
 
       {/* Osservazioni per area */}
@@ -294,31 +426,11 @@ export const PosturalAssessmentScreen: React.FC = () => {
           style={styles.actionButton}
         />
         <Button
-          title="Salva Valutazione"
-          onPress={async () => {
-            if (!user || findings.length === 0) {
-              Alert.alert('Errore', 'Aggiungi almeno un\'osservazione');
-              return;
-            }
-            try {
-              await createAssessment({
-                studentId: '', // Da selezionare in futuro
-                assessorId: user.id,
-                date: new Date(),
-                frontImageUrl: frontImage || '',
-                sideImageUrl: sideImage || '',
-                backImageUrl: backImage || '',
-                findings,
-                overallNotes,
-                recommendations: analyzePosture(findings).recommendations.join('\n'),
-              });
-              Alert.alert('Successo', 'Valutazione salvata');
-            } catch {
-              Alert.alert('Errore', 'Impossibile salvare la valutazione');
-            }
-          }}
+          title={saving ? 'Salvataggio...' : 'Salva Valutazione'}
+          onPress={handleSave}
           variant="secondary"
           style={styles.actionButton}
+          loading={saving}
         />
       </View>
 
@@ -354,6 +466,31 @@ const styles = StyleSheet.create({
     marginTop: spacing.lg,
     marginBottom: spacing.sm,
   },
+  studentRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    paddingBottom: spacing.sm,
+  },
+  studentChip: {
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.round,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  studentChipActive: {
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
+  },
+  studentChipText: {
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    fontWeight: '600',
+  },
+  studentChipTextActive: {
+    color: colors.textOnAccent,
+  },
   imageRow: {
     flexDirection: 'row',
     gap: spacing.sm,
@@ -379,15 +516,26 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: borderRadius.lg,
   },
+  imagePlaceholderIcon: {
+    fontSize: fontSize.hero,
+    color: colors.accent,
+    fontWeight: '300',
+  },
   imagePlaceholderText: {
     fontSize: fontSize.md,
     fontWeight: '600',
     color: colors.textSecondary,
+    marginTop: spacing.xs,
   },
   imagePlaceholderHint: {
     fontSize: fontSize.xs,
     color: colors.textLight,
     marginTop: 4,
+  },
+  emptyText: {
+    color: colors.textSecondary,
+    textAlign: 'center',
+    padding: spacing.md,
   },
   fieldLabel: {
     fontSize: fontSize.md,
