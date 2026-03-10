@@ -1,7 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { initializeAuth, getAuth, browserLocalPersistence } from 'firebase/auth';
-// @ts-ignore - getReactNativePersistence is available at runtime in RN
-import { getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { Platform } from 'react-native';
@@ -21,8 +19,11 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0
 
 let auth;
 if (Platform.OS === 'web') {
-  auth = getAuth(app);
+  auth = initializeAuth(app, {
+    persistence: browserLocalPersistence,
+  });
 } else {
+  const { getReactNativePersistence } = require('firebase/auth');
   const AsyncStorage = require('@react-native-async-storage/async-storage').default;
   auth = initializeAuth(app, {
     persistence: getReactNativePersistence(AsyncStorage),
