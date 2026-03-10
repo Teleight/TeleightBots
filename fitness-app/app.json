@@ -24,6 +24,11 @@
       "package": "com.essere.app",
       "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
     },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./src/assets/icon.png"
+    },
     "plugins": [
       "expo-image-picker",
       "expo-notifications"
