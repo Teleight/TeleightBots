@@ -32,17 +32,18 @@ export const colors = {
 
   // --- Badge ruoli ---
   ownerBadge: '#CC0000',
+  managerBadge: '#9C27B0',
   collaboratorBadge: '#00BCD4',
   studentBadge: '#FF9800',
 };
 
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
-  xxl: 48,
+  xs: 3,
+  sm: 6,
+  md: 12,
+  lg: 18,
+  xl: 24,
+  xxl: 36,
 };
 
 export const borderRadius = {
@@ -54,14 +55,14 @@ export const borderRadius = {
 };
 
 export const fontSize = {
-  xs: 10,
-  sm: 12,
-  md: 14,
-  lg: 16,
-  xl: 20,
-  xxl: 24,
-  title: 28,
-  hero: 36,
+  xs: 9,
+  sm: 11,
+  md: 12,
+  lg: 14,
+  xl: 17,
+  xxl: 20,
+  title: 22,
+  hero: 28,
 };
 
 export const shadows = {

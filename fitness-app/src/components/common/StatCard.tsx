@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
     padding: spacing.md,
-    borderLeftWidth: 4,
+    borderLeftWidth: 3,
     flex: 1,
-    minWidth: 140,
+    minWidth: 120,
     ...shadows.small,
   },
   header: {

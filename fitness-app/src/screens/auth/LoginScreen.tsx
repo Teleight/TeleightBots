@@ -7,15 +7,18 @@ import {
   Platform,
   ScrollView,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import { colors, spacing, fontSize, borderRadius } from '../../config/theme';
 import { InputField } from '../../components/common/InputField';
 import { Button } from '../../components/common/Button';
 import { useAuth } from '../../hooks/useAuth';
+import { RegisterStudentScreen } from './RegisterStudentScreen';
 
 export const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showRegister, setShowRegister] = useState(false);
   const { login, loading, error } = useAuth();
 
   const handleLogin = async () => {
@@ -29,6 +32,10 @@ export const LoginScreen: React.FC = () => {
       Alert.alert('Errore di accesso', 'Credenziali non valide. Riprova.');
     }
   };
+
+  if (showRegister) {
+    return <RegisterStudentScreen onBack={() => setShowRegister(false)} />;
+  }
 
   return (
     <KeyboardAvoidingView
@@ -77,8 +84,15 @@ export const LoginScreen: React.FC = () => {
           />
         </View>
 
+        <TouchableOpacity
+          onPress={() => setShowRegister(true)}
+          style={styles.registerLink}
+        >
+          <Text style={styles.registerText}>Sei un nuovo allievo? Registrati</Text>
+        </TouchableOpacity>
+
         <Text style={styles.footer}>
-          Contatta l'amministratore per ottenere le credenziali
+          Coach e Manager: contattare l'amministratore per le credenziali
         </Text>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -149,10 +163,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: spacing.sm,
   },
+  registerLink: {
+    alignItems: 'center',
+    marginTop: spacing.lg,
+    padding: spacing.sm,
+  },
+  registerText: {
+    color: colors.accent,
+    fontSize: fontSize.md,
+    fontWeight: '600',
+  },
   footer: {
     color: colors.textLight,
     fontSize: fontSize.sm,
     textAlign: 'center',
-    marginTop: spacing.lg,
+    marginTop: spacing.sm,
   },
 });

@@ -3,7 +3,7 @@
 // ============================================================
 
 // --- Ruoli utente ---
-export type UserRole = 'owner' | 'collaborator' | 'student';
+export type UserRole = 'owner' | 'manager' | 'collaborator' | 'student';
 
 // --- Utente base ---
 export interface User {
@@ -21,6 +21,13 @@ export interface User {
 // --- Titolare (Owner) ---
 export interface Owner extends User {
   role: 'owner';
+}
+
+// --- Manager ---
+export interface Manager extends User {
+  role: 'manager';
+  assignedCollaborators: string[]; // collaborator IDs gestiti dal manager
+  assignedStudents: string[]; // student IDs
 }
 
 // --- Collaboratore ---
@@ -293,7 +300,9 @@ export interface AppNotification {
 // --- Navigation types ---
 export type RootStackParamList = {
   Login: undefined;
+  Register: undefined;
   OwnerTabs: undefined;
+  ManagerTabs: undefined;
   CollaboratorTabs: undefined;
   StudentTabs: undefined;
 };
@@ -303,6 +312,14 @@ export type OwnerTabParamList = {
   Team: undefined;
   Sessions: undefined;
   Financial: undefined;
+  Content: undefined;
+  Chat: undefined;
+};
+
+export type ManagerTabParamList = {
+  Dashboard: undefined;
+  Team: undefined;
+  Sessions: undefined;
   Content: undefined;
   Chat: undefined;
 };

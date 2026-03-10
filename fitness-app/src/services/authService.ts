@@ -7,7 +7,7 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, collection, getDocs, query, where, Timestamp, updateDoc, arrayUnion } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
-import { User, UserRole, Collaborator, Student } from '../types';
+import { User, UserRole, Collaborator, Student, Manager } from '../types';
 
 export const signIn = async (email: string, password: string): Promise<User> => {
   const credential = await signInWithEmailAndPassword(auth, email, password);
@@ -49,6 +49,54 @@ export const registerOwner = async (
   });
 
   return { id: credential.user.uid, ...userData };
+};
+
+export const registerManager = async (
+  email: string,
+  password: string,
+  name: string,
+  surname: string,
+  phone: string
+): Promise<Manager> => {
+  const { createUserWithEmailAndPassword: createUser } = await import('firebase/auth');
+  const { initializeApp } = await import('firebase/app');
+  const { getAuth } = await import('firebase/auth');
+
+  const secondaryApp = initializeApp(auth.app.options, 'secondary-' + Date.now());
+  const secondaryAuth = getAuth(secondaryApp);
+
+  try {
+    const credential = await createUser(secondaryAuth, email, password);
+    const uid = credential.user.uid;
+
+    const managerData: Omit<Manager, 'id'> = {
+      email,
+      name,
+      surname,
+      phone,
+      role: 'manager',
+      assignedCollaborators: [],
+      assignedStudents: [],
+      createdAt: new Date(),
+      isActive: true,
+    };
+
+    await setDoc(doc(db, 'users', uid), {
+      ...managerData,
+      createdAt: Timestamp.now(),
+    });
+
+    await secondaryAuth.signOut();
+    await (secondaryApp as any).delete();
+
+    return { id: uid, ...managerData };
+  } catch (error) {
+    try {
+      await secondaryAuth.signOut();
+      await (secondaryApp as any).delete();
+    } catch { /* ignore cleanup errors */ }
+    throw error;
+  }
 };
 
 export const signOut = async (): Promise<void> => {
@@ -191,6 +239,48 @@ export const registerStudent = async (
     } catch { /* ignore cleanup errors */ }
     throw error;
   }
+};
+
+export const registerStudentSelf = async (
+  email: string,
+  password: string,
+  name: string,
+  surname: string,
+  phone: string,
+  goals: string
+): Promise<Student> => {
+  // L'allievo si registra da solo - usa createUserWithEmailAndPassword direttamente
+  const credential = await createUserWithEmailAndPassword(auth, email, password);
+  const uid = credential.user.uid;
+
+  const studentData: Omit<Student, 'id'> = {
+    email,
+    name,
+    surname,
+    phone,
+    role: 'student',
+    assignedCollaboratorId: '', // Sara' assegnato dal manager/owner
+    startDate: new Date(),
+    goals,
+    medicalNotes: '',
+    nutritionalConsultations: 0,
+    createdAt: new Date(),
+    isActive: true,
+  };
+
+  await setDoc(doc(db, 'users', uid), {
+    ...studentData,
+    createdAt: Timestamp.now(),
+    startDate: Timestamp.now(),
+  });
+
+  return { id: uid, ...studentData };
+};
+
+export const getManagers = async (): Promise<Manager[]> => {
+  const q = query(collection(db, 'users'), where('role', '==', 'manager'));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Manager));
 };
 
 export const getCollaborators = async (): Promise<Collaborator[]> => {

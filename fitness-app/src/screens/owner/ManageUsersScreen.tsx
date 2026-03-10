@@ -10,23 +10,26 @@ import {
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
-import { getCollaborators, getStudents } from '../../services/authService';
-import { Collaborator, Student } from '../../types';
+import { getCollaborators, getStudents, getManagers } from '../../services/authService';
+import { Collaborator, Student, Manager } from '../../types';
 import { AddCollaboratorScreen } from './AddCollaboratorScreen';
 import { AddStudentScreen } from './AddStudentScreen';
+import { AddManagerScreen } from './AddManagerScreen';
 
-type ViewMode = 'list' | 'addCollaborator' | 'addStudent';
+type ViewMode = 'list' | 'addManager' | 'addCollaborator' | 'addStudent';
 
 export const ManageUsersScreen: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>('list');
+  const [managers, setManagers] = useState<Manager[]>([]);
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'collaborators' | 'students'>('collaborators');
+  const [activeTab, setActiveTab] = useState<'managers' | 'collaborators' | 'students'>('collaborators');
 
   const loadData = useCallback(async () => {
     try {
-      const [collabs, studs] = await Promise.all([getCollaborators(), getStudents()]);
+      const [mgrs, collabs, studs] = await Promise.all([getManagers(), getCollaborators(), getStudents()]);
+      setManagers(mgrs);
       setCollaborators(collabs);
       setStudents(studs);
     } catch {
@@ -49,6 +52,10 @@ export const ManageUsersScreen: React.FC = () => {
     loadData(); // Ricarica dati dopo aggiunta
   };
 
+  if (viewMode === 'addManager') {
+    return <AddManagerScreen onBack={handleBack} />;
+  }
+
   if (viewMode === 'addCollaborator') {
     return <AddCollaboratorScreen onBack={handleBack} />;
   }
@@ -65,14 +72,19 @@ export const ManageUsersScreen: React.FC = () => {
       <View style={styles.header}>
         <Text style={styles.title}>Gestione Utenti</Text>
         <Text style={styles.subtitle}>
-          {collaborators.length} collaboratori · {students.length} allievi
+          {managers.length} manager · {collaborators.length} coach · {students.length} allievi
         </Text>
       </View>
 
       {/* Pulsanti azione */}
       <View style={styles.actions}>
         <Button
-          title="+ Collaboratore"
+          title="+ Manager"
+          onPress={() => setViewMode('addManager')}
+          style={styles.actionButton}
+        />
+        <Button
+          title="+ Coach"
           onPress={() => setViewMode('addCollaborator')}
           style={styles.actionButton}
         />
@@ -86,11 +98,19 @@ export const ManageUsersScreen: React.FC = () => {
       {/* Tab switch */}
       <View style={styles.tabSwitch}>
         <TouchableOpacity
+          style={[styles.tab, activeTab === 'managers' && styles.tabActive]}
+          onPress={() => setActiveTab('managers')}
+        >
+          <Text style={[styles.tabText, activeTab === 'managers' && styles.tabTextActive]}>
+            Manager ({managers.length})
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           style={[styles.tab, activeTab === 'collaborators' && styles.tabActive]}
           onPress={() => setActiveTab('collaborators')}
         >
           <Text style={[styles.tabText, activeTab === 'collaborators' && styles.tabTextActive]}>
-            Collaboratori ({collaborators.length})
+            Coach ({collaborators.length})
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -102,6 +122,41 @@ export const ManageUsersScreen: React.FC = () => {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Lista manager */}
+      {activeTab === 'managers' && (
+        <>
+          {managers.length === 0 ? (
+            <Card>
+              <Text style={styles.emptyText}>
+                Nessun manager registrato. Premi "+ Manager" per aggiungerne uno.
+              </Text>
+            </Card>
+          ) : (
+            managers.map((mgr) => (
+              <Card key={mgr.id} variant="elevated">
+                <View style={styles.userRow}>
+                  <View style={[styles.avatar, styles.avatarManager]}>
+                    <Text style={styles.avatarText}>
+                      {mgr.name[0]}{mgr.surname[0]}
+                    </Text>
+                  </View>
+                  <View style={styles.userInfo}>
+                    <Text style={styles.userName}>
+                      {mgr.name} {mgr.surname}
+                    </Text>
+                    <Text style={styles.userEmail}>{mgr.email}</Text>
+                    <Text style={styles.userDetail}>
+                      {mgr.assignedCollaborators.length} coach · {mgr.assignedStudents.length} allievi
+                    </Text>
+                  </View>
+                  <View style={[styles.statusDot, mgr.isActive ? styles.statusActive : styles.statusInactive]} />
+                </View>
+              </Card>
+            ))
+          )}
+        </>
+      )}
 
       {/* Lista collaboratori */}
       {activeTab === 'collaborators' && (
@@ -257,6 +312,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: spacing.md,
+  },
+  avatarManager: {
+    backgroundColor: colors.managerBadge,
   },
   avatarStudent: {
     backgroundColor: colors.studentBadge,

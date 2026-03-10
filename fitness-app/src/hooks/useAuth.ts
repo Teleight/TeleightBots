@@ -76,6 +76,7 @@ export const useAuth = () => {
     isAuthenticated: !!state.firebaseUser,
     role: state.userProfile?.role ?? null,
     isOwner: state.userProfile?.role === 'owner',
+    isManager: state.userProfile?.role === 'manager',
     isCollaborator: state.userProfile?.role === 'collaborator',
     isStudent: state.userProfile?.role === 'student',
     login,

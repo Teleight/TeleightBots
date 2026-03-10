@@ -26,6 +26,7 @@ import { ChatListScreen } from '../screens/shared/ChatListScreen';
 
 const RootStack = createNativeStackNavigator();
 const OwnerTab = createBottomTabNavigator();
+const ManagerTab = createBottomTabNavigator();
 const CollaboratorTab = createBottomTabNavigator();
 const StudentTab = createBottomTabNavigator();
 
@@ -107,6 +108,65 @@ const OwnerTabs = () => (
       }}
     />
   </OwnerTab.Navigator>
+);
+
+// --- Manager Tabs ---
+// Il manager gestisce coach e allievi, senza sezione economia
+const ManagerTabs = () => (
+  <ManagerTab.Navigator
+    screenOptions={{
+      tabBarActiveTintColor: colors.accent,
+      tabBarInactiveTintColor: colors.textLight,
+      tabBarStyle: styles.tabBar,
+      tabBarLabelStyle: styles.tabLabel,
+      headerStyle: { backgroundColor: colors.primary },
+      headerTintColor: colors.textOnPrimary,
+    }}
+  >
+    <ManagerTab.Screen
+      name="Dashboard"
+      component={DashboardScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ focused }) => <TabIcon label="Home" focused={focused} />,
+      }}
+    />
+    <ManagerTab.Screen
+      name="Team"
+      component={ManageUsersScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Team',
+        tabBarIcon: ({ focused }) => <TabIcon label="Team" focused={focused} />,
+      }}
+    />
+    <ManagerTab.Screen
+      name="Sessions"
+      component={ScheduleSessionScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Sessioni',
+        tabBarIcon: ({ focused }) => <TabIcon label="Cal" focused={focused} />,
+      }}
+    />
+    <ManagerTab.Screen
+      name="Content"
+      component={ContentManagementScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Contenuti',
+        tabBarIcon: ({ focused }) => <TabIcon label="Media" focused={focused} />,
+      }}
+    />
+    <ManagerTab.Screen
+      name="Chat"
+      component={ChatListScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ focused }) => <TabIcon label="Chat" focused={focused} />,
+      }}
+    />
+  </ManagerTab.Navigator>
 );
 
 // --- Collaborator Tabs ---
@@ -278,6 +338,8 @@ export const AppNavigator: React.FC = () => {
           <RootStack.Screen name="Login" component={LoginScreen} />
         ) : role === 'owner' ? (
           <RootStack.Screen name="OwnerTabs" component={OwnerTabs} />
+        ) : role === 'manager' ? (
+          <RootStack.Screen name="ManagerTabs" component={ManagerTabs} />
         ) : role === 'collaborator' ? (
           <RootStack.Screen
             name="CollaboratorTabs"
@@ -296,9 +358,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderTopColor: colors.divider,
     borderTopWidth: 1,
-    paddingTop: 4,
-    paddingBottom: 6,
-    height: 70,
+    paddingTop: 3,
+    paddingBottom: 4,
+    height: 56,
   },
   tabIcon: {
     fontSize: fontSize.sm,
