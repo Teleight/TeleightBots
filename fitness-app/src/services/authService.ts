@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   User as FirebaseUser,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, collection, getDocs, query, where, Timestamp, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -101,6 +102,10 @@ export const registerManager = async (
 
 export const signOut = async (): Promise<void> => {
   await firebaseSignOut(auth);
+};
+
+export const resetPassword = async (email: string): Promise<void> => {
+  await sendPasswordResetEmail(auth, email);
 };
 
 export const getCurrentUser = (): Promise<FirebaseUser | null> => {
