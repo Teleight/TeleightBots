@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
@@ -81,9 +82,25 @@ export const PosturalAssessmentScreen: React.FC = () => {
   }, [loadStudents]);
 
   const pickImage = async (view: 'front' | 'side' | 'back') => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permesso negato', 'Serve il permesso per accedere alla galleria');
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permesso negato', 'Serve il permesso per accedere alla galleria');
+        return;
+      }
+    }
+
+    // On web, directly open image library (camera and Alert buttons don't work on web)
+    if (Platform.OS === 'web') {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        quality: 0.8,
+        base64: true,
+      });
+      if (!result.canceled && result.assets[0]) {
+        setImageForView(view, result.assets[0].uri);
+      }
       return;
     }
 
@@ -244,15 +261,18 @@ export const PosturalAssessmentScreen: React.FC = () => {
       let sideUrl = sideImage || '';
       let backUrl = backImage || '';
 
-      // Upload images if they are local URIs
-      if (frontImage && frontImage.startsWith('file://')) {
-        frontUrl = await uploadPosturalImage(frontImage, selectedStudentId, 'front');
+      // Upload images if they are local/blob URIs (file:// on native, blob:/data: on web)
+      const isLocalUri = (uri: string) =>
+        uri.startsWith('file://') || uri.startsWith('blob:') || uri.startsWith('data:');
+
+      if (frontImage && isLocalUri(frontImage)) {
+        frontUrl = await uploadPosturalImage(selectedStudentId, frontImage, 'front');
       }
-      if (sideImage && sideImage.startsWith('file://')) {
-        sideUrl = await uploadPosturalImage(sideImage, selectedStudentId, 'side');
+      if (sideImage && isLocalUri(sideImage)) {
+        sideUrl = await uploadPosturalImage(selectedStudentId, sideImage, 'side');
       }
-      if (backImage && backImage.startsWith('file://')) {
-        backUrl = await uploadPosturalImage(backImage, selectedStudentId, 'back');
+      if (backImage && isLocalUri(backImage)) {
+        backUrl = await uploadPosturalImage(selectedStudentId, backImage, 'back');
       }
 
       await createAssessment({

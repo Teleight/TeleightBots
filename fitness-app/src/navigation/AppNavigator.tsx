@@ -22,6 +22,7 @@ import { ContentScreen } from '../screens/student/ContentScreen';
 import { PosturalAssessmentScreen } from '../screens/shared/PosturalAssessmentScreen';
 import { WorkoutPlanScreen } from '../screens/shared/WorkoutPlanScreen';
 import { ScheduleSessionScreen } from '../screens/shared/ScheduleSessionScreen';
+
 import { ChatListScreen } from '../screens/shared/ChatListScreen';
 import { AISettingsScreen } from '../screens/shared/AISettingsScreen';
 import { AnalyticsScreen } from '../screens/owner/AnalyticsScreen';
@@ -108,6 +109,15 @@ const OwnerTabs = () => (
         headerShown: false,
         tabBarLabel: 'Contenuti',
         tabBarIcon: ({ focused }) => <TabIcon label="Media" focused={focused} />,
+      }}
+    />
+    <OwnerTab.Screen
+      name="Programmi"
+      component={WorkoutPlanScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Programmi',
+        tabBarIcon: ({ focused }) => <TabIcon label="Prog" focused={focused} />,
       }}
     />
     <OwnerTab.Screen
