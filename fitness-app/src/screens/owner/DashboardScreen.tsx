@@ -6,44 +6,51 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
-  FlatList,
 } from 'react-native';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { StatCard } from '../../components/common/StatCard';
 import { Badge } from '../../components/common/Badge';
-import { Collaborator, TrainingSession, CollaboratorEarning } from '../../types';
+import { BarChart, BarData } from '../../components/charts/BarChart';
+import { Collaborator, TrainingSession, FinancialTransaction } from '../../types';
 import { getCollaborators, getStudents } from '../../services/authService';
 import { getAllSessions } from '../../services/sessionService';
-import { getFinancialSummary } from '../../services/financialService';
+import { getFinancialSummary, getTransactions } from '../../services/financialService';
 import { useAuth } from '../../hooks/useAuth';
 
 export const DashboardScreen: React.FC = () => {
   const { logout, user } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
+  const [allSessions, setAllSessions] = useState<TrainingSession[]>([]);
   const [todaySessions, setTodaySessions] = useState<TrainingSession[]>([]);
+  const [transactions, setTransactions] = useState<FinancialTransaction[]>([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
+  const [totalExpenses, setTotalExpenses] = useState(0);
   const [totalStudents, setTotalStudents] = useState(0);
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('month');
 
   const loadData = useCallback(async () => {
     try {
-      const [collabs, studs, allSessions, summary] = await Promise.all([
+      const [collabs, studs, sessions, txs, summary] = await Promise.all([
         getCollaborators(),
         getStudents(),
         getAllSessions(),
+        getTransactions(),
         getFinancialSummary(),
       ]);
       setCollaborators(collabs);
       setTotalStudents(studs.length);
+      setAllSessions(sessions);
+      setTransactions(txs);
       setTotalRevenue(summary.totalIncome);
+      setTotalExpenses(summary.totalExpenses);
 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
-      const todayOnly = allSessions.filter((s) => {
+      const todayOnly = sessions.filter((s) => {
         const d = new Date(s.date as unknown as string);
         return d >= today && d < tomorrow;
       });
@@ -63,11 +70,59 @@ export const DashboardScreen: React.FC = () => {
     setRefreshing(false);
   };
 
+  // Grafico ricavi per collaboratore
+  const getRevenueByCoach = (): BarData[] => {
+    return collaborators.map((collab) => {
+      const coachIncome = transactions
+        .filter((t) => t.type === 'income' && t.collaboratorId === collab.id)
+        .reduce((sum, t) => sum + t.amount, 0);
+      const estimatedRevenue = coachIncome > 0
+        ? coachIncome
+        : collab.assignedStudents.length * 150;
+
+      return {
+        label: `${collab.name} ${collab.surname?.charAt(0) || ''}.`,
+        value: estimatedRevenue,
+        color: colors.collaboratorBadge,
+      };
+    });
+  };
+
+  // Grafico sessioni per stato
+  const getSessionsByStatus = (): BarData[] => {
+    const completed = allSessions.filter((s) => s.status === 'completed').length;
+    const scheduled = allSessions.filter((s) => s.status === 'scheduled').length;
+    const cancelled = allSessions.filter(
+      (s) => s.status === 'cancelled_by_student' || s.status === 'cancelled_late'
+    ).length;
+    const noShow = allSessions.filter((s) => s.status === 'no_show').length;
+
+    return [
+      { label: 'Completate', value: completed, color: colors.success },
+      { label: 'In programma', value: scheduled, color: colors.info },
+      { label: 'Cancellate', value: cancelled, color: colors.warning },
+      { label: 'No-show', value: noShow, color: colors.error },
+    ];
+  };
+
+  // Grafico allievi per coach
+  const getStudentsByCoach = (): BarData[] => {
+    return collaborators.map((collab) => ({
+      label: `${collab.name} ${collab.surname?.charAt(0) || ''}.`,
+      value: collab.assignedStudents.length,
+      color: colors.accent,
+    }));
+  };
+
   const periods = [
     { key: 'week' as const, label: 'Settimana' },
     { key: 'month' as const, label: 'Mese' },
     { key: 'year' as const, label: 'Anno' },
   ];
+
+  const coachRevenueData = getRevenueByCoach();
+  const sessionsData = getSessionsByStatus();
+  const studentsByCoachData = getStudentsByCoach();
 
   return (
     <ScrollView
@@ -146,6 +201,71 @@ export const DashboardScreen: React.FC = () => {
           color={colors.collaboratorBadge}
         />
       </View>
+
+      {/* Profitto netto */}
+      <View style={styles.profitCard}>
+        <Text style={styles.profitLabel}>Profitto Netto</Text>
+        <Text style={[
+          styles.profitValue,
+          { color: totalRevenue - totalExpenses >= 0 ? colors.success : colors.error },
+        ]}>
+          €{(totalRevenue - totalExpenses).toLocaleString()}
+        </Text>
+        <View style={styles.profitBar}>
+          <View style={[
+            styles.profitBarFill,
+            {
+              width: totalRevenue > 0
+                ? `${Math.min((totalRevenue / (totalRevenue + totalExpenses)) * 100, 100)}%`
+                : '0%',
+              backgroundColor: colors.success,
+            },
+          ]} />
+        </View>
+        <View style={styles.profitLegend}>
+          <Text style={[styles.profitLegendText, { color: colors.success }]}>
+            Ricavi €{totalRevenue.toLocaleString()}
+          </Text>
+          <Text style={[styles.profitLegendText, { color: colors.error }]}>
+            Spese €{totalExpenses.toLocaleString()}
+          </Text>
+        </View>
+      </View>
+
+      {/* Grafico Ricavi per Coach */}
+      {coachRevenueData.length > 0 && (
+        <View style={styles.chartSection}>
+          <BarChart
+            data={coachRevenueData}
+            title="Ricavi per Coach"
+            height={200}
+          />
+        </View>
+      )}
+
+      {/* Grafico Sessioni */}
+      {allSessions.length > 0 && (
+        <View style={styles.chartSection}>
+          <BarChart
+            data={sessionsData}
+            title="Riepilogo Sessioni"
+            height={180}
+            formatValue={(v) => String(v)}
+          />
+        </View>
+      )}
+
+      {/* Grafico Allievi per Coach */}
+      {studentsByCoachData.length > 0 && (
+        <View style={styles.chartSection}>
+          <BarChart
+            data={studentsByCoachData}
+            title="Allievi per Coach"
+            height={180}
+            formatValue={(v) => String(v)}
+          />
+        </View>
+      )}
 
       {/* Sessioni di oggi */}
       <Text style={styles.sectionTitle}>Sessioni di Oggi</Text>
@@ -282,6 +402,50 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     gap: spacing.sm,
     marginBottom: spacing.sm,
+  },
+  profitCard: {
+    marginHorizontal: spacing.md,
+    marginTop: spacing.sm,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
+    padding: spacing.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    ...shadows.small,
+  },
+  profitLabel: {
+    fontSize: fontSize.md,
+    color: colors.textSecondary,
+    fontWeight: '600',
+  },
+  profitValue: {
+    fontSize: fontSize.hero,
+    fontWeight: '700',
+    marginTop: spacing.xs,
+  },
+  profitBar: {
+    height: 8,
+    backgroundColor: colors.error + '30',
+    borderRadius: 4,
+    marginTop: spacing.md,
+    overflow: 'hidden',
+  },
+  profitBarFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  profitLegend: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: spacing.sm,
+  },
+  profitLegendText: {
+    fontSize: fontSize.sm,
+    fontWeight: '600',
+  },
+  chartSection: {
+    paddingHorizontal: spacing.md,
+    marginTop: spacing.lg,
   },
   sectionTitle: {
     fontSize: fontSize.xl,
