@@ -7,7 +7,11 @@ import {
   TouchableOpacity,
   Modal,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../../config/firebase';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
@@ -15,8 +19,14 @@ import { InputField } from '../../components/common/InputField';
 import { ModalHeader } from '../../components/common/ModalHeader';
 import { Exercise, ExerciseCategory, WeeklyDay, Student } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
-import { createWorkoutPlan } from '../../services/programService';
+import { createWorkoutPlan, getActiveWorkoutPlan } from '../../services/programService';
 import { getStudents } from '../../services/authService';
+import {
+  suggestWorkoutProgression,
+  suggestExercises,
+  AIProgressionSuggestion,
+  getAIApiKey,
+} from '../../services/aiService';
 
 const DAYS = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica'];
 
@@ -49,6 +59,13 @@ export const WorkoutPlanScreen: React.FC = () => {
   const [exCategory, setExCategory] = useState<ExerciseCategory>('forza');
   const [exVideoUrl, setExVideoUrl] = useState('');
   const [exNotes, setExNotes] = useState('');
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+
+  // AI State
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiSuggestion, setAiSuggestion] = useState<AIProgressionSuggestion | null>(null);
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [aiExercisesLoading, setAiExercisesLoading] = useState(false);
 
   const loadStudents = useCallback(async () => {
     if (!user) return;
@@ -67,6 +84,155 @@ export const WorkoutPlanScreen: React.FC = () => {
   useEffect(() => {
     loadStudents();
   }, [loadStudents]);
+
+  // Upload video esercizio su Firebase Storage
+  const pickAndUploadVideo = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        quality: 0.7,
+        videoMaxDuration: 120,
+      });
+
+      if (result.canceled || !result.assets[0]) return;
+
+      setUploadingVideo(true);
+      const videoUri = result.assets[0].uri;
+      const timestamp = Date.now();
+      const videoRef = ref(storage, `exercise-videos/${timestamp}.mp4`);
+
+      const response = await fetch(videoUri);
+      const blob = await response.blob();
+      await uploadBytes(videoRef, blob);
+      const downloadUrl = await getDownloadURL(videoRef);
+
+      setExVideoUrl(downloadUrl);
+      Alert.alert('Video caricato!');
+    } catch {
+      Alert.alert('Errore', 'Impossibile caricare il video');
+    } finally {
+      setUploadingVideo(false);
+    }
+  };
+
+  // AI: genera progressione dalla scheda attuale
+  const handleAIProgression = async () => {
+    if (!selectedStudentId) {
+      Alert.alert('Errore', 'Seleziona prima un allievo');
+      return;
+    }
+    if (!getAIApiKey()) {
+      Alert.alert('API Key mancante', 'Inserisci la chiave API Anthropic nelle impostazioni.');
+      return;
+    }
+
+    setAiLoading(true);
+    try {
+      const activePlan = await getActiveWorkoutPlan(selectedStudentId);
+      if (!activePlan) {
+        Alert.alert('Nessuna scheda', 'L\'allievo non ha una scheda attiva da cui generare la progressione.');
+        return;
+      }
+
+      const student = students.find((s) => s.id === selectedStudentId);
+      if (!student) return;
+
+      const suggestion = await suggestWorkoutProgression(
+        {
+          title: activePlan.title,
+          weeklySchedule: activePlan.weeklySchedule,
+        },
+        {
+          name: `${student.name} ${student.surname}`,
+          goals: student.goals,
+          medicalNotes: student.medicalNotes,
+        },
+        4 // settimana corrente (semplificato)
+      );
+
+      setAiSuggestion(suggestion);
+      setShowAiModal(true);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Errore AI';
+      Alert.alert('Errore', msg);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  // AI: applica la progressione suggerita
+  const applyAISuggestion = () => {
+    if (!aiSuggestion) return;
+
+    const dayMap: Record<string, number> = {
+      Lunedi: 0, Martedi: 1, Mercoledi: 2, Giovedi: 3,
+      Venerdi: 4, Sabato: 5, Domenica: 6,
+    };
+
+    const newExercises: Record<number, Exercise[]> = {};
+    for (const day of aiSuggestion.weeklySchedule) {
+      const dayIndex = dayMap[day.day] ?? 0;
+      newExercises[dayIndex] = day.exercises.map((ex, i) => ({
+        id: `${Date.now()}_${dayIndex}_${i}`,
+        name: ex.name,
+        description: '',
+        sets: ex.sets,
+        reps: ex.reps,
+        restSeconds: ex.restSeconds,
+        notes: ex.notes,
+        category: (ex.category as ExerciseCategory) || 'forza',
+      }));
+    }
+
+    setExercises(newExercises);
+    setPlanTitle(aiSuggestion.title);
+    setShowAiModal(false);
+    Alert.alert('Applicata!', 'La progressione AI e\' stata applicata. Puoi modificarla prima di salvare.');
+  };
+
+  // AI: suggerisci esercizi per categoria
+  const handleAIExerciseSuggestion = async () => {
+    if (!getAIApiKey()) {
+      Alert.alert('API Key mancante', 'Inserisci la chiave API Anthropic nelle impostazioni.');
+      return;
+    }
+
+    const student = students.find((s) => s.id === selectedStudentId);
+    const goal = student?.goals || 'fitness generale';
+
+    setAiExercisesLoading(true);
+    try {
+      const suggestions = await suggestExercises(exCategory, goal);
+      if (suggestions.length === 0) {
+        Alert.alert('Nessun suggerimento', 'L\'AI non ha generato suggerimenti');
+        return;
+      }
+
+      // Mostra i suggerimenti e lascia scegliere
+      const firstSuggestion = suggestions[0];
+      Alert.alert(
+        'Suggerimento AI',
+        `${firstSuggestion.name}\n${firstSuggestion.sets}x${firstSuggestion.reps} (rec ${firstSuggestion.restSeconds}s)\n\n${firstSuggestion.description}`,
+        [
+          { text: 'Ignora', style: 'cancel' },
+          {
+            text: 'Usa',
+            onPress: () => {
+              setExName(firstSuggestion.name);
+              setExSets(String(firstSuggestion.sets));
+              setExReps(firstSuggestion.reps);
+              setExRest(String(firstSuggestion.restSeconds));
+              setExDescription(firstSuggestion.description);
+            },
+          },
+        ]
+      );
+    } catch {
+      Alert.alert('Errore', 'Impossibile ottenere suggerimenti AI');
+    } finally {
+      setAiExercisesLoading(false);
+    }
+  };
 
   const addExercise = () => {
     if (!exName || !exSets || !exReps) {
@@ -204,6 +370,17 @@ export const WorkoutPlanScreen: React.FC = () => {
           onChangeText={setPlanTitle}
           placeholder="Es: Scheda Ipertrofia - Fase 1"
         />
+
+        {/* AI Progression Button */}
+        {selectedStudentId && (
+          <Button
+            title={aiLoading ? 'Generazione AI...' : 'Genera Progressione con AI'}
+            onPress={handleAIProgression}
+            variant="outline"
+            loading={aiLoading}
+            style={{ marginBottom: spacing.md }}
+          />
+        )}
 
         {/* Selettore giorno */}
         <Text style={styles.sectionTitle}>Giorno della settimana</Text>
@@ -377,12 +554,31 @@ export const WorkoutPlanScreen: React.FC = () => {
               ))}
             </View>
 
-            <InputField
-              label="URL Video (opzionale)"
-              value={exVideoUrl}
-              onChangeText={setExVideoUrl}
-              placeholder="Link al video dell'esercizio"
-              autoCapitalize="none"
+            {/* Video Upload */}
+            <Text style={styles.fieldLabel}>Video Esercizio (opzionale)</Text>
+            {exVideoUrl ? (
+              <View style={styles.videoUploaded}>
+                <Text style={styles.videoUploadedText}>Video caricato</Text>
+                <TouchableOpacity onPress={() => setExVideoUrl('')}>
+                  <Text style={styles.removeBtn}>X</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <Button
+                title={uploadingVideo ? 'Caricamento...' : 'Carica Video'}
+                onPress={pickAndUploadVideo}
+                variant="outline"
+                loading={uploadingVideo}
+              />
+            )}
+
+            {/* AI Exercise Suggestion */}
+            <Button
+              title={aiExercisesLoading ? 'AI...' : 'Suggerisci con AI'}
+              onPress={handleAIExerciseSuggestion}
+              variant="outline"
+              loading={aiExercisesLoading}
+              style={{ marginTop: spacing.sm }}
             />
 
             <InputField
@@ -406,6 +602,58 @@ export const WorkoutPlanScreen: React.FC = () => {
                 style={styles.modalButton}
               />
             </View>
+
+            <View style={styles.bottomSpacer} />
+          </ScrollView>
+        </View>
+      </Modal>
+
+      {/* Modale AI Progressione */}
+      <Modal visible={showAiModal} animationType="slide" transparent>
+        <View style={styles.modalOverlay}>
+          <ScrollView style={styles.modalContent}>
+            <ModalHeader title="Progressione AI" onClose={() => setShowAiModal(false)} />
+
+            {aiSuggestion && (
+              <>
+                <Card variant="elevated">
+                  <Text style={styles.aiTitle}>{aiSuggestion.title}</Text>
+                  <Text style={styles.aiReasoning}>{aiSuggestion.reasoning}</Text>
+                </Card>
+
+                {aiSuggestion.weeklySchedule.map((day, di) => (
+                  <Card key={di} variant="outlined">
+                    <Text style={styles.aiDayTitle}>{day.day}</Text>
+                    {day.exercises.map((ex, ei) => (
+                      <Text key={ei} style={styles.aiExercise}>
+                        {ei + 1}. {ex.name} - {ex.sets}x{ex.reps} (rec {ex.restSeconds}s)
+                        {ex.notes ? ` | ${ex.notes}` : ''}
+                      </Text>
+                    ))}
+                  </Card>
+                ))}
+
+                {aiSuggestion.generalNotes && (
+                  <Card>
+                    <Text style={styles.aiNotes}>{aiSuggestion.generalNotes}</Text>
+                  </Card>
+                )}
+
+                <View style={styles.modalButtons}>
+                  <Button
+                    title="Annulla"
+                    onPress={() => setShowAiModal(false)}
+                    variant="outline"
+                    style={styles.modalButton}
+                  />
+                  <Button
+                    title="Applica"
+                    onPress={applyAISuggestion}
+                    style={styles.modalButton}
+                  />
+                </View>
+              </>
+            )}
 
             <View style={styles.bottomSpacer} />
           </ScrollView>
@@ -642,6 +890,49 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     flex: 1,
+  },
+  videoUploaded: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.md,
+    backgroundColor: colors.success + '20',
+    borderRadius: borderRadius.md,
+    marginBottom: spacing.md,
+  },
+  videoUploadedText: {
+    color: colors.success,
+    fontWeight: '600',
+    fontSize: fontSize.md,
+  },
+  aiTitle: {
+    fontSize: fontSize.lg,
+    fontWeight: '700',
+    color: colors.accent,
+    marginBottom: spacing.sm,
+  },
+  aiReasoning: {
+    fontSize: fontSize.md,
+    color: colors.textSecondary,
+    lineHeight: 20,
+  },
+  aiDayTitle: {
+    fontSize: fontSize.md,
+    fontWeight: '700',
+    color: colors.text,
+    marginBottom: spacing.xs,
+  },
+  aiExercise: {
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    lineHeight: 18,
+    marginBottom: 2,
+  },
+  aiNotes: {
+    fontSize: fontSize.md,
+    color: colors.info,
+    fontStyle: 'italic',
+    lineHeight: 20,
   },
   bottomSpacer: {
     height: spacing.xxl * 2,

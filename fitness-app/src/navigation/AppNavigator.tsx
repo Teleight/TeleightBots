@@ -23,6 +23,7 @@ import { PosturalAssessmentScreen } from '../screens/shared/PosturalAssessmentSc
 import { WorkoutPlanScreen } from '../screens/shared/WorkoutPlanScreen';
 import { ScheduleSessionScreen } from '../screens/shared/ScheduleSessionScreen';
 import { ChatListScreen } from '../screens/shared/ChatListScreen';
+import { AISettingsScreen } from '../screens/shared/AISettingsScreen';
 
 const RootStack = createNativeStackNavigator();
 const OwnerTab = createBottomTabNavigator();
@@ -97,6 +98,15 @@ const OwnerTabs = () => (
         headerShown: false,
         tabBarLabel: 'Contenuti',
         tabBarIcon: ({ focused }) => <TabIcon label="Media" focused={focused} />,
+      }}
+    />
+    <OwnerTab.Screen
+      name="AI"
+      component={AISettingsScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'AI',
+        tabBarIcon: ({ focused }) => <TabIcon label="AI" focused={focused} />,
       }}
     />
     <OwnerTab.Screen
@@ -224,6 +234,15 @@ const CollaboratorTabs = () => (
         headerShown: false,
         tabBarLabel: 'Guadagni',
         tabBarIcon: ({ focused }) => <TabIcon label="€" focused={focused} />,
+      }}
+    />
+    <CollaboratorTab.Screen
+      name="AI"
+      component={AISettingsScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'AI',
+        tabBarIcon: ({ focused }) => <TabIcon label="AI" focused={focused} />,
       }}
     />
     <CollaboratorTab.Screen
