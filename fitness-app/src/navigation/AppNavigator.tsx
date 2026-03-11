@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { colors, fontSize } from '../config/theme';
@@ -25,7 +25,7 @@ import { ScheduleSessionScreen } from '../screens/shared/ScheduleSessionScreen';
 import { ChatListScreen } from '../screens/shared/ChatListScreen';
 import { AISettingsScreen } from '../screens/shared/AISettingsScreen';
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createStackNavigator();
 const OwnerTab = createBottomTabNavigator();
 const ManagerTab = createBottomTabNavigator();
 const CollaboratorTab = createBottomTabNavigator();
