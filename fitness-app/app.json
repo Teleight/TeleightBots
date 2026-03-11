@@ -29,7 +29,11 @@
       "output": "single",
       "favicon": "./src/assets/icon.png"
     },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "plugins": [
+      "expo-dev-client",
       "expo-image-picker",
       "expo-notifications"
     ]
