@@ -24,6 +24,7 @@ import { WorkoutPlanScreen } from '../screens/shared/WorkoutPlanScreen';
 import { ScheduleSessionScreen } from '../screens/shared/ScheduleSessionScreen';
 import { ChatListScreen } from '../screens/shared/ChatListScreen';
 import { AISettingsScreen } from '../screens/shared/AISettingsScreen';
+import { AnalyticsScreen } from '../screens/owner/AnalyticsScreen';
 
 const RootStack = createStackNavigator();
 const OwnerTab = createBottomTabNavigator();
@@ -89,6 +90,15 @@ const OwnerTabs = () => (
         headerShown: false,
         tabBarLabel: 'Economia',
         tabBarIcon: ({ focused }) => <TabIcon label="€" focused={focused} />,
+      }}
+    />
+    <OwnerTab.Screen
+      name="Analytics"
+      component={AnalyticsScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'KPI',
+        tabBarIcon: ({ focused }) => <TabIcon label="KPI" focused={focused} />,
       }}
     />
     <OwnerTab.Screen
