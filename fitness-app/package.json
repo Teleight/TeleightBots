@@ -11,7 +11,10 @@
     "lint": "eslint src/",
     "build:preview": "eas build --profile preview --platform ios",
     "build:dev": "eas build --profile development --platform ios",
-    "build:prod": "eas build --profile production --platform ios"
+    "build:prod": "eas build --profile production --platform ios",
+    "build:web": "expo export --platform web",
+    "serve": "node serve.js",
+    "serve:80": "PORT=80 node serve.js"
   },
   "dependencies": {
     "@expo/metro-runtime": "~4.0.1",

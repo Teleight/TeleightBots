@@ -13,4 +13,19 @@ const server = http.createServer((req, res) => {
     res.end(data);
   });
 });
-server.listen(8888, () => console.log('Server running on http://localhost:8888'));
+const PORT = process.env.PORT || 8080;
+const HOST = '0.0.0.0';
+server.listen(PORT, HOST, () => {
+  const os = require('os');
+  const nets = os.networkInterfaces();
+  console.log(`\nServer running on:`);
+  console.log(`  Local:   http://localhost:${PORT}`);
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+      if (net.family === 'IPv4' && !net.internal) {
+        console.log(`  Network: http://${net.address}:${PORT}`);
+      }
+    }
+  }
+  console.log('');
+});
