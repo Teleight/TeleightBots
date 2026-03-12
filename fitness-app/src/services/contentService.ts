@@ -78,6 +78,10 @@ export const getStudentDiary = async (
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as DiaryEntry));
 };
 
+export const deleteDiaryEntry = async (entryId: string): Promise<void> => {
+  await deleteDoc(doc(db, DIARY_COLLECTION, entryId));
+};
+
 // --- Consulenze nutrizionali ---
 
 export const addNutritionalConsultation = async (

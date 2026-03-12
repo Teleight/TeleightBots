@@ -14,7 +14,7 @@ import { Button } from '../../components/common/Button';
 import { InputField } from '../../components/common/InputField';
 import { ModalHeader } from '../../components/common/ModalHeader';
 import { DiaryEntry } from '../../types';
-import { addDiaryEntry, getStudentDiary } from '../../services/contentService';
+import { addDiaryEntry, getStudentDiary, deleteDiaryEntry } from '../../services/contentService';
 import { useAuth } from '../../hooks/useAuth';
 
 const MOODS = [
@@ -74,6 +74,28 @@ export const DiaryScreen: React.FC = () => {
     }
   };
 
+  const handleDeleteEntry = (entryId: string) => {
+    Alert.alert(
+      'Elimina Nota',
+      'Vuoi eliminare questa nota dal diario?',
+      [
+        { text: 'Annulla', style: 'cancel' },
+        {
+          text: 'Elimina',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteDiaryEntry(entryId);
+              await loadEntries();
+            } catch {
+              Alert.alert('Errore', 'Impossibile eliminare la nota');
+            }
+          },
+        },
+      ]
+    );
+  };
+
   const getMoodInfo = (mood?: string) =>
     MOODS.find((m) => m.value === mood) || MOODS[2];
 
@@ -97,6 +119,14 @@ export const DiaryScreen: React.FC = () => {
         </View>
 
         <Text style={styles.entryContent}>{item.content}</Text>
+
+        <TouchableOpacity
+          style={styles.deleteEntryBtn}
+          onPress={() => handleDeleteEntry(item.id)}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        >
+          <Text style={styles.deleteEntryText}>Elimina</Text>
+        </TouchableOpacity>
 
         {item.painLevel !== undefined && item.painLevel > 0 && (
           <View style={styles.painRow}>
@@ -291,6 +321,15 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.textSecondary,
     lineHeight: 22,
+  },
+  deleteEntryBtn: {
+    alignSelf: 'flex-end',
+    marginTop: spacing.sm,
+  },
+  deleteEntryText: {
+    fontSize: fontSize.xs,
+    color: colors.error,
+    fontWeight: '600',
   },
   painRow: {
     flexDirection: 'row',

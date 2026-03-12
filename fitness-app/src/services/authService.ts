@@ -6,7 +6,7 @@ import {
   sendPasswordResetEmail,
   User as FirebaseUser,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc, collection, getDocs, query, where, Timestamp, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs, query, where, Timestamp, updateDoc, arrayUnion, deleteDoc, arrayRemove } from 'firebase/firestore';
 import { auth, db } from '../config/firebase';
 import { User, UserRole, Collaborator, Student, Manager } from '../types';
 
@@ -298,4 +298,25 @@ export const getStudents = async (): Promise<Student[]> => {
   const q = query(collection(db, 'users'), where('role', '==', 'student'));
   const snapshot = await getDocs(q);
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Student));
+};
+
+// --- Disattiva / Elimina utenti ---
+
+export const toggleUserActive = async (userId: string, isActive: boolean): Promise<void> => {
+  await updateDoc(doc(db, 'users', userId), { isActive });
+};
+
+export const deleteUser = async (userId: string): Promise<void> => {
+  // Rimuove il documento utente da Firestore
+  // Nota: non elimina l'account Firebase Auth (richiede admin SDK lato server)
+  await deleteDoc(doc(db, 'users', userId));
+};
+
+export const removeStudentFromCollaborator = async (
+  collaboratorId: string,
+  studentId: string
+): Promise<void> => {
+  await updateDoc(doc(db, 'users', collaboratorId), {
+    assignedStudents: arrayRemove(studentId),
+  });
 };

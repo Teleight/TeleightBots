@@ -4,6 +4,7 @@ import {
   addDoc,
   updateDoc,
   getDocs,
+  deleteDoc,
   query,
   where,
   orderBy,
@@ -95,4 +96,8 @@ export const getCompletedSessionsCount = async (
 ): Promise<number> => {
   const sessions = await getStudentSessions(studentId);
   return sessions.filter((s) => s.isCountedAsCompleted).length;
+};
+
+export const deleteSession = async (sessionId: string): Promise<void> => {
+  await deleteDoc(doc(db, SESSIONS_COLLECTION, sessionId));
 };

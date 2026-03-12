@@ -6,11 +6,12 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
-import { getCollaborators, getStudents, getManagers } from '../../services/authService';
+import { getCollaborators, getStudents, getManagers, deleteUser, toggleUserActive } from '../../services/authService';
 import { Collaborator, Student, Manager } from '../../types';
 import { AddCollaboratorScreen } from './AddCollaboratorScreen';
 import { AddStudentScreen } from './AddStudentScreen';
@@ -50,6 +51,52 @@ export const ManageUsersScreen: React.FC = () => {
   const handleBack = () => {
     setViewMode('list');
     loadData(); // Ricarica dati dopo aggiunta
+  };
+
+  const handleToggleActive = async (userId: string, currentActive: boolean, name: string) => {
+    const action = currentActive ? 'disattivare' : 'riattivare';
+    Alert.alert(
+      'Conferma',
+      `Vuoi ${action} ${name}?`,
+      [
+        { text: 'Annulla', style: 'cancel' },
+        {
+          text: currentActive ? 'Disattiva' : 'Riattiva',
+          style: currentActive ? 'destructive' : 'default',
+          onPress: async () => {
+            try {
+              await toggleUserActive(userId, !currentActive);
+              await loadData();
+            } catch {
+              Alert.alert('Errore', 'Impossibile aggiornare lo stato');
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleDeleteUser = async (userId: string, name: string) => {
+    Alert.alert(
+      'Elimina Utente',
+      `Sei sicuro di voler eliminare ${name}? Questa azione non puo\' essere annullata.`,
+      [
+        { text: 'Annulla', style: 'cancel' },
+        {
+          text: 'Elimina',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteUser(userId);
+              await loadData();
+              Alert.alert('Fatto', `${name} eliminato`);
+            } catch {
+              Alert.alert('Errore', 'Impossibile eliminare l\'utente');
+            }
+          },
+        },
+      ]
+    );
   };
 
   if (viewMode === 'addManager') {
@@ -152,6 +199,22 @@ export const ManageUsersScreen: React.FC = () => {
                   </View>
                   <View style={[styles.statusDot, mgr.isActive ? styles.statusActive : styles.statusInactive]} />
                 </View>
+                <View style={styles.userActions}>
+                  <TouchableOpacity
+                    style={styles.userActionBtn}
+                    onPress={() => handleToggleActive(mgr.id, mgr.isActive, mgr.name)}
+                  >
+                    <Text style={[styles.userActionText, { color: mgr.isActive ? colors.warning : colors.success }]}>
+                      {mgr.isActive ? 'Disattiva' : 'Riattiva'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.userActionBtn}
+                    onPress={() => handleDeleteUser(mgr.id, `${mgr.name} ${mgr.surname}`)}
+                  >
+                    <Text style={[styles.userActionText, { color: colors.error }]}>Elimina</Text>
+                  </TouchableOpacity>
+                </View>
               </Card>
             ))
           )}
@@ -189,6 +252,22 @@ export const ManageUsersScreen: React.FC = () => {
                     </Text>
                   </View>
                   <View style={[styles.statusDot, collab.isActive ? styles.statusActive : styles.statusInactive]} />
+                </View>
+                <View style={styles.userActions}>
+                  <TouchableOpacity
+                    style={styles.userActionBtn}
+                    onPress={() => handleToggleActive(collab.id, collab.isActive, collab.name)}
+                  >
+                    <Text style={[styles.userActionText, { color: collab.isActive ? colors.warning : colors.success }]}>
+                      {collab.isActive ? 'Disattiva' : 'Riattiva'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.userActionBtn}
+                    onPress={() => handleDeleteUser(collab.id, `${collab.name} ${collab.surname}`)}
+                  >
+                    <Text style={[styles.userActionText, { color: colors.error }]}>Elimina</Text>
+                  </TouchableOpacity>
                 </View>
               </Card>
             ))
@@ -231,6 +310,22 @@ export const ManageUsersScreen: React.FC = () => {
                       )}
                     </View>
                     <View style={[styles.statusDot, student.isActive ? styles.statusActive : styles.statusInactive]} />
+                  </View>
+                  <View style={styles.userActions}>
+                    <TouchableOpacity
+                      style={styles.userActionBtn}
+                      onPress={() => handleToggleActive(student.id, student.isActive, student.name)}
+                    >
+                      <Text style={[styles.userActionText, { color: student.isActive ? colors.warning : colors.success }]}>
+                        {student.isActive ? 'Disattiva' : 'Riattiva'}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.userActionBtn}
+                      onPress={() => handleDeleteUser(student.id, `${student.name} ${student.surname}`)}
+                    >
+                      <Text style={[styles.userActionText, { color: colors.error }]}>Elimina</Text>
+                    </TouchableOpacity>
                   </View>
                 </Card>
               );
@@ -364,6 +459,22 @@ const styles = StyleSheet.create({
   },
   statusInactive: {
     backgroundColor: colors.error,
+  },
+  userActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: spacing.md,
+    marginTop: spacing.sm,
+    paddingTop: spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: colors.divider,
+  },
+  userActionBtn: {
+    padding: spacing.xs,
+  },
+  userActionText: {
+    fontSize: fontSize.sm,
+    fontWeight: '600',
   },
   emptyText: {
     color: colors.textSecondary,

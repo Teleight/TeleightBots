@@ -6,11 +6,16 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
 import { colors, spacing, fontSize, borderRadius, shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { StatCard } from '../../components/common/StatCard';
 import { Badge } from '../../components/common/Badge';
+import { Button } from '../../components/common/Button';
 import { BarChart, BarData } from '../../components/charts/BarChart';
 import { Collaborator, TrainingSession, FinancialTransaction } from '../../types';
 import { getCollaborators, getStudents } from '../../services/authService';
@@ -112,6 +117,71 @@ export const DashboardScreen: React.FC = () => {
       value: collab.assignedStudents.length,
       color: colors.accent,
     }));
+  };
+
+  const [resetting, setResetting] = useState(false);
+
+  const deleteCollection = async (collectionName: string) => {
+    const snapshot = await getDocs(collection(db, collectionName));
+    const deletes = snapshot.docs.map((d) => deleteDoc(doc(db, collectionName, d.id)));
+    await Promise.all(deletes);
+    return snapshot.size;
+  };
+
+  const handleResetAllData = () => {
+    Alert.alert(
+      'Reset Tutti i Dati',
+      'ATTENZIONE: Questa azione eliminera\' TUTTI i dati dell\'app (sessioni, pagamenti, programmi, transazioni, valutazioni, diario, contenuti). Gli account utente NON verranno eliminati.\n\nSei sicuro?',
+      [
+        { text: 'Annulla', style: 'cancel' },
+        {
+          text: 'Conferma Reset',
+          style: 'destructive',
+          onPress: () => {
+            Alert.alert(
+              'Ultima Conferma',
+              'I dati eliminati NON potranno essere recuperati. Continuare?',
+              [
+                { text: 'No', style: 'cancel' },
+                {
+                  text: 'Si, Elimina Tutto',
+                  style: 'destructive',
+                  onPress: async () => {
+                    setResetting(true);
+                    try {
+                      const collections = [
+                        'sessions',
+                        'paymentPlans',
+                        'trainingPrograms',
+                        'workoutPlans',
+                        'financialTransactions',
+                        'posturalAssessments',
+                        'diaryEntries',
+                        'specialContent',
+                        'nutritionalConsultations',
+                        'collaboratorEarnings',
+                        'chatRooms',
+                        'chatMessages',
+                      ];
+                      let totalDeleted = 0;
+                      for (const col of collections) {
+                        totalDeleted += await deleteCollection(col);
+                      }
+                      await loadData();
+                      Alert.alert('Reset Completato', `${totalDeleted} documenti eliminati.`);
+                    } catch {
+                      Alert.alert('Errore', 'Impossibile completare il reset. Alcuni dati potrebbero essere stati eliminati.');
+                    } finally {
+                      setResetting(false);
+                    }
+                  },
+                },
+              ]
+            );
+          },
+        },
+      ]
+    );
   };
 
   const periods = [
@@ -314,6 +384,20 @@ export const DashboardScreen: React.FC = () => {
         ))
       )}
 
+      {/* Reset dati */}
+      <View style={styles.resetSection}>
+        <Text style={styles.resetTitle}>Zona Pericolosa</Text>
+        <Text style={styles.resetDesc}>
+          Elimina tutti i dati dell'app (sessioni, pagamenti, programmi, transazioni). Gli account utente non verranno eliminati.
+        </Text>
+        <Button
+          title={resetting ? 'Reset in corso...' : 'Reset Tutti i Dati'}
+          onPress={handleResetAllData}
+          variant="danger"
+          loading={resetting}
+        />
+      </View>
+
       <View style={styles.bottomSpacer} />
     </ScrollView>
   );
@@ -498,6 +582,27 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     textAlign: 'center',
     padding: spacing.md,
+  },
+  resetSection: {
+    margin: spacing.md,
+    marginTop: spacing.xxl,
+    padding: spacing.lg,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: colors.error + '40',
+  },
+  resetTitle: {
+    fontSize: fontSize.lg,
+    fontWeight: '700',
+    color: colors.error,
+    marginBottom: spacing.xs,
+  },
+  resetDesc: {
+    fontSize: fontSize.sm,
+    color: colors.textSecondary,
+    lineHeight: 18,
+    marginBottom: spacing.md,
   },
   bottomSpacer: {
     height: spacing.xxl,

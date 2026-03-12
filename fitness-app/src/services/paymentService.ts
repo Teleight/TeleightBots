@@ -4,6 +4,7 @@ import {
   addDoc,
   updateDoc,
   getDocs,
+  deleteDoc,
   query,
   where,
   Timestamp,
@@ -115,4 +116,8 @@ export const getUpcomingInstallments = async (
   return upcoming.sort(
     (a, b) => new Date(a.installment.dueDate).getTime() - new Date(b.installment.dueDate).getTime()
   );
+};
+
+export const deletePaymentPlan = async (planId: string): Promise<void> => {
+  await deleteDoc(doc(db, PAYMENTS_COLLECTION, planId));
 };

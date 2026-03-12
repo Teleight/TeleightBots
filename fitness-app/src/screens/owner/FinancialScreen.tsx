@@ -18,7 +18,7 @@ import {
   TransactionType,
   TransactionCategory,
 } from '../../types';
-import { addTransaction, getTransactions, getFinancialSummary } from '../../services/financialService';
+import { addTransaction, getTransactions, getFinancialSummary, deleteTransaction } from '../../services/financialService';
 
 const CATEGORIES: { value: TransactionCategory; label: string }[] = [
   { value: 'student_payment', label: 'Pagamento allievi' },
@@ -90,6 +90,28 @@ export const FinancialScreen: React.FC = () => {
     }
   };
 
+  const handleDeleteTransaction = (txId: string, description: string) => {
+    Alert.alert(
+      'Elimina Transazione',
+      `Eliminare "${description}"?`,
+      [
+        { text: 'Annulla', style: 'cancel' },
+        {
+          text: 'Elimina',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteTransaction(txId);
+              await loadData();
+            } catch {
+              Alert.alert('Errore', 'Impossibile eliminare la transazione');
+            }
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -155,14 +177,22 @@ export const FinancialScreen: React.FC = () => {
                   {new Date(t.date as unknown as string).toLocaleDateString('it-IT')}
                 </Text>
               </View>
-              <Text
-                style={[
-                  styles.transactionAmount,
-                  { color: t.type === 'income' ? colors.success : colors.error },
-                ]}
-              >
-                {t.type === 'income' ? '+' : '-'}€{t.amount.toLocaleString()}
-              </Text>
+              <View style={styles.transactionRight}>
+                <Text
+                  style={[
+                    styles.transactionAmount,
+                    { color: t.type === 'income' ? colors.success : colors.error },
+                  ]}
+                >
+                  {t.type === 'income' ? '+' : '-'}€{t.amount.toLocaleString()}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => handleDeleteTransaction(t.id, t.description)}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <Text style={styles.deleteText}>Elimina</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </Card>
         ))
@@ -342,9 +372,18 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginLeft: spacing.md + spacing.sm,
   },
+  transactionRight: {
+    alignItems: 'flex-end',
+    gap: spacing.xs,
+  },
   transactionAmount: {
     fontSize: fontSize.lg,
     fontWeight: '700',
+  },
+  deleteText: {
+    fontSize: fontSize.xs,
+    color: colors.error,
+    fontWeight: '600',
   },
   emptyText: {
     color: colors.textSecondary,

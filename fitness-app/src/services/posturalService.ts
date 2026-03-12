@@ -3,6 +3,7 @@ import {
   doc,
   addDoc,
   getDocs,
+  deleteDoc,
   query,
   where,
   orderBy,
@@ -54,6 +55,10 @@ export const uploadPosturalImage = async (
   await uploadBytes(imageRef, blob);
 
   return getDownloadURL(imageRef);
+};
+
+export const deleteAssessment = async (assessmentId: string): Promise<void> => {
+  await deleteDoc(doc(db, ASSESSMENTS_COLLECTION, assessmentId));
 };
 
 // Analisi posturale base tramite punti di riferimento

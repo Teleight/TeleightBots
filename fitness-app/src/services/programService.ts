@@ -5,6 +5,7 @@ import {
   updateDoc,
   getDocs,
   getDoc,
+  deleteDoc,
   query,
   where,
   orderBy,
@@ -106,4 +107,12 @@ export const getExercise = async (exerciseId: string): Promise<Exercise | null> 
   const docSnap = await getDoc(doc(db, EXERCISES_COLLECTION, exerciseId));
   if (!docSnap.exists()) return null;
   return { id: docSnap.id, ...docSnap.data() } as Exercise;
+};
+
+export const deleteWorkoutPlan = async (planId: string): Promise<void> => {
+  await deleteDoc(doc(db, PLANS_COLLECTION, planId));
+};
+
+export const deleteProgram = async (programId: string): Promise<void> => {
+  await deleteDoc(doc(db, PROGRAMS_COLLECTION, programId));
 };
