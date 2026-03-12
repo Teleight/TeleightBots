@@ -27,7 +27,8 @@
     "web": {
       "bundler": "metro",
       "output": "single",
-      "favicon": "./src/assets/icon.png"
+      "favicon": "./src/assets/icon.png",
+      "basePath": "/bla"
     },
     "runtimeVersion": {
       "policy": "appVersion"
