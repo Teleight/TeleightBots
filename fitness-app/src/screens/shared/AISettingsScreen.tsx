@@ -30,8 +30,8 @@ export const AISettingsScreen: React.FC = () => {
   }, []);
 
   const handleSave = async () => {
-    if (!apiKey.startsWith('sk-ant-')) {
-      Alert.alert('Formato non valido', 'La chiave API Anthropic deve iniziare con "sk-ant-"');
+    if (!apiKey.startsWith('sk-ant-') && !apiKey.startsWith('sk-')) {
+      Alert.alert('Formato non valido', 'La chiave API Anthropic deve iniziare con "sk-ant-" o "sk-"');
       return;
     }
     try {
