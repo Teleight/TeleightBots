@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: borderRadius.xl,
   },
   greeting: {
-    fontSize: fontSize.title,
+    fontSize: fontSize.xl,
     fontWeight: '700',
     color: colors.textOnPrimary,
   },
@@ -408,12 +408,14 @@ const styles = StyleSheet.create({
     ...shadows.small,
   },
   profitLabel: {
-    fontSize: fontSize.md,
+    fontSize: fontSize.sm,
     color: colors.textSecondary,
     fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   profitValue: {
-    fontSize: fontSize.hero,
+    fontSize: fontSize.xxl,
     fontWeight: '700',
     marginTop: spacing.xs,
   },

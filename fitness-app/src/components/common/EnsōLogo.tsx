@@ -15,15 +15,15 @@ export const EnsoLogo: React.FC<EnsoLogoProps> = ({ size = 160 }) => {
       <Svg width={size} height={size} viewBox="0 0 160 160">
         <Defs>
           <LinearGradient id="ensoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <Stop offset="0%" stopColor="#E60000" />
-            <Stop offset="50%" stopColor="#CC0000" />
-            <Stop offset="100%" stopColor="#990000" />
+            <Stop offset="0%" stopColor="#FF1A1A" />
+            <Stop offset="50%" stopColor="#D40000" />
+            <Stop offset="100%" stopColor="#8B0000" />
           </LinearGradient>
           <LinearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <Stop offset="0%" stopColor="#F5F0E8" stopOpacity="0.1" />
-            <Stop offset="30%" stopColor="#F5F0E8" stopOpacity="1" />
-            <Stop offset="70%" stopColor="#F5F0E8" stopOpacity="1" />
-            <Stop offset="100%" stopColor="#F5F0E8" stopOpacity="0.2" />
+            <Stop offset="0%" stopColor="#F2F2F7" stopOpacity="0.1" />
+            <Stop offset="30%" stopColor="#F2F2F7" stopOpacity="1" />
+            <Stop offset="70%" stopColor="#F2F2F7" stopOpacity="1" />
+            <Stop offset="100%" stopColor="#F2F2F7" stopOpacity="0.2" />
           </LinearGradient>
         </Defs>
 
@@ -51,7 +51,7 @@ export const EnsoLogo: React.FC<EnsoLogoProps> = ({ size = 160 }) => {
             C 118 30, 138 50, 141 78
             C 144 106, 128 134, 100 141
           `}
-          stroke="#CC0000"
+          stroke="#D40000"
           strokeWidth={3 * scale}
           strokeLinecap="round"
           fill="none"
@@ -63,7 +63,7 @@ export const EnsoLogo: React.FC<EnsoLogoProps> = ({ size = 160 }) => {
             C 10 86, 16 56, 38 36
             C 54 22, 76 20, 90 24
           `}
-          stroke="#E60000"
+          stroke="#FF1A1A"
           strokeWidth={2 * scale}
           strokeLinecap="round"
           fill="none"
@@ -88,7 +88,7 @@ export const EnsoLogo: React.FC<EnsoLogoProps> = ({ size = 160 }) => {
             M 116 79
             C 120 76, 124 74, 126 74
           `}
-          stroke="#F5F0E8"
+          stroke="#F2F2F7"
           strokeWidth={1.5 * scale}
           strokeLinecap="round"
           fill="none"

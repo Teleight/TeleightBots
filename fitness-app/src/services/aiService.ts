@@ -24,47 +24,122 @@ const callClaude = async (
   maxTokens: number = 2000
 ): Promise<string> => {
   if (!API_KEY) {
-    throw new Error('API key Anthropic non configurata. Vai nelle impostazioni per inserirla.');
+    throw new Error('API key Anthropic non configurata. Vai in Impostazioni AI per inserirla.');
   }
 
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': API_KEY,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: maxTokens,
-      system: systemPrompt,
-      messages,
-    }),
-  });
+  if (!API_KEY.startsWith('sk-ant-') && !API_KEY.startsWith('sk-')) {
+    throw new Error('Chiave API non valida. Deve iniziare con "sk-ant-" o "sk-". Controlla le impostazioni.');
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: maxTokens,
+        system: systemPrompt,
+        messages,
+      }),
+    });
+  } catch (networkError) {
+    throw new Error(
+      'Impossibile connettersi al server AI. Controlla la connessione internet e riprova.'
+    );
+  }
 
   if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Errore API Claude: ${response.status} - ${error}`);
+    let errorBody = '';
+    try {
+      errorBody = await response.text();
+    } catch {
+      // ignore
+    }
+
+    if (response.status === 401) {
+      throw new Error('Chiave API non valida o scaduta. Aggiorna la chiave nelle impostazioni AI.');
+    }
+    if (response.status === 429) {
+      throw new Error('Troppe richieste. Attendi qualche secondo e riprova.');
+    }
+    if (response.status === 400) {
+      // Check for common issues
+      if (errorBody.includes('model')) {
+        throw new Error('Modello AI non disponibile. Riprova piu\' tardi.');
+      }
+      if (errorBody.includes('image') || errorBody.includes('base64')) {
+        throw new Error('Errore nell\'invio delle immagini. Prova con foto piu\' piccole o in formato JPEG.');
+      }
+      throw new Error(`Richiesta non valida: ${errorBody.substring(0, 200)}`);
+    }
+    if (response.status >= 500) {
+      throw new Error('Il server AI e\' temporaneamente non disponibile. Riprova tra qualche minuto.');
+    }
+    throw new Error(`Errore API (${response.status}): ${errorBody.substring(0, 200)}`);
   }
 
-  const data = await response.json();
-  return data.content[0]?.text || '';
+  let data: any;
+  try {
+    data = await response.json();
+  } catch {
+    throw new Error('Risposta non valida dal server AI. Riprova.');
+  }
+
+  const text = data?.content?.[0]?.text;
+  if (!text) {
+    throw new Error('Il server AI ha restituito una risposta vuota. Riprova.');
+  }
+
+  return text;
 };
 
 // --- Converte immagine URI in base64 ---
 const imageUriToBase64 = async (uri: string): Promise<string> => {
-  const response = await fetch(uri);
-  const blob = await response.blob();
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64 = (reader.result as string).split(',')[1];
-      resolve(base64);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
+  // Se l'URI è già base64, estrarre i dati
+  if (uri.startsWith('data:')) {
+    const base64Part = uri.split(',')[1];
+    if (base64Part) return base64Part;
+    throw new Error('Formato immagine base64 non valido');
+  }
+
+  try {
+    const response = await fetch(uri);
+    if (!response.ok) {
+      throw new Error(`Impossibile caricare l'immagine (${response.status})`);
+    }
+    const blob = await response.blob();
+
+    // Controlla dimensione (max 20MB per l'API)
+    if (blob.size > 20 * 1024 * 1024) {
+      throw new Error('Immagine troppo grande. Usa foto con dimensioni inferiori a 20MB.');
+    }
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        const base64 = result.split(',')[1];
+        if (!base64) {
+          reject(new Error('Conversione immagine fallita'));
+          return;
+        }
+        resolve(base64);
+      };
+      reader.onerror = () => reject(new Error('Errore nella lettura dell\'immagine'));
+      reader.readAsDataURL(blob);
+    });
+  } catch (err) {
+    if (err instanceof Error && err.message.includes('Immagine')) {
+      throw err;
+    }
+    throw new Error('Impossibile elaborare l\'immagine. Riprova con un\'altra foto.');
+  }
 };
 
 // ============================================================

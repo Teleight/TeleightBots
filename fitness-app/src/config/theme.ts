@@ -5,45 +5,46 @@
 
 export const colors = {
   // --- Brand ---
-  primary: '#0D0D0D',
-  primaryLight: '#1A1A1A',
-  accent: '#CC0000',
+  primary: '#0A0A0A',
+  primaryLight: '#161616',
+  accent: '#D40000',
   accentLight: '#E63333',
+  accentDark: '#990000',
 
   // --- Status ---
-  success: '#4CAF50',
-  warning: '#FF9800',
-  error: '#F44336',
-  info: '#2196F3',
+  success: '#34C759',
+  warning: '#FF9F0A',
+  error: '#FF453A',
+  info: '#64D2FF',
 
   // --- Superfici (Dark Mode) ---
-  background: '#0D0D0D',
-  surface: '#1A1A1A',
-  surfaceLight: '#242424',
-  border: '#3A3A3A',
-  divider: '#2A2A2A',
+  background: '#0A0A0A',
+  surface: '#161616',
+  surfaceLight: '#1F1F1F',
+  border: '#2C2C2E',
+  divider: '#1C1C1E',
 
   // --- Testo ---
-  text: '#F5F0E8',
-  textSecondary: '#A0A0A0',
-  textLight: '#666666',
-  textOnPrimary: '#F5F0E8',
+  text: '#F2F2F7',
+  textSecondary: '#8E8E93',
+  textLight: '#636366',
+  textOnPrimary: '#F2F2F7',
   textOnAccent: '#FFFFFF',
 
   // --- Badge ruoli ---
-  ownerBadge: '#CC0000',
-  managerBadge: '#9C27B0',
-  collaboratorBadge: '#00BCD4',
-  studentBadge: '#FF9800',
+  ownerBadge: '#D40000',
+  managerBadge: '#AF52DE',
+  collaboratorBadge: '#32D4DE',
+  studentBadge: '#FF9F0A',
 };
 
 export const spacing = {
-  xs: 4,
-  sm: 8,
-  md: 14,
-  lg: 20,
-  xl: 28,
-  xxl: 40,
+  xs: 3,
+  sm: 6,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  xxl: 32,
 };
 
 export const borderRadius = {
@@ -55,36 +56,36 @@ export const borderRadius = {
 };
 
 export const fontSize = {
-  xs: 11,
-  sm: 13,
-  md: 15,
-  lg: 17,
-  xl: 20,
-  xxl: 24,
-  title: 26,
-  hero: 32,
+  xs: 10,
+  sm: 11,
+  md: 13,
+  lg: 14,
+  xl: 16,
+  xxl: 19,
+  title: 21,
+  hero: 26,
 };
 
 export const shadows = {
   small: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
     elevation: 2,
   },
   medium: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.35,
+    shadowRadius: 6,
     elevation: 4,
   },
   large: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.45,
+    shadowRadius: 12,
     elevation: 8,
   },
 };

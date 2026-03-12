@@ -23,7 +23,7 @@ export const Card: React.FC<CardProps> = ({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
-    borderRadius: borderRadius.lg,
+    borderRadius: borderRadius.xl,
     padding: spacing.md,
     marginVertical: spacing.xs,
   },
@@ -32,9 +32,14 @@ const styles = StyleSheet.create({
 const variantStyles = StyleSheet.create({
   default: {
     ...shadows.small,
+    borderWidth: 1,
+    borderColor: colors.divider,
   },
   elevated: {
     ...shadows.medium,
+    backgroundColor: '#1E1E1E',
+    borderWidth: 1,
+    borderColor: 'rgba(58, 58, 58, 0.4)',
   },
   outlined: {
     borderWidth: 1,

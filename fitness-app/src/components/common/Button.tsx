@@ -69,19 +69,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: spacing.sm + 4,
     paddingHorizontal: spacing.lg,
-    borderRadius: borderRadius.md,
+    borderRadius: borderRadius.lg,
     gap: spacing.sm,
   },
   text: {
     color: colors.textOnPrimary,
-    fontSize: fontSize.lg,
-    fontWeight: '600',
+    fontSize: fontSize.md,
+    fontWeight: '700',
+    letterSpacing: 0.3,
   },
   outlineText: {
     color: colors.text,
   },
   disabled: {
-    opacity: 0.5,
+    opacity: 0.4,
   },
 });
 
@@ -90,14 +91,16 @@ const variantStyles = StyleSheet.create({
     backgroundColor: colors.accent,
   },
   secondary: {
-    backgroundColor: colors.primaryLight,
+    backgroundColor: colors.surfaceLight,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   danger: {
     backgroundColor: colors.error,
   },
   outline: {
     backgroundColor: 'transparent',
-    borderWidth: 2,
+    borderWidth: 1.5,
     borderColor: colors.accent,
   },
 });

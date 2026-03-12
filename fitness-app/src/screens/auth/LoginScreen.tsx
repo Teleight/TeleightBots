@@ -78,7 +78,7 @@ export const LoginScreen: React.FC = () => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.header}>
-          <EnsoLogo size={150} />
+          <EnsoLogo size={120} />
           <Text style={styles.title}>Essère</Text>
           <Text style={styles.subtitle}>Il tuo percorso di benessere</Text>
         </View>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xxl,
   },
   title: {
-    fontSize: 32,
+    fontSize: fontSize.hero,
     fontWeight: '300',
     color: colors.textOnPrimary,
     letterSpacing: 6,

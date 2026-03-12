@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   bar: {
-    width: '60%',
+    width: '55%',
     minHeight: 2,
-    borderTopLeftRadius: borderRadius.sm,
-    borderTopRightRadius: borderRadius.sm,
+    borderTopLeftRadius: borderRadius.md,
+    borderTopRightRadius: borderRadius.md,
   },
   barValue: {
     fontSize: fontSize.xs,

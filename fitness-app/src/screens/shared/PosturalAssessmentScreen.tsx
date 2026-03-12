@@ -508,13 +508,22 @@ export const PosturalAssessmentScreen: React.FC = () => {
           style={styles.actionButton}
         />
         <Button
-          title={aiAnalyzing ? 'AI in corso...' : 'Analisi AI'}
+          title={aiAnalyzing ? 'Analisi AI...' : 'Analisi AI'}
           onPress={handleAIAnalysis}
           variant="primary"
           style={styles.actionButton}
           loading={aiAnalyzing}
+          disabled={(!frontImage && !sideImage && !backImage) || aiAnalyzing}
         />
       </View>
+
+      {aiAnalyzing && (
+        <Card variant="outlined">
+          <Text style={styles.aiLoadingText}>
+            L'AI sta analizzando le immagini... Potrebbe richiedere fino a 30 secondi.
+          </Text>
+        </Card>
+      )}
 
       <Button
         title={saving ? 'Salvataggio...' : 'Salva Valutazione'}
@@ -802,6 +811,13 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     flex: 1,
+  },
+  aiLoadingText: {
+    color: colors.accent,
+    fontSize: fontSize.sm,
+    textAlign: 'center',
+    fontStyle: 'italic',
+    padding: spacing.sm,
   },
   aiSummary: {
     fontSize: fontSize.md,
