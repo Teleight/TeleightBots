@@ -121,6 +121,15 @@ const OwnerTabs = () => (
       }}
     />
     <OwnerTab.Screen
+      name="Postura"
+      component={PosturalAssessmentScreen}
+      options={{
+        headerShown: false,
+        tabBarLabel: 'Postura',
+        tabBarIcon: ({ focused }) => <TabIcon label="Test" focused={focused} />,
+      }}
+    />
+    <OwnerTab.Screen
       name="AI"
       component={AISettingsScreen}
       options={{

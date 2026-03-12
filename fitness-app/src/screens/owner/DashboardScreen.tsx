@@ -233,39 +233,33 @@ export const DashboardScreen: React.FC = () => {
       </View>
 
       {/* Grafico Ricavi per Coach */}
-      {coachRevenueData.length > 0 && (
-        <View style={styles.chartSection}>
-          <BarChart
-            data={coachRevenueData}
-            title="Ricavi per Coach"
-            height={200}
-          />
-        </View>
-      )}
+      <View style={styles.chartSection}>
+        <BarChart
+          data={coachRevenueData.length > 0 ? coachRevenueData : [{ label: 'Nessun coach', value: 0 }]}
+          title="Ricavi per Coach"
+          height={200}
+        />
+      </View>
 
       {/* Grafico Sessioni */}
-      {allSessions.length > 0 && (
-        <View style={styles.chartSection}>
-          <BarChart
-            data={sessionsData}
-            title="Riepilogo Sessioni"
-            height={180}
-            formatValue={(v) => String(v)}
-          />
-        </View>
-      )}
+      <View style={styles.chartSection}>
+        <BarChart
+          data={sessionsData}
+          title="Riepilogo Sessioni"
+          height={180}
+          formatValue={(v) => String(v)}
+        />
+      </View>
 
       {/* Grafico Allievi per Coach */}
-      {studentsByCoachData.length > 0 && (
-        <View style={styles.chartSection}>
-          <BarChart
-            data={studentsByCoachData}
-            title="Allievi per Coach"
-            height={180}
-            formatValue={(v) => String(v)}
-          />
-        </View>
-      )}
+      <View style={styles.chartSection}>
+        <BarChart
+          data={studentsByCoachData.length > 0 ? studentsByCoachData : [{ label: 'Nessun coach', value: 0 }]}
+          title="Allievi per Coach"
+          height={180}
+          formatValue={(v) => String(v)}
+        />
+      </View>
 
       {/* Sessioni di oggi */}
       <Text style={styles.sectionTitle}>Sessioni di Oggi</Text>

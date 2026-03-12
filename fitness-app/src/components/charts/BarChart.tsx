@@ -26,6 +26,7 @@ export const BarChart: React.FC<BarChartProps> = ({
   formatValue = (v) => `€${v.toLocaleString()}`,
 }) => {
   const max = maxValue || Math.max(...data.map((d) => d.value), 1);
+  const chartHeight = height - 28; // space for labels below bars
 
   return (
     <View style={styles.container}>
@@ -35,23 +36,23 @@ export const BarChart: React.FC<BarChartProps> = ({
         <View style={styles.yAxis}>
           <Text style={styles.yLabel}>{formatValue(max)}</Text>
           <Text style={styles.yLabel}>{formatValue(Math.round(max / 2))}</Text>
-          <Text style={styles.yLabel}>€0</Text>
+          <Text style={styles.yLabel}>{formatValue(0)}</Text>
         </View>
 
         {/* Bars */}
         <View style={styles.barsContainer}>
           {/* Grid lines */}
-          <View style={[styles.gridLine, { bottom: '100%' }]} />
-          <View style={[styles.gridLine, { bottom: '50%' }]} />
-          <View style={[styles.gridLine, { bottom: 0 }]} />
+          <View style={[styles.gridLine, { top: 0 }]} />
+          <View style={[styles.gridLine, { top: chartHeight / 2 }]} />
+          <View style={[styles.gridLine, { top: chartHeight }]} />
 
           {data.map((item, index) => {
-            const barHeight = max > 0 ? (item.value / max) * 100 : 0;
+            const barPixelHeight = max > 0 ? (item.value / max) * chartHeight : 0;
             const barColor = item.color || colors.accent;
 
             return (
               <View key={index} style={styles.barWrapper}>
-                <View style={styles.barColumn}>
+                <View style={[styles.barColumn, { height: chartHeight }]}>
                   {showValues && item.value > 0 && (
                     <Text style={styles.barValue}>{formatValue(item.value)}</Text>
                   )}
@@ -59,7 +60,7 @@ export const BarChart: React.FC<BarChartProps> = ({
                     style={[
                       styles.bar,
                       {
-                        height: `${Math.max(barHeight, 2)}%`,
+                        height: Math.max(barPixelHeight, 2),
                         backgroundColor: barColor,
                       },
                     ]}
@@ -95,11 +96,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   yAxis: {
-    width: 50,
+    width: 55,
     justifyContent: 'space-between',
     alignItems: 'flex-end',
     paddingRight: spacing.sm,
-    paddingBottom: 24,
+    paddingBottom: 28,
   },
   yLabel: {
     fontSize: fontSize.xs,
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-end',
-    paddingBottom: 24,
+    paddingBottom: 28,
     position: 'relative',
   },
   gridLine: {
@@ -124,7 +125,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   barColumn: {
-    flex: 1,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     textAlign: 'center',
     marginTop: spacing.xs,
-    height: 20,
+    height: 24,
   },
 });

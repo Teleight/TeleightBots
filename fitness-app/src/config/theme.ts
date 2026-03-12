@@ -38,12 +38,12 @@ export const colors = {
 };
 
 export const spacing = {
-  xs: 3,
-  sm: 6,
-  md: 12,
-  lg: 18,
-  xl: 24,
-  xxl: 36,
+  xs: 4,
+  sm: 8,
+  md: 14,
+  lg: 20,
+  xl: 28,
+  xxl: 40,
 };
 
 export const borderRadius = {
@@ -55,14 +55,14 @@ export const borderRadius = {
 };
 
 export const fontSize = {
-  xs: 9,
-  sm: 11,
-  md: 12,
-  lg: 14,
-  xl: 17,
-  xxl: 20,
-  title: 22,
-  hero: 28,
+  xs: 11,
+  sm: 13,
+  md: 15,
+  lg: 17,
+  xl: 20,
+  xxl: 24,
+  title: 26,
+  hero: 32,
 };
 
 export const shadows = {
