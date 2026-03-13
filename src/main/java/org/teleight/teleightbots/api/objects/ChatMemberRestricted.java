@@ -1,8 +1,13 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jetbrains.annotations.Nullable;
 
 public record ChatMemberRestricted(
+        @JsonProperty(value = "tag")
+        @Nullable
+        String tag,
+
         @JsonProperty(value = "user")
         User user,
 
@@ -38,6 +43,9 @@ public record ChatMemberRestricted(
 
         @JsonProperty(value = "can_add_web_page_previews")
         boolean canAddWebPagePreviews,
+
+        @JsonProperty(value = "can_edit_tag")
+        boolean canEditTag,
 
         @JsonProperty(value = "can_change_info")
         boolean canChangeInfo,

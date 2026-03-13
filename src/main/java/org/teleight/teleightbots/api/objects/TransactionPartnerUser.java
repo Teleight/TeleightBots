@@ -5,6 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public record TransactionPartnerUser(
+        @JsonProperty(value = "transaction_type", required = true)
+        @NotNull
+        TransactionType transactionType,
+
         @JsonProperty(value = "user", required = true)
         @NotNull
         User user,
@@ -30,7 +34,11 @@ public record TransactionPartnerUser(
 
         @JsonProperty(value = "gift")
         @Nullable
-        Gift gift
+        Gift gift,
+
+        @JsonProperty(value = "premium_subscription_duration")
+        @Nullable
+        Integer premiumSubscriptionDuration
 ) implements TransactionPartner {
 
     @Override

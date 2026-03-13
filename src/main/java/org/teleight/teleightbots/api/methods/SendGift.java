@@ -15,6 +15,10 @@ public record SendGift(
         @JsonProperty(value = "user_id", required = true)
         int userId,
 
+        @JsonProperty(value = "chat_id")
+        @Nullable
+        String chatId,
+
         @JsonProperty(value = "gift_id", required = true)
         @NotNull
         String giftId,

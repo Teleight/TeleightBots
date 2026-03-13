@@ -29,11 +29,4 @@ public abstract class Extension {
      */
     public abstract void shutdown();
 
-    /**
-     * Returns the name of the extension.
-     *
-     * @return The name of the extension.
-     */
-    public abstract String getName();
-
 }

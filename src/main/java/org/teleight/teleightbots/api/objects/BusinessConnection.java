@@ -2,6 +2,7 @@ package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiResult;
 
 public record BusinessConnection(
@@ -20,8 +21,9 @@ public record BusinessConnection(
         @JsonProperty(value = "date", required = true)
         int date,
 
-        @JsonProperty(value = "can_reply", required = true)
-        boolean canReply,
+        @JsonProperty(value = "rights")
+        @Nullable
+        BusinessBotRights rights,
 
         @JsonProperty(value = "is_enabled", required = true)
         boolean isEnabled

@@ -24,6 +24,18 @@ public record Video(
         @Nullable
         PhotoSize thumbnail,
 
+        @JsonProperty(value = "cover")
+        @Nullable
+        PhotoSize[] cover,
+
+        @JsonProperty(value = "start_timestamp")
+        @Nullable
+        Integer startTimestamp,
+
+        @JsonProperty(value = "qualities")
+        @Nullable
+        VideoQuality[] qualities,
+
         @JsonProperty(value = "file_name")
         @Nullable
         String fileName,

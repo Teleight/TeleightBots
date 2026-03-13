@@ -17,6 +17,13 @@ public record InputPaidMediaVideo(
         @Nullable
         InputFile thumbnail,
 
+        @JsonProperty(value = "cover")
+        @Nullable
+        InputFile cover,
+
+        @JsonProperty(value = "start_timestamp")
+        int startTimestamp,
+
         @JsonProperty(value = "width")
         int width,
 

@@ -32,6 +32,9 @@ public record ChatFullInfo(
         @JsonProperty(value = "is_forum")
         boolean isForum,
 
+        @JsonProperty(value = "is_direct_messages")
+        boolean isDirectMessages,
+
         @JsonProperty(value = "accent_color_id")
         int accentColorId,
 
@@ -65,6 +68,10 @@ public record ChatFullInfo(
         @JsonProperty(value = "personal_chat")
         @Nullable
         Chat personalChat,
+
+        @JsonProperty(value = "parent_chat")
+        @Nullable
+        Chat parentChat,
 
         @JsonProperty(value = "available_reactions")
         @Nullable
@@ -121,6 +128,10 @@ public record ChatFullInfo(
         @Nullable
         ChatPermissions permissions,
 
+        @JsonProperty(value = "accepted_gift_types")
+        @Nullable
+        AcceptedGiftTypes acceptedGiftTypes,
+
         @JsonProperty(value = "can_send_paid_media")
         boolean canSendPaidMedia,
 
@@ -162,6 +173,21 @@ public record ChatFullInfo(
 
         @JsonProperty(value = "location")
         @Nullable
-        ChatLocation location
+        ChatLocation location,
+
+        @JsonProperty(value = "rating")
+        @Nullable
+        UserRating rating,
+
+        @JsonProperty(value = "first_profile_audio")
+        @Nullable
+        Audio firstProfileAudio,
+
+        @JsonProperty(value = "unique_gift_colors")
+        @Nullable
+        UniqueGiftColors uniqueGiftColors,
+
+        @JsonProperty(value = "paid_message_star_count")
+        int paidMessageStarCount
 ) implements ApiResult {
 }

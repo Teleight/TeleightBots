@@ -17,7 +17,8 @@ import org.teleight.teleightbots.api.ApiResult;
         @JsonSubTypes.Type(value = TransactionPartnerTelegramAds.class, name = "telegram_ads"),
         @JsonSubTypes.Type(value = TransactionPartnerOther.class, name = "other"),
         @JsonSubTypes.Type(value = TransactionPartnerTelegramApi.class, name = "telegram_api"),
-        @JsonSubTypes.Type(value = TransactionPartnerAffiliateProgram.class, name = "affiliate_program")
+        @JsonSubTypes.Type(value = TransactionPartnerAffiliateProgram.class, name = "affiliate_program"),
+        @JsonSubTypes.Type(value = TransactionPartnerChat.class, name = "chat")
 })
 public sealed interface TransactionPartner extends ApiResult permits
         TransactionPartnerUser,
@@ -25,7 +26,8 @@ public sealed interface TransactionPartner extends ApiResult permits
         TransactionPartnerTelegramAds,
         TransactionPartnerOther,
         TransactionPartnerTelegramApi,
-        TransactionPartnerAffiliateProgram {
+        TransactionPartnerAffiliateProgram,
+        TransactionPartnerChat {
 
     String TYPE_NAME = "type";
 

@@ -64,6 +64,10 @@ public record ExternalReplyInfo(
         @JsonProperty(value = "has_media_spoiler")
         boolean hasMediaSpoiler,
 
+        @JsonProperty(value = "checklist")
+        @Nullable
+        Checklist checklist,
+
         @JsonProperty(value = "contact")
         @Nullable
         Contact contact,

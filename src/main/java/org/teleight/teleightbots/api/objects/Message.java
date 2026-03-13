@@ -14,6 +14,10 @@ public record Message(
         @JsonProperty(value = "message_thread_id")
         int messageThreadId,
 
+        @JsonProperty(value = "direct_messages_topic")
+        @Nullable
+        DirectMessagesTopic directMessagesTopic,
+
         @JsonProperty(value = "from")
         @Nullable
         User from,
@@ -24,6 +28,10 @@ public record Message(
 
         @JsonProperty(value = "sender_boost_count")
         int senderBoostCount,
+
+        @JsonProperty(value = "sender_tag")
+        @Nullable
+        String senderTag,
 
         @JsonProperty(value = "sender_business_bot")
         @Nullable
@@ -67,6 +75,9 @@ public record Message(
         @Nullable
         Story replyToStory,
 
+        @JsonProperty(value = "reply_to_checklist_task_id")
+        int replyToChecklistTaskId,
+
         @JsonProperty(value = "via_bot")
         @Nullable
         User viaBot,
@@ -81,6 +92,9 @@ public record Message(
         @JsonProperty(value = "is_from_offline")
         boolean isFromOffline,
 
+        @JsonProperty(value = "is_paid_post")
+        boolean isPaidPost,
+
         @JsonProperty(value = "media_group_id")
         @Nullable
         String mediaGroupId,
@@ -88,6 +102,9 @@ public record Message(
         @JsonProperty(value = "author_signature")
         @Nullable
         String authorSignature,
+
+        @JsonProperty(value = "paid_star_count")
+        int paidStarCount,
 
         @JsonProperty(value = "text")
         @Nullable
@@ -159,6 +176,10 @@ public record Message(
         @JsonProperty(value = "has_media_spoiler")
         boolean hasMediaSpoiler,
 
+        @JsonProperty(value = "checklist")
+        @Nullable
+        Checklist checklist,
+
         @JsonProperty(value = "contact")
         @Nullable
         Contact contact,
@@ -190,6 +211,14 @@ public record Message(
         @JsonProperty(value = "left_chat_member")
         @Nullable
         User leftChatMember,
+
+        @JsonProperty(value = "chat_owner_left")
+        @Nullable
+        ChatOwnerLeft chatOwnerLeft,
+
+        @JsonProperty(value = "chat_owner_changed")
+        @Nullable
+        ChatOwnerChanged chatOwnerChanged,
 
         @JsonProperty(value = "new_chat_title")
         @Nullable
@@ -247,6 +276,18 @@ public record Message(
         @Nullable
         ChatShared chatShared,
 
+        @JsonProperty(value = "gift")
+        @Nullable
+        GiftInfo gift,
+
+        @JsonProperty(value = "unique_gift")
+        @Nullable
+        UniqueGiftInfo uniqueGift,
+
+        @JsonProperty(value = "gift_upgrade_sent")
+        @Nullable
+        GiftInfo giftUpgradeSent,
+
         @JsonProperty(value = "connected_website")
         @Nullable
         String connectedWebsite,
@@ -270,6 +311,18 @@ public record Message(
         @JsonProperty(value = "chat_background_set")
         @Nullable
         ChatBackground chatBackgroundSet,
+
+        @JsonProperty(value = "checklist_tasks_done")
+        @Nullable
+        ChecklistTasksDone checklistTasksDone,
+
+        @JsonProperty(value = "checklist_tasks_added")
+        @Nullable
+        ChecklistTasksAdded checklistTasksAdded,
+
+        @JsonProperty(value = "direct_message_price_changed")
+        @Nullable
+        DirectMessagePriceChanged directMessagePriceChanged,
 
         @JsonProperty(value = "forum_topic_created")
         @Nullable
@@ -310,6 +363,30 @@ public record Message(
         @JsonProperty(value = "giveaway_completed")
         @Nullable
         GiveawayCompleted giveawayCompleted,
+
+        @JsonProperty(value = "paid_message_price_changed")
+        @Nullable
+        PaidMessagePriceChanged paidMessagePriceChanged,
+
+        @JsonProperty(value = "suggested_post_approved")
+        @Nullable
+        SuggestedPostApproved suggestedPostApproved,
+
+        @JsonProperty(value = "suggested_post_approval_failed")
+        @Nullable
+        SuggestedPostApprovalFailed suggestedPostApprovalFailed,
+
+        @JsonProperty(value = "suggested_post_declined")
+        @Nullable
+        SuggestedPostDeclined suggestedPostDeclined,
+
+        @JsonProperty(value = "suggested_post_paid")
+        @Nullable
+        SuggestedPostPaid suggestedPostPaid,
+
+        @JsonProperty(value = "suggested_post_refunded")
+        @Nullable
+        SuggestedPostRefunded suggestedPostRefunded,
 
         @JsonProperty(value = "video_chat_scheduled")
         @Nullable

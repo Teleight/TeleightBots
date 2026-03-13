@@ -1,5 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
-
 plugins {
     `java-library`
     alias(libs.plugins.shadow)
@@ -9,7 +7,7 @@ plugins {
 val groupId = "org.teleight"
 val artifactId = "TeleightBots"
 val descriptionId = "Java library for Telegram Bots"
-val versionId = "1.0"
+val versionId = "1.1.0"
 
 allprojects {
     apply(plugin = "java")
@@ -37,9 +35,9 @@ allprojects {
 dependencies {
     api(libs.bundles.jackson)
     api(libs.bundles.checker)
-    api(libs.jetbrains.annotations)
     api(libs.slf4j.api)
 
+    implementation(libs.jetbrains.annotations)
     implementation(libs.slf4j.simple)
 
     compileOnly(libs.lombok)
@@ -60,11 +58,8 @@ tasks.javadoc {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-
+    publishToMavenCentral()
     coordinates(groupId, artifactId, versionId)
-
-    signAllPublications()
 
     pom {
         name.set("TeleightBots")

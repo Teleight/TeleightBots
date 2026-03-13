@@ -13,6 +13,9 @@ public record ForumTopicCreated(
 
         @JsonProperty(value = "icon_custom_emoji_id")
         @Nullable
-        String iconCustomEmojiId
+        String iconCustomEmojiId,
+
+        @JsonProperty(value = "is_name_implicit")
+        boolean isNameImplicit
 ) implements ApiResult {
 }

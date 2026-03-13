@@ -50,6 +50,7 @@ public final class LongPollingUpdateProcessor implements UpdateProcessor {
                 .timeout(settings.updatesTimeout())
                 .limit(settings.updatesLimit())
                 .offset(lastReceivedUpdate + 1)
+                .allowedUpdates(settings.allowedUpdates())
                 .build();
 
         final String responseJson = bot.getBotMethodExecutor().executeMethod(getUpdates)

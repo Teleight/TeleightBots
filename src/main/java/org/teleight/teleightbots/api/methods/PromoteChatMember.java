@@ -59,7 +59,13 @@ public record PromoteChatMember(
         boolean canDeleteStories,
 
         @JsonProperty(value = "can_manage_topics")
-        boolean canManageTopics
+        boolean canManageTopics,
+
+        @JsonProperty(value = "can_manage_direct_messages")
+        boolean canManageDirectMessages,
+
+        @JsonProperty(value = "can_manage_tags")
+        boolean canManageTags
 ) implements ApiMethodBoolean {
 
     public static @NotNull Builder ofBuilder(String chatId, long userId) {
