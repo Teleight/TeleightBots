@@ -16,7 +16,7 @@ export const signIn = async (email: string, password: string): Promise<User> => 
   if (!userDoc.exists()) {
     throw new Error('Utente non trovato nel database');
   }
-  return { id: userDoc.id, ...userDoc.data() } as User;
+  return { ...userDoc.data(), id: userDoc.id } as User;
 };
 
 export const registerOwner = async (
@@ -120,7 +120,7 @@ export const getCurrentUser = (): Promise<FirebaseUser | null> => {
 export const getUserProfile = async (uid: string): Promise<User | null> => {
   const userDoc = await getDoc(doc(db, 'users', uid));
   if (!userDoc.exists()) return null;
-  return { id: userDoc.id, ...userDoc.data() } as User;
+  return { ...userDoc.data(), id: userDoc.id } as User;
 };
 
 export const getUserRole = async (uid: string): Promise<UserRole | null> => {
@@ -285,19 +285,19 @@ export const registerStudentSelf = async (
 export const getManagers = async (): Promise<Manager[]> => {
   const q = query(collection(db, 'users'), where('role', '==', 'manager'));
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Manager));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as Manager));
 };
 
 export const getCollaborators = async (): Promise<Collaborator[]> => {
   const q = query(collection(db, 'users'), where('role', '==', 'collaborator'));
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Collaborator));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as Collaborator));
 };
 
 export const getStudents = async (): Promise<Student[]> => {
   const q = query(collection(db, 'users'), where('role', '==', 'student'));
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Student));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as Student));
 };
 
 // --- Disattiva / Elimina utenti ---

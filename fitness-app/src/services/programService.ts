@@ -39,7 +39,7 @@ export const getStudentPrograms = async (
     orderBy('createdAt', 'desc')
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as TrainingProgram));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as TrainingProgram));
 };
 
 export const updateProgram = async (
@@ -72,7 +72,7 @@ export const getStudentWorkoutPlans = async (
     orderBy('createdAt', 'desc')
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as WorkoutPlan));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as WorkoutPlan));
 };
 
 export const getActiveWorkoutPlan = async (
@@ -86,14 +86,14 @@ export const getActiveWorkoutPlan = async (
   const snapshot = await getDocs(q);
   if (snapshot.empty) return null;
   const d = snapshot.docs[0];
-  return { id: d.id, ...d.data() } as WorkoutPlan;
+  return { ...d.data(), id: d.id } as WorkoutPlan;
 };
 
 // --- Libreria esercizi ---
 
 export const getExerciseLibrary = async (): Promise<Exercise[]> => {
   const snapshot = await getDocs(collection(db, EXERCISES_COLLECTION));
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Exercise));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as Exercise));
 };
 
 export const addExerciseToLibrary = async (
@@ -106,7 +106,7 @@ export const addExerciseToLibrary = async (
 export const getExercise = async (exerciseId: string): Promise<Exercise | null> => {
   const docSnap = await getDoc(doc(db, EXERCISES_COLLECTION, exerciseId));
   if (!docSnap.exists()) return null;
-  return { id: docSnap.id, ...docSnap.data() } as Exercise;
+  return { ...docSnap.data(), id: docSnap.id } as Exercise;
 };
 
 export const deleteWorkoutPlan = async (planId: string): Promise<void> => {

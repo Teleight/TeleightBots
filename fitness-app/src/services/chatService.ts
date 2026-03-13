@@ -50,7 +50,7 @@ export const findChatRoom = async (
   const snapshot = await getDocs(q);
   if (snapshot.empty) return null;
   const d = snapshot.docs[0];
-  return { id: d.id, ...d.data() } as ChatRoom;
+  return { ...d.data(), id: d.id } as ChatRoom;
 };
 
 export const getUserChatRooms = async (userId: string): Promise<ChatRoom[]> => {
@@ -59,13 +59,13 @@ export const getUserChatRooms = async (userId: string): Promise<ChatRoom[]> => {
     where('participants', 'array-contains', userId)
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as ChatRoom));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as ChatRoom));
 };
 
 // Il titolare può vedere TUTTE le chat
 export const getAllChatRooms = async (): Promise<ChatRoom[]> => {
   const snapshot = await getDocs(collection(db, ROOMS_COLLECTION));
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as ChatRoom));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as ChatRoom));
 };
 
 // --- Messaggi ---
@@ -112,7 +112,7 @@ export const subscribeToMessages = (
 
   return onSnapshot(q, (snapshot) => {
     const messages = snapshot.docs.map(
-      (d) => ({ id: d.id, ...d.data() } as ChatMessage)
+      (d) => ({ ...d.data(), id: d.id } as ChatMessage)
     );
     callback(messages);
   });

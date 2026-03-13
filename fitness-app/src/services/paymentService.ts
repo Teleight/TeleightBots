@@ -35,7 +35,7 @@ export const getStudentPaymentPlans = async (
     where('studentId', '==', studentId)
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as PaymentPlan));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as PaymentPlan));
 };
 
 export const markInstallmentPaid = async (
@@ -97,7 +97,7 @@ export const getUpcomingInstallments = async (
     where(field, '==', userId)
   );
   const snapshot = await getDocs(q);
-  const plans = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as PaymentPlan));
+  const plans = snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as PaymentPlan));
 
   const upcoming: { plan: PaymentPlan; installment: Installment }[] = [];
   const now = new Date();

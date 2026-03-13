@@ -36,7 +36,7 @@ export const getContentForStudent = async (
   );
 
   return snapshot.docs
-    .map((d) => ({ id: d.id, ...d.data() } as SpecialContent))
+    .map((d) => ({ ...d.data(), id: d.id } as SpecialContent))
     .filter(
       (c) => c.assignedTo.length === 0 || c.assignedTo.includes(studentId)
     );
@@ -46,7 +46,7 @@ export const getAllContent = async (): Promise<SpecialContent[]> => {
   const snapshot = await getDocs(
     query(collection(db, CONTENT_COLLECTION), orderBy('createdAt', 'desc'))
   );
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as SpecialContent));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as SpecialContent));
 };
 
 export const deleteContent = async (contentId: string): Promise<void> => {
@@ -75,7 +75,7 @@ export const getStudentDiary = async (
     orderBy('date', 'desc')
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as DiaryEntry));
+  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id } as DiaryEntry));
 };
 
 export const deleteDiaryEntry = async (entryId: string): Promise<void> => {
@@ -104,6 +104,6 @@ export const getStudentNutritionalConsultations = async (
   );
   const snapshot = await getDocs(q);
   return snapshot.docs.map(
-    (d) => ({ id: d.id, ...d.data() } as NutritionalConsultation)
+    (d) => ({ ...d.data(), id: d.id } as NutritionalConsultation)
   );
 };

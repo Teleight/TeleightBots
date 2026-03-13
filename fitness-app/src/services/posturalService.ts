@@ -35,7 +35,7 @@ export const getStudentAssessments = async (
   );
   const snapshot = await getDocs(q);
   return snapshot.docs.map(
-    (d) => ({ id: d.id, ...d.data() } as PosturalAssessment)
+    (d) => ({ ...d.data(), id: d.id } as PosturalAssessment)
   );
 };
 

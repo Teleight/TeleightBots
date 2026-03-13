@@ -55,7 +55,7 @@ export const getTransactions = async (
 
   const snapshot = await getDocs(q);
   let transactions = snapshot.docs.map(
-    (d) => ({ id: d.id, ...d.data() } as FinancialTransaction)
+    (d) => ({ ...d.data(), id: d.id } as FinancialTransaction)
   );
 
   // Filtraggio date lato client (Firestore non supporta range + orderBy su campi diversi)

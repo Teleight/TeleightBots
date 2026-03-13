@@ -113,7 +113,7 @@ export const ContentManagementScreen: React.FC = () => {
           onPress: async () => {
             try {
               await deleteContent(id);
-              loadData();
+              await loadData();
             } catch {
               Alert.alert('Errore', 'Impossibile eliminare');
             }
