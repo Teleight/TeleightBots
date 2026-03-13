@@ -175,7 +175,7 @@ export const DiaryScreen: React.FC = () => {
         ListEmptyComponent={
           <Card>
             <Text style={styles.emptyText}>
-              Il tuo diario e vuoto.{'\n'}
+              Il tuo diario è vuoto.{'\n'}
               Inizia a scrivere le tue note!
             </Text>
           </Card>
@@ -243,7 +243,7 @@ export const DiaryScreen: React.FC = () => {
               label="Le tue note"
               value={newContent}
               onChangeText={setNewContent}
-              placeholder="Come e andata oggi? Come ti senti?..."
+              placeholder="Com'è andata oggi? Come ti senti?..."
               multiline
               numberOfLines={5}
               style={styles.textArea}

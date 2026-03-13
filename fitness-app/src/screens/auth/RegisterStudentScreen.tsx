@@ -134,7 +134,7 @@ export const RegisterStudentScreen: React.FC<Props> = ({ onBack }) => {
         </View>
 
         <TouchableOpacity onPress={onBack} style={styles.backLink}>
-          <Text style={styles.backText}>Hai gia' un account? Accedi</Text>
+          <Text style={styles.backText}>Hai già un account? Accedi</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>

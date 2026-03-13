@@ -79,7 +79,7 @@ export const ManageUsersScreen: React.FC = () => {
   const handleDeleteUser = async (userId: string, name: string) => {
     Alert.alert(
       'Elimina Utente',
-      `Sei sicuro di voler eliminare ${name}? Questa azione non puo\' essere annullata.`,
+      `Sei sicuro di voler eliminare ${name}? Questa azione non può essere annullata.`,
       [
         { text: 'Annulla', style: 'cancel' },
         {

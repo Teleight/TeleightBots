@@ -110,7 +110,7 @@ export const AISettingsScreen: React.FC = () => {
         {saved && (
           <Card variant="outlined">
             <Text style={styles.statusOk}>
-              Chiave API configurata. Le funzionalita' AI sono attive.
+              Chiave API configurata. Le funzionalità AI sono attive.
             </Text>
           </Card>
         )}

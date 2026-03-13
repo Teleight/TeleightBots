@@ -131,7 +131,7 @@ export const DashboardScreen: React.FC = () => {
   const handleResetAllData = () => {
     Alert.alert(
       'Reset Tutti i Dati',
-      'ATTENZIONE: Questa azione eliminera\' TUTTI i dati dell\'app (sessioni, pagamenti, programmi, transazioni, valutazioni, diario, contenuti). Gli account utente NON verranno eliminati.\n\nSei sicuro?',
+      'ATTENZIONE: Questa azione eliminerà TUTTI i dati dell\'app (sessioni, pagamenti, programmi, transazioni, valutazioni, diario, contenuti). Gli account utente NON verranno eliminati.\n\nSei sicuro?',
       [
         { text: 'Annulla', style: 'cancel' },
         {
@@ -144,7 +144,7 @@ export const DashboardScreen: React.FC = () => {
               [
                 { text: 'No', style: 'cancel' },
                 {
-                  text: 'Si, Elimina Tutto',
+                  text: 'Sì, Elimina Tutto',
                   style: 'destructive',
                   onPress: async () => {
                     setResetting(true);

@@ -398,7 +398,7 @@ export const PosturalAssessmentScreen: React.FC = () => {
           </View>
         </ScrollView>
 
-        <Text style={styles.fieldLabel}>Severita</Text>
+        <Text style={styles.fieldLabel}>Severità</Text>
         <View style={styles.severityRow}>
           {SEVERITY_OPTIONS.map((opt) => (
             <TouchableOpacity
@@ -431,7 +431,7 @@ export const PosturalAssessmentScreen: React.FC = () => {
           label="Osservazione"
           value={currentObservation}
           onChangeText={setCurrentObservation}
-          placeholder="Descrivi cio che osservi..."
+          placeholder="Descrivi ciò che osservi..."
           multiline
           numberOfLines={3}
         />

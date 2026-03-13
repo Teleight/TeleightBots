@@ -71,15 +71,15 @@ const callClaude = async (
     if (response.status === 400) {
       // Check for common issues
       if (errorBody.includes('model')) {
-        throw new Error('Modello AI non disponibile. Riprova piu\' tardi.');
+        throw new Error('Modello AI non disponibile. Riprova più tardi.');
       }
       if (errorBody.includes('image') || errorBody.includes('base64')) {
-        throw new Error('Errore nell\'invio delle immagini. Prova con foto piu\' piccole o in formato JPEG.');
+        throw new Error('Errore nell\'invio delle immagini. Prova con foto più piccole o in formato JPEG.');
       }
       throw new Error(`Richiesta non valida: ${errorBody.substring(0, 200)}`);
     }
     if (response.status >= 500) {
-      throw new Error('Il server AI e\' temporaneamente non disponibile. Riprova tra qualche minuto.');
+      throw new Error('Il server AI è temporaneamente non disponibile. Riprova tra qualche minuto.');
     }
     throw new Error(`Errore API (${response.status}): ${errorBody.substring(0, 200)}`);
   }
@@ -308,17 +308,17 @@ export const suggestWorkoutProgression = async (
   weekNumber: number,
   posturalNotes?: string
 ): Promise<AIProgressionSuggestion> => {
-  const days = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica'];
+  const days = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
 
   const systemPrompt = `Sei un preparatore atletico e personal trainer esperto italiano. Crea la progressione della scheda di allenamento.
 
 RISPONDI SEMPRE in formato JSON valido con questa struttura:
 {
   "title": "titolo della nuova scheda",
-  "reasoning": "spiegazione delle modifiche apportate e perche'",
+  "reasoning": "spiegazione delle modifiche apportate e perché",
   "weeklySchedule": [
     {
-      "day": "Lunedi",
+      "day": "Lunedì",
       "exercises": [
         {
           "name": "nome esercizio",
@@ -335,7 +335,7 @@ RISPONDI SEMPRE in formato JSON valido con questa struttura:
 }
 
 Principi di progressione:
-- Sovraccarico progressivo (aumento volume o intensita' ogni 2-3 settimane)
+- Sovraccarico progressivo (aumento volume o intensità ogni 2-3 settimane)
 - Periodizzazione (variare stimoli per evitare plateau)
 - Considerare eventuali problemi posturali
 - Inserire esercizi correttivi se necessario

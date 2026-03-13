@@ -126,7 +126,7 @@ export const ChatConversationScreen: React.FC<Props> = ({
       {/* Header */}
       <ScreenHeader
         title={getTitle()}
-        subtitle={isAnonymous ? 'Modalita anonima - solo lettura' : undefined}
+        subtitle={isAnonymous ? 'Modalità anonima - solo lettura' : undefined}
         onBack={onBack}
       />
 
@@ -149,7 +149,7 @@ export const ChatConversationScreen: React.FC<Props> = ({
         }
       />
 
-      {/* Input messaggio (nascosto in modalita anonima) */}
+      {/* Input messaggio (nascosto in modalità anonima) */}
       {!isAnonymous && (
         <View style={styles.inputContainer}>
           <TextInput
@@ -177,7 +177,7 @@ export const ChatConversationScreen: React.FC<Props> = ({
       {isAnonymous && (
         <View style={styles.anonBar}>
           <Text style={styles.anonBarText}>
-            Stai osservando in modalita anonima
+            Stai osservando in modalità anonima
           </Text>
         </View>
       )}

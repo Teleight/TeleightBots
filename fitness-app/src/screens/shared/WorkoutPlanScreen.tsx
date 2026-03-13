@@ -28,12 +28,12 @@ import {
   getAIApiKey,
 } from '../../services/aiService';
 
-const DAYS = ['Lunedi', 'Martedi', 'Mercoledi', 'Giovedi', 'Venerdi', 'Sabato', 'Domenica'];
+const DAYS = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
 
 const CATEGORIES: { value: ExerciseCategory; label: string }[] = [
   { value: 'forza', label: 'Forza' },
   { value: 'cardio', label: 'Cardio' },
-  { value: 'mobilita', label: 'Mobilita' },
+  { value: 'mobilita', label: 'Mobilità' },
   { value: 'stretching', label: 'Stretching' },
   { value: 'funzionale', label: 'Funzionale' },
   { value: 'posturale', label: 'Posturale' },
@@ -165,8 +165,8 @@ export const WorkoutPlanScreen: React.FC = () => {
     if (!aiSuggestion) return;
 
     const dayMap: Record<string, number> = {
-      Lunedi: 0, Martedi: 1, Mercoledi: 2, Giovedi: 3,
-      Venerdi: 4, Sabato: 5, Domenica: 6,
+      'Lunedì': 0, 'Martedì': 1, 'Mercoledì': 2, 'Giovedì': 3,
+      'Venerdì': 4, Sabato: 5, Domenica: 6,
     };
 
     const newExercises: Record<number, Exercise[]> = {};
@@ -187,7 +187,7 @@ export const WorkoutPlanScreen: React.FC = () => {
     setExercises(newExercises);
     setPlanTitle(aiSuggestion.title);
     setShowAiModal(false);
-    Alert.alert('Applicata!', 'La progressione AI e\' stata applicata. Puoi modificarla prima di salvare.');
+    Alert.alert('Applicata!', 'La progressione AI è stata applicata. Puoi modificarla prima di salvare.');
   };
 
   // AI: suggerisci esercizi per categoria

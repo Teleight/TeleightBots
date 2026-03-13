@@ -306,7 +306,7 @@ export const AnalyticsScreen: React.FC = () => {
       }
     >
       <View style={styles.header}>
-        <Text style={styles.title}>Analytics & KPI</Text>
+        <Text style={styles.title}>Analisi & KPI</Text>
         <Text style={styles.subtitle}>Monitoraggio prestazioni</Text>
       </View>
 

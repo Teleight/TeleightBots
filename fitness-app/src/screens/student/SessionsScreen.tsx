@@ -50,7 +50,7 @@ export const SessionsScreen: React.FC = () => {
     if (hoursLeft < CANCELLATION_HOURS) {
       Alert.alert(
         'Attenzione',
-        `Non puoi annullare la sessione meno di ${CANCELLATION_HOURS} ore prima. La sessione sara considerata come eseguita e verra addebitata.`,
+        `Non puoi annullare la sessione meno di ${CANCELLATION_HOURS} ore prima. La sessione sarà considerata come eseguita e verrà addebitata.`,
         [
           { text: 'Ho capito', style: 'cancel' },
           {
@@ -61,7 +61,7 @@ export const SessionsScreen: React.FC = () => {
               if (result.isLate) {
                 Alert.alert(
                   'Sessione annullata',
-                  'La sessione e stata annullata ma sara conteggiata e addebitata poiche annullata con meno di 10 ore di preavviso.'
+                  'La sessione è stata annullata ma sarà conteggiata e addebitata poiché annullata con meno di 10 ore di preavviso.'
                 );
               }
             },
@@ -77,7 +77,7 @@ export const SessionsScreen: React.FC = () => {
       [
         { text: 'No', style: 'cancel' },
         {
-          text: 'Si, annulla',
+          text: 'Sì, annulla',
           onPress: async () => {
             await cancelSession(session.id, sessionDate);
             Alert.alert('Fatto', 'Sessione annullata con successo');
@@ -125,12 +125,12 @@ export const SessionsScreen: React.FC = () => {
             ) : (
               <View>
                 <Button
-                  title="Annulla (sara addebitata)"
+                  title="Annulla (sarà addebitata)"
                   onPress={() => handleCancel(item)}
                   variant="danger"
                 />
                 <Text style={styles.lateWarning}>
-                  Meno di {CANCELLATION_HOURS} ore - la sessione sara conteggiata
+                  Meno di {CANCELLATION_HOURS} ore - la sessione sarà conteggiata
                 </Text>
               </View>
             )}
