@@ -7,6 +7,8 @@
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMode": "contain",
       "backgroundColor": "#0D0D0D"
     },
     "ios": {
@@ -19,6 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#0D0D0D"
       },
       "package": "com.essere.app",
