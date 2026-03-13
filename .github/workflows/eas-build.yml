@@ -1,4 +1,4 @@
-name: EAS Build iOS
+name: EAS Build (Android & iOS)
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
       platform:
         description: 'Platform'
         required: true
-        default: 'ios'
+        default: 'all'
         type: choice
         options:
           - ios
@@ -31,7 +31,7 @@ on:
 
 jobs:
   build:
-    name: EAS Build
+    name: EAS Build (${{ github.event.inputs.platform || 'all' }})
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -60,5 +60,5 @@ jobs:
       - name: Build with EAS
         run: |
           PROFILE=${{ github.event.inputs.profile || 'preview' }}
-          PLATFORM=${{ github.event.inputs.platform || 'ios' }}
+          PLATFORM=${{ github.event.inputs.platform || 'all' }}
           eas build --profile $PROFILE --platform $PLATFORM --non-interactive
