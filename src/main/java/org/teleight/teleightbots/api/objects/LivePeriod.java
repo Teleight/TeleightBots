@@ -1,9 +1,9 @@
 package org.teleight.teleightbots.api.objects;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.teleight.teleightbots.api.serialization.deserializers.LivePeriodDeserializer;
 import org.teleight.teleightbots.api.serialization.serializers.LivePeriodSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.util.concurrent.TimeUnit;
 

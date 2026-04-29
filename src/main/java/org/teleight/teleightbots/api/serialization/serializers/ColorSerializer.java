@@ -1,17 +1,17 @@
 package org.teleight.teleightbots.api.serialization.serializers;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
 import java.awt.*;
-import java.io.IOException;
 
-public class ColorSerializer extends JsonSerializer<Color> {
+public class ColorSerializer extends ValueSerializer<Color> {
 
     @Override
-    public void serialize(Color color, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeNumber(color.getRGB());
+    public void serialize(Color value, JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
+        gen.writeNumber(value.getRGB());
     }
 
 }

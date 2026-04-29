@@ -1,21 +1,20 @@
 package org.teleight.teleightbots.api.serialization.deserializers;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.teleight.teleightbots.api.ApiMethod;
 import org.teleight.teleightbots.api.objects.InaccessibleMessage;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.Message;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
 
-import java.io.IOException;
-
-public class MaybeInaccessibleMessageDeserializer extends JsonDeserializer<MaybeInaccessibleMessage> {
+public class MaybeInaccessibleMessageDeserializer extends ValueDeserializer<MaybeInaccessibleMessage> {
 
     @Override
-    public MaybeInaccessibleMessage deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        final JsonNode node = jsonParser.getCodec().readTree(jsonParser);
+    public MaybeInaccessibleMessage deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
+        final JsonNode node = p.readValueAsTree();
         if (!node.has("date")) {
             return null;
         }

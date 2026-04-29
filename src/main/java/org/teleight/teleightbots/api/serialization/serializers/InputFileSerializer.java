@@ -1,20 +1,19 @@
 package org.teleight.teleightbots.api.serialization.serializers;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import org.teleight.teleightbots.api.objects.InputFile;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
-
-public class InputFileSerializer extends JsonSerializer<InputFile> {
+public class InputFileSerializer extends ValueSerializer<InputFile> {
 
     @Override
-    public void serialize(InputFile inputFile, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        if (inputFile.file() != null) {
-            jsonGenerator.writeObject("attach://" + inputFile.fileName());
+    public void serialize(InputFile value, JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
+        if (value.file() != null) {
+            gen.writePOJO("attach://" + value.fileName());
         } else {
-            jsonGenerator.writeObject(inputFile.id());
+            gen.writePOJO(value.id());
         }
     }
 

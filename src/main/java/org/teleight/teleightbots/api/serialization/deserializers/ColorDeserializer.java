@@ -1,17 +1,17 @@
 package org.teleight.teleightbots.api.serialization.deserializers;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
 
 import java.awt.*;
-import java.io.IOException;
 
-public class ColorDeserializer extends JsonDeserializer<Color> {
+public class ColorDeserializer extends ValueDeserializer<Color> {
 
     @Override
-    public Color deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        return new Color(jsonParser.getIntValue());
+    public Color deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
+        return new Color(p.getIntValue());
     }
 
 }

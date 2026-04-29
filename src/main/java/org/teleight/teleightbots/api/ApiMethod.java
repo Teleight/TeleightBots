@@ -2,27 +2,25 @@ package org.teleight.teleightbots.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.type.ArrayType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.objects.ApiResponse;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializer;
-import org.teleight.teleightbots.api.serialization.deserializers.DateDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
 import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
-import org.teleight.teleightbots.api.serialization.serializers.DateSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.type.ArrayType;
 
 import java.awt.*;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Base interface for all Telegram Bot API methods.
@@ -36,21 +34,19 @@ public interface ApiMethod<R extends Serializable> {
     /**
      * The object mapper used to serialize and deserialize objects to and from JSON.
      */
-    ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .registerModule(new SimpleModule()
+    JsonMapper OBJECT_MAPPER = JsonMapper.builder()
+            .disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+            .addModule(new SimpleModule()
                     .addDeserializer(ReplyKeyboard.class, new KeyboardDeserializer())
             )
-            .registerModule(new SimpleModule()
+            .addModule(new SimpleModule()
                     .addSerializer(Color.class, new ColorSerializer())
                     .addDeserializer(Color.class, new ColorDeserializer())
             )
-            .registerModule(new SimpleModule()
-                    .addSerializer(Date.class, new DateSerializer())
-                    .addDeserializer(Date.class, new DateDeserializer())
-            )
-            .registerModule(new SimpleModule()
+            .addModule(new SimpleModule()
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
-            );
+            )
+            .build();
 
     /**
      * Returns the endpoint URL for the Telegram Bot API method.
@@ -137,7 +133,7 @@ public interface ApiMethod<R extends Serializable> {
             } else {
                 throw new TelegramRequestException(String.format("Error executing %s query", this.getClass().getName()), result);
             }
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             throw new TelegramRequestException("Unable to deserialize response", e);
         }
     }

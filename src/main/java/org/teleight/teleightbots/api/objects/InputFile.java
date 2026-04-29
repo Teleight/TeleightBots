@@ -1,10 +1,10 @@
 package org.teleight.teleightbots.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.api.ApiResult;
 import org.teleight.teleightbots.api.serialization.serializers.InputFileSerializer;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 import java.io.File;
 import java.io.FileNotFoundException;

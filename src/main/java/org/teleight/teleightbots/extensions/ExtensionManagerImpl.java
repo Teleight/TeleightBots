@@ -1,12 +1,12 @@
 package org.teleight.teleightbots.extensions;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.TeleightBots;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.extensions.annotation.ExtensionInfoFile;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;

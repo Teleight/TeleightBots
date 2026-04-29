@@ -1,24 +1,23 @@
 package org.teleight.teleightbots.api.serialization.deserializers;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.teleight.teleightbots.api.objects.ForceReplyKeyboard;
 import org.teleight.teleightbots.api.objects.InlineKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyKeyboardMarkup;
 import org.teleight.teleightbots.api.objects.ReplyKeyboardRemove;
-
-import java.io.IOException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
 
 import static org.teleight.teleightbots.api.ApiMethod.OBJECT_MAPPER;
 
-public class KeyboardDeserializer extends JsonDeserializer<ReplyKeyboard> {
+public class KeyboardDeserializer extends ValueDeserializer<ReplyKeyboard> {
 
     @Override
-    public ReplyKeyboard deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
-        final JsonNode node = jsonParser.getCodec().readTree(jsonParser);
+    public ReplyKeyboard deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
+        final JsonNode node = p.readValueAsTree();
         Class<? extends ReplyKeyboard> wrapperClass = null;
         if (node.has("inline_keyboard")) {
             wrapperClass = InlineKeyboardMarkup.class;
