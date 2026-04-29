@@ -10,6 +10,7 @@ import org.teleight.teleightbots.api.objects.InputPollOption;
 import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.api.objects.Poll;
+import org.teleight.teleightbots.api.objects.PollType;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
@@ -49,13 +50,25 @@ public record SendPoll(
 
         @JsonProperty(value = "type")
         @Nullable
-        String type,
+        PollType type,
 
         @JsonProperty(value = "allows_multiple_answers")
         boolean allowsMultipleAnswers,
 
-        @JsonProperty(value = "correct_option_id")
-        int correctOptionId,
+        @JsonProperty(value = "allows_revoting")
+        boolean allowsRevoting,
+
+        @JsonProperty(value = "shuffle_options")
+        boolean shuffleOptions,
+
+        @JsonProperty(value = "allow_adding_options")
+        boolean allowAddingOptions,
+
+        @JsonProperty(value = "hide_results_until_closes")
+        boolean hideResultsUntilCloses,
+
+        @JsonProperty(value = "correct_option_ids")
+        int[] correctOptionIds,
 
         @JsonProperty(value = "explanation")
         @Nullable
@@ -77,6 +90,18 @@ public record SendPoll(
 
         @JsonProperty(value = "is_closed")
         boolean isClosed,
+
+        @JsonProperty(value = "description")
+        @Nullable
+        String description,
+
+        @JsonProperty(value = "description_parse_mode")
+        @Nullable
+        ParseMode descriptionParseMode,
+
+        @JsonProperty(value = "description_entities")
+        @Nullable
+        MessageEntity[] descriptionEntities,
 
         @JsonProperty(value = "disable_notification")
         boolean disableNotification,

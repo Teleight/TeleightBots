@@ -29,15 +29,17 @@ public record Poll(
         @JsonProperty(value = "is_anonymous", required = true)
         boolean isAnonymous,
 
-        // regular or quiz. makes more sense to get an enum here
         @JsonProperty(value = "type", required = true)
-        String type,
+        PollType type,
 
-        @JsonProperty(value = "allows_multiple_answers", required = true)
+        @JsonProperty(value = "allows_multiple_answers")
         boolean allowsMultipleAnswers,
 
-        @JsonProperty(value = "correct_option_id")
-        int correctOptionId,
+        @JsonProperty(value = "allows_revoting")
+        boolean allowsRevoting,
+
+        @JsonProperty(value = "correct_option_ids")
+        int[] correctOptionIds,
 
         @JsonProperty(value = "explanation")
         @Nullable
@@ -52,7 +54,15 @@ public record Poll(
 
         @JsonProperty(value = "close_date")
         @Nullable
-        Date closeDate
+        Date closeDate,
+
+        @JsonProperty(value = "description")
+        @Nullable
+        String description,
+
+        @JsonProperty(value = "description_entities")
+        @Nullable
+        MessageEntity[] descriptionEntities
 ) implements ApiResult {
 
 }

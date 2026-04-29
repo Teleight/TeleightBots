@@ -17,7 +17,10 @@ public record PollAnswer(
         User user,
 
         @JsonProperty(value = "option_ids", required = true)
-        Integer[] optionIds
+        Integer[] optionIds,
+
+        @JsonProperty(value = "option_persistent_ids", required = true)
+        String[] optionPersistentIds
 ) implements ApiResult {
 
 }
