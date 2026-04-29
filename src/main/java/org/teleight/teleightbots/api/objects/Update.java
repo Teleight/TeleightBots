@@ -102,7 +102,11 @@ public record Update(
 
         @JsonProperty(value = "removed_chat_boost")
         @Nullable
-        ChatBoostRemoved removedChatBoost
+        ChatBoostRemoved removedChatBoost,
+
+        @JsonProperty(value = "managed_bot")
+        @Nullable
+        ManagedBotUpdated managedBotUpdated
 ) implements ApiResult {
 
     public static Update parseResponse(@NotNull String responseJson) throws JsonProcessingException {

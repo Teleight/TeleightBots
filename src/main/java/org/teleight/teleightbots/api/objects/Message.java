@@ -364,6 +364,10 @@ public record Message(
         @Nullable
         GiveawayCompleted giveawayCompleted,
 
+        @JsonProperty(value = "managed_bot_created")
+        @Nullable
+        ManagedBotCreated managedBotCreated,
+
         @JsonProperty(value = "paid_message_price_changed")
         @Nullable
         PaidMessagePriceChanged paidMessagePriceChanged,
