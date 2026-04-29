@@ -134,6 +134,12 @@ public final class BotMethodExecutor {
                     handleInputMedia(publisher, inputMedia);
                     publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputMedia));
                 }
+                case InputMedia[] inputMedias -> {
+                    for (InputMedia inputMedia : inputMedias) {
+                        handleInputMedia(publisher, inputMedia);
+                    }
+                    publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputMedias));
+                }
                 case InputPaidMedia[] inputPaidMedias -> {
                     handleInputPaidMedias(publisher, inputPaidMedias);
                     publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputPaidMedias));

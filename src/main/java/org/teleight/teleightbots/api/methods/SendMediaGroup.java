@@ -5,9 +5,11 @@ import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
-import org.teleight.teleightbots.api.objects.InputFile;
+import org.teleight.teleightbots.api.MultiPartApiMethod;
+import org.teleight.teleightbots.api.objects.InputMedia;
+import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
+import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +33,7 @@ public record SendMediaGroup(
 
         @JsonProperty(value = "media", required = true)
         @NotNull
-        InputFile media,
+        InputMedia[] media,
 
         @JsonProperty(value = "disable_notification")
         boolean disableNotification,
@@ -48,15 +50,20 @@ public record SendMediaGroup(
         @JsonProperty(value = "reply_parameters")
         @Nullable
         ReplyParameters replyParameters
-) implements MultiPartApiMethodMessage {
+) implements MultiPartApiMethod<Message[]> {
 
-    public static @NotNull Builder ofBuilder(String chatId, InputFile media) {
+    public static @NotNull Builder ofBuilder(String chatId, InputMedia[] media) {
         return new SendMediaGroup.Builder().chatId(chatId).media(media);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
         return "sendMediaGroup";
+    }
+
+    @Override
+    public @NotNull Message @NotNull [] deserializeResponse(@NotNull String answer) throws TelegramRequestException {
+        return deserializeResponse(answer, Message[].class);
     }
 
     @Override
