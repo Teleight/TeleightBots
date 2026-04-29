@@ -2,7 +2,7 @@
 jackson = "2.19.2"
 checker = "3.54.0"
 jetbrains-annotations = "26.1.0"
-lombok = "1.18.42"
+lombok = "1.18.44"
 shadow = "9.3.2"
 junit-jupiter = "6.0.3"
 slf4j = "2.0.17"
