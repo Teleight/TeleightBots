@@ -78,6 +78,10 @@ public record Message(
         @JsonProperty(value = "reply_to_checklist_task_id")
         int replyToChecklistTaskId,
 
+        @JsonProperty(value = "reply_to_poll_option_id")
+        @Nullable
+        String replyToPollOptionId,
+
         @JsonProperty(value = "via_bot")
         @Nullable
         User viaBot,
@@ -364,9 +368,21 @@ public record Message(
         @Nullable
         GiveawayCompleted giveawayCompleted,
 
+        @JsonProperty(value = "managed_bot_created")
+        @Nullable
+        ManagedBotCreated managedBotCreated,
+
         @JsonProperty(value = "paid_message_price_changed")
         @Nullable
         PaidMessagePriceChanged paidMessagePriceChanged,
+
+        @JsonProperty(value = "poll_option_added")
+        @Nullable
+        PollOptionAdded pollOptionAdded,
+
+        @JsonProperty(value = "poll_option_deleted")
+        @Nullable
+        PollOptionDeleted pollOptionDeleted,
 
         @JsonProperty(value = "suggested_post_approved")
         @Nullable

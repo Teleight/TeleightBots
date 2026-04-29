@@ -22,6 +22,9 @@ public record KeyboardButton(
         @JsonProperty(value = "request_chat")
         KeyboardButtonRequestChat requestChat,
 
+        @JsonProperty(value = "request_managed_bot")
+        KeyboardButtonRequestManagedBot requestManagedBot,
+
         @JsonProperty(value = "request_contact")
         boolean requestContact,
 

@@ -36,7 +36,11 @@ public record ReplyParameters(
         int quotePosition,
 
         @JsonProperty(value = "checklist_task_id")
-        int checklistTaskId
+        int checklistTaskId,
+
+        @JsonProperty(value = "poll_option_id")
+        @Nullable
+        String pollOptionId
 ) implements ApiResult {
 
     public static @NotNull Builder ofBuilder(int messageId) {
