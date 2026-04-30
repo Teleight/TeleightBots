@@ -41,6 +41,10 @@ public class ExtensionAnnotationProcessor extends AbstractProcessor {
             final String mainClass = qualifiedName.toString();
 
             final ExtensionInfo extension = typeElement.getAnnotation(ExtensionInfo.class);
+            if (extension == null) {
+                // Should never happen
+                continue;
+            }
             final ExtensionInfoFile description = ExtensionInfoFile.fromAnnotation(extension, mainClass);
             try {
                 final FileObject object = environment.getFiler().createResource(StandardLocation.CLASS_OUTPUT, "", ExtensionManager.EXTENSION_FILE);

@@ -1,8 +1,18 @@
 package org.teleight.teleightbots.extensions.annotation;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 /**
  * Annotation used to get metadata about an extension.
  */
+@Retention(SOURCE)
+@Target(TYPE)
+@Documented
 public @interface ExtensionInfo {
 
     /**

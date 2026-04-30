@@ -3,7 +3,10 @@ package org.teleight.teleightbots.extensions;
 import org.teleight.teleightbots.bot.TelegramBot;
 
 /**
- * Blueprint for creating different types of extensions for the bot. Each extension has a reference to the bot
+ * Blueprint for creating different types of extensions for the bot.
+ * <p>
+ * Each extension has a reference to the bot.
+ * </p>
  */
 public abstract class Extension {
 
@@ -22,11 +25,15 @@ public abstract class Extension {
     /**
      * Method used when the extension is started.
      */
-    public abstract void start();
+    public void start() {
+
+    }
 
     /**
      * Method used when the extension is shut down.
      */
-    public abstract void shutdown();
+    public void shutdown() {
+
+    }
 
 }
