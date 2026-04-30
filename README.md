@@ -1,6 +1,6 @@
 # 🤖 TeleightBots
 
-![Java Version](https://img.shields.io/badge/Java_version-21-green)
+![Java Version](https://img.shields.io/badge/Java_version-25-green)
 ![License](https://img.shields.io/github/license/Teleight/TeleightBots)
 ![API Version](https://img.shields.io/badge/Bot_API-9.6-blue?logo=telegram)
 

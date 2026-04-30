@@ -21,7 +21,7 @@ import java.io.Writer;
 import java.util.Set;
 
 @SupportedAnnotationTypes(value = "org.teleight.teleightbots.extensions.annotation.ExtensionInfo")
-@SupportedSourceVersion(SourceVersion.RELEASE_21)
+@SupportedSourceVersion(SourceVersion.RELEASE_25)
 public class ExtensionAnnotationProcessor extends AbstractProcessor {
 
     private ProcessingEnvironment environment;
