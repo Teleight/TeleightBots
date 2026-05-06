@@ -64,16 +64,30 @@ final class CommandManagerImpl implements CommandManager {
 
     @Override
     public @Nullable String extractCommand(@NotNull String userInput) {
+        // Only slash-prefixed inputs can represent commands
+        if (userInput.isBlank() || !userInput.startsWith("/")) {
+            return null;
+        }
+
         final String[] split = userInput.split(" ");
         if (split.length == 0) {
-            return userInput;
+            return null;
         }
         final String firstArgument = split[0];
+        // "/" alone is not a valid command token
+        if (firstArgument.length() < 2) {
+            return null;
+        }
+
         String commandAsString = null;
         if (userInput.startsWith("@") || !firstArgument.contains("@")) {
             commandAsString = firstArgument.substring(1);
         } else {
             final int index = userInput.indexOf("@");
+            // Reject malformed mentions like "/@bot" or "/cmd@".
+            if (index <= 1 || index == firstArgument.length() - 1) {
+                return null;
+            }
             final String botName = firstArgument.substring(index + 1);
             if (botName.equalsIgnoreCase(bot.getBotUsername())) {
                 commandAsString = firstArgument.substring(1, index);
