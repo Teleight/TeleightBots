@@ -1,0 +1,85 @@
+[remote.github]
+owner = "Teleight"
+repo = "TeleightBots"
+
+[changelog]
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+   ### {{ group | striptags | trim | upper_first }}
+  {% for commit in commits %}
+    {%- if commit.remote.pr_title -%}
+      {%- set commit_message = commit.remote.pr_title -%}
+    {%- else -%}
+      {%- set commit_message = commit.message -%}
+    {%- endif -%}
+    * {{ commit_message | split(pat="\n") | first | trim -}}
+    {%- if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}
+    {%- if commit.remote.pr_number %} in [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}){%- endif %}
+  {% endfor %}
+{%- endfor -%}
+
+{%- if github -%}
+{% if github.contributors | filter(attribute="is_first_time", value=true) | length != 0 %}
+  {% raw %}\n{% endraw -%}
+  ### New Contributors
+{%- endif %}\
+{% for contributor in github.contributors | filter(attribute="is_first_time", value=true) %}
+  * @{{ contributor.username }} made their first contribution
+    {%- if contributor.pr_number %} in \
+      [#{{ contributor.pr_number }}]({{ self::remote_url() }}/pull/{{ contributor.pr_number }}) \
+    {%- endif %}
+{%- endfor -%}
+{%- endif -%}
+
+{% if version %}
+    {% if previous.version %}
+      **Full Changelog**: {{ self::remote_url() }}/compare/{{ previous.version }}...{{ version }}
+    {% endif %}
+{% else -%}
+  {% raw %}\n{% endraw %}
+{% endif %}
+
+{%- macro remote_url() -%}
+  https://github.com/{{ remote.github.owner }}/{{ remote.github.repo }}
+{%- endmacro -%}
+"""
+trim = true
+render_always = true
+
+[git]
+conventional_commits = false
+filter_unconventional = false
+require_conventional = false
+split_commits = false
+protect_breaking_commits = false
+commit_parsers = [
+    # Labels
+    { field = "github.pr_labels", pattern = "ignore-for-release", skip = true },
+    { field = "github.pr_labels", pattern = "breaking-change", group = "<!-- -1 -->Breaking Changes 🛠" },
+    { field = "github.pr_labels", pattern = "feature", group = "<!-- 1 --> New Features 🎉" },
+    { field = "github.pr_labels", pattern = "enhancement", group = "<!-- 1 --> New Features 🎉" },
+    { field = "github.pr_labels", pattern = "fix", group = "<!-- 2 --> Bug Fixes 🐛" },
+    { field = "github.pr_labels", pattern = "documentation", group = "<!-- 3 --> Documentation 📚" },
+    { field = "github.pr_labels", pattern = "dependencies", group = "<!-- 4 --> Dependency Updates ⬆️" },
+    { field = "github.pr_labels", pattern = ".*", group = "<!-- 6 --> Other Changes 🔄" },
+
+    # Just regex
+    { message = ".*!:", group = "<!-- -1 -->Breaking Changes 🛠" },
+    { message = "^feat|^enhancement", group = "<!-- 1 -->New Features 🎉" },
+    { message = "^fix", group = "<!-- 2 -->Bug Fixes 🐛" },
+    { message = "^docs", group = "<!-- 3 --> Documentation 📚" },
+    { message = "^chore\\(deps.*\\)", group = "<!-- 4 -->Dependency Updates ⬆️" },
+    { message = ".*", group = "<!-- 6 -->Other Changes 🔄" },
+]
+filter_commits = false
+fail_on_unmatched_commit = false
+use_branch_tags = false
+topo_order = false
+topo_order_commits = true
+sort_commits = "newest"
+recurse_submodules = false
