@@ -12,6 +12,7 @@ import org.teleight.teleightbots.event.bot.UpdateReceivedEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -86,7 +87,7 @@ public class ConversationContextImpl implements ConversationContext {
 
     @Override
     public @Unmodifiable @NotNull Map<String, Property<?>> getProperties() {
-        return appliedProperties;
+        return Collections.unmodifiableMap(appliedProperties);
     }
 
     @Override
