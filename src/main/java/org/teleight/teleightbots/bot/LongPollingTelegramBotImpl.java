@@ -44,7 +44,7 @@ final class LongPollingTelegramBotImpl implements LongPollingTelegramBot {
     private final ExtensionManager extensionManager = ExtensionManager.newExtensionManager(this);
 
     //FileDownloader
-    private final FileDownloader fileDownloader = FileDownloader.newFileDownloader(this);
+    private final FileDownloader fileDownloader;
 
     LongPollingTelegramBotImpl(@NotNull String token,
                                @NotNull String username,
@@ -54,6 +54,7 @@ final class LongPollingTelegramBotImpl implements LongPollingTelegramBot {
         this.botSettings = botSettings;
         this.updateProcessor = new LongPollingUpdateProcessor(this);
         this.botMethodExecutor = new BotMethodExecutor(this);
+        this.fileDownloader = FileDownloader.newFileDownloader(this);
     }
 
     @Override

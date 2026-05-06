@@ -18,8 +18,6 @@ public sealed interface FileDownloader extends Closeable permits FileDownloaderI
         return new FileDownloaderImpl(bot);
     }
 
-    String FILE_DOWNLOAD_TEMPLATE = "https://api.telegram.org/file/bot%s/%s";
-
     /**
      * Downloads a file from a given file path.
      *

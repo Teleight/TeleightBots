@@ -43,7 +43,7 @@ public record LongPollingBotSettings(
      * Default instance of BotSettings with standard configurations
      */
     public static final LongPollingBotSettings DEFAULT = ofBuilder()
-            .endpointUrl(DEFAULT_BOT_API_URL)
+            .endpointUrl(DEFAULT_BOT_API_URL + "/bot")
             .updatesLimit(50)
             .updatesTimeout(100)
             .silentlyThrowMethodExecution(true)

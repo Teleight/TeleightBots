@@ -26,8 +26,14 @@ final class FileDownloaderImpl implements FileDownloader {
             .version(HttpClient.Version.HTTP_2)
             .build();
 
+    private final String fileDownloadTemplate;
+
     FileDownloaderImpl(@NotNull TelegramBot bot) {
         this.bot = bot;
+
+        final String endpoint = bot.getBotSettings().endpointUrl();
+        final String token = bot.getBotToken();
+        this.fileDownloadTemplate = endpoint + "/" + token + "/file/bot%s/%s"; // "https://api.telegram.org/file/bot%s/%s"
     }
 
     @Override
@@ -93,7 +99,7 @@ final class FileDownloaderImpl implements FileDownloader {
     }
 
     private @NotNull String getFileUrl(@NotNull String filePath) {
-        return String.format(FILE_DOWNLOAD_TEMPLATE, bot.getBotToken(), filePath);
+        return String.format(fileDownloadTemplate, bot.getBotToken(), filePath);
     }
 
     @Override

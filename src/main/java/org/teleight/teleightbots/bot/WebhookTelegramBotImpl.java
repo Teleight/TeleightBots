@@ -46,7 +46,7 @@ final class WebhookTelegramBotImpl implements WebhookTelegramBot {
     private final ExtensionManager extensionManager = ExtensionManager.newExtensionManager(this);
 
     //FileDownloader
-    private final FileDownloader fileDownloader = FileDownloader.newFileDownloader(this);
+    private final FileDownloader fileDownloader;
 
     // Webhook
     private DeleteWebhook deleteWebhook = DeleteWebhook.ofBuilder().build();
@@ -60,6 +60,7 @@ final class WebhookTelegramBotImpl implements WebhookTelegramBot {
         this.botSettings = botSettings;
         this.updateProcessor = new WebhookUpdateProcessor(this, webhookServer);
         this.botMethodExecutor = new BotMethodExecutor(this);
+        this.fileDownloader = FileDownloader.newFileDownloader(this);
     }
 
     @Override

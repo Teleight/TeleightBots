@@ -8,7 +8,7 @@ public interface BotSettings {
     /**
      * The default Bot API endpoint URL used to connect with the Telegram Bot API.
      */
-    String DEFAULT_BOT_API_URL = "https://api.telegram.org/bot";
+    String DEFAULT_BOT_API_URL = "https://api.telegram.org";
 
     /**
      * Returns the endpoint URL for connecting to the Telegram Bot API.
