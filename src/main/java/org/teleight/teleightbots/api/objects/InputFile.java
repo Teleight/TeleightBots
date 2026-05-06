@@ -14,11 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-/**
- * Represents a file that can be used as an input for API requests.
- * The file can be provided from various sources such as a local file system,
- * a resource from the classpath, a file identified by a Telegram ID stored on the Telegram servers, or a URL.
- */
+/// Represents a file that can be used as an input for API requests.
+/// The file can be provided from various sources such as a local file system,
+/// a resource from the classpath, a file identified by a Telegram ID stored on the Telegram servers, or a URL.
 @JsonSerialize(using = InputFileSerializer.class)
 public record InputFile(
         @JsonIgnore
@@ -31,49 +29,41 @@ public record InputFile(
         String fileName
 ) implements ApiResult {
 
-    /**
-     * Creates an {@code InputFile} instance from a {@link File} object.
-     *
-     * @param file the file to be used as input
-     * @return a new {@code InputFile} instance containing the provided file
-     * @throws NullPointerException if the provided {@code file} is null
-     */
+    /// Creates an `InputFile` instance from a [File] object.
+    ///
+    /// @param file the file to be used as input
+    /// @return a new `InputFile` instance containing the provided file
+    /// @throws NullPointerException if the provided `file` is null
     public static @NotNull InputFile fromFile(@NotNull File file) {
         return new InputFile(null, file, file.getName());
     }
 
-    /**
-     * Creates an {@code InputFile} instance from a file path as {@code String}.
-     *
-     * @param filePath the path to the file
-     * @return a new {@code InputFile} instance containing the file located at the specified path
-     * @throws NullPointerException if the provided {@code filePath} is null
-     */
+    /// Creates an `InputFile` instance from a file path as `String`.
+    ///
+    /// @param filePath the path to the file
+    /// @return a new `InputFile` instance containing the file located at the specified path
+    /// @throws NullPointerException if the provided `filePath` is null
     public static @NotNull InputFile fromFile(@NotNull String filePath) {
         return fromFile(new File(filePath));
     }
 
-    /**
-     * Creates an {@code InputFile} instance from a file path as {@code Path}.
-     *
-     * @param filePath the path to the file
-     * @return a new {@code InputFile} instance containing the file located at the specified path
-     * @throws NullPointerException if the provided {@code filePath} is null
-     */
+    /// Creates an `InputFile` instance from a file path as `Path`.
+    ///
+    /// @param filePath the path to the file
+    /// @return a new `InputFile` instance containing the file located at the specified path
+    /// @throws NullPointerException if the provided `filePath` is null
     public static @NotNull InputFile fromFile(@NotNull Path filePath) {
         return fromFile(filePath.toFile());
     }
 
-    /**
-     * Creates an {@code InputFile} instance from a resource on the classpath.
-     *
-     * <p>The resource will be copied to a temporary file, which will be used as the input.</p>
-     *
-     * @param resource the path to the resource within the classpath
-     * @return a new {@code InputFile} instance containing the resource as a file
-     * @throws IllegalStateException if an I/O error occurs while accessing the resource
-     * @throws NullPointerException if the provided {@code resource} is null
-     */
+    /// Creates an `InputFile` instance from a resource on the classpath.
+    ///
+    /// The resource will be copied to a temporary file, which will be used as the input.
+    ///
+    /// @param resource the path to the resource within the classpath
+    /// @return a new `InputFile` instance containing the resource as a file
+    /// @throws IllegalStateException if an I/O error occurs while accessing the resource
+    /// @throws NullPointerException if the provided `resource` is null
     public static @NotNull InputFile fromResource(@NotNull String resource) {
         try {
             final File tempFile = File.createTempFile("resource_", ".tmp");
@@ -89,13 +79,11 @@ public record InputFile(
         }
     }
 
-    /**
-     * Creates an {@code InputFile} instance from a Telegram file ID or URL.
-     *
-     * @param id the Telegram file ID, or URL
-     * @return a new {@code InputFile} instance containing the Telegram file ID
-     * @throws NullPointerException if the provided {@code id} is null
-     */
+    /// Creates an `InputFile` instance from a Telegram file ID or URL.
+    ///
+    /// @param id the Telegram file ID, or URL
+    /// @return a new `InputFile` instance containing the Telegram file ID
+    /// @throws NullPointerException if the provided `id` is null
     public static @NotNull InputFile fromId(@NotNull String id) {
         return new InputFile(id, null, null);
     }

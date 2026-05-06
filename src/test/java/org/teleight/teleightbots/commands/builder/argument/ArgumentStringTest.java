@@ -15,15 +15,15 @@ class ArgumentStringTest {
     }
 
     @Test
-    void readRemaining_defaultsToFalse() {
+    void greedy_defaultsToFalse() {
         ArgumentString argument = new ArgumentString("text");
-        assertFalse(argument.readRemaining());
+        assertFalse(argument.greedy());
     }
 
     @Test
-    void readRemaining_canBeEnabled() {
+    void greedy_canBeEnabled() {
         ArgumentString argument = new ArgumentString("text", true);
-        assertTrue(argument.readRemaining());
+        assertTrue(argument.greedy());
     }
 }
 

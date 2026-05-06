@@ -5,23 +5,17 @@ import org.teleight.teleightbots.api.objects.ChatMemberUpdated;
 import org.teleight.teleightbots.api.objects.Message;
 import org.teleight.teleightbots.api.objects.Update;
 
-/**
- * Interface for a group bot event.
- */
+/// Interface for a group bot event.
 public interface GroupBotEvent extends Event {
 
-    /**
-     * Gets the Update object associated with the event.
-     *
-     * @return the Update object associated with the event
-     */
+    /// Gets the Update object associated with the event.
+    ///
+    /// @return the Update object associated with the event
     Update update();
 
-    /**
-     * Gets the Chat object associated with the event.
-     *
-     * @return the Chat object associated with the event
-     */
+    /// Gets the Chat object associated with the event.
+    ///
+    /// @return the Chat object associated with the event
     default Chat chat() {
         final ChatMemberUpdated myChatMember = update().myChatMember();
         if (myChatMember != null) {

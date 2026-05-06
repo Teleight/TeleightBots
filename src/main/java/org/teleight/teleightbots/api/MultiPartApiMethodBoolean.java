@@ -3,9 +3,7 @@ package org.teleight.teleightbots.api;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
-/**
- * Interface representing a multipart API method that returns a Boolean.
- */
+/// Interface representing a multipart API method that returns a Boolean.
 public interface MultiPartApiMethodBoolean extends MultiPartApiMethod<Boolean> {
 
     @Override

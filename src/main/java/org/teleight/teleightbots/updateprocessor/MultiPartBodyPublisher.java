@@ -11,11 +11,9 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
 
-/**
- * Class for generating a multipart request body.
- * <p>
- * <a href="https://stackoverflow.com/questions/46392160/java-9-httpclient-send-a-multipart-form-data-request">Source</a>
- */
+/// Class for generating a multipart request body.
+///
+/// [Source](https://stackoverflow.com/questions/46392160/java-9-httpclient-send-a-multipart-form-data-request)
 public class MultiPartBodyPublisher {
 
     private final List<PartsSpecification> partsSpecificationList = new ArrayList<>();

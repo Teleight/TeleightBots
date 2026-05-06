@@ -8,11 +8,7 @@ import org.teleight.teleightbots.bot.TelegramBot;
 import java.io.Closeable;
 import java.util.Set;
 
-/**
- * Base interface for the extension manager.
- *
- * @see ExtensionManagerImpl for the default implementation.
- */
+/// Base interface for the extension manager.
 public sealed interface ExtensionManager extends Closeable permits ExtensionManagerImpl {
 
     @ApiStatus.Internal
@@ -20,19 +16,15 @@ public sealed interface ExtensionManager extends Closeable permits ExtensionMana
         return new ExtensionManagerImpl(bot);
     }
 
-    // The name of the extension blueprint file.
+    // Name of the extension blueprint file.
     String EXTENSION_FILE = "teleight-extension.json";
 
-    /**
-     * Starts the extension manager.
-     */
+    /// Starts the extension manager.
     void start();
 
-    /**
-     * Returns a set of the loaded extensions.
-     *
-     * @return An unmodifiable set of the loaded extensions.
-     */
+    /// Returns a set of the loaded extensions.
+    ///
+    /// @return An unmodifiable set of the loaded extensions.
     @NotNull @Unmodifiable Set<Extension> getLoadedExtensions();
 
 }

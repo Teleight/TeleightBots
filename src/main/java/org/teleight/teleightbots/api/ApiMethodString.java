@@ -3,9 +3,7 @@ package org.teleight.teleightbots.api;
 import org.jetbrains.annotations.NotNull;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
-/**
- * Represents a method that returns a string result.
- */
+/// Represents a method that returns a string result.
 public interface ApiMethodString extends ApiMethod<String> {
 
     @Override

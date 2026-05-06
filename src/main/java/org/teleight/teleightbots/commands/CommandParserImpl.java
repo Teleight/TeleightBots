@@ -108,7 +108,7 @@ final class CommandParserImpl implements CommandParser {
             try {
                 String input;
                 if (argument instanceof ArgumentString argumentString) {
-                    boolean canReadRemaining = argumentString.readRemaining();
+                    boolean canReadRemaining = argumentString.greedy();
                     if (canReadRemaining) {
                         input = argumentReader.readRemaining();
                     } else {

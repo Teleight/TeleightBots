@@ -129,11 +129,9 @@ public class ConversationContextImpl implements ConversationContext {
         return conversationLifecycle;
     }
 
-    /**
-     * This class represents a running conversation associated with a {@link ConversationContextImpl}.
-     * It is responsible for executing the conversation and managing its lifecycle.
-     * This class is internal and SHOULD NOT be accessed elsewhere.
-     */
+    /// This class represents a running conversation associated with a [ConversationContextImpl].
+    /// It is responsible for executing the conversation and managing its lifecycle.
+    /// This class is internal and SHOULD NOT be accessed elsewhere.
     @ApiStatus.Internal
     protected class ConversationLifecycle extends Thread {
         @Override
