@@ -1,7 +1,10 @@
 package org.teleight.teleightbots.conversation;
 
 import lombok.Builder;
+import org.jetbrains.annotations.NotNull;
+import org.teleight.teleightbots.conversation.constraint.ConversationInstanceConstraint;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,18 +19,18 @@ import java.util.Map;
  *
  * @param name                   the name of the conversation, used to identify the conversation. Must be unique.
  * @param executor               the executor of the conversation, see {@link ConversationExecutor}
- * @param properties             the properties of the conversation
- * @param instanceConstraints    the constraints of the conversation instance, see {@link ConversationInstanceConstraints}
+ * @param properties             the properties of the conversation. if empty, no property is applied.
+ * @param instanceConstraints    the constraints of the conversation instance. if empty, no constraint is applied.
  * @param allowUnknownProperties whether unknown properties are allowed.
  *                               By default, unknown properties are not allowed and will throw an exception.
  * @see ConversationManager#registerConversation(Conversation)
  */
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 public record Conversation(
-        String name,
-        ConversationExecutor executor,
-        Map<String, Property<?>> properties,
-        ConversationInstanceConstraints instanceConstraints,
+        @NotNull String name,
+        @NotNull ConversationExecutor executor,
+        @NotNull Map<String, Property<?>> properties,
+        @NotNull List<ConversationInstanceConstraint> instanceConstraints,
         boolean allowUnknownProperties
 ) {
 
@@ -38,7 +41,7 @@ public record Conversation(
     public static class Builder {
         Builder() {
             properties = new HashMap<>();
-            instanceConstraints = ConversationInstanceConstraints.ofBuilder().build();
+            instanceConstraints = new ArrayList<>();
         }
 
         @lombok.experimental.Tolerate
@@ -50,6 +53,12 @@ public record Conversation(
         @lombok.experimental.Tolerate
         public Builder properties(List<Property<?>> properties) {
             properties.forEach(this::property);
+            return this;
+        }
+
+        @lombok.experimental.Tolerate
+        public Builder instanceConstraint(ConversationInstanceConstraint constraint) {
+            instanceConstraints.add(constraint);
             return this;
         }
     }

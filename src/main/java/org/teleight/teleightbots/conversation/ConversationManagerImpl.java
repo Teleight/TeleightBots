@@ -6,14 +6,12 @@ import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.TelegramBot;
+import org.teleight.teleightbots.conversation.constraint.ConversationInstanceConstraint;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 final class ConversationManagerImpl implements ConversationManager {
 
@@ -58,47 +56,20 @@ final class ConversationManagerImpl implements ConversationManager {
             return new JoinResult.ConversationNotFound();
         }
 
-        JoinResult instanceCheckResult = checkMaxInstances(conversation, conversationName, chat, user);
+        JoinResult instanceCheckResult = checkMaxInstances(conversation, chat);
         if (instanceCheckResult instanceof JoinResult.InstanceConstraintReached) {
             return instanceCheckResult;
         }
 
-        usersInConversation.put(userId, new ConversationContext(bot, chat, user, conversation, properties));
+        usersInConversation.put(userId, new ConversationContextImpl(bot, chat, user, conversation, properties));
         return new JoinResult.Success();
     }
 
-    private JoinResult checkMaxInstances(Conversation conversation, String conversationName, Chat chat, User user) {
-        final long userId = user.id();
-        final String chatId = chat.id();
-
-        List<JoinResult> results = Arrays.asList(
-                checkInstanceLimit("instance", conversation.instanceConstraints().maxInstances(),
-                        (ctx) -> ctx.conversation().name().equals(conversationName)),
-
-                checkInstanceLimit("user", conversation.instanceConstraints().maxInstancesPerUser(),
-                        (ctx) -> ctx.conversation().name().equals(conversationName) && ctx.user().id() == userId),
-
-                checkInstanceLimit("chat", conversation.instanceConstraints().maxInstancesPerChat(),
-                        (ctx) -> ctx.conversation().name().equals(conversationName) && ctx.chat().id().equals(chatId)),
-
-                checkInstanceLimit("user in chat", conversation.instanceConstraints().maxInstancesPerUserPerChat(),
-                        (ctx) -> ctx.conversation().name().equals(conversationName) && ctx.user().id() == userId && ctx.chat().id().equals(chatId))
-        );
-
-        for (JoinResult result : results) {
-            if (result instanceof JoinResult.InstanceConstraintReached) {
-                return result;
-            }
-        }
-
-        return new JoinResult.Success();
-    }
-
-    private JoinResult checkInstanceLimit(String context, int limit, Predicate<ConversationContext> predicate) {
-        if (limit != -1) {
-            long instances = usersInConversation.values().stream().filter(predicate).count();
-            if (instances >= limit) {
-                return new JoinResult.InstanceConstraintReached(context);
+    private JoinResult checkMaxInstances(Conversation conversation, Chat chat) {
+        for (ConversationInstanceConstraint constraint : conversation.instanceConstraints()) {
+            final ConversationInstanceConstraint.ConstraintResult result = constraint.canJoin(conversation, chat, usersInConversation.values());
+            if (result instanceof ConversationInstanceConstraint.ConstraintResult.Denied(String reason)) {
+                return new JoinResult.InstanceConstraintReached(constraint, reason);
             }
         }
         return new JoinResult.Success();
@@ -111,7 +82,7 @@ final class ConversationManagerImpl implements ConversationManager {
         if (conversation == null) {
             throw new IllegalStateException("The user " + userId + " is not in a conversation");
         }
-        conversation.runningConversation().interrupt();
+        ((ConversationContextImpl) conversation).runningConversation().interrupt();
         usersInConversation.remove(userId);
     }
 

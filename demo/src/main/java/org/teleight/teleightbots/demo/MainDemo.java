@@ -6,7 +6,7 @@ import org.teleight.teleightbots.api.objects.InlineKeyboardButton;
 import org.teleight.teleightbots.api.objects.ParseMode;
 import org.teleight.teleightbots.bot.settings.LongPollingBotSettings;
 import org.teleight.teleightbots.conversation.Conversation;
-import org.teleight.teleightbots.conversation.ConversationInstanceConstraints;
+import org.teleight.teleightbots.conversation.constraint.MaxInstancesConstraint;
 import org.teleight.teleightbots.conversation.Property;
 import org.teleight.teleightbots.demo.command.TestCommand;
 import org.teleight.teleightbots.demo.command.TestConversationCommand;
@@ -70,7 +70,7 @@ public class MainDemo {
             Conversation testConversation = Conversation.ofBuilder("test", new TestConversation())
                     .property(Property.of("test"))
                     .allowUnknownProperties(true)
-                    .instanceConstraints(ConversationInstanceConstraints.ofBuilder().maxInstances(1).build())
+                    .instanceConstraint(new MaxInstancesConstraint(1))
                     .build();
             bot.getConversationManager().registerConversation(testConversation);
 

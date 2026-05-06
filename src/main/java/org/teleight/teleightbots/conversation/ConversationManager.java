@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Unmodifiable;
 import org.teleight.teleightbots.api.objects.Chat;
 import org.teleight.teleightbots.api.objects.User;
 import org.teleight.teleightbots.bot.TelegramBot;
+import org.teleight.teleightbots.conversation.constraint.ConversationInstanceConstraint;
 
 import java.util.Collection;
 import java.util.Map;
@@ -142,9 +143,13 @@ public sealed interface ConversationManager permits ConversationManagerImpl {
         }
 
         /**
-         * Represents a failed join operation due to the maximum instance constraint being reached.
+         * Represents a failed join operation due to a constraint being reached.
+         *
+         * @param constraint The constraint that was reached.
+         * @param reason     The reason for the constraint being reached.
          */
-        record InstanceConstraintReached(String constraint) implements JoinResult {
+        record InstanceConstraintReached(@NotNull ConversationInstanceConstraint constraint,
+                                         @NotNull String reason) implements JoinResult {
         }
     }
 }
