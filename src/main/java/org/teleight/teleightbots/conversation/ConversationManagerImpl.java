@@ -103,7 +103,7 @@ final class ConversationManagerImpl implements ConversationManager {
 
     @Override
     public @NotNull @Unmodifiable Collection<ConversationContext> getRunningConversations() {
-        return usersInConversation.values();
+        return Collections.unmodifiableCollection(usersInConversation.values());
     }
 
 }
