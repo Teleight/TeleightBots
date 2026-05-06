@@ -8,6 +8,7 @@ junit-jupiter = "6.0.3"
 slf4j = "2.0.17"
 logback = "1.5.32"
 publisher = "0.36.0"
+lombok-gradle = "9.5.0"
 
 [libraries]
 jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
@@ -29,3 +30,4 @@ junit = ["junit-api", "junit-engine", "junit-launcher"]
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 publisher = { id = "com.vanniktech.maven.publish", version.ref = "publisher" }
+lombok = { id = "io.freefair.lombok", version.ref = "lombok-gradle" }

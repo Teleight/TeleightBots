@@ -2,6 +2,7 @@ plugins {
     `java-library`
     alias(libs.plugins.shadow)
     alias(libs.plugins.publisher)
+    alias(libs.plugins.lombok)
 }
 
 val groupId = "org.teleight"
@@ -51,6 +52,7 @@ tasks.test {
 }
 
 tasks.javadoc {
+    dependsOn(tasks.delombok)
     options {
         require(this is StandardJavadocDocletOptions)
         addStringOption("Xdoclint:all,-missing", "-quiet")
