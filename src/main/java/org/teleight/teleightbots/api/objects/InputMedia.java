@@ -30,4 +30,54 @@ public sealed interface InputMedia extends ApiResult permits
     @JsonProperty(TYPE_NAME)
     String type();
 
+    /**
+     * Creates a builder for constructing an instance of {@code InputMediaPhoto}.
+     *
+     * @param media the input file to be used as the media content
+     * @return a builder instance for constructing {@code InputMediaPhoto}
+     */
+    static InputMediaPhoto.Builder photoBuilder(InputFile media) {
+        return InputMediaPhoto.ofBuilder(media);
+    }
+
+    /**
+     * Creates a builder for constructing an instance of {@code InputMediaVideo}.
+     *
+     * @param media the input file to be used as the media content
+     * @return a builder instance for constructing {@code InputMediaVideo}
+     */
+    static InputMediaVideo.Builder videoBuilder(InputFile media) {
+        return InputMediaVideo.ofBuilder(media);
+    }
+
+    /**
+     * Creates a builder for constructing an instance of {@code InputMediaAnimation}.
+     *
+     * @param media the input file to be used as the media content; must not be null
+     * @return a builder instance for constructing {@code InputMediaAnimation}
+     */
+    static InputMediaAnimation.Builder animationBuilder(InputFile media) {
+        return InputMediaAnimation.ofBuilder(media);
+    }
+
+    /**
+     * Creates a builder for constructing an instance of {@code InputMediaAudio}.
+     *
+     * @param media the input file to be used as the media content; must not be null
+     * @return a builder instance for constructing {@code InputMediaAudio}
+     */
+    static InputMediaAudio.Builder audioBuilder(InputFile media) {
+        return InputMediaAudio.ofBuilder(media);
+    }
+
+    /**
+     * Creates a builder for constructing an instance of {@code InputMediaDocument}.
+     *
+     * @param media the input file to be used as the media content; must not be null
+     * @return a builder instance for constructing {@code InputMediaDocument}
+     */
+    static InputMediaDocument.Builder documentBuilder(InputFile media) {
+        return InputMediaDocument.ofBuilder(media);
+    }
+
 }
