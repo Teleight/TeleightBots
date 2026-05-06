@@ -16,6 +16,7 @@ jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "j
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
@@ -23,7 +24,7 @@ logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 [bundles]
 jackson = ["jackson-databind"]
 checker = ["checker-qual"]
-junit = ["junit-api", "junit-engine"]
+junit = ["junit-api", "junit-engine", "junit-launcher"]
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
