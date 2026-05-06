@@ -51,6 +51,8 @@ public sealed interface ConversationManager permits ConversationManagerImpl {
      * @param conversationName The name of the Conversation the user wants to join.
      *                         This should match the name returned by {@link Conversation#name()}.
      * @return A {@link JoinResult} indicating the result of the join operation.
+     * @throws IllegalArgumentException if either a required property is missing
+     *                                  or an unknown property is passed when allowUnknownProperties is false.
      */
     JoinResult joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName);
 
@@ -64,6 +66,8 @@ public sealed interface ConversationManager permits ConversationManagerImpl {
      * @param properties       A list of custom properties to be passed to the conversation.
      *                         This can be used to pass additional information to the conversation.
      * @return A {@link JoinResult} indicating the result of the join operation.
+     * @throws IllegalArgumentException if either a required property is missing
+     *                                  or an unknown property is passed when allowUnknownProperties is false.
      */
     JoinResult joinConversation(@NotNull User user, @NotNull Chat chat, @NotNull String conversationName, @Nullable Map<String, Object> properties);
 
