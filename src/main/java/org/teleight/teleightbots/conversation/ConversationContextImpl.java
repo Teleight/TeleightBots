@@ -69,7 +69,7 @@ public class ConversationContextImpl implements ConversationContext {
                     if (conversation.allowUnknownProperties()) {
                         applyProperty(name, value);
                     } else {
-                        throw new IllegalArgumentException("The conversation " + conversation.name() + " does not have a property named " + name);
+                        throw new IllegalArgumentException("An unknown property was provided: " + name + " for conversation " + conversation.name() + " while the conversation does not allow unknown properties.");
                     }
                 }
             });
