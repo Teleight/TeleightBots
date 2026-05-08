@@ -13,7 +13,10 @@ import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 public record GetChatAdministrators(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
-        String chatId
+        String chatId,
+
+        @JsonProperty(value = "return_bots")
+        boolean returnBots
 ) implements ApiMethod<ChatMember[]> {
 
     public static @NotNull Builder ofBuilder(String chatId) {

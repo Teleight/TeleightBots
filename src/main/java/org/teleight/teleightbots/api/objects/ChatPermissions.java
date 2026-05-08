@@ -34,6 +34,9 @@ public record ChatPermissions(
         @JsonProperty(value = "can_add_web_page_previews")
         boolean canAddWebPagePreviews,
 
+        @JsonProperty(value = "can_react_to_messages")
+        boolean canReactToMessages,
+
         @JsonProperty(value = "can_edit_tag")
         boolean canEditTag,
 
