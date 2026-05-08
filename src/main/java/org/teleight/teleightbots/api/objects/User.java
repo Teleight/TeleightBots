@@ -38,6 +38,9 @@ public record User(
         @JsonProperty(value = "can_read_all_group_messages")
         boolean canReadAllGroupMessages,
 
+        @JsonProperty(value = "supports_guest_queries")
+        boolean supportsGuestQueries,
+
         @JsonProperty(value = "supports_inline_queries")
         boolean supportsInlineQueries,
 
