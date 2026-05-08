@@ -32,44 +32,4 @@ public sealed interface InputMedia extends ApiResult permits
     @JsonProperty(TYPE_NAME)
     String type();
 
-    /// Creates a builder for constructing an instance of `InputMediaPhoto`.
-    ///
-    /// @param media the input file to be used as the media content
-    /// @return a builder instance for constructing `InputMediaPhoto`
-    static InputMediaPhoto.Builder photoBuilder(InputFile media) {
-        return InputMediaPhoto.ofBuilder(media);
-    }
-
-    /// Creates a builder for constructing an instance of `InputMediaVideo`.
-    ///
-    /// @param media the input file to be used as the media content
-    /// @return a builder instance for constructing `InputMediaVideo`
-    static InputMediaVideo.Builder videoBuilder(InputFile media) {
-        return InputMediaVideo.ofBuilder(media);
-    }
-
-    /// Creates a builder for constructing an instance of `InputMediaAnimation`.
-    ///
-    /// @param media the input file to be used as the media content; must not be null
-    /// @return a builder instance for constructing `InputMediaAnimation`
-    static InputMediaAnimation.Builder animationBuilder(InputFile media) {
-        return InputMediaAnimation.ofBuilder(media);
-    }
-
-    /// Creates a builder for constructing an instance of `InputMediaAudio`.
-    ///
-    /// @param media the input file to be used as the media content; must not be null
-    /// @return a builder instance for constructing `InputMediaAudio`
-    static InputMediaAudio.Builder audioBuilder(InputFile media) {
-        return InputMediaAudio.ofBuilder(media);
-    }
-
-    /// Creates a builder for constructing an instance of `InputMediaDocument`.
-    ///
-    /// @param media the input file to be used as the media content; must not be null
-    /// @return a builder instance for constructing `InputMediaDocument`
-    static InputMediaDocument.Builder documentBuilder(InputFile media) {
-        return InputMediaDocument.ofBuilder(media);
-    }
-
 }
