@@ -19,7 +19,10 @@ body = """
     {%- endif -%}
     * {{ commit_message | split(pat="\n") | first | trim -}}
     {%- if commit.remote.username %} by @{{ commit.remote.username }}{%- endif -%}
-    {%- if commit.remote.pr_number %} in [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }}){%- endif %}
+    {%- if commit.remote.pr_number %} [PR [#{{ commit.remote.pr_number }}]({{ self::remote_url() }}/pull/{{ commit.remote.pr_number }})]{%- endif -%}
+    {%- if not commit.remote.pr_number %} \
+      [[{{ commit.id | truncate(length=7, end="") }}]({{ self::remote_url() }}/commit/{{ commit.id }})]\
+    {%- endif %}
   {% endfor %}
 {%- endfor -%}
 
@@ -60,7 +63,7 @@ protect_breaking_commits = false
 commit_parsers = [
     # Labels
     { field = "github.pr_labels", pattern = "ignore-for-release", skip = true },
-    { field = "github.pr_labels", pattern = "breaking-change", group = "<!-- -1 -->Breaking Changes 🛠" },
+    { field = "github.pr_labels", pattern = "breaking-change", group = "<!-- -1 --> Breaking Changes 🛠" },
     { field = "github.pr_labels", pattern = "feature", group = "<!-- 1 --> New Features 🎉" },
     { field = "github.pr_labels", pattern = "enhancement", group = "<!-- 1 --> New Features 🎉" },
     { field = "github.pr_labels", pattern = "fix", group = "<!-- 2 --> Bug Fixes 🐛" },
@@ -69,12 +72,12 @@ commit_parsers = [
     { field = "github.pr_labels", pattern = ".*", group = "<!-- 6 --> Other Changes 🔄" },
 
     # Just regex
-    { message = ".*!:", group = "<!-- -1 -->Breaking Changes 🛠" },
-    { message = "^feat|^enhancement", group = "<!-- 1 -->New Features 🎉" },
-    { message = "^fix", group = "<!-- 2 -->Bug Fixes 🐛" },
+    { message = ".*!:", group = "<!-- -1 --> Breaking Changes 🛠" },
+    { message = "^feat|^enhancement", group = "<!-- 1 --> New Features 🎉" },
+    { message = "^fix", group = "<!-- 2 --> Bug Fixes 🐛" },
     { message = "^docs", group = "<!-- 3 --> Documentation 📚" },
-    { message = "^chore\\(deps.*\\)", group = "<!-- 4 -->Dependency Updates ⬆️" },
-    { message = ".*", group = "<!-- 6 -->Other Changes 🔄" },
+    { message = "^chore\\(deps.*\\)", group = "<!-- 4 --> Dependency Updates ⬆️" },
+    { message = ".*", group = "<!-- 6 --> Other Changes 🔄" },
 ]
 filter_commits = false
 fail_on_unmatched_commit = false
