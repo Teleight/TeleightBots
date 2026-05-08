@@ -5,17 +5,16 @@ import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.MultiPartApiMethod;
+import org.teleight.teleightbots.api.MultiPartApiMethodMessage;
 import org.teleight.teleightbots.api.objects.InputPollMedia;
 import org.teleight.teleightbots.api.objects.InputPollOption;
 import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
-import org.teleight.teleightbots.api.objects.Poll;
 import org.teleight.teleightbots.api.objects.PollType;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
-import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,7 +140,7 @@ public record SendPoll(
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
-) implements MultiPartApiMethod<Poll> {
+) implements MultiPartApiMethodMessage {
 
     public static @NotNull Builder ofBuilder(String chatId, String question, InputPollOption[] options) {
         return new SendPoll.Builder().chatId(chatId).question(question).options(options);
@@ -150,11 +149,6 @@ public record SendPoll(
     @Override
     public @NotNull String getEndpointURL() {
         return "sendPoll";
-    }
-
-    @Override
-    public @NotNull Poll deserializeResponse(@NotNull String answer) throws TelegramRequestException {
-        return deserializeResponse(answer, Poll.class);
     }
 
     @Override
