@@ -14,6 +14,7 @@ org.teleight.teleightbots.commands.builder.condition
 org.teleight.teleightbots.commands.builder.exception
 org.teleight.teleightbots.commands.builder.parser
 org.teleight.teleightbots.conversation
+org.teleight.teleightbots.conversation.constraint
 org.teleight.teleightbots.event
 org.teleight.teleightbots.event.bot
 org.teleight.teleightbots.event.bot.channel
