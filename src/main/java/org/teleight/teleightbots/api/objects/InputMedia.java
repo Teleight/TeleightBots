@@ -15,6 +15,7 @@ import org.teleight.teleightbots.api.ApiResult;
         @JsonSubTypes.Type(value = InputMediaPhoto.class, name = "photo"),
         @JsonSubTypes.Type(value = InputMediaVideo.class, name = "video"),
         @JsonSubTypes.Type(value = InputMediaAnimation.class, name = "animation"),
+        @JsonSubTypes.Type(value = InputMediaLivePhoto.class, name = "live_photo"),
         @JsonSubTypes.Type(value = InputMediaAudio.class, name = "audio"),
         @JsonSubTypes.Type(value = InputMediaDocument.class, name = "document"),
 })
@@ -23,7 +24,8 @@ public sealed interface InputMedia extends ApiResult permits
         InputMediaVideo,
         InputMediaAnimation,
         InputMediaAudio,
-        InputMediaDocument {
+        InputMediaDocument,
+        InputMediaLivePhoto {
 
     String TYPE_NAME = "type";
 

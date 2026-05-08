@@ -33,6 +33,10 @@ public record ExternalReplyInfo(
         @Nullable
         Document document,
 
+        @JsonProperty(value = "live_photo")
+        @Nullable
+        LivePhoto livePhoto,
+
         @JsonProperty(value = "paid_media")
         @Nullable
         PaidMedia paidMedia,
