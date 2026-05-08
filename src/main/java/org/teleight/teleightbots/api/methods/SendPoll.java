@@ -5,7 +5,8 @@ import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.teleight.teleightbots.api.ApiMethod;
+import org.teleight.teleightbots.api.MultiPartApiMethod;
+import org.teleight.teleightbots.api.objects.InputPollMedia;
 import org.teleight.teleightbots.api.objects.InputPollOption;
 import org.teleight.teleightbots.api.objects.MessageEntity;
 import org.teleight.teleightbots.api.objects.ParseMode;
@@ -14,6 +15,9 @@ import org.teleight.teleightbots.api.objects.PollType;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
@@ -67,6 +71,13 @@ public record SendPoll(
         @JsonProperty(value = "hide_results_until_closes")
         boolean hideResultsUntilCloses,
 
+        @JsonProperty(value = "members_only")
+        boolean membersOnly,
+
+        @JsonProperty(value = "country_codes")
+        @Nullable
+        String[] countryCodes,
+
         @JsonProperty(value = "correct_option_ids")
         int[] correctOptionIds,
 
@@ -81,6 +92,10 @@ public record SendPoll(
         @JsonProperty(value = "explanation_entities")
         @Nullable
         MessageEntity[] explanationEntities,
+
+        @JsonProperty(value = "explanation_media")
+        @Nullable
+        InputPollMedia explanationMedia,
 
         @JsonProperty(value = "open_period")
         int openPeriod,
@@ -103,6 +118,10 @@ public record SendPoll(
         @Nullable
         MessageEntity[] descriptionEntities,
 
+        @JsonProperty(value = "media")
+        @Nullable
+        InputPollMedia media,
+
         @JsonProperty(value = "disable_notification")
         boolean disableNotification,
 
@@ -122,7 +141,7 @@ public record SendPoll(
         @JsonProperty(value = "reply_markup")
         @Nullable
         ReplyKeyboard replyMarkup
-) implements ApiMethod<Poll> {
+) implements MultiPartApiMethod<Poll> {
 
     public static @NotNull Builder ofBuilder(String chatId, String question, InputPollOption[] options) {
         return new SendPoll.Builder().chatId(chatId).question(question).options(options);
@@ -138,4 +157,43 @@ public record SendPoll(
         return deserializeResponse(answer, Poll.class);
     }
 
+    @Override
+    public @NotNull Map<String, Object> getParameters() {
+        final Map<String, Object> parameters = new HashMap<>();
+        parameters.put("business_connection_id", businessConnectionId);
+        parameters.put("chat_id", chatId);
+        parameters.put("message_thread_id", messageThreadId);
+        parameters.put("question", question);
+        parameters.put("question_parse_mode", questionParseMode);
+        parameters.put("question_entities", questionEntities);
+        parameters.put("options", options);
+        parameters.put("is_anonymous", isAnonymous);
+        parameters.put("type", type);
+        parameters.put("allows_multiple_answers", allowsMultipleAnswers);
+        parameters.put("allows_revoting", allowsRevoting);
+        parameters.put("shuffle_options", shuffleOptions);
+        parameters.put("allow_adding_options", allowAddingOptions);
+        parameters.put("hide_results_until_closes", hideResultsUntilCloses);
+        parameters.put("members_only", membersOnly);
+        parameters.put("country_codes", countryCodes);
+        parameters.put("correct_option_ids", correctOptionIds);
+        parameters.put("explanation", explanation);
+        parameters.put("explanation_parse_mode", explanationParseMode);
+        parameters.put("explanation_entities", explanationEntities);
+        parameters.put("explanation_media", explanationMedia);
+        parameters.put("open_period", openPeriod);
+        parameters.put("close_date", closeDate);
+        parameters.put("is_closed", isClosed);
+        parameters.put("description", description);
+        parameters.put("description_parse_mode", descriptionParseMode);
+        parameters.put("description_entities", descriptionEntities);
+        parameters.put("media", media);
+        parameters.put("disable_notification", disableNotification);
+        parameters.put("protect_content", protectContent);
+        parameters.put("allow_paid_broadcast", allowPaidBroadcast);
+        parameters.put("message_effect_id", messageEffectId);
+        parameters.put("reply_parameters", replyParameters);
+        parameters.put("reply_markup", replyMarkup);
+        return parameters;
+    }
 }
