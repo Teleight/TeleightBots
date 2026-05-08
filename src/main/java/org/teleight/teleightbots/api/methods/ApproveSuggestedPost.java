@@ -2,11 +2,13 @@ package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.experimental.Tolerate;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
@@ -21,7 +23,7 @@ public record ApproveSuggestedPost(
 
         @JsonProperty(value = "send_date")
         @Nullable
-        Date sendDate
+        Long sendDate
 ) implements ApiMethodBoolean {
 
     public static @NotNull Builder ofBuilder(String chatId, int messageId) {
@@ -31,6 +33,20 @@ public record ApproveSuggestedPost(
     @Override
     public @NotNull String getEndpointURL() {
         return "approveSuggestedPost";
+    }
+
+    public static class Builder {
+        @Tolerate
+        public Builder sendDate(Date date) {
+            this.sendDate = date.toInstant().getEpochSecond();
+            return this;
+        }
+
+        @Tolerate
+        public Builder sendDate(Instant instant) {
+            this.sendDate = instant.getEpochSecond();
+            return this;
+        }
     }
 
 }

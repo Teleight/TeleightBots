@@ -2,6 +2,7 @@ package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.experimental.Tolerate;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +15,7 @@ import org.teleight.teleightbots.api.objects.PollType;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.objects.ReplyParameters;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,7 +102,7 @@ public record SendPoll(
         int openPeriod,
 
         @JsonProperty(value = "close_date")
-        int closeDate,
+        long closeDate,
 
         @JsonProperty(value = "is_closed")
         boolean isClosed,
@@ -190,4 +192,19 @@ public record SendPoll(
         parameters.put("reply_markup", replyMarkup);
         return parameters;
     }
+
+    public static class Builder {
+        @Tolerate
+        public Builder closeDate(Date date) {
+            this.closeDate = date.toInstant().getEpochSecond();
+            return this;
+        }
+
+        @Tolerate
+        public Builder closeDate(Instant instant) {
+            this.closeDate = instant.getEpochSecond();
+            return this;
+        }
+    }
+
 }
