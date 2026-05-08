@@ -8,7 +8,7 @@ import org.teleight.teleightbots.api.ApiResult;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "status",
+        property = "type",
         defaultImpl = Void.class
 )
 @JsonSubTypes({
