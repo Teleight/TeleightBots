@@ -8,7 +8,7 @@ plugins {
 val groupId = "org.teleight"
 val artifactId = "TeleightBots"
 val descriptionId = "Java library for Telegram Bots"
-val versionId = "1.2.0"
+val versionId = "1.3.0"
 
 allprojects {
     apply(plugin = "java")
