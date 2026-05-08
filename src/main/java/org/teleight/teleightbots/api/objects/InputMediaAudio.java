@@ -31,7 +31,7 @@ public record InputMediaAudio(
 
         @JsonProperty(value = "disable_content_type_detection")
         boolean disableContentTypeDetection
-) implements InputMedia {
+) implements InputMedia, InputPollMedia {
 
     public static @NotNull Builder ofBuilder(InputFile media) {
         return new InputMediaAudio.Builder().media(media);

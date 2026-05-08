@@ -41,6 +41,10 @@ public record Message(
         @NotNull
         Date date,
 
+        @JsonProperty(value = "guest_query_id")
+        @Nullable
+        String guestQueryId,
+
         @JsonProperty(value = "business_connection_id")
         @Nullable
         String businessConnectionId,
@@ -85,6 +89,14 @@ public record Message(
         @JsonProperty(value = "via_bot")
         @Nullable
         User viaBot,
+
+        @JsonProperty(value = "guest_bot_caller_user")
+        @Nullable
+        User guestBotCallerUser,
+
+        @JsonProperty(value = "guest_bot_caller_chat")
+        @Nullable
+        Chat guestBotCallerChat,
 
         @JsonProperty(value = "edit_date")
         @Nullable
@@ -137,6 +149,10 @@ public record Message(
         @JsonProperty(value = "document")
         @Nullable
         Document document,
+
+        @JsonProperty(value = "live_photo")
+        @Nullable
+        LivePhoto livePhoto,
 
         @JsonProperty(value = "paid_media")
         @Nullable

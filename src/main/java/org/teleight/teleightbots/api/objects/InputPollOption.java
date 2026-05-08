@@ -20,7 +20,11 @@ public record InputPollOption(
 
         @JsonProperty(value = "text_entities")
         @Nullable
-        MessageEntity[] textEntities
+        MessageEntity[] textEntities,
+
+        @JsonProperty(value = "media")
+        @Nullable
+        InputPollOptionMedia media
 ) implements ApiResult {
 
     public static @NotNull Builder ofBuilder(String text) {

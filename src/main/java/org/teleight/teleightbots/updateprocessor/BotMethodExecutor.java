@@ -10,11 +10,18 @@ import org.teleight.teleightbots.api.objects.InputMedia;
 import org.teleight.teleightbots.api.objects.InputMediaAnimation;
 import org.teleight.teleightbots.api.objects.InputMediaAudio;
 import org.teleight.teleightbots.api.objects.InputMediaDocument;
+import org.teleight.teleightbots.api.objects.InputMediaLivePhoto;
+import org.teleight.teleightbots.api.objects.InputMediaLocation;
 import org.teleight.teleightbots.api.objects.InputMediaPhoto;
+import org.teleight.teleightbots.api.objects.InputMediaSticker;
+import org.teleight.teleightbots.api.objects.InputMediaVenue;
 import org.teleight.teleightbots.api.objects.InputMediaVideo;
 import org.teleight.teleightbots.api.objects.InputPaidMedia;
 import org.teleight.teleightbots.api.objects.InputPaidMediaPhoto;
 import org.teleight.teleightbots.api.objects.InputPaidMediaVideo;
+import org.teleight.teleightbots.api.objects.InputPollMedia;
+import org.teleight.teleightbots.api.objects.InputPollOption;
+import org.teleight.teleightbots.api.objects.InputPollOptionMedia;
 import org.teleight.teleightbots.api.objects.InputSticker;
 import org.teleight.teleightbots.bot.TelegramBot;
 import org.teleight.teleightbots.bot.settings.BotSettings;
@@ -138,6 +145,18 @@ public final class BotMethodExecutor {
                     }
                     publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputMedias));
                 }
+                case InputPollMedia inputPollMedia -> {
+                    handleInputPollMedia(publisher, inputPollMedia);
+                    publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputPollMedia));
+                }
+                case InputPollOption[] inputPollOptions -> {
+                    for (InputPollOption inputPollOption : inputPollOptions) {
+                        if (inputPollOption.media() != null) {
+                            handleInputPollOptionMedia(publisher, inputPollOption.media());
+                        }
+                    }
+                    publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputPollOptions));
+                }
                 case InputPaidMedia[] inputPaidMedias -> {
                     handleInputPaidMedias(publisher, inputPaidMedias);
                     publisher.addPart(key, OBJECT_MAPPER.writeValueAsString(inputPaidMedias));
@@ -181,7 +200,44 @@ public final class BotMethodExecutor {
             case InputMediaAnimation animation ->
                     addMultiMediaPart(publisher, animation.media(), animation.thumbnail());
             case InputMediaVideo video -> addMultiMediaPart(publisher, video.media(), video.thumbnail());
+            case InputMediaLivePhoto livePhoto -> addMultiMediaPart(publisher, livePhoto.media(), livePhoto.photo());
             default -> throw new IllegalStateException("Unexpected value: " + inputMedia);
+        }
+    }
+
+    @ApiStatus.Internal
+    private void handleInputPollMedia(@NotNull MultiPartBodyPublisher publisher,
+                                      @NotNull InputPollMedia inputPollMedia) {
+        switch (inputPollMedia) {
+            case InputMediaPhoto photo -> addMultiMediaPart(publisher, photo.media(), null);
+            case InputMediaDocument document -> addMultiMediaPart(publisher, document.media(), document.thumbnail());
+            case InputMediaAudio audio -> addMultiMediaPart(publisher, audio.media(), audio.thumbnail());
+            case InputMediaAnimation animation ->
+                    addMultiMediaPart(publisher, animation.media(), animation.thumbnail());
+            case InputMediaVideo video -> addMultiMediaPart(publisher, video.media(), video.thumbnail());
+            case InputMediaLivePhoto livePhoto -> addMultiMediaPart(publisher, livePhoto.media(), livePhoto.photo());
+            case InputMediaLocation ignored -> {
+            }
+            case InputMediaVenue ignored -> {
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + inputPollMedia);
+        }
+    }
+
+    @ApiStatus.Internal
+    private void handleInputPollOptionMedia(@NotNull MultiPartBodyPublisher publisher,
+                                            @NotNull InputPollOptionMedia inputPollOptionMedia) {
+        switch (inputPollOptionMedia) {
+            case InputMediaPhoto photo -> addMultiMediaPart(publisher, photo.media(), null);
+            case InputMediaAnimation animation -> addMultiMediaPart(publisher, animation.media(), animation.thumbnail());
+            case InputMediaVideo video -> addMultiMediaPart(publisher, video.media(), video.thumbnail());
+            case InputMediaLivePhoto livePhoto -> addMultiMediaPart(publisher, livePhoto.media(), livePhoto.photo());
+            case InputMediaSticker sticker -> addMultiMediaPart(publisher, sticker.media(), null);
+            case InputMediaLocation ignored -> {
+            }
+            case InputMediaVenue ignored -> {
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + inputPollOptionMedia);
         }
     }
 

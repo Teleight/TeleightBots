@@ -2,18 +2,13 @@ package org.teleight.teleightbots.api.methods;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import lombok.experimental.Tolerate;
 import lombok.extern.jackson.Jacksonized;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.teleight.teleightbots.api.ApiMethodBoolean;
-
-import java.time.Instant;
-import java.util.Date;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
-public record ApproveSuggestedPost(
+public record DeleteMessageReaction(
         @JsonProperty(value = "chat_id", required = true)
         @NotNull
         String chatId,
@@ -21,32 +16,20 @@ public record ApproveSuggestedPost(
         @JsonProperty(value = "message_id", required = true)
         int messageId,
 
-        @JsonProperty(value = "send_date")
-        @Nullable
-        Long sendDate
+        @JsonProperty(value = "user_id")
+        long userId,
+
+        @JsonProperty(value = "actor_chat_id")
+        long actorChatId
 ) implements ApiMethodBoolean {
 
     public static @NotNull Builder ofBuilder(String chatId, int messageId) {
-        return new ApproveSuggestedPost.Builder().chatId(chatId).messageId(messageId);
+        return new DeleteMessageReaction.Builder().chatId(chatId).messageId(messageId);
     }
 
     @Override
     public @NotNull String getEndpointURL() {
-        return "approveSuggestedPost";
-    }
-
-    public static class Builder {
-        @Tolerate
-        public Builder sendDate(Date date) {
-            this.sendDate = date.toInstant().getEpochSecond();
-            return this;
-        }
-
-        @Tolerate
-        public Builder sendDate(Instant instant) {
-            this.sendDate = instant.getEpochSecond();
-            return this;
-        }
+        return "deleteMessageReaction";
     }
 
 }

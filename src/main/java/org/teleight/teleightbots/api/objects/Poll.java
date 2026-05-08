@@ -38,6 +38,13 @@ public record Poll(
         @JsonProperty(value = "allows_revoting")
         boolean allowsRevoting,
 
+        @JsonProperty(value = "members_only")
+        boolean membersOnly,
+
+        @JsonProperty(value = "country_codes")
+        @Nullable
+        String[] countryCodes,
+
         @JsonProperty(value = "correct_option_ids")
         int[] correctOptionIds,
 
@@ -48,6 +55,10 @@ public record Poll(
         @JsonProperty(value = "explanation_entities")
         @Nullable
         MessageEntity[] explanationEntities,
+
+        @JsonProperty(value = "explanation_media")
+        @Nullable
+        PollMedia explanationMedia,
 
         @JsonProperty(value = "open_period")
         int openPeriod,
@@ -62,7 +73,11 @@ public record Poll(
 
         @JsonProperty(value = "description_entities")
         @Nullable
-        MessageEntity[] descriptionEntities
+        MessageEntity[] descriptionEntities,
+
+        @JsonProperty(value = "media")
+        @Nullable
+        PollMedia media
 ) implements ApiResult {
 
 }

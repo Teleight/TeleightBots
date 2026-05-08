@@ -8,14 +8,14 @@ import org.jetbrains.annotations.Nullable;
 
 @Builder(builderClassName = "Builder", toBuilder = true, builderMethodName = "ofBuilder")
 @Jacksonized
-public record InputMediaAnimation(
+public record InputMediaLivePhoto(
         @JsonProperty(value = "media", required = true)
         @NotNull
         InputFile media,
 
-        @JsonProperty(value = "thumbnail")
-        @Nullable
-        InputFile thumbnail,
+        @JsonProperty(value = "photo", required = true)
+        @NotNull
+        InputFile photo,
 
         @JsonProperty(value = "caption")
         @Nullable
@@ -32,26 +32,17 @@ public record InputMediaAnimation(
         @JsonProperty(value = "show_caption_above_media")
         boolean showCaptionAboveMedia,
 
-        @JsonProperty(value = "width")
-        int width,
-
-        @JsonProperty(value = "height")
-        int height,
-
-        @JsonProperty(value = "duration")
-        int duration,
-
         @JsonProperty(value = "has_spoiler")
         boolean hasSpoiler
 ) implements InputMedia, InputPollMedia, InputPollOptionMedia {
 
-    public static @NotNull Builder ofBuilder(InputFile media) {
-        return new InputMediaAnimation.Builder().media(media);
+    public static @NotNull Builder ofBuilder(InputFile media, InputFile photo) {
+        return new InputMediaLivePhoto.Builder().media(media).photo(photo);
     }
 
     @Override
     public String type() {
-        return "animation";
+        return "live_photo";
     }
 
 }

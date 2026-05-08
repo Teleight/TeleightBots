@@ -44,6 +44,10 @@ public record Update(
         @Nullable
         BusinessMessagesDeleted deletedBusinessMessages,
 
+        @JsonProperty(value = "guest_message")
+        @Nullable
+        Message guestMessage,
+
         @JsonProperty(value = "message_reaction")
         @Nullable
         MessageReactionUpdated messageReaction,

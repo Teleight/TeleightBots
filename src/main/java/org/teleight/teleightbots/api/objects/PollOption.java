@@ -17,6 +17,10 @@ public record PollOption(
         @Nullable
         MessageEntity[] textEntities,
 
+        @JsonProperty(value = "media")
+        @Nullable
+        PollMedia media,
+
         @JsonProperty(value = "voter_count", required = true)
         int voterCount,
 

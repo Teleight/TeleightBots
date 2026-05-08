@@ -8,15 +8,17 @@ import org.teleight.teleightbots.api.ApiResult;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "status",
+        property = "type",
         defaultImpl = Void.class
 )
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = PaidMediaLivePhoto.class, name = "live_photo"),
         @JsonSubTypes.Type(value = PaidMediaPreview.class, name = "preview"),
         @JsonSubTypes.Type(value = PaidMediaPhoto.class, name = "photo"),
         @JsonSubTypes.Type(value = PaidMediaVideo.class, name = "video"),
 })
 public sealed interface PaidMedia extends ApiResult permits
+        PaidMediaLivePhoto,
         PaidMediaPreview,
         PaidMediaPhoto,
         PaidMediaVideo {

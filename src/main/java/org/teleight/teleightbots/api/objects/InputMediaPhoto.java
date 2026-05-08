@@ -30,7 +30,7 @@ public record InputMediaPhoto(
 
         @JsonProperty(value = "has_spoiler")
         boolean hasSpoiler
-) implements InputMedia {
+) implements InputMedia, InputPollMedia, InputPollOptionMedia {
 
     public static @NotNull Builder ofBuilder(InputFile media) {
         return new InputMediaPhoto.Builder().media(media);

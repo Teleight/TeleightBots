@@ -8,9 +8,11 @@ import org.teleight.teleightbots.api.objects.ApiResponse;
 import org.teleight.teleightbots.api.objects.MaybeInaccessibleMessage;
 import org.teleight.teleightbots.api.objects.ReplyKeyboard;
 import org.teleight.teleightbots.api.serialization.deserializers.ColorDeserializer;
+import org.teleight.teleightbots.api.serialization.deserializers.DateSecondDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.KeyboardDeserializer;
 import org.teleight.teleightbots.api.serialization.deserializers.MaybeInaccessibleMessageDeserializer;
 import org.teleight.teleightbots.api.serialization.serializers.ColorSerializer;
+import org.teleight.teleightbots.api.serialization.serializers.DateSecondSerializer;
 import org.teleight.teleightbots.exception.exceptions.TelegramRequestException;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.DeserializationFeature;
@@ -21,6 +23,7 @@ import tools.jackson.databind.type.ArrayType;
 
 import java.awt.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /// Base interface for all Telegram Bot API methods.
 ///
@@ -41,6 +44,10 @@ public interface ApiMethod<R extends Serializable> {
             )
             .addModule(new SimpleModule()
                     .addDeserializer(MaybeInaccessibleMessage.class, new MaybeInaccessibleMessageDeserializer())
+            )
+            .addModule(new SimpleModule()
+                    .addDeserializer(Date.class, new DateSecondDeserializer())
+                    .addSerializer(Date.class, new DateSecondSerializer())
             )
             .build();
 
