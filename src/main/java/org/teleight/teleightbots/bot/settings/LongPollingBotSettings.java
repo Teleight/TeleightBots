@@ -38,13 +38,16 @@ public record LongPollingBotSettings(
 ) implements BotSettings {
 
     /// Default instance of BotSettings with standard configurations
-    public static final LongPollingBotSettings DEFAULT = ofBuilder()
-            .endpointUrl(DEFAULT_BOT_API_URL + "/bot")
-            .updatesLimit(50)
-            .updatesTimeout(100)
-            .silentlyThrowMethodExecution(true)
-            .extensionsEnabled(false)
-            .allowedUpdates(List.of())
-            .build();
+    public static final LongPollingBotSettings DEFAULT = defaultBuilder().build();
+
+    public static LongPollingBotSettings.Builder defaultBuilder() {
+        return ofBuilder()
+                .endpointUrl(DEFAULT_BOT_API_URL + "/bot")
+                .updatesLimit(50)
+                .updatesTimeout(100)
+                .silentlyThrowMethodExecution(true)
+                .extensionsEnabled(false)
+                .allowedUpdates(List.of());
+    }
 
 }
