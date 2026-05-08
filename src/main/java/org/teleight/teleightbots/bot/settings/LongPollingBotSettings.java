@@ -44,7 +44,7 @@ public record LongPollingBotSettings(
             .updatesTimeout(100)
             .silentlyThrowMethodExecution(true)
             .extensionsEnabled(false)
-            .allowedUpdates(null)
+            .allowedUpdates(List.of())
             .build();
 
 }
