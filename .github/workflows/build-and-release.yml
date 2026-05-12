@@ -40,14 +40,14 @@ jobs:
 
       - name: Upload jar artifact
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: jar
           path: build/libs/TeleightBots-*.jar
 
       - name: Upload javadoc artifact
         if: startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: javadoc
           path: build/docs/javadoc
